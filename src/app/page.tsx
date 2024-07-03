@@ -1,7 +1,3 @@
 export default function Home() {
-	return (
-		<main>
-			<div>메인</div>
-		</main>
-	);
+	return <main>메인</main>;
 }
