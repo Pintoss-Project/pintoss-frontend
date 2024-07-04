@@ -1,4 +1,5 @@
 import { globalStyle } from '@vanilla-extract/css';
+import { vars } from './theme.css';
 
 globalStyle('*', {
 	boxSizing: 'border-box',
@@ -9,6 +10,7 @@ globalStyle('*', {
 globalStyle('html, body', {
 	maxWidth: '100vw',
 	minHeight: '100vh',
+	backgroundColor: vars.color.background,
 
 	fontFamily: `
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
