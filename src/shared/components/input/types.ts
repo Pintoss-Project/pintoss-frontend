@@ -1,7 +1,10 @@
 import { AsElementProps } from '../layout/core/types';
 
 export type InputProps = AsElementProps & {
+	name?: string;
 	type?: string;
+	checked?: boolean;
+	placeholder?: string;
 	color?: string;
 	variant?: 'outline' | 'filled';
 	errorBorderColor?: string;
