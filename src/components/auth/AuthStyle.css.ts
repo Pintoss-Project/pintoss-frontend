@@ -11,7 +11,7 @@ export const sectionStyle = style({
 	height: '100%',
 	marginTop: '100px',
 	backgroundColor: vars.color.white,
-	borderRadius: '0px 8px 8px 8px',
+	borderRadius: '0px 15px 15px 15px',
 	boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
 });
 

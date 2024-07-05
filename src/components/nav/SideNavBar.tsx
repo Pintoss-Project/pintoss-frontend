@@ -23,7 +23,7 @@ const PRODUCTS_FOR_SALE_LIST = [
 const SideNavBar = () => {
 	const path = usePathname();
 
-	// if (EXCLUDE_PATH.includes(path)) return null;
+	if (EXCLUDE_PATH.includes(path)) return null;
 
 	return (
 		<div className={s.sideBarContainer}>

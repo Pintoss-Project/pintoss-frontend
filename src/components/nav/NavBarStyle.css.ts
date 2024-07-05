@@ -43,7 +43,7 @@ export const sideBarContainer = style({
 	padding: '28px 22px 45px 22px',
 	margin: '108px 15px 0px 60px',
 	backgroundColor: vars.color.white,
-	borderRadius: '0px 8px 8px 8px',
+	borderRadius: '0px 15px 15px 15px',
 });
 
 export const grayText = style({
