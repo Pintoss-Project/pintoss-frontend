@@ -2,14 +2,13 @@ import { vars } from '@/shared/styles/theme.css';
 import { style } from '@vanilla-extract/css';
 
 export const container = style({
-	padding: '8px 60px',
+	padding: '8px 20px',
 	backgroundColor: vars.color.background,
 });
 
 export const sectionStyle = style({
 	width: '100%',
 	height: '100%',
-	// padding: '60px 20px 100px 20px',
 	marginTop: '100px',
 	backgroundColor: vars.color.white,
 	borderRadius: '0px 8px 8px 8px',

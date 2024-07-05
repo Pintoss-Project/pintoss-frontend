@@ -3,5 +3,15 @@ import PintossLogo from './pintoss-logo.svg';
 import SecureTransaction from './secure-transaction-merchant.svg';
 import NaverLogo from './naver-logo.svg';
 import KakaoLogo from './kakao-logo.svg';
+import KakaoDetailLogo from './kakao-detail-logo.svg';
+import CultureLandLogo from './culture-land-logo.svg';
 
-export { PintossColorLogo, PintossLogo, SecureTransaction, NaverLogo, KakaoLogo };
+export {
+	PintossColorLogo,
+	PintossLogo,
+	SecureTransaction,
+	NaverLogo,
+	KakaoLogo,
+	KakaoDetailLogo,
+	CultureLandLogo,
+};

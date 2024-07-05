@@ -36,3 +36,35 @@ export const loginButton = style({
 		},
 	},
 });
+
+export const sideBarContainer = style({
+	width: '349px',
+	height: '100%',
+	padding: '28px 22px 45px 22px',
+	margin: '108px 15px 0px 60px',
+	backgroundColor: vars.color.white,
+	borderRadius: '0px 8px 8px 8px',
+});
+
+export const grayText = style({
+	color: '#7C8184',
+	fontSize: '17px',
+});
+
+export const darkGrayText = style({
+	marginLeft: '11px',
+	color: vars.color['dark-gray'],
+	fontSize: '16px',
+});
+
+export const darkBlueText = style({
+	color: vars.color['dark-blue'],
+	fontSize: '25px',
+	fontWeight: 'bold',
+});
+
+export const brownText = style({
+	marginLeft: '3px',
+	color: vars.color.brown,
+	fontWeight: '500',
+});

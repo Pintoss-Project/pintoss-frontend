@@ -1,5 +1,7 @@
 import Footer from '@/components/footer/Footer';
 import NavBarTop from '@/components/nav/NavBarTop';
+import SideNavBar from '@/components/nav/SideNavBar';
+import { Flex } from '@/shared/components/layout';
 import '@/shared/styles';
 
 import type { Metadata } from 'next';
@@ -14,8 +16,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html lang="ko">
 			<body>
 				<NavBarTop />
-				{children}
-				<Footer />
+				<Flex justify="center">
+					<SideNavBar />
+					<div>
+						{children}
+						<Footer />
+					</div>
+				</Flex>
 			</body>
 		</html>
 	);
