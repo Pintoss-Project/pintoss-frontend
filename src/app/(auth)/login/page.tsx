@@ -13,6 +13,8 @@ const Login = () => {
 				header={<AuthHeader title="로그인" />}
 				main={<LoginMain />}
 				footer={<LoginButtons />}
+				marginTop="100px"
+				marginBottom="156px"
 			/>
 		</Flex>
 	);
