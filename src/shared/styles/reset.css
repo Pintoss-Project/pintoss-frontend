@@ -127,3 +127,9 @@ button {
 	border: none;
 	overflow: visible;
 }
+li {
+	list-style: none;
+}
+a {
+	text-decoration: none;
+}
