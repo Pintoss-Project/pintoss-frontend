@@ -11,7 +11,7 @@ const NavBarTop = () => {
 	return (
 		<Flex justify="space-between" align="center" className={s.navbarTopBox}>
 			<Link href="/">
-				<Image src={PintossColorLogo} alt="로고 이미지" />
+				<Image src={PintossColorLogo} alt="로고 이미지" width={165} height={45} />
 			</Link>
 			<NavBarTopMenuBox />
 		</Flex>

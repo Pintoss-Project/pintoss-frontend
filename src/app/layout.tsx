@@ -1,3 +1,4 @@
+import Footer from '@/components/footer/Footer';
 import NavBarTop from '@/components/nav/NavBarTop';
 import '@/shared/styles';
 
@@ -14,6 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			<body>
 				<NavBarTop />
 				{children}
+				<Footer />
 			</body>
 		</html>
 	);
