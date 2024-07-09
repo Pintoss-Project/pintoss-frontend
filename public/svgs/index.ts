@@ -9,6 +9,8 @@ import BookAndLifeLogo from './book-and-life.svg';
 import NexonLogo from './nexon.svg';
 import OliveYoungLogo from './olive-young.svg';
 import HappyMoneyLogo from './happy-money.svg';
+import CheckDocIconBlue from './check-doc-icon.svg';
+import CheckDocIconRed from './check-doc-icon-red.svg';
 
 export {
 	PintossColorLogo,
@@ -22,4 +24,6 @@ export {
 	NexonLogo,
 	OliveYoungLogo,
 	HappyMoneyLogo,
+	CheckDocIconBlue,
+	CheckDocIconRed,
 };
