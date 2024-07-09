@@ -1,3 +1,5 @@
+'use client';
+
 import * as cs from '@/shared/styles/common.css';
 import * as s from './FooterStyle.css';
 
@@ -7,8 +9,13 @@ import Spacing from '@/shared/components/layout/Spacing';
 import { Flex } from '@/shared/components/layout';
 import { vars } from '@/shared/styles/theme.css';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const Footer = () => {
+	const path = usePathname();
+
+	if (path.includes('admin')) return null;
+
 	return (
 		<>
 			<div className={s.footerBox}>
