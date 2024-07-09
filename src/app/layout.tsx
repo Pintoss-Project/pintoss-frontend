@@ -20,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					<NavBarTop />
 					<Flex justify="center">
 						<SideNavBar />
-						<div>
+						<div style={{ width: '100%' }}>
 							{children}
 							<Footer />
 						</div>

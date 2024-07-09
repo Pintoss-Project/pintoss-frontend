@@ -1,5 +1,7 @@
+import AdminLoginSection from '@/components/admin/AdminLoginSection';
+
 const AdminLogin = () => {
-	return <div>AdminLogin</div>;
+	return <AdminLoginSection />;
 };
 
 export default AdminLogin;
