@@ -24,6 +24,16 @@ export const lightBlueButton = style([
 	},
 ]);
 
+export const lightGrayButton = style([
+	f.wFull,
+	{
+		height: '56px',
+		fontSize: '18px',
+		backgroundColor: vars.color['light-gray'],
+		borderRadius: '5px',
+	},
+]);
+
 export const whiteAndBlueButton = style([
 	f.wFull,
 	{
