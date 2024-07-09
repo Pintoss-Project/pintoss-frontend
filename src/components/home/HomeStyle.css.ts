@@ -130,7 +130,12 @@ export const announceContentText = style([
 
 export const announceDate = style([flexItem3]);
 
-export const announceArrowIcon = style([flexItem4]);
+export const announceArrowIcon = style([
+	flexItem4,
+	{
+		cursor: 'pointer',
+	},
+]);
 
 export const moreButton = style({
 	width: '96px',

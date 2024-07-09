@@ -1,5 +1,8 @@
+import CustomerMain from '@/components/customer/CustomerMain';
+import CustomerSection from '@/components/customer/CustomerSection';
+
 const CustomerService = () => {
-	return <div>CustomerService</div>;
+	return <CustomerSection main={<CustomerMain />} />;
 };
 
 export default CustomerService;
