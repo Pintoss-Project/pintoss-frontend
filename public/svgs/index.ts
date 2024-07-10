@@ -11,6 +11,10 @@ import OliveYoungLogo from './olive-young.svg';
 import HappyMoneyLogo from './happy-money.svg';
 import CheckDocIconBlue from './check-doc-icon.svg';
 import CheckDocIconRed from './check-doc-icon-red.svg';
+import ManageProductIcon from './manage-product-icon.svg';
+import ManageUserIcon from './manage-user-icon.svg';
+import MenuIcon from './menu-icon.svg';
+import MessageIcon from './message-icon.svg';
 
 export {
 	PintossColorLogo,
@@ -26,4 +30,8 @@ export {
 	HappyMoneyLogo,
 	CheckDocIconBlue,
 	CheckDocIconRed,
+	ManageProductIcon,
+	ManageUserIcon,
+	MenuIcon,
+	MessageIcon,
 };
