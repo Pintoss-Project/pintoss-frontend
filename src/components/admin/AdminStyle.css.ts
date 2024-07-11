@@ -30,7 +30,7 @@ export const adminLoginButton = style([
 
 export const adminSideBarContainer = style({
 	width: '25%',
-	height: '100dvh',
+	height: '100%',
 	minWidth: '80px',
 	backgroundColor: '#EAEAEA',
 });
