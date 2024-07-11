@@ -269,7 +269,7 @@ export const dropzone = style({
 	flex: '8',
 	marginLeft: '20px',
 	borderRadius: '4px',
-	height: '100px',
+	// height: '100px',
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
@@ -396,4 +396,17 @@ export const boardFlexItem4 = style({
 
 export const boardFlexItem5 = style({
 	flex: 1.5,
+});
+
+export const imageGrayBox = style({
+	color: vars.color.white,
+	backgroundColor: '#959595',
+});
+
+export const noInputStyle = style({
+	width: '90%',
+	padding: '4px 2px',
+	border: 'none',
+	outline: 'none',
+	textAlign: 'left',
 });
