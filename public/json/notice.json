@@ -1,0 +1,182 @@
+[
+	{
+		"board_id": 1,
+		"title": "서비스 점검 안내",
+		"writer": "관리자",
+		"write_date": "2024-01-15"
+	},
+	{
+		"board_id": 2,
+		"title": "신규 기능 업데이트 소식",
+		"writer": "관리자",
+		"write_date": "2024-02-03"
+	},
+	{
+		"board_id": 3,
+		"title": "이용약관 변경 안내",
+		"writer": "관리자",
+		"write_date": "2024-02-15"
+	},
+	{
+		"board_id": 4,
+		"title": "시스템 긴급 점검 안내",
+		"writer": "관리자",
+		"write_date": "2024-03-01"
+	},
+	{
+		"board_id": 5,
+		"title": "회원 혜택 변경 안내",
+		"writer": "관리자",
+		"write_date": "2024-03-15"
+	},
+	{
+		"board_id": 6,
+		"title": "앱 업데이트 버전 안내",
+		"writer": "관리자",
+		"write_date": "2024-03-20"
+	},
+	{
+		"board_id": 7,
+		"title": "새로운 결제 시스템 도입",
+		"writer": "관리자",
+		"write_date": "2024-04-05"
+	},
+	{
+		"board_id": 8,
+		"title": "이벤트 참여 방법 안내",
+		"writer": "관리자",
+		"write_date": "2024-04-18"
+	},
+	{
+		"board_id": 9,
+		"title": "고객센터 운영 시간 변경",
+		"writer": "관리자",
+		"write_date": "2024-05-01"
+	},
+	{
+		"board_id": 10,
+		"title": "시스템 점검 완료",
+		"writer": "관리자",
+		"write_date": "2024-05-10"
+	},
+	{
+		"board_id": 11,
+		"title": "보안 정책 강화 안내",
+		"writer": "관리자",
+		"write_date": "2024-05-20"
+	},
+	{
+		"board_id": 12,
+		"title": "고객 만족도 조사 결과 발표",
+		"writer": "관리자",
+		"write_date": "2024-06-01"
+	},
+	{
+		"board_id": 13,
+		"title": "여름 맞이 이벤트 안내",
+		"writer": "관리자",
+		"write_date": "2024-06-15"
+	},
+	{
+		"board_id": 14,
+		"title": "VIP 회원 전용 혜택 안내",
+		"writer": "관리자",
+		"write_date": "2024-07-01"
+	},
+	{
+		"board_id": 15,
+		"title": "이용 방법 변경 안내",
+		"writer": "관리자",
+		"write_date": "2024-07-10"
+	},
+	{
+		"board_id": 16,
+		"title": "로그인 방식 개선 안내",
+		"writer": "관리자",
+		"write_date": "2024-07-20"
+	},
+	{
+		"board_id": 17,
+		"title": "긴급 보안 업데이트 안내",
+		"writer": "관리자",
+		"write_date": "2024-08-05"
+	},
+	{
+		"board_id": 18,
+		"title": "추석 연휴 서비스 운영 안내",
+		"writer": "관리자",
+		"write_date": "2024-08-15"
+	},
+	{
+		"board_id": 19,
+		"title": "2024년 연말정산 안내",
+		"writer": "관리자",
+		"write_date": "2024-09-01"
+	},
+	{
+		"board_id": 20,
+		"title": "블랙프라이데이 세일 소식",
+		"writer": "관리자",
+		"write_date": "2024-09-15"
+	},
+	{
+		"board_id": 21,
+		"title": "겨울 맞이 업데이트 소식",
+		"writer": "관리자",
+		"write_date": "2024-10-01"
+	},
+	{
+		"board_id": 22,
+		"title": "새해맞이 이벤트 공지",
+		"writer": "관리자",
+		"write_date": "2024-10-15"
+	},
+	{
+		"board_id": 23,
+		"title": "계정 보호 캠페인 안내",
+		"writer": "관리자",
+		"write_date": "2024-11-01"
+	},
+	{
+		"board_id": 24,
+		"title": "서비스 종료 공지",
+		"writer": "관리자",
+		"write_date": "2024-11-15"
+	},
+	{
+		"board_id": 25,
+		"title": "주간 업데이트 소식",
+		"writer": "관리자",
+		"write_date": "2024-12-01"
+	},
+	{
+		"board_id": 26,
+		"title": "결제 시스템 개선 안내",
+		"writer": "관리자",
+		"write_date": "2024-12-10"
+	},
+	{
+		"board_id": 27,
+		"title": "서버 안정화 작업 안내",
+		"writer": "관리자",
+		"write_date": "2024-12-15"
+	},
+	{
+		"board_id": 28,
+		"title": "이용약관 추가 변경 안내",
+		"writer": "관리자",
+		"write_date": "2024-12-20"
+	},
+	{
+		"board_id": 29,
+		"title": "서비스 종료 일정 변경",
+		"writer": "관리자",
+		"write_date": "2024-12-25"
+	},
+	{
+		"board_id": 30,
+		"title": "2024년 새해 인사말",
+		"writer": "관리자",
+		"write_date": "2024-12-30"
+	}
+]

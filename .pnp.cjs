@@ -53,6 +53,7 @@ const RAW_RUNTIME_STATE =
           ["react-dropzone", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:14.2.3"],\
           ["react-hook-form", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:7.52.0"],\
           ["react-icons", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:5.2.1"],\
+          ["react-quill", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:2.0.0"],\
           ["recoil", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:0.7.7"],\
           ["typescript", "patch:typescript@npm%3A5.5.2#optional!builtin<compat/typescript>::version=5.5.2&hash=379a07"],\
           ["zod", "npm:3.23.8"]\
@@ -1225,6 +1226,16 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@types/quill", [\
+      ["npm:1.3.10", {\
+        "packageLocation": "./.yarn/cache/@types-quill-npm-1.3.10-4ddf84ba7e-146ee94088.zip/node_modules/@types/quill/",\
+        "packageDependencies": [\
+          ["@types/quill", "npm:1.3.10"],\
+          ["parchment", "npm:1.1.4"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@types/react", [\
       ["npm:18.3.3", {\
         "packageLocation": "./.yarn/cache/@types-react-npm-18.3.3-07e68e178e-68e203b7f1.zip/node_modules/@types/react/",\
@@ -2216,6 +2227,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["clone", [\
+      ["npm:2.1.2", {\
+        "packageLocation": "./.yarn/cache/clone-npm-2.1.2-1d491c6629-d9c79efba6.zip/node_modules/clone/",\
+        "packageDependencies": [\
+          ["clone", "npm:2.1.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["clsx", [\
       ["npm:2.1.1", {\
         "packageLocation": "./.yarn/cache/clsx-npm-2.1.1-96125b98be-cdfb57fa6c.zip/node_modules/clsx/",\
@@ -2456,6 +2476,19 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["deep-equal", [\
+      ["npm:1.1.2", {\
+        "packageLocation": "./.yarn/cache/deep-equal-npm-1.1.2-3af5068c14-c9d2ed2a0d.zip/node_modules/deep-equal/",\
+        "packageDependencies": [\
+          ["deep-equal", "npm:1.1.2"],\
+          ["is-arguments", "npm:1.1.1"],\
+          ["is-date-object", "npm:1.0.5"],\
+          ["is-regex", "npm:1.1.4"],\
+          ["object-is", "npm:1.1.6"],\
+          ["object-keys", "npm:1.1.1"],\
+          ["regexp.prototype.flags", "npm:1.5.2"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
       ["npm:2.2.3", {\
         "packageLocation": "./.yarn/cache/deep-equal-npm-2.2.3-86cbe803a7-1ce49d0b71.zip/node_modules/deep-equal/",\
         "packageDependencies": [\
@@ -3315,6 +3348,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["eventemitter3", [\
+      ["npm:2.0.3", {\
+        "packageLocation": "./.yarn/cache/eventemitter3-npm-2.0.3-71d4ac3a65-828903ea7e.zip/node_modules/eventemitter3/",\
+        "packageDependencies": [\
+          ["eventemitter3", "npm:2.0.3"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["exponential-backoff", [\
       ["npm:3.1.1", {\
         "packageLocation": "./.yarn/cache/exponential-backoff-npm-3.1.1-04df458b30-2d9bbb6473.zip/node_modules/exponential-backoff/",\
@@ -3324,11 +3366,29 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["extend", [\
+      ["npm:3.0.2", {\
+        "packageLocation": "./.yarn/cache/extend-npm-3.0.2-e1ca07ac54-59e89e2dc7.zip/node_modules/extend/",\
+        "packageDependencies": [\
+          ["extend", "npm:3.0.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["fast-deep-equal", [\
       ["npm:3.1.3", {\
         "packageLocation": "./.yarn/cache/fast-deep-equal-npm-3.1.3-790edcfcf5-e21a9d8d84.zip/node_modules/fast-deep-equal/",\
         "packageDependencies": [\
           ["fast-deep-equal", "npm:3.1.3"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["fast-diff", [\
+      ["npm:1.1.2", {\
+        "packageLocation": "./.yarn/cache/fast-diff-npm-1.1.2-907d4b29ef-d212e75bea.zip/node_modules/fast-diff/",\
+        "packageDependencies": [\
+          ["fast-diff", "npm:1.1.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -4433,6 +4493,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["lodash", [\
+      ["npm:4.17.21", {\
+        "packageLocation": "./.yarn/cache/lodash-npm-4.17.21-6382451519-c08619c038.zip/node_modules/lodash/",\
+        "packageDependencies": [\
+          ["lodash", "npm:4.17.21"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["lodash.merge", [\
       ["npm:4.6.2", {\
         "packageLocation": "./.yarn/cache/lodash.merge-npm-4.6.2-77cb4416bf-d0ea2dd009.zip/node_modules/lodash.merge/",\
@@ -4999,6 +5068,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["parchment", [\
+      ["npm:1.1.4", {\
+        "packageLocation": "./.yarn/cache/parchment-npm-1.1.4-a3bac35728-fc655f2bc6.zip/node_modules/parchment/",\
+        "packageDependencies": [\
+          ["parchment", "npm:1.1.4"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["parent-module", [\
       ["npm:1.0.1", {\
         "packageLocation": "./.yarn/cache/parent-module-npm-1.0.1-1fae11b095-6ba8b25514.zip/node_modules/parent-module/",\
@@ -5123,6 +5201,7 @@ const RAW_RUNTIME_STATE =
           ["react-dropzone", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:14.2.3"],\
           ["react-hook-form", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:7.52.0"],\
           ["react-icons", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:5.2.1"],\
+          ["react-quill", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:2.0.0"],\
           ["recoil", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:0.7.7"],\
           ["typescript", "patch:typescript@npm%3A5.5.2#optional!builtin<compat/typescript>::version=5.5.2&hash=379a07"],\
           ["zod", "npm:3.23.8"]\
@@ -5247,6 +5326,33 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/queue-microtask-npm-1.2.3-fcc98e4e2d-72900df061.zip/node_modules/queue-microtask/",\
         "packageDependencies": [\
           ["queue-microtask", "npm:1.2.3"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["quill", [\
+      ["npm:1.3.7", {\
+        "packageLocation": "./.yarn/cache/quill-npm-1.3.7-c79f7446fc-17f5ac34d0.zip/node_modules/quill/",\
+        "packageDependencies": [\
+          ["quill", "npm:1.3.7"],\
+          ["clone", "npm:2.1.2"],\
+          ["deep-equal", "npm:1.1.2"],\
+          ["eventemitter3", "npm:2.0.3"],\
+          ["extend", "npm:3.0.2"],\
+          ["parchment", "npm:1.1.4"],\
+          ["quill-delta", "npm:3.6.3"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["quill-delta", [\
+      ["npm:3.6.3", {\
+        "packageLocation": "./.yarn/cache/quill-delta-npm-3.6.3-3ae240a64d-8aaa7bddab.zip/node_modules/quill-delta/",\
+        "packageDependencies": [\
+          ["quill-delta", "npm:3.6.3"],\
+          ["deep-equal", "npm:1.1.2"],\
+          ["extend", "npm:3.0.2"],\
+          ["fast-diff", "npm:1.1.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -5408,6 +5514,35 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/react-is-npm-17.0.2-091bbb8db6-73b36281e5.zip/node_modules/react-is/",\
         "packageDependencies": [\
           ["react-is", "npm:17.0.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["react-quill", [\
+      ["npm:2.0.0", {\
+        "packageLocation": "./.yarn/cache/react-quill-npm-2.0.0-f2d141fe1d-e9aa49815b.zip/node_modules/react-quill/",\
+        "packageDependencies": [\
+          ["react-quill", "npm:2.0.0"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:2.0.0", {\
+        "packageLocation": "./.yarn/__virtual__/react-quill-virtual-2a1ec7cf4e/0/cache/react-quill-npm-2.0.0-f2d141fe1d-e9aa49815b.zip/node_modules/react-quill/",\
+        "packageDependencies": [\
+          ["react-quill", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:2.0.0"],\
+          ["@types/quill", "npm:1.3.10"],\
+          ["@types/react", "npm:18.3.3"],\
+          ["@types/react-dom", "npm:18.3.0"],\
+          ["lodash", "npm:4.17.21"],\
+          ["quill", "npm:1.3.7"],\
+          ["react", "npm:18.3.1"],\
+          ["react-dom", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:18.3.1"]\
+        ],\
+        "packagePeers": [\
+          "@types/react-dom",\
+          "@types/react",\
+          "react-dom",\
+          "react"\
         ],\
         "linkType": "HARD"\
       }]\

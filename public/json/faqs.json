@@ -1,0 +1,182 @@
+[
+	{
+		"board_id": 1,
+		"title": "회원 가입 방법은 무엇인가요?",
+		"writer": "관리자",
+		"write_date": "2024-01-01"
+	},
+	{
+		"board_id": 2,
+		"title": "비밀번호를 잊어버렸어요.",
+		"writer": "관리자",
+		"write_date": "2024-01-05"
+	},
+	{
+		"board_id": 3,
+		"title": "결제 수단은 어떤 것이 있나요?",
+		"writer": "관리자",
+		"write_date": "2024-01-10"
+	},
+	{
+		"board_id": 4,
+		"title": "배송 상태를 확인하고 싶어요.",
+		"writer": "관리자",
+		"write_date": "2024-01-15"
+	},
+	{
+		"board_id": 5,
+		"title": "주문 내역은 어디서 확인하나요?",
+		"writer": "관리자",
+		"write_date": "2024-01-20"
+	},
+	{
+		"board_id": 6,
+		"title": "회원 정보는 어떻게 변경하나요?",
+		"writer": "관리자",
+		"write_date": "2024-01-25"
+	},
+	{
+		"board_id": 7,
+		"title": "배송비는 어떻게 책정되나요?",
+		"writer": "관리자",
+		"write_date": "2024-02-01"
+	},
+	{
+		"board_id": 8,
+		"title": "반품 절차는 어떻게 되나요?",
+		"writer": "관리자",
+		"write_date": "2024-02-05"
+	},
+	{
+		"board_id": 9,
+		"title": "쿠폰 사용 방법을 알고 싶어요.",
+		"writer": "관리자",
+		"write_date": "2024-02-10"
+	},
+	{
+		"board_id": 10,
+		"title": "환불 정책은 어떻게 되나요?",
+		"writer": "관리자",
+		"write_date": "2024-02-15"
+	},
+	{
+		"board_id": 11,
+		"title": "상품의 재고를 확인할 수 있나요?",
+		"writer": "관리자",
+		"write_date": "2024-02-20"
+	},
+	{
+		"board_id": 12,
+		"title": "회원 탈퇴는 어떻게 하나요?",
+		"writer": "관리자",
+		"write_date": "2024-03-01"
+	},
+	{
+		"board_id": 13,
+		"title": "적립금은 어떻게 사용하나요?",
+		"writer": "관리자",
+		"write_date": "2024-03-05"
+	},
+	{
+		"board_id": 14,
+		"title": "배송 시간을 지정할 수 있나요?",
+		"writer": "관리자",
+		"write_date": "2024-03-10"
+	},
+	{
+		"board_id": 15,
+		"title": "이용 가능한 할인 혜택은 무엇인가요?",
+		"writer": "관리자",
+		"write_date": "2024-03-15"
+	},
+	{
+		"board_id": 16,
+		"title": "구매한 상품의 리뷰는 어떻게 작성하나요?",
+		"writer": "관리자",
+		"write_date": "2024-03-20"
+	},
+	{
+		"board_id": 17,
+		"title": "결제가 완료되지 않았어요. 어떻게 해야 하나요?",
+		"writer": "관리자",
+		"write_date": "2024-03-25"
+	},
+	{
+		"board_id": 18,
+		"title": "이벤트 참여 방법을 알고 싶어요.",
+		"writer": "관리자",
+		"write_date": "2024-04-01"
+	},
+	{
+		"board_id": 19,
+		"title": "상품의 유통기한을 확인하고 싶어요.",
+		"writer": "관리자",
+		"write_date": "2024-04-05"
+	},
+	{
+		"board_id": 20,
+		"title": "상품 상세 정보를 어디서 확인할 수 있나요?",
+		"writer": "관리자",
+		"write_date": "2024-04-10"
+	},
+	{
+		"board_id": 21,
+		"title": "배송 주소를 변경하고 싶어요.",
+		"writer": "관리자",
+		"write_date": "2024-04-15"
+	},
+	{
+		"board_id": 22,
+		"title": "주문을 취소하고 싶어요.",
+		"writer": "관리자",
+		"write_date": "2024-04-20"
+	},
+	{
+		"board_id": 23,
+		"title": "신상품 업데이트는 언제 되나요?",
+		"writer": "관리자",
+		"write_date": "2024-05-01"
+	},
+	{
+		"board_id": 24,
+		"title": "고객센터 운영 시간을 알고 싶어요.",
+		"writer": "관리자",
+		"write_date": "2024-05-05"
+	},
+	{
+		"board_id": 25,
+		"title": "주문한 상품이 도착하지 않았어요.",
+		"writer": "관리자",
+		"write_date": "2024-05-10"
+	},
+	{
+		"board_id": 26,
+		"title": "상품의 품질 보증은 어떻게 되나요?",
+		"writer": "관리자",
+		"write_date": "2024-05-15"
+	},
+	{
+		"board_id": 27,
+		"title": "비회원도 상품을 구매할 수 있나요?",
+		"writer": "관리자",
+		"write_date": "2024-05-20"
+	},
+	{
+		"board_id": 28,
+		"title": "포인트 적립은 어떻게 되나요?",
+		"writer": "관리자",
+		"write_date": "2024-06-01"
+	},
+	{
+		"board_id": 29,
+		"title": "주문한 상품을 교환하고 싶어요.",
+		"writer": "관리자",
+		"write_date": "2024-06-05"
+	},
+	{
+		"board_id": 30,
+		"title": "신용카드 결제가 가능한가요?",
+		"writer": "관리자",
+		"write_date": "2024-06-10"
+	}
+]

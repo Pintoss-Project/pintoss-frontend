@@ -377,3 +377,23 @@ export const circleIcon = style({
 	borderRadius: '50%',
 	backgroundColor: vars.color['lightest-gray'],
 });
+
+export const boardFlexItem1 = style({
+	flex: 0.5,
+});
+
+export const boardFlexItem2 = style({
+	flex: 4,
+});
+
+export const boardFlexItem3 = style({
+	flex: 2,
+});
+
+export const boardFlexItem4 = style({
+	flex: 2,
+});
+
+export const boardFlexItem5 = style({
+	flex: 1.5,
+});
