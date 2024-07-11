@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import { forwardRef, Ref } from 'react';
 import { InputProps } from './types';
@@ -8,23 +10,37 @@ import { colorVariant, errorBorderColorVariant, focusBorderColorVariant } from '
 
 const Input = (props: InputProps, ref: Ref<HTMLInputElement>) => {
 	const {
+		name = '',
 		type = 'text',
+		checked,
+		placeholder = '',
 		color = 'gray',
 		variant = 'outline',
 		errorBorderColor = '#E53E3E',
 		focusBorderColor = '#3182CE',
 		className,
 		style,
+		step,
 		onChange,
 		onBlur,
 		value,
 		...rest
 	} = props;
 
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (onChange) {
+			onChange(event);
+		}
+	};
+
 	return (
 		<input
+			name={name}
 			type={type}
-			onChange={onChange}
+			checked={checked}
+			placeholder={placeholder}
+			step={step}
+			onChange={handleChange}
 			onBlur={onBlur}
 			value={value}
 			ref={ref}

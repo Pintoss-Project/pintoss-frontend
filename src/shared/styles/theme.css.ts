@@ -24,6 +24,7 @@ export const colors = {
 	'pale-gray': '#DDDDDD',
 	'silver': '#CCCCCC',
 	'white-smoke': '#F8F8F8',
+	'background': '#FAFAFA',
 	'accent': '#e53e3e',
 	'success': '#2ecc71',
 	'warning': '#f39c12',

@@ -1,5 +1,4 @@
-import { createVar, style } from '@vanilla-extract/css';
-import { recipe } from '@vanilla-extract/recipes';
+import { createVar } from '@vanilla-extract/css';
 
 export const errorBorderColorVariant = createVar();
 export const focusBorderColorVariant = createVar();
