@@ -99,6 +99,14 @@ const lighterGrayBorder = style({
 	border: `1px solid ${vars.color['lighter-gray']}`,
 });
 
+export const blackMediumText = style([
+	mediumText,
+	{
+		color: vars.color.black,
+		fontWeight: 'semi-bold',
+	},
+]);
+
 export const darkGraySmallText = style([
 	smallText,
 	{
@@ -110,6 +118,13 @@ export const blackSmallText = style([
 	smallText,
 	{
 		color: vars.color['dark-gray'],
+	},
+]);
+
+export const lightGrayMediumText = style([
+	mediumText,
+	{
+		color: vars.color['light-gray'],
 	},
 ]);
 
@@ -206,6 +221,100 @@ export const activePageButton = style({
 	selectors: {
 		'&:hover': {
 			backgroundColor: vars.color.periwinkle,
+		},
+	},
+});
+
+export const lightGrayButton = style({
+	width: '100px',
+	height: '36px',
+	padding: '10px',
+	backgroundColor: vars.color['lightest-gray'],
+	border: `1px solid ${vars.color['lighter-gray']}`,
+	borderRadius: '5px',
+});
+
+export const rateInputStyle = style({
+	padding: '7px 0',
+	border: 'none',
+	outline: 'none',
+	textAlign: 'center',
+});
+
+export const baseInputStyle = style([
+	f.wFull,
+	{
+		padding: '6px 0',
+		border: 'none',
+		outline: 'none',
+		textAlign: 'left',
+	},
+]);
+
+export const dropImageBox = style([
+	f.pAbsolute,
+	{
+		left: 0,
+		top: 0,
+		width: '100px',
+		height: '100px',
+		objectFit: 'cover',
+		cursor: 'pointer',
+	},
+]);
+
+export const dropzone = style({
+	position: 'relative',
+	flex: '8',
+	marginLeft: '20px',
+	borderRadius: '4px',
+	height: '100px',
+	display: 'flex',
+	alignItems: 'center',
+	justifyContent: 'center',
+	cursor: 'pointer',
+	zIndex: 1,
+});
+
+export const customTextarea = style({
+	width: '100%',
+	height: '100px',
+	padding: '10px',
+	border: `1px solid ${vars.color['lighter-gray']}`,
+	borderRadius: '4px',
+	resize: 'none',
+	fontFamily: 'inherit',
+	fontSize: '10px',
+	lineHeight: '1.3',
+	boxSizing: 'border-box',
+	selectors: {
+		'&:focus': {
+			outline: 'none',
+			borderColor: vars.color.periwinkle,
+			borderRadius: '4px',
+		},
+	},
+});
+
+export const customSelect = style({
+	width: '100%',
+	padding: '10px',
+	border: `1px solid ${vars.color['lighter-gray']}`,
+	borderRadius: '4px',
+	backgroundColor: 'white',
+	color: '#AAAAAA',
+	fontSize: '14px',
+	fontFamily: 'inherit',
+	appearance: 'none',
+	backgroundImage:
+		"url(\"data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath fill='none' stroke='%23000' stroke-width='2' d='M6 9l6 6 6-6'/%3E%3C/svg%3E\")",
+	backgroundRepeat: 'no-repeat',
+	backgroundPosition: 'right 10px center',
+	backgroundSize: '10px',
+	selectors: {
+		'&:focus': {
+			outline: 'none',
+			borderColor: vars.color['blue'],
 		},
 	},
 });

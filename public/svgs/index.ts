@@ -15,6 +15,7 @@ import ManageProductIcon from './manage-product-icon.svg';
 import ManageUserIcon from './manage-user-icon.svg';
 import MenuIcon from './menu-icon.svg';
 import MessageIcon from './message-icon.svg';
+import DropImageBox from './drop-image-box.svg';
 
 export {
 	PintossColorLogo,
@@ -34,4 +35,5 @@ export {
 	ManageUserIcon,
 	MenuIcon,
 	MessageIcon,
+	DropImageBox,
 };

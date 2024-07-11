@@ -20,11 +20,18 @@ const Input = (props: InputProps, ref: Ref<HTMLInputElement>) => {
 		focusBorderColor = '#3182CE',
 		className,
 		style,
+		step,
 		onChange,
 		onBlur,
 		value,
 		...rest
 	} = props;
+
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (onChange) {
+			onChange(event);
+		}
+	};
 
 	return (
 		<input
@@ -32,7 +39,8 @@ const Input = (props: InputProps, ref: Ref<HTMLInputElement>) => {
 			type={type}
 			checked={checked}
 			placeholder={placeholder}
-			onChange={onChange}
+			step={step}
+			onChange={handleChange}
 			onBlur={onBlur}
 			value={value}
 			ref={ref}
