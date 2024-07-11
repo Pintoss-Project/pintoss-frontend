@@ -31,6 +31,7 @@ export const adminLoginButton = style([
 export const adminSideBarContainer = style({
 	width: '25%',
 	height: '100%',
+	minHeight: '100dvh',
 	minWidth: '80px',
 	backgroundColor: '#EAEAEA',
 });
@@ -317,4 +318,62 @@ export const customSelect = style({
 			borderColor: vars.color['blue'],
 		},
 	},
+});
+
+export const orderFlexItem1 = style({
+	flex: 0.5,
+});
+
+export const orderFlexItem2 = style({
+	flex: 1.3,
+});
+
+export const orderFlexItem3 = style({
+	flex: 0.5,
+});
+
+export const orderFlexItem4 = style({
+	flex: 2.3,
+});
+
+export const orderFlexItem5 = style({
+	flex: 1.3,
+});
+
+export const orderFlexItem6 = style({
+	flex: 1.3,
+});
+
+export const orderFlexItem7 = style({
+	flex: 1,
+});
+
+export const orderFlexItem8 = style({
+	flex: 0.5,
+});
+
+export const orderFlexItem9 = style({
+	flex: 1.5,
+});
+
+export const completed = style({
+	color: vars.color.periwinkle,
+	fontSize: '14px',
+	fontWeight: '500',
+});
+
+export const failed = style({
+	color: vars.color['soft-red'],
+	fontSize: '14px',
+	fontWeight: '500',
+});
+
+export const circleIcon = style({
+	width: '15px',
+	height: '15px',
+	marginRight: '5px',
+	color: vars.color.white,
+	fontSize: '10px',
+	borderRadius: '50%',
+	backgroundColor: vars.color['lightest-gray'],
 });

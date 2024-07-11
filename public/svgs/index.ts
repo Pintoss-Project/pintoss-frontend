@@ -16,6 +16,7 @@ import ManageUserIcon from './manage-user-icon.svg';
 import MenuIcon from './menu-icon.svg';
 import MessageIcon from './message-icon.svg';
 import DropImageBox from './drop-image-box.svg';
+import ChatIcon from './chat-icon.svg';
 
 export {
 	PintossColorLogo,
