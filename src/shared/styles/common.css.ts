@@ -25,6 +25,9 @@ export const darkBlueButton = style([
 				width: '324px',
 				height: '49px',
 			},
+			[responsive.mobile]: {
+				width: '100%',
+			},
 		},
 	},
 ]);
