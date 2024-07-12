@@ -1,4 +1,4 @@
-import { vars } from '@/shared/styles/theme.css';
+import { responsive, vars } from '@/shared/styles/theme.css';
 import { globalStyle, style } from '@vanilla-extract/css';
 
 export const subTitle = style({
@@ -14,29 +14,54 @@ export const starStyle = style({
 });
 
 export const labelText = style({
+	'width': '110px',
+	'fontSize': '14px',
+	'textAlign': 'left',
+	'@media': {
+		[responsive.mobile]: {
+			display: 'block',
+			width: '100%',
+			marginBottom: '5px',
+			textAlign: 'left',
+		},
+	},
+});
+
+export const label = style({
 	width: '110px',
 	fontSize: '14px',
 	textAlign: 'left',
 });
 
 export const inputStyle = style({
-	width: '316px',
-	height: '40px',
-	padding: '10px',
-	fontSize: '12px',
-	border: `1px solid ${vars.color.lighterGray}`,
-	borderRadius: '5px',
+	'width': '316px',
+	'height': '40px',
+	'padding': '10px',
+	'fontSize': '12px',
+	'border': `1px solid ${vars.color.lighterGray}`,
+	'borderRadius': '5px',
+	'@media': {
+		[responsive.mobile]: {
+			width: '100%',
+		},
+	},
 });
 
 export const pText = style({
-	width: '100%',
-	fontSize: '10px',
-	color: vars.color.mediumGray,
-	textAlign: 'right',
+	'width': '100%',
+	'fontSize': '10px',
+	'color': vars.color.mediumGray,
+	'textAlign': 'right',
+	'@media': {
+		[responsive.mobile]: {
+			textAlign: 'center',
+			marginLeft: '40px',
+		},
+	},
 });
 
 export const phoneInfoBox = style({
-	width: '417px',
+	width: '100%',
 	height: '153px',
 	padding: '20px',
 	backgroundColor: vars.color.whiteSmoke,
@@ -53,10 +78,15 @@ export const smallText = style({
 });
 
 export const skyBlueText = style({
-	marginLeft: '5px',
-	color: vars.color.skyBlue,
-	fontSize: '12px',
-	fontWeight: '500',
+	'marginLeft': '5px',
+	'color': vars.color.skyBlue,
+	'fontSize': '12px',
+	'fontWeight': '500',
+	'@media': {
+		[responsive.mobile]: {
+			width: '50px',
+		},
+	},
 });
 
 export const redText = style({
@@ -66,7 +96,7 @@ export const redText = style({
 });
 
 export const acceptTermsBox = style({
-	width: '418px',
+	width: '100%',
 	height: '110px',
 	padding: '15px 12px',
 	border: `1px solid ${vars.color.paleGray}`,
@@ -156,4 +186,15 @@ globalStyle(`${hiddenCheckbox}:checked + div > div`, {
 
 globalStyle(`${hiddenCheckbox}:checked + div::after`, {
 	transform: 'translate(-50%, -50%) scale(1)',
+});
+
+export const personalInfoInputBox = style({
+	'@media': {
+		[responsive.mobile]: {
+			display: 'flex',
+			flexDirection: 'column',
+			alignItems: 'flex-start',
+			padding: '0 10px',
+		},
+	},
 });
