@@ -1,13 +1,27 @@
 import { f } from '@/shared/styles/functions';
-import { vars } from '@/shared/styles/theme.css';
+import { responsive, vars } from '@/shared/styles/theme.css';
 import { style } from '@vanilla-extract/css';
 
+export const memberInfoFlexBox = style({
+	'@media': {
+		[responsive.tabletSmall]: {
+			display: 'flex',
+			flexDirection: 'column',
+		},
+	},
+});
+
 export const memberInfoBox = style({
-	height: '207px',
-	padding: '30px',
-	marginRight: '20px',
-	backgroundColor: vars.color.whiteSmoke,
-	borderRadius: '0px 10px 10px 10px',
+	'height': '207px',
+	'padding': '30px',
+	'marginRight': '20px',
+	'backgroundColor': vars.color.whiteSmoke,
+	'borderRadius': '0px 10px 10px 10px',
+	'@media': {
+		[responsive.tabletSmall]: {
+			marginRight: '0',
+		},
+	},
 });
 
 export const memberInfoInnerBox = style({
@@ -46,19 +60,30 @@ export const darkGrayText = style({
 });
 
 export const whiteButton = style({
-	width: '434px',
-	height: '75px',
-	backgroundColor: vars.color.white,
-	border: `1px solid ${vars.color.lightGray}`,
-	borderRadius: '5px',
+	'width': '434px',
+	'height': '75px',
+	'backgroundColor': vars.color.white,
+	'border': `1px solid ${vars.color.lightGray}`,
+	'borderRadius': '5px',
+	'@media': {
+		[responsive.tabletSmall]: {
+			width: '100%',
+		},
+	},
 });
 
 export const grayButton = style({
-	width: '434px',
-	height: '75px',
-	backgroundColor: vars.color.whiteSmoke,
-	border: `1px solid ${vars.color.lightGray}`,
-	borderRadius: '5px',
+	'width': '434px',
+	'maxWidth': '490px',
+	'height': '75px',
+	'backgroundColor': vars.color.whiteSmoke,
+	'border': `1px solid ${vars.color.lightGray}`,
+	'borderRadius': '5px',
+	'@media': {
+		[responsive.tabletSmall]: {
+			width: '100%',
+		},
+	},
 });
 
 export const authenticationInfoCircle = style({
@@ -95,3 +120,15 @@ export const snsButtonCheckBox = style([
 		color: vars.color.paleGray,
 	},
 ]);
+
+export const excludeMemberButtonWrap = style({
+	'display': 'flex',
+	'justifyContent': 'flex-end',
+	'@media': {
+		[responsive.tabletSmall]: {
+			display: 'flex',
+			justifyContent: 'center',
+			alignItems: 'center',
+		},
+	},
+});

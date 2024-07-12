@@ -13,7 +13,7 @@ const MyPageMain = () => {
 	return (
 		<div>
 			<Spacing margin="42px" />
-			<Flex justify="center" align="center">
+			<Flex justify="center" align="center" className={s.memberInfoFlexBox}>
 				<InfoBox title="회원정보" info={<MemberInfoBox />} className={s.memberInfoBox} />
 				<InfoBox title="SNS 계정 연동" info={<SnsInfoBox />} className={s.snsInfoBox} />
 			</Flex>
@@ -26,13 +26,13 @@ const MyPageMain = () => {
 				/>
 			</div>
 			<Spacing margin="170px" />
-			<Flex justify="flex-end">
+			<div className={s.excludeMemberButtonWrap}>
 				<Flex justify="center" align="center" className={s.grayButton}>
 					<Button color={vars.color.lightGray} style={{ fontSize: '18px' }}>
 						회원탈퇴
 					</Button>
 				</Flex>
-			</Flex>
+			</div>
 		</div>
 	);
 };
