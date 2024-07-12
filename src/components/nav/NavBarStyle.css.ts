@@ -8,6 +8,7 @@ export const navbarTopBox = style([
 	{
 		'height': '100px',
 		'padding': '0px 80px',
+		'zIndex': 10,
 		'@media': {
 			[responsive.tablet]: {
 				padding: '0px 50px',
@@ -131,8 +132,16 @@ export const cartIcon = style({
 	},
 });
 
-export const gradientMenuIcon = style({
+export const gradientMenuIconWrap = style({
 	'display': 'none',
+	'@media': {
+		[responsive.tablet]: {
+			display: 'block',
+		},
+	},
+});
+
+export const gradientMenuIcon = style({
 	'cursor': 'pointer',
 	'@media': {
 		[responsive.tablet]: {

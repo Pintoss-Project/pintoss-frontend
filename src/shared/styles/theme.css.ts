@@ -38,8 +38,8 @@ export const spacing = {
 	md: '12px',
 	lg: '16px',
 	xl: '20px',
-	x2l: '24px', // 2xl's hyphen is replaced with x2l
-	x3l: '28px', // 3xl's hyphen is replaced with x3l
+	x2l: '24px',
+	x3l: '28px',
 };
 
 export const responsive = {

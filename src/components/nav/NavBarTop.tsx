@@ -8,11 +8,18 @@ import Link from 'next/link';
 import NavBarTopMenuBox from './NavBarTopMenuBox';
 import { usePathname } from 'next/navigation';
 import GradientFiMenu from '../icons/GradientFiMenu';
+import { useState } from 'react';
+import MobileMenuBox from '../responsive/MobileMenuBox';
 
 const NavBarTop = () => {
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const path = usePathname();
 
 	if (path.includes('admin')) return null;
+
+	const handleMenuClick = () => {
+		setIsMenuOpen(true);
+	};
 
 	return (
 		<Flex justify="space-between" align="center" className={s.navbarTopBox}>
@@ -23,7 +30,10 @@ const NavBarTop = () => {
 				</div>
 			</Link>
 			<NavBarTopMenuBox />
-			<GradientFiMenu className={s.gradientMenuIcon} />
+			<div onClick={handleMenuClick} className={s.gradientMenuIconWrap}>
+				<GradientFiMenu className={s.gradientMenuIcon} />
+			</div>
+			{isMenuOpen && <MobileMenuBox setIsMenuOpen={setIsMenuOpen} />}
 		</Flex>
 	);
 };
