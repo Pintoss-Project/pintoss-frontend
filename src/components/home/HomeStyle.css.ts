@@ -1,5 +1,5 @@
 import { f } from '@/shared/styles/functions';
-import { vars } from '@/shared/styles/theme.css';
+import { responsive, vars } from '@/shared/styles/theme.css';
 import { createVar, style } from '@vanilla-extract/css';
 
 export const headerColor = createVar();
@@ -42,18 +42,30 @@ export const selected = style({
 });
 
 export const filterMenu = style({
-	padding: '0px 10px',
-	marginRight: '20px',
-	color: vars.color.mediumGray,
-	fontSize: '25px',
-	cursor: 'pointer',
-	selectors: {
+	'padding': '0px 10px',
+	'marginRight': '20px',
+	'color': vars.color.mediumGray,
+	'fontSize': '25px',
+	'cursor': 'pointer',
+	'selectors': {
 		'&:hover': {
 			color: vars.color.black,
 		},
 		'&.selected': {
 			color: vars.color.black,
 			fontWeight: '500',
+		},
+	},
+	'@media': {
+		[responsive.tabletSmall]: {
+			fontSize: '20px',
+			padding: '0',
+			marginRight: '16px',
+		},
+		[responsive.mobile]: {
+			fontSize: '18px',
+			padding: '0',
+			marginRight: '10px',
 		},
 	},
 });
@@ -77,14 +89,30 @@ export const homeRecruitingBanner = style([
 export const homeRecruitingBannerContent = style([homeServiceInfoBoxContent]);
 
 export const homeAnnouncementsBoard = style({
-	height: '690px',
-	padding: '50px',
-	backgroundColor: vars.color.white,
-	borderRadius: '0 10px 10px 10px',
+	'height': '690px',
+	'padding': '50px',
+	'backgroundColor': vars.color.white,
+	'borderRadius': '0 10px 10px 10px',
+	'@media': {
+		[responsive.tablet]: {
+			padding: '40px 30px',
+		},
+		[responsive.tabletSmall]: {
+			padding: '30px 15px',
+		},
+		[responsive.mobile]: {
+			padding: '20px 10px',
+		},
+	},
 });
 
 export const flexItem1 = style({
-	flex: 1,
+	'flex': 1,
+	'@media': {
+		[responsive.tabletSmall]: {
+			display: 'none',
+		},
+	},
 });
 
 export const flexItem2 = style({
@@ -124,11 +152,32 @@ export const announceTag = style([
 export const announceContentText = style([
 	flexItem2,
 	{
-		textAlign: 'left',
+		'textAlign': 'left',
+		'@media': {
+			[responsive.tabletSmall]: {
+				marginLeft: '10px',
+				fontSize: '14px',
+			},
+			[responsive.mobile]: {
+				fontSize: '12px',
+			},
+		},
 	},
 ]);
 
-export const announceDate = style([flexItem3]);
+export const announceDate = style([
+	flexItem3,
+	{
+		'@media': {
+			[responsive.tabletSmall]: {
+				fontSize: '14px',
+			},
+			[responsive.mobile]: {
+				fontSize: '12px',
+			},
+		},
+	},
+]);
 
 export const announceArrowIcon = style([
 	flexItem4,

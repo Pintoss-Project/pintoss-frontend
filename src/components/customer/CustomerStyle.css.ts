@@ -1,5 +1,5 @@
 import { f } from '@/shared/styles/functions';
-import { vars } from '@/shared/styles/theme.css';
+import { responsive, vars } from '@/shared/styles/theme.css';
 import { style } from '@vanilla-extract/css';
 
 export const customerSection = style({
@@ -9,10 +9,23 @@ export const customerSection = style({
 });
 
 export const customerHeader = style({
-	padding: '60px 0 0 50px',
-	fontSize: '35px',
-	fontWeight: '500',
-	textAlign: 'left',
+	'padding': '60px 0 0 50px',
+	'fontSize': '35px',
+	'fontWeight': '500',
+	'textAlign': 'left',
+	'@media': {
+		[responsive.tablet]: {
+			fontSize: '30px',
+		},
+		[responsive.tabletSmall]: {
+			fontSize: '28px',
+			textAlign: 'center',
+		},
+		[responsive.mobile]: {
+			fontSize: '25px',
+			textAlign: 'center',
+		},
+	},
 });
 
 export const arrowIconRotated = style({
