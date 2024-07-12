@@ -1,40 +1,107 @@
-import { vars } from '@/shared/styles/theme.css';
+import { responsive, vars } from '@/shared/styles/theme.css';
 import { style } from '@vanilla-extract/css';
 
 export const productDetailSection = style({
-	margin: '108px 2% 100px 0px',
-	padding: '65px 60px 70px 40px',
-	minHeight: '1400px',
-	backgroundColor: vars.color.white,
+	'margin': '108px 2% 100px 0px',
+	'padding': '65px 60px 70px 40px',
+	'minHeight': '1400px',
+	'backgroundColor': vars.color.white,
+	'@media': {
+		[responsive.tabletSmall]: {
+			padding: '60px 15px',
+		},
+		[responsive.mobile]: {
+			padding: '60px 10px',
+		},
+	},
+});
+
+export const productDetailFlexBox = style({
+	'display': 'flex',
+	'justifyContent': 'space-between',
+	'@media': {
+		[responsive.tabletSmall]: {
+			display: 'flex',
+			flexDirection: 'column',
+		},
+	},
+});
+
+export const productDetailLeftBox = style({
+	'width': '58%',
+	'@media': {
+		[responsive.tabletSmall]: {
+			width: '100%',
+		},
+	},
+});
+
+export const productDetailRightBox = style({
+	'width': '42%',
+	'@media': {
+		[responsive.tabletSmall]: {
+			width: '100%',
+		},
+	},
 });
 
 export const productDetailHeader = style({
-	fontSize: '35px',
-	fontWeight: '500',
-	textAlign: 'center',
+	'fontSize': '35px',
+	'fontWeight': '500',
+	'textAlign': 'center',
+	'@media': {
+		[responsive.tablet]: {
+			fontSize: '24px',
+		},
+	},
 });
 
 export const productDetailLogoImageBox = style({
-	padding: '7% 12%',
-	backgroundColor: 'rgba(255, 99, 71, 0.1)',
-	borderRadius: '0 10px 10px 10px',
+	'padding': '7% 12%',
+	'backgroundColor': 'rgba(255, 99, 71, 0.1)',
+	'borderRadius': '0 10px 10px 10px',
+	'@media': {
+		[responsive.tablet]: {
+			height: '300px',
+		},
+		[responsive.mobile]: {
+			height: '235px',
+		},
+	},
 });
 
 export const productDetailImageInnerBox = style({
+	height: '100%',
 	backgroundColor: vars.color.white,
 	borderRadius: '0 10px 10px 10px',
 	boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
 });
 
-export const productDetailLogoImage = style({
-	width: '35%',
-	height: '40%',
+export const productDetailLogoImage = style({});
+
+export const noticeTopBox = style({
+	'padding': '4.5% 4%',
+	'backgroundColor': vars.color.whiteSmoke,
+	'borderRadius': '0 10px 10px 10px',
+	'@media': {
+		[responsive.tabletSmall]: {
+			marginBottom: '30px',
+		},
+	},
 });
 
 export const noticeBox = style({
-	padding: '4.5% 4%',
-	backgroundColor: vars.color.whiteSmoke,
-	borderRadius: '0 10px 10px 10px',
+	'padding': '4.5% 4%',
+	'backgroundColor': vars.color.whiteSmoke,
+	'borderRadius': '0 10px 10px 10px',
+	'@media': {
+		[responsive.tabletSmall]: {
+			marginBottom: '30px',
+		},
+		[responsive.mobile]: {
+			display: 'none',
+		},
+	},
 });
 
 export const productInfoBox = style([noticeBox, {}]);
@@ -98,7 +165,12 @@ export const productInfoListBox = style({
 });
 
 export const productDetailSelectAndPayBox = style({
-	padding: '0 0 0 7%',
+	'padding': '0 0 0 7%',
+	'@media': {
+		[responsive.tabletSmall]: {
+			padding: '0 10px',
+		},
+	},
 });
 
 export const totalPayInfoBox = style({

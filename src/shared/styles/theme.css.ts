@@ -44,7 +44,7 @@ export const spacing = {
 
 export const responsive = {
 	mobile: 'only screen and (max-width: 430px)',
-	tabletSmall: 'only screen and (max-width: 820px)',
+	tabletSmall: 'only screen and (max-width: 768px)',
 	tablet: 'only screen and (max-width: 1024px)',
 	desktop: 'only screen and (min-width: 1025px)',
 };
