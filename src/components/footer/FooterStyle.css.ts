@@ -29,7 +29,7 @@ export const pText = style({
 
 export const footerFlexBox = style({
 	'@media': {
-		[responsive.mobile]: {
+		[responsive.tabletSmall]: {
 			display: 'flex',
 			flexDirection: 'column',
 		},
@@ -41,7 +41,7 @@ export const footerLeftBox = style({
 		[responsive.tablet]: {
 			marginRight: '60px',
 		},
-		[responsive.mobile]: {
+		[responsive.tabletSmall]: {
 			width: '100%',
 			margin: '50px 0 80px 0',
 			order: 2,
@@ -55,7 +55,7 @@ export const footerRightBox = style({
 			display: 'flex',
 			alignItems: 'flex-end',
 		},
-		[responsive.mobile]: {
+		[responsive.tabletSmall]: {
 			display: 'flex',
 			flexDirection: 'column',
 			justifyContent: 'center',
