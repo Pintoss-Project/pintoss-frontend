@@ -1,7 +1,7 @@
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
-import { vars } from '@/shared/styles/theme.css';
 import { ReactNode } from 'react';
+import * as s from './PageStyle.css';
 
 interface Props {
 	title: string;
@@ -12,15 +12,7 @@ interface Props {
 const InfoBox = ({ title, info, className }: Props) => {
 	return (
 		<Flex direction="column" style={{ width: '100%' }}>
-			<h3
-				style={{
-					color: vars.color.darkerGray,
-					fontSize: '20px',
-					fontWeight: '500',
-					textAlign: 'left',
-				}}>
-				{title}
-			</h3>
+			<h3 className={s.infoTitle}>{title}</h3>
 			<Spacing margin="10px" />
 			<div className={className}>{info}</div>
 		</Flex>

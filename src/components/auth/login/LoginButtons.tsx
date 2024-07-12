@@ -13,26 +13,16 @@ import { KakaoLogo, NaverLogo } from '../../../../public/svgs';
 const LoginButtons = () => {
 	return (
 		<div>
-			<Button color={vars.color.white} className={cs.lightBlueButton}>
+			<Button color={vars.color.white} className={cs.lightBlueButton} style={{ fontSize: '18px' }}>
 				로그인
 			</Button>
 			<Spacing margin="25px" />
 			<Flex justify="center" align="center">
-				{/* <Divider
-					color={vars.color.paleGray}
-					size={1}
-					style={{ width: '44%', backgroundColor: 'transparent' }}
-				/> */}
 				<div className={s.loginDivider} />
 				<span className={s.grayText} style={{ margin: '0px 10px' }}>
 					또는
 				</span>
 				<div className={s.loginDivider} />
-				{/* <Divider
-					color={vars.color.paleGray}
-					size={1}
-					style={{ width: '44%', backgroundColor: 'transparent' }}
-				/> */}
 			</Flex>
 			<Spacing margin="27px" />
 			<Flex align="center" className={cs.naverButtonBox}>

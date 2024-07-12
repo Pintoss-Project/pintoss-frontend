@@ -51,7 +51,10 @@ const HomeProductBox = ({ headerColor, product }: Props) => {
 					</Flex>
 				</div>
 				<div style={{ height: '30%', padding: '15px 16px' }}>
-					<Button color={vars.color.white} className={cs.lightBlueButton}>
+					<Button
+						color={vars.color.white}
+						className={cs.lightBlueButton}
+						style={{ fontSize: '18px' }}>
 						구매하기
 					</Button>
 				</div>

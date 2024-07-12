@@ -13,7 +13,7 @@ interface Props {
 const ConfirmAndPayTheAmountBox = ({ selectedType, saleRate, totalAmount }: Props) => {
 	return (
 		<div>
-			<div style={{ fontWeight: '500', textAlign: 'left' }}>금액 확민 및 결제</div>
+			<div className={s.payInfoTitle}>금액 확민 및 결제</div>
 			<Spacing margin="10px" />
 			<div className={s.confirmAndPayTheAmountBox}>
 				<Flex justify="space-between" align="center">

@@ -1,5 +1,6 @@
 'use client';
 
+import * as s from './CartStyle.css';
 import Spacing from '@/shared/components/layout/Spacing';
 import CartOrderListInfoBox from './CartOrderListInfoBox';
 import { Flex } from '@/shared/components/layout';
@@ -15,10 +16,10 @@ const CartMain = () => {
 			<Spacing margin="30px" />
 			<CartOrderListInfoBox setTotalAmount={setTotalAmount} />
 			<Spacing margin="54px" />
-			<Flex>
+			<div className={s.cartOrderInfoFlexWrap}>
 				<CartOrderEtcInfoBox />
 				<CartPaymentInfoBox totalAmount={totalAmount} />
-			</Flex>
+			</div>
 		</div>
 	);
 };

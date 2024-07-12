@@ -56,7 +56,10 @@ const ProductDetailSelectAndPayBox = () => {
 			</Flex>
 			<Spacing margin="15px" />
 			<Flex style={{ width: '100%' }}>
-				<Button color={vars.color.white} className={cs.lightBlueButton}>
+				<Button
+					color={vars.color.white}
+					className={cs.lightBlueButton}
+					style={{ fontSize: '18px' }}>
 					바로 구매
 				</Button>
 				<div style={{ margin: '0 3px' }}></div>

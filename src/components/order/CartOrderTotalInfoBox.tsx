@@ -13,7 +13,7 @@ const CartOrderTotalInfoBox = ({ finalTotalPrice }: Props) => {
 	return (
 		<Flex justify="space-between" align="center" className={s.cartOrderTotalInfoBox}>
 			<div>
-				<span style={{ fontSize: '20px', fontWeight: '600' }}>주문총액</span>
+				<span className={s.orderTotalText}>주문총액</span>
 				<span className={s.orderTotalPrice}>{finalTotalPrice.toLocaleString()} 원</span>
 			</div>
 			<Button color={vars.color.white} className={s.cartRemoveButton}>

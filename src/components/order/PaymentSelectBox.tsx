@@ -15,12 +15,16 @@ const PaymentSelectBox = ({ sale, type, isSelected, onSelect }: Props) => {
 		<div
 			className={isSelected ? s.paymentMethodBoxSelected : s.paymentMethodBox}
 			onClick={onSelect}>
-			<div style={{ color: vars.color.skyBlue, fontSize: '12px', textAlign: 'left' }}>
+			<div
+				className={s.responsiveSmallText}
+				style={{ color: vars.color.skyBlue, textAlign: 'left' }}>
 				할인 {sale}% ↓
 			</div>
 			<Spacing margin="9px" />
 			<Flex justify="space-between" align="center">
-				<div style={{ color: isSelected ? vars.color.skyBlue : vars.color.mediumGray }}>
+				<div
+					className={s.responsiveText}
+					style={{ color: isSelected ? vars.color.skyBlue : vars.color.mediumGray }}>
 					{type === 'card' ? '카드 결제' : '휴대폰 결제'}
 				</div>
 				<Flex

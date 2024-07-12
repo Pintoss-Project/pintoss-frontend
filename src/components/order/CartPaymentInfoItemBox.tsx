@@ -10,6 +10,7 @@ import { Flex } from '@/shared/components/layout';
 import { Button } from '@/shared/components/button';
 import { vars } from '@/shared/styles/theme.css';
 import { useEffect, useState } from 'react';
+import clsx from 'clsx';
 
 interface Props {
 	totalAmount: number;
@@ -40,7 +41,7 @@ const CartPaymentInfoItemBox = ({ totalAmount }: Props) => {
 				</span>
 			</Flex>
 			<Spacing margin="15px" />
-			<Button color={vars.color.white} className={cs.lightBlueButton} style={{ fontSize: '20px' }}>
+			<Button color={vars.color.white} className={clsx(s.responsiveLargeText, cs.lightBlueButton)}>
 				결제요청
 			</Button>
 		</div>

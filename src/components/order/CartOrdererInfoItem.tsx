@@ -10,8 +10,10 @@ interface Props {
 const CartOrdererInfoItem = ({ title, value }: Props) => {
 	return (
 		<Flex justify="space-between" align="center" className={s.cartOrdererInfoItem}>
-			<span style={{ color: vars.color.darkGray }}>{title}</span>
-			<span>{value}</span>
+			<span className={s.cartOrdererInfoText}>{title}</span>
+			<span className={s.cartOrdererInfoText} style={{ color: vars.color.black }}>
+				{value}
+			</span>
 		</Flex>
 	);
 };

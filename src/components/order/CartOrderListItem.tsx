@@ -20,44 +20,54 @@ const CartOrderListItem = ({ icon, name, price, quantity }: Props) => {
 	const [count, setCount] = useState(quantity);
 
 	return (
-		<Flex align="center" className={s.cartOrderListItemBox}>
-			<Image
-				src={icon}
-				alt={`${name} 로고 이미지`}
-				width={40}
-				height={40}
-				className={s.flexItem1}
-			/>
-			<span className={clsx(s.flexItem2, s.grayText)}>{name}</span>
-			<span className={clsx(s.flexItem3, s.grayText)}>{price.toLocaleString()} 원</span>
-			<Flex justify="center" align="center" className={clsx(s.flexItem4)}>
-				<Button
-					color={vars.color.lighterGray}
-					className={s.quantityLeftButton}
-					onClick={() => setCount(count - 1)}>
-					-
-				</Button>
-				<Flex justify="center" align="center" className={s.quantityText}>
-					{count}
-				</Flex>
-				<Button
-					color={vars.color.darkGray}
-					className={s.quantityRightButton}
-					onClick={() => setCount(count + 1)}>
-					+
-				</Button>
-			</Flex>
-			<span className={clsx(s.flexItem5, s.darkBlueText)}>
-				{(price * count).toLocaleString()} 원
-			</span>
-			<Flex justify="center" align="center" className={s.flexItem6}>
-				<Button color={vars.color.white} className={s.cartItemRemoveButton}>
-					<Flex justify="center" align="center" style={{ width: '20px', height: '20px' }}>
-						ㅡ
+		<div className={s.cartOrderListItemBox}>
+			<div className={s.cartOrderListItemLeftBox}>
+				<div className={s.cartOrderListItemLeftInnerBox}>
+					<Image
+						src={icon}
+						alt={`${name} 로고 이미지`}
+						width={40}
+						height={40}
+						className={s.logoFlexItem}
+					/>
+					<div className={s.cartOrderListItemLeftSecondInnerBox}>
+						<span className={clsx(s.flexItem2, s.cartOrderProductName)}>{name}</span>
+						<span className={clsx(s.flexItem3, s.cartOrderProductPrice)}>
+							{price.toLocaleString()} 원
+						</span>
+					</div>
+				</div>
+				<Flex justify="center" align="center" className={clsx(s.flexItem4)}>
+					<Button
+						color={vars.color.lighterGray}
+						className={s.quantityLeftButton}
+						onClick={() => setCount(count - 1)}>
+						-
+					</Button>
+					<Flex justify="center" align="center" className={s.quantityText}>
+						{count}
 					</Flex>
-				</Button>
-			</Flex>
-		</Flex>
+					<Button
+						color={vars.color.darkGray}
+						className={s.quantityRightButton}
+						onClick={() => setCount(count + 1)}>
+						+
+					</Button>
+				</Flex>
+			</div>
+			<div className={s.cartOrderListItemRightBox}>
+				<Flex justify="center" align="center" className={s.flexItem5}>
+					<span className={clsx(s.darkBlueText)}>{(price * count).toLocaleString()} 원</span>
+				</Flex>
+				<Flex justify="center" align="center" className={s.flexItem6}>
+					<Button color={vars.color.white} className={s.cartItemRemoveButton}>
+						<Flex justify="center" align="center" style={{ width: '20px', height: '20px' }}>
+							ㅡ
+						</Flex>
+					</Button>
+				</Flex>
+			</div>
+		</div>
 	);
 };
 

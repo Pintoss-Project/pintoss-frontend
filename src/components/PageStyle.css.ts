@@ -55,3 +55,18 @@ export const pageHeader = style({
 		},
 	},
 });
+
+export const infoTitle = style({
+	'color': vars.color.darkerGray,
+	'fontSize': '20px',
+	'fontWeight': '500',
+	'textAlign': 'left',
+	'@media': {
+		[responsive.tabletSmall]: {
+			fontSize: '18px',
+		},
+		[responsive.mobile]: {
+			fontSize: '16px',
+		},
+	},
+});

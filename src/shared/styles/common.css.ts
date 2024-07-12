@@ -37,7 +37,6 @@ export const lightBlueButton = style([
 	{
 		maxWidth: '420px',
 		height: '56px',
-		fontSize: '18px',
 		backgroundColor: vars.color.lightBlue,
 		borderRadius: '5px',
 	},
