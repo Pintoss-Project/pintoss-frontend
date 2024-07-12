@@ -1,6 +1,6 @@
 import { createVar, style } from '@vanilla-extract/css';
 import { f } from './functions';
-import { vars } from './theme.css';
+import { responsive, vars } from './theme.css';
 
 export const spacingMarginVar = createVar();
 export const spacingWidthVar = createVar();
@@ -8,9 +8,23 @@ export const spacingWidthVar = createVar();
 export const darkBlueButton = style([
 	f.wFull,
 	{
-		height: '56px',
-		backgroundColor: vars.color.darkBlue,
-		borderRadius: '5px',
+		'height': '56px',
+		'backgroundColor': vars.color.darkBlue,
+		'borderRadius': '5px',
+		'@media': {
+			[responsive.desktop]: {
+				width: '324px',
+				height: '49px',
+			},
+			[responsive.tablet]: {
+				width: '324px',
+				height: '49px',
+			},
+			[responsive.tabletSmall]: {
+				width: '324px',
+				height: '49px',
+			},
+		},
 	},
 ]);
 

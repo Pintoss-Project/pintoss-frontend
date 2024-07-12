@@ -20,8 +20,8 @@ const Footer = () => {
 		<>
 			<div className={s.footerBox}>
 				<Spacing margin="44px" />
-				<Flex justify="space-between">
-					<div>
+				<Flex justify="space-between" className={s.footerFlexBox}>
+					<div className={s.footerLeftBox}>
 						<Link href="/">
 							<Image src={PintossLogo} alt="로고 이미지" width={165} height={45} />
 						</Link>
@@ -41,11 +41,7 @@ const Footer = () => {
 						<Spacing margin="8px" />
 						<p className={s.pText}>Copyright 핀토스 Information Service.All rights reserved</p>
 						<Spacing margin="25px" />
-						<Flex
-							justify="center"
-							align="center"
-							className={cs.darkBlueButton}
-							style={{ width: '324px', height: '49px' }}>
+						<Flex justify="center" align="center" className={cs.darkBlueButton}>
 							<a href="mailto:c0818@naver.com" style={{ color: vars.color.white }}>
 								대량구매/제휴문의 : c0818@naver.com
 							</a>
@@ -55,7 +51,7 @@ const Footer = () => {
 							ⓒ 핀토스. All rights reserved.
 						</p>
 					</div>
-					<Flex direction="column" align="flex-end">
+					<Flex direction="column" className={s.footerRightBox}>
 						<div style={{ color: vars.color.darkerGray, fontSize: '18px', fontWeight: '600' }}>
 							고객센터
 						</div>
@@ -78,8 +74,8 @@ const Footer = () => {
 								이용약관
 							</Link>
 						</div>
-						<Spacing margin="77px" />
-						<Image src={SecureTransaction} alt="안전 거래 가맹점 이미지" width={488} height={60} />
+						<Spacing margin="40px" />
+						<Image src={SecureTransaction} alt="안전 거래 가맹점 이미지" width={330} height={60} />
 					</Flex>
 				</Flex>
 			</div>

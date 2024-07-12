@@ -59,12 +59,17 @@ export const loginButton = style({
 });
 
 export const sideBarContainer = style({
-	width: '349px',
-	height: '100%',
-	padding: '28px 22px 45px 22px',
-	margin: '108px 15px 0px 60px',
-	backgroundColor: vars.color.white,
-	borderRadius: '0px 15px 15px 15px',
+	'width': '349px',
+	'height': '100%',
+	'padding': '28px 22px 45px 22px',
+	'margin': '108px 15px 0px 60px',
+	'backgroundColor': vars.color.white,
+	'borderRadius': '0px 15px 15px 15px',
+	'@media': {
+		[responsive.tablet]: {
+			display: 'none',
+		},
+	},
 });
 
 export const grayText = style({
