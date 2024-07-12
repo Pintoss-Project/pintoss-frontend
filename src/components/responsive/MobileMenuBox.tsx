@@ -6,8 +6,9 @@ import { PintossColorLogo } from '../../../public/svgs';
 import { vars } from '@/shared/styles/theme.css';
 import { IoClose } from 'react-icons/io5';
 import { Button } from '@/shared/components/button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import MobileProducts from './MobileProducts';
 
 interface Props {
 	setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -47,6 +48,13 @@ const MobileMenuBox = ({ setIsMenuOpen }: Props) => {
 
 	const menuButtons = isLoggedIn ? MENU_BUTTONS.login : MENU_BUTTONS.logout;
 
+	useEffect(() => {
+		document.body.style.overflow = 'hidden';
+		return () => {
+			document.body.style.overflow = 'auto';
+		};
+	}, []);
+
 	return (
 		<div
 			style={{
@@ -58,6 +66,7 @@ const MobileMenuBox = ({ setIsMenuOpen }: Props) => {
 				minHeight: '340px',
 				backgroundColor: vars.color.white,
 				zIndex: 20,
+				overflowY: 'auto',
 			}}>
 			<div>
 				<Flex justify="space-between" align="center" className={s.tableMenuNavBox}>
@@ -78,6 +87,7 @@ const MobileMenuBox = ({ setIsMenuOpen }: Props) => {
 					/>
 				</Flex>
 			</div>
+			<MobileProducts />
 			<div style={{ border: `1px solid ${vars.color.paleGray}` }}>
 				<Flex direction="column" align="center">
 					{menuButtons.map((button, index) =>

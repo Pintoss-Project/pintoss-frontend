@@ -81,3 +81,35 @@ export const menuButton = style([
 		fontSize: '20px',
 	},
 ]);
+
+export const mobileProductBox = style({
+	height: '206px',
+	backgroundColor: vars.color.white,
+	borderRadius: '0px 15px 15px 15px',
+	boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+});
+
+export const responsiveGrid = style({
+	'display': 'grid',
+	'gridTemplateColumns': 'repeat(4, 1fr)',
+	'gap': '10px',
+	'width': '100%',
+	'padding': '10px',
+	'@media': {
+		[responsive.tabletSmall]: {
+			gridTemplateColumns: 'repeat(2, 1fr)',
+		},
+		[responsive.mobile]: {
+			display: 'none',
+			gridTemplateColumns: 'repeat(1, 1fr)',
+		},
+	},
+});
+
+export const gridWrap = style({
+	'@media': {
+		[responsive.mobile]: {
+			display: 'none',
+		},
+	},
+});
