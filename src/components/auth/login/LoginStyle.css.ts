@@ -1,8 +1,9 @@
-import { vars } from '@/shared/styles/theme.css';
+import { responsive, vars } from '@/shared/styles/theme.css';
 import { style } from '@vanilla-extract/css';
 
 export const loginMainContainer = style({
-	width: '420px',
+	width: '100%',
+	maxWidth: '420px',
 });
 
 export const loginInputStyle = style({
@@ -21,4 +22,14 @@ export const blueText = style({
 	marginLeft: '7px',
 	fontSize: '14px',
 	color: vars.color.lightBlue,
+});
+
+export const loginDivider = style({
+	'width': '40%',
+	'borderBottom': `1px solid ${vars.color.paleGray}`,
+	'@media': {
+		[responsive.mobile]: {
+			width: '44%',
+		},
+	},
 });

@@ -8,6 +8,7 @@ export const spacingWidthVar = createVar();
 export const darkBlueButton = style([
 	f.wFull,
 	{
+		'maxWidth': '420px',
 		'height': '56px',
 		'backgroundColor': vars.color.darkBlue,
 		'borderRadius': '5px',
@@ -31,6 +32,7 @@ export const darkBlueButton = style([
 export const lightBlueButton = style([
 	f.wFull,
 	{
+		maxWidth: '420px',
 		height: '56px',
 		fontSize: '18px',
 		backgroundColor: vars.color.lightBlue,
@@ -41,6 +43,7 @@ export const lightBlueButton = style([
 export const lightGrayButton = style([
 	f.wFull,
 	{
+		maxWidth: '420px',
 		height: '56px',
 		fontSize: '18px',
 		backgroundColor: vars.color.lightGray,
@@ -51,6 +54,7 @@ export const lightGrayButton = style([
 export const whiteAndBlueButton = style([
 	f.wFull,
 	{
+		maxWidth: '420px',
 		height: '50px',
 		backgroundColor: vars.color.white,
 		borderRadius: '5px',
@@ -62,6 +66,7 @@ export const naverButtonBox = style([
 	f.pRelative,
 	f.wFull,
 	{
+		maxWidth: '420px',
 		height: '56px',
 		backgroundColor: vars.color.green,
 		borderRadius: '5px',
@@ -71,6 +76,7 @@ export const naverButtonBox = style([
 export const naverButtonStyle = style([
 	f.wFull,
 	{
+		maxWidth: '420px',
 		backgroundColor: 'transparent',
 		fontSize: '18px',
 	},
@@ -80,6 +86,7 @@ export const kakaoButtonBox = style([
 	f.pRelative,
 	f.wFull,
 	{
+		maxWidth: '420px',
 		height: '56px',
 		backgroundColor: vars.color.yellow,
 		borderRadius: '5px',
@@ -89,6 +96,7 @@ export const kakaoButtonBox = style([
 export const kakaoButtonStyle = style([
 	f.wFull,
 	{
+		maxWidth: '420px',
 		backgroundColor: 'transparent',
 		fontSize: '18px',
 		fontWeight: '600',

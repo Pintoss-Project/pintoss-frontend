@@ -18,19 +18,21 @@ const LoginButtons = () => {
 			</Button>
 			<Spacing margin="25px" />
 			<Flex justify="center" align="center">
-				<Divider
+				{/* <Divider
 					color={vars.color.paleGray}
 					size={1}
 					style={{ width: '44%', backgroundColor: 'transparent' }}
-				/>
+				/> */}
+				<div className={s.loginDivider} />
 				<span className={s.grayText} style={{ margin: '0px 10px' }}>
 					또는
 				</span>
-				<Divider
+				<div className={s.loginDivider} />
+				{/* <Divider
 					color={vars.color.paleGray}
 					size={1}
 					style={{ width: '44%', backgroundColor: 'transparent' }}
-				/>
+				/> */}
 			</Flex>
 			<Spacing margin="27px" />
 			<Flex align="center" className={cs.naverButtonBox}>
