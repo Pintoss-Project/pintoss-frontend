@@ -45,3 +45,40 @@ export const expandedContentVisible = style({
 	padding: '50px 45px',
 	minHeight: '700px',
 });
+
+export const paginationBox = style({
+	display: 'flex',
+	alignItems: 'center',
+	justifyContent: 'center',
+	gap: '8px',
+});
+
+export const pageButton = style({
+	padding: '8px 12px',
+	fontSize: '14px',
+	color: vars.color.darkGray,
+	backgroundColor: vars.color.white,
+	border: `1px solid ${vars.color.lightGray}`,
+	borderRadius: '4px',
+	cursor: 'pointer',
+	selectors: {
+		'&:hover': {
+			backgroundColor: vars.color.lightGray,
+		},
+		'&:disabled': {
+			backgroundColor: vars.color.lightGray,
+			cursor: 'not-allowed',
+		},
+	},
+});
+
+export const activePageButton = style({
+	backgroundColor: vars.color.skyBlue,
+	color: vars.color.white,
+	borderColor: vars.color.skyBlue,
+	selectors: {
+		'&:hover': {
+			backgroundColor: vars.color.skyBlue,
+		},
+	},
+});
