@@ -29,7 +29,7 @@ export const loginDivider = style({
 	'borderBottom': `1px solid ${vars.color.paleGray}`,
 	'@media': {
 		[responsive.mobile]: {
-			width: '44%',
+			width: '42%',
 		},
 	},
 });
