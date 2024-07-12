@@ -1,5 +1,5 @@
+import * as s from './OrderStyle.css';
 import Spacing from '@/shared/components/layout/Spacing';
-import React from 'react';
 import InfoBox from '../InfoBox';
 import { Flex } from '@/shared/components/layout';
 import OrderListInfoBox from './OrderListInfoBox';
@@ -12,7 +12,7 @@ const OrderMain = () => {
 			<Spacing margin="30px" />
 			<OrderListInfoBox />
 			<Spacing margin="50px" />
-			<Flex>
+			<Flex className={s.orderInstructionFlexBox}>
 				<InfoBox title="로그인 내역" info={<LoginHistoryInfoBox />} />
 				<InfoBox title="주문 안내사항" info={<OrderInstructionInfoBox />} />
 			</Flex>
