@@ -84,11 +84,11 @@ const AdminOrderMain = () => {
 	return (
 		<div>
 			<Spacing margin="30px" />
-			<div style={{ height: '100%', border: `1px solid ${vars.color['lighter-gray']}` }}>
+			<div style={{ height: '100%', border: `1px solid ${vars.color.lighterGray}` }}>
 				<Flex
 					justify="center"
 					align="center"
-					style={{ padding: '13px 0', borderBottom: `1px solid ${vars.color['lighter-gray']}` }}>
+					style={{ padding: '13px 0', borderBottom: `1px solid ${vars.color.lighterGray}` }}>
 					<div className={clsx(s.orderFlexItem1, s.darkGraySmallText)}>순번</div>
 					<div className={clsx(s.orderFlexItem2, s.darkGraySmallText)}>주문번호</div>
 					<div className={clsx(s.orderFlexItem3, s.darkGraySmallText)}>회원명</div>
@@ -103,7 +103,7 @@ const AdminOrderMain = () => {
 					<Flex
 						justify="center"
 						align="center"
-						style={{ padding: '13px 0', borderBottom: `1px solid ${vars.color['lighter-gray']}` }}
+						style={{ padding: '13px 0', borderBottom: `1px solid ${vars.color.lighterGray}` }}
 						key={order.order_id}>
 						<div className={clsx(s.orderFlexItem1, s.darkGraySmallText)}>
 							{(currentPage - 1) * ordersPerPage + index + 1}
@@ -132,19 +132,19 @@ const AdminOrderMain = () => {
 									width: '80%',
 									maxWidth: '120px',
 									padding: '8px',
-									border: `1px solid ${vars.color['lighter-gray']}`,
+									border: `1px solid ${vars.color.lighterGray}`,
 									borderRadius: '6px',
 									fontSize: '12px',
 								}}>
 								<Flex justify="space-between" align="center">
 									<Flex align="center">
 										<ChatIcon
-											color={order.isSendGift ? vars.color.periwinkle : vars.color['lighter-gray']}
+											color={order.isSendGift ? vars.color.periwinkle : vars.color.lighterGray}
 										/>
 										<span
 											style={{
 												marginLeft: '2px',
-												color: order.isSendGift ? vars.color.periwinkle : vars.color['light-gray'],
+												color: order.isSendGift ? vars.color.periwinkle : vars.color.lightGray,
 											}}>
 											상품권 전송
 										</span>
@@ -156,7 +156,7 @@ const AdminOrderMain = () => {
 										style={
 											order.isSendGift
 												? { backgroundColor: vars.color.periwinkle }
-												: { backgroundColor: vars.color['lighter-gray'] }
+												: { backgroundColor: vars.color.lighterGray }
 										}>
 										✓
 									</Flex>

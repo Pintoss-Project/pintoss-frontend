@@ -1,7 +1,6 @@
 import * as s from './NavBarStyle.css';
 
-import { Flex, List, ListItem } from '@/shared/components/layout';
-import { vars } from '@/shared/styles/theme.css';
+import { Flex, List } from '@/shared/components/layout';
 import Link from 'next/link';
 
 const NAV_BAR_TOP_MENU = [
@@ -11,7 +10,7 @@ const NAV_BAR_TOP_MENU = [
 
 const NavBarTopMenuBox = () => {
 	return (
-		<div>
+		<div className={s.navbarTopMenuBox}>
 			<List spacing={3} variant="unordered">
 				<Flex align="center">
 					{NAV_BAR_TOP_MENU.map((menu) => (

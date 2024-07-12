@@ -33,7 +33,7 @@ export const productDetailLogoImage = style({
 
 export const noticeBox = style({
 	padding: '4.5% 4%',
-	backgroundColor: vars.color['white-smoke'],
+	backgroundColor: vars.color.whiteSmoke,
 	borderRadius: '0 10px 10px 10px',
 });
 
@@ -46,23 +46,23 @@ export const productInstructionCircle = style({
 	color: vars.color.white,
 	fontSize: '10px',
 	borderRadius: '50%',
-	backgroundColor: vars.color['soft-red'],
+	backgroundColor: vars.color.softRed,
 });
 
 export const productInstructionText = style({
-	color: vars.color['dark-gray'],
+	color: vars.color.darkGray,
 	fontSize: '14px',
 	textAlign: 'left',
 });
 
 export const darkGrayText = style({
-	color: vars.color['dark-gray'],
+	color: vars.color.darkGray,
 	fontSize: '14px',
 });
 
 export const darkerGrayText = style({
 	marginRight: '20px',
-	color: vars.color['darker-gray'],
+	color: vars.color.darkerGray,
 	fontSize: '14px',
 	fontWeight: '600',
 });
@@ -77,7 +77,7 @@ export const leftTabMenuBox = style([
 	productInfoTabMenuBox,
 	{
 		color: vars.color.white,
-		backgroundColor: vars.color['dark-gray'],
+		backgroundColor: vars.color.darkGray,
 		borderRadius: '18px 0 0 0',
 	},
 ]);
@@ -85,8 +85,8 @@ export const leftTabMenuBox = style([
 export const rightTabMenuBox = style([
 	productInfoTabMenuBox,
 	{
-		color: vars.color['medium-gray'],
-		backgroundColor: vars.color['lightest-gray'],
+		color: vars.color.mediumGray,
+		backgroundColor: vars.color.lightestGray,
 		borderRadius: '0 18px  0 0',
 	},
 ]);
@@ -103,7 +103,7 @@ export const productDetailSelectAndPayBox = style({
 
 export const totalPayInfoBox = style({
 	padding: '24px 20px',
-	backgroundColor: vars.color['dim-gray'],
+	backgroundColor: vars.color.dimGray,
 	borderRadius: '0 10px 10px 10px',
 });
 
@@ -113,14 +113,14 @@ export const whiteBoldText = style({
 });
 
 export const mediumGrayText = style({
-	color: vars.color['medium-gray'],
+	color: vars.color.mediumGray,
 	fontSize: '14px',
 });
 
 export const selectContainer = style({
 	width: '100%',
 	padding: '15px',
-	border: `1px solid ${vars.color['pale-gray']}`,
+	border: `1px solid ${vars.color.paleGray}`,
 });
 
 export const selectBox = style({
@@ -133,22 +133,22 @@ export const quantityLeftButton = style({
 	width: '30px',
 	height: '30px',
 	fontSize: '20px',
-	backgroundColor: vars.color['lightest-gray'],
-	border: `1px solid ${vars.color['lighter-gray']}`,
+	backgroundColor: vars.color.lightestGray,
+	border: `1px solid ${vars.color.lighterGray}`,
 });
 
 export const quantityText = style({
 	width: '30px',
 	height: '30px',
-	color: vars.color['darker-gray'],
+	color: vars.color.darkerGray,
 	fontSize: '14px',
-	border: `1px solid ${vars.color['lighter-gray']}`,
+	border: `1px solid ${vars.color.lighterGray}`,
 });
 
 export const quantityRightButton = style({
 	width: '30px',
 	height: '30px',
 	fontSize: '20px',
-	backgroundColor: vars.color['lighter-gray'],
-	border: `1px solid ${vars.color['lighter-gray']}`,
+	backgroundColor: vars.color.lighterGray,
+	border: `1px solid ${vars.color.lighterGray}`,
 });

@@ -15,7 +15,7 @@ export const homeBanner = style([
 	{
 		height: '0',
 		paddingTop: '33.33%',
-		backgroundColor: vars.color['light-blue'],
+		backgroundColor: vars.color.lightBlue,
 		borderRadius: '0 10px 10px 10px',
 	},
 ]);
@@ -44,7 +44,7 @@ export const selected = style({
 export const filterMenu = style({
 	padding: '0px 10px',
 	marginRight: '20px',
-	color: vars.color['medium-gray'],
+	color: vars.color.mediumGray,
 	fontSize: '25px',
 	cursor: 'pointer',
 	selectors: {
@@ -101,13 +101,13 @@ export const flexItem4 = style({
 
 export const announceMenuBox = style({
 	height: '50px',
-	backgroundColor: vars.color['pale-gray'],
+	backgroundColor: vars.color.paleGray,
 });
 
 export const announceContent = style({
 	height: '70px',
 	backgroundColor: vars.color.white,
-	borderBottom: `1px solid ${vars.color['lightest-gray']}`,
+	borderBottom: `1px solid ${vars.color.lightestGray}`,
 });
 
 export const announceTag = style([
@@ -116,7 +116,7 @@ export const announceTag = style([
 		height: '20px',
 		color: vars.color.white,
 		fontSize: '12px',
-		backgroundColor: vars.color['sky-blue'],
+		backgroundColor: vars.color.skyBlue,
 		borderRadius: '5px',
 	},
 ]);
@@ -164,24 +164,24 @@ export const homeProductBoxTop = style({
 });
 
 export const purchaseButton = style({
-	backgroundColor: vars.color['light-blue'],
+	backgroundColor: vars.color.lightBlue,
 });
 
 export const rateBox = style({
 	width: '50%',
 	height: '100%',
-	border: `1px solid ${vars.color['lightest-gray']}`,
+	border: `1px solid ${vars.color.lightestGray}`,
 	borderRadius: '8px',
 });
 
 export const rateGrayText = style({
 	marginRight: '12px',
-	color: vars.color['dark-gray'],
+	color: vars.color.darkGray,
 	fontSize: '18px',
 });
 
 export const rateRedText = style({
-	color: vars.color['soft-red'],
+	color: vars.color.softRed,
 	fontSize: '18px',
 });
 

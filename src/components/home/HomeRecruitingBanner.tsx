@@ -20,7 +20,7 @@ const HomeRecruitingBanner = () => {
 						}}>
 						상품권 판매 파트너를 모집합니다.
 					</span>
-					<span style={{ color: vars.color['dark-blue'], fontSize: '30px', fontWeight: 'bold' }}>
+					<span style={{ color: vars.color.darkBlue, fontSize: '30px', fontWeight: 'bold' }}>
 						1544-4202
 					</span>
 				</Flex>

@@ -88,11 +88,11 @@ const AdminBoardList = ({ type }: Props) => {
 				<span>건의 공지사항</span>
 			</Flex>
 			<Spacing margin="10px" />
-			<div style={{ height: '100%', border: `1px solid ${vars.color['lighter-gray']}` }}>
+			<div style={{ height: '100%', border: `1px solid ${vars.color.lighterGray}` }}>
 				<Flex
 					justify="center"
 					align="center"
-					style={{ padding: '13px 0', borderBottom: `1px solid ${vars.color['lighter-gray']}` }}>
+					style={{ padding: '13px 0', borderBottom: `1px solid ${vars.color.lighterGray}` }}>
 					<div className={clsx(s.boardFlexItem1, s.darkGraySmallText)}>번호</div>
 					<div className={clsx(s.boardFlexItem2, s.darkGraySmallText)}>제목</div>
 					<div className={clsx(s.boardFlexItem3, s.darkGraySmallText)}>작성자</div>
@@ -103,7 +103,7 @@ const AdminBoardList = ({ type }: Props) => {
 					<Flex
 						justify="center"
 						align="center"
-						style={{ padding: '13px 0', borderBottom: `1px solid ${vars.color['lighter-gray']}` }}
+						style={{ padding: '13px 0', borderBottom: `1px solid ${vars.color.lighterGray}` }}
 						key={board.board_id}>
 						<div className={clsx(s.boardFlexItem1, s.darkGraySmallText)}>
 							{(currentPage - 1) * boardsPerPage + index + 1}
@@ -114,22 +114,22 @@ const AdminBoardList = ({ type }: Props) => {
 						<div className={clsx(s.boardFlexItem5, s.darkGraySmallText)}>
 							<Flex justify="center" align="center">
 								<Button
-									color={vars.color['dark-gray']}
+									color={vars.color.darkGray}
 									style={{
 										padding: '3px 8px',
 										marginRight: '10px',
 										backgroundColor: vars.color.white,
-										border: `1px solid ${vars.color['lighter-gray']}`,
+										border: `1px solid ${vars.color.lighterGray}`,
 										borderRadius: '5px',
 									}}>
 									수정
 								</Button>
 								<Button
-									color={vars.color['dark-gray']}
+									color={vars.color.darkGray}
 									style={{
 										padding: '3px 8px',
 										backgroundColor: vars.color.white,
-										border: `1px solid ${vars.color['lighter-gray']}`,
+										border: `1px solid ${vars.color.lighterGray}`,
 										borderRadius: '5px',
 									}}>
 									삭제

@@ -14,7 +14,7 @@ const InfoBox = ({ title, info, className }: Props) => {
 		<Flex direction="column" style={{ width: '100%' }}>
 			<h3
 				style={{
-					color: vars.color['darker-gray'],
+					color: vars.color.darkerGray,
 					fontSize: '20px',
 					fontWeight: '500',
 					textAlign: 'left',

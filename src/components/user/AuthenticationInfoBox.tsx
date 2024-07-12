@@ -13,7 +13,7 @@ const AuthenticationInfoBox = () => {
 		<div>
 			<AuthenticationBox />
 			<Spacing margin="40px" />
-			<Button color={vars.color['dark-gray']} className={s.whiteButton}>
+			<Button color={vars.color.darkGray} className={s.whiteButton}>
 				<Flex justify="center" align="center">
 					<Image src={KakaoLogo} alt="카카오 로고 이미지" width={24} height={20} />
 					<span style={{ fontSize: '20px', marginLeft: '10px' }}>카카오톡 바로가기</span>

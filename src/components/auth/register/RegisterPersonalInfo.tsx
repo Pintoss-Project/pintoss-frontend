@@ -19,7 +19,7 @@ const RegisterPersonalInfo = () => {
 				<Spacing margin="5px" />
 				<p className={s.smallText}>* 본인명의 휴대폰이 아닐 경우 추가인증을 요구 할 수 있습니다.</p>
 				<Spacing margin="30px" />
-				<Button color={vars.color['light-blue']} className={cs.whiteAndBlueButton}>
+				<Button color={vars.color.lightBlue} className={cs.whiteAndBlueButton}>
 					휴대폰 본인 인증하기
 				</Button>
 			</div>

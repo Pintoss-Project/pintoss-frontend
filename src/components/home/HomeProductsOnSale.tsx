@@ -40,7 +40,7 @@ const SALE_PRODUCTS = [
 	{ id: 24, code: 'happy', name: '해피머니 상품권', card: 2, phone: 0.5, icon: HappyMoneyLogo },
 ];
 
-const COLORS = [vars.color['light-red'], vars.color.blue, vars.color.green, vars.color.yellow];
+const COLORS = [vars.color.lightRed, vars.color.blue, vars.color.green, vars.color.yellow];
 
 const HomeProductsOnSale = () => {
 	return (

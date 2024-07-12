@@ -11,10 +11,10 @@ const RegisterMain = () => {
 		<div>
 			<Spacing margin="73px" />
 			<RegisterInfoBox subTitle="약관동의" info={<RegisterAcceptTermsInfo />} />
-			<Divider color={vars.color['lighter-gray']} size={1} />
+			<Divider color={vars.color.lighterGray} size={1} />
 			<Spacing margin="40px" />
 			<RegisterInfoBox subTitle="계정정보" info={<RegisterAccountInfo />} />
-			<Divider color={vars.color['lighter-gray']} size={1} />
+			<Divider color={vars.color.lighterGray} size={1} />
 			<Spacing margin="40px" />
 			<RegisterInfoBox subTitle="회원 개인정보" info={<RegisterPersonalInfo />} />
 			<Spacing margin="40px" />

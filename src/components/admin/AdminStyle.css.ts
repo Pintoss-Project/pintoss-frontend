@@ -74,14 +74,14 @@ export const selectedBg = style({
 
 export const userSearchBox = style({
 	padding: '35px 22px',
-	border: `1px solid ${vars.color['lighter-gray']}`,
+	border: `1px solid ${vars.color.lightGray}`,
 });
 
 export const userSearchButton = style({
 	width: '100px',
 	height: '70px',
-	backgroundColor: vars.color['lightest-gray'],
-	border: `1px solid ${vars.color['light-gray']}`,
+	backgroundColor: vars.color.lightestGray,
+	border: `1px solid ${vars.color.lightGray}`,
 });
 
 const microText = style({
@@ -97,7 +97,7 @@ const mediumText = style({
 });
 
 const lighterGrayBorder = style({
-	border: `1px solid ${vars.color['lighter-gray']}`,
+	border: `1px solid ${vars.color.lightGray}`,
 });
 
 export const blackMediumText = style([
@@ -111,21 +111,21 @@ export const blackMediumText = style([
 export const darkGraySmallText = style([
 	smallText,
 	{
-		color: vars.color['dark-gray'],
+		color: vars.color.darkGray,
 	},
 ]);
 
 export const blackSmallText = style([
 	smallText,
 	{
-		color: vars.color['dark-gray'],
+		color: vars.color.darkGray,
 	},
 ]);
 
 export const lightGrayMediumText = style([
 	mediumText,
 	{
-		color: vars.color['light-gray'],
+		color: vars.color.lightGray,
 	},
 ]);
 
@@ -199,17 +199,17 @@ export const paginationBox = style({
 export const pageButton = style({
 	padding: '8px 12px',
 	fontSize: '14px',
-	color: vars.color['dark-gray'],
+	color: vars.color.darkGray,
 	backgroundColor: vars.color.white,
-	border: `1px solid ${vars.color['lighter-gray']}`,
+	border: `1px solid ${vars.color.lightGray}`,
 	borderRadius: '4px',
 	cursor: 'pointer',
 	selectors: {
 		'&:hover': {
-			backgroundColor: vars.color['light-gray'],
+			backgroundColor: vars.color.lightGray,
 		},
 		'&:disabled': {
-			backgroundColor: vars.color['lighter-gray'],
+			backgroundColor: vars.color.lightGray,
 			cursor: 'not-allowed',
 		},
 	},
@@ -230,8 +230,8 @@ export const lightGrayButton = style({
 	width: '100px',
 	height: '36px',
 	padding: '10px',
-	backgroundColor: vars.color['lightest-gray'],
-	border: `1px solid ${vars.color['lighter-gray']}`,
+	backgroundColor: vars.color.lightestGray,
+	border: `1px solid ${vars.color.lightGray}`,
 	borderRadius: '5px',
 });
 
@@ -269,7 +269,6 @@ export const dropzone = style({
 	flex: '8',
 	marginLeft: '20px',
 	borderRadius: '4px',
-	// height: '100px',
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
@@ -281,7 +280,7 @@ export const customTextarea = style({
 	width: '100%',
 	height: '100px',
 	padding: '10px',
-	border: `1px solid ${vars.color['lighter-gray']}`,
+	border: `1px solid ${vars.color.lightGray}`,
 	borderRadius: '4px',
 	resize: 'none',
 	fontFamily: 'inherit',
@@ -300,7 +299,7 @@ export const customTextarea = style({
 export const customSelect = style({
 	width: '100%',
 	padding: '10px',
-	border: `1px solid ${vars.color['lighter-gray']}`,
+	border: `1px solid ${vars.color.lightGray}`,
 	borderRadius: '4px',
 	backgroundColor: 'white',
 	color: '#AAAAAA',
@@ -363,7 +362,7 @@ export const completed = style({
 });
 
 export const failed = style({
-	color: vars.color['soft-red'],
+	color: vars.color.softRed,
 	fontSize: '14px',
 	fontWeight: '500',
 });
@@ -375,7 +374,7 @@ export const circleIcon = style({
 	color: vars.color.white,
 	fontSize: '10px',
 	borderRadius: '50%',
-	backgroundColor: vars.color['lightest-gray'],
+	backgroundColor: vars.color.lightestGray,
 });
 
 export const boardFlexItem1 = style({

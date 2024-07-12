@@ -6,7 +6,7 @@ export const memberInfoBox = style({
 	height: '207px',
 	padding: '30px',
 	marginRight: '20px',
-	backgroundColor: vars.color['white-smoke'],
+	backgroundColor: vars.color.whiteSmoke,
 	borderRadius: '0px 10px 10px 10px',
 });
 
@@ -20,13 +20,13 @@ export const memberInfoInnerBox = style({
 export const snsInfoBox = style({
 	height: '207px',
 	padding: '30px',
-	backgroundColor: vars.color['white-smoke'],
+	backgroundColor: vars.color.whiteSmoke,
 	borderRadius: '0px 10px 10px 10px',
 });
 
 export const authenticationInfoBox = style({
 	padding: '35px 30px 40px 30px',
-	backgroundColor: vars.color['white-smoke'],
+	backgroundColor: vars.color.whiteSmoke,
 	borderRadius: '0px 10px 10px 10px',
 });
 
@@ -38,26 +38,26 @@ export const authenticationInfoInnerBox = style({
 });
 
 export const darkerGrayText = style({
-	color: vars.color['darker-gray'],
+	color: vars.color.darkerGray,
 });
 
 export const darkGrayText = style({
-	color: vars.color['dark-gray'],
+	color: vars.color.darkGray,
 });
 
 export const whiteButton = style({
 	width: '434px',
 	height: '75px',
 	backgroundColor: vars.color.white,
-	border: `1px solid ${vars.color['light-gray']}`,
+	border: `1px solid ${vars.color.lightGray}`,
 	borderRadius: '5px',
 });
 
 export const grayButton = style({
 	width: '434px',
 	height: '75px',
-	backgroundColor: vars.color['white-smoke'],
-	border: `1px solid ${vars.color['light-gray']}`,
+	backgroundColor: vars.color.whiteSmoke,
+	border: `1px solid ${vars.color.lightGray}`,
 	borderRadius: '5px',
 });
 
@@ -68,17 +68,17 @@ export const authenticationInfoCircle = style({
 	color: vars.color.white,
 	fontSize: '10px',
 	borderRadius: '50%',
-	backgroundColor: vars.color['dark-blue'],
+	backgroundColor: vars.color.darkBlue,
 });
 
 export const authenticationInfoText = style({
-	color: vars.color['dark-gray'],
+	color: vars.color.darkGray,
 	fontSize: '14px',
 });
 
 export const authenticationInfoSubText = style({
 	marginLeft: '20px',
-	color: vars.color['medium-gray'],
+	color: vars.color.mediumGray,
 	fontSize: '14px',
 	textAlign: 'left',
 });
@@ -92,6 +92,6 @@ export const snsButtonCheckBox = style([
 		height: '20px',
 		borderRadius: '50%',
 		backgroundColor: vars.color.white,
-		color: vars.color['pale-gray'],
+		color: vars.color.paleGray,
 	},
 ]);

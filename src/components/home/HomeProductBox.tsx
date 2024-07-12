@@ -34,7 +34,7 @@ const HomeProductBox = ({ headerColor, product }: Props) => {
 					<div style={{ height: '40%' }}></div>
 					<Flex
 						justify="center"
-						style={{ height: '30%', color: vars.color['dark-gray'] }}
+						style={{ height: '30%', color: vars.color.darkGray }}
 						className={s.productName}>
 						{product.name}
 					</Flex>

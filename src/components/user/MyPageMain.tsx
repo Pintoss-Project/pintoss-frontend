@@ -28,7 +28,7 @@ const MyPageMain = () => {
 			<Spacing margin="170px" />
 			<Flex justify="flex-end">
 				<Flex justify="center" align="center" className={s.grayButton}>
-					<Button color={vars.color['light-gray']} style={{ fontSize: '18px' }}>
+					<Button color={vars.color.lightGray} style={{ fontSize: '18px' }}>
 						회원탈퇴
 					</Button>
 				</Flex>

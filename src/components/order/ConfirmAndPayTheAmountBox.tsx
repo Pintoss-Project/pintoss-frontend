@@ -23,7 +23,7 @@ const ConfirmAndPayTheAmountBox = ({ selectedType, saleRate, totalAmount }: Prop
 					</span>
 				</Flex>
 				<Spacing margin="15px" />
-				<div style={{ border: `1px dashed ${vars.color['pale-gray']}` }} />
+				<div style={{ border: `1px dashed ${vars.color.paleGray}` }} />
 				<Spacing margin="15px" />
 				<Flex justify="space-between" align="center">
 					<span className={s.grayText}>상품 합계금액</span>

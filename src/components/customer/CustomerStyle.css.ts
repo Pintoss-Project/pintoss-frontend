@@ -23,7 +23,7 @@ export const arrowIconRotated = style({
 export const expandedContent = style({
 	padding: '0',
 	maxHeight: '0',
-	backgroundColor: vars.color['white-smoke'],
+	backgroundColor: vars.color.whiteSmoke,
 	transition: 'max-height 0.3s ease, padding 0.3s ease',
 	overflow: 'hidden',
 });

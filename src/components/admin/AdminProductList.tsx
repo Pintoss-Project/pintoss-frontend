@@ -126,11 +126,11 @@ const AdminProductList = () => {
 	};
 
 	return (
-		<div style={{ border: `1px solid ${vars.color['lighter-gray']}` }}>
+		<div style={{ border: `1px solid ${vars.color.lighterGray}` }}>
 			<Flex
 				justify="center"
 				align="center"
-				style={{ padding: '12px 18px', borderBottom: `1px solid ${vars.color['light-gray']}` }}>
+				style={{ padding: '12px 18px', borderBottom: `1px solid ${vars.color.lightGray}` }}>
 				<div className={s.darkGraySmallText} style={{ flex: '1' }}>
 					순번
 				</div>
@@ -155,13 +155,13 @@ const AdminProductList = () => {
 				<Flex
 					key={product.product_id}
 					align="center"
-					style={{ padding: '12px 18px', borderBottom: `1px solid ${vars.color['lighter-gray']}` }}>
+					style={{ padding: '12px 18px', borderBottom: `1px solid ${vars.color.lighterGray}` }}>
 					<div className={s.darkGraySmallText} style={{ flex: '1' }}>
 						{index + 1}
 					</div>
 					<div className={s.darkGraySmallText} style={{ flex: '1' }}>
 						<Flex justify="center" align="center">
-							<FiMenu style={{ width: '20px', height: '20px', color: vars.color['light-gray'] }} />
+							<FiMenu style={{ width: '20px', height: '20px', color: vars.color.lightGray }} />
 						</Flex>
 					</div>
 					<div className={s.darkGraySmallText} style={{ flex: '2' }}>
@@ -203,7 +203,7 @@ const AdminProductList = () => {
 									width: '50px',
 									marginRight: '4px',
 									padding: '4px',
-									border: `1px solid ${vars.color['lighter-gray']}`,
+									border: `1px solid ${vars.color.lighterGray}`,
 									borderRadius: '5px',
 									textAlign: 'center',
 								}}
@@ -215,7 +215,7 @@ const AdminProductList = () => {
 									padding: '4px',
 									marginRight: '8px',
 									color: vars.color.white,
-									backgroundColor: vars.color['lighter-gray'],
+									backgroundColor: vars.color.lighterGray,
 									borderRadius: '5px',
 								}}>
 								수정
@@ -231,7 +231,7 @@ const AdminProductList = () => {
 									padding: '4px',
 									marginRight: '8px',
 									backgroundColor: vars.color.white,
-									border: `1px solid ${vars.color['lighter-gray']}`,
+									border: `1px solid ${vars.color.lighterGray}`,
 									borderRadius: '5px',
 								}}>
 								수정
@@ -242,7 +242,7 @@ const AdminProductList = () => {
 									minWidth: '55px',
 									padding: '4px',
 									backgroundColor: vars.color.white,
-									border: `1px solid ${vars.color['lighter-gray']}`,
+									border: `1px solid ${vars.color.lighterGray}`,
 									borderRadius: '5px',
 								}}>
 								삭제

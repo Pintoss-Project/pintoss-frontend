@@ -15,14 +15,14 @@ const QuantitySelectBox = () => {
 	return (
 		<div>
 			<Spacing margin="9px" />
-			<Divider color={vars.color['pale-gray']} />
+			<Divider color={vars.color.paleGray} />
 			<Spacing margin="15px" />
 			<Flex justify="space-between" align="center" style={{ padding: '0 10px' }}>
 				<div>
 					<span className={s.darkGrayText} style={{ fontSize: '16px' }}>
 						컬쳐랜드 1만원권
 					</span>
-					<span style={{ color: vars.color['soft-red'], marginLeft: '10px' }}>1%↓</span>
+					<span style={{ color: vars.color.softRed, marginLeft: '10px' }}>1%↓</span>
 				</div>
 				<div>
 					<IoClose style={{ width: '20px', height: '20px', color: '#BBBBBB' }} />
@@ -32,7 +32,7 @@ const QuantitySelectBox = () => {
 			<Flex justify="space-between" align="center" style={{ padding: '0 10px' }}>
 				<Flex>
 					<Button
-						color={vars.color['lighter-gray']}
+						color={vars.color.lighterGray}
 						className={s.quantityLeftButton}
 						onClick={() => setCount(count - 1)}>
 						-
@@ -41,18 +41,18 @@ const QuantitySelectBox = () => {
 						{count}
 					</Flex>
 					<Button
-						color={vars.color['dark-gray']}
+						color={vars.color.darkGray}
 						className={s.quantityRightButton}
 						onClick={() => setCount(count + 1)}>
 						+
 					</Button>
 				</Flex>
-				<div style={{ fontSize: '18px', fontWeight: '600', color: vars.color['darker-gray'] }}>
+				<div style={{ fontSize: '18px', fontWeight: '600', color: vars.color.darkerGray }}>
 					{Number('9900').toLocaleString()} 원
 				</div>
 			</Flex>
 			<Spacing margin="15px" />
-			<Divider color={vars.color['lightest-gray']} />
+			<Divider color={vars.color.lightestGray} />
 		</div>
 	);
 };

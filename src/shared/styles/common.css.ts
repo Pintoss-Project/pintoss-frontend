@@ -9,7 +9,7 @@ export const darkBlueButton = style([
 	f.wFull,
 	{
 		height: '56px',
-		backgroundColor: vars.color['dark-blue'],
+		backgroundColor: vars.color.darkBlue,
 		borderRadius: '5px',
 	},
 ]);
@@ -19,7 +19,7 @@ export const lightBlueButton = style([
 	{
 		height: '56px',
 		fontSize: '18px',
-		backgroundColor: vars.color['light-blue'],
+		backgroundColor: vars.color.lightBlue,
 		borderRadius: '5px',
 	},
 ]);
@@ -29,7 +29,7 @@ export const lightGrayButton = style([
 	{
 		height: '56px',
 		fontSize: '18px',
-		backgroundColor: vars.color['light-gray'],
+		backgroundColor: vars.color.lightGray,
 		borderRadius: '5px',
 	},
 ]);
@@ -40,7 +40,7 @@ export const whiteAndBlueButton = style([
 		height: '50px',
 		backgroundColor: vars.color.white,
 		borderRadius: '5px',
-		border: `1px solid ${vars.color['light-blue']}`,
+		border: `1px solid ${vars.color.lightBlue}`,
 	},
 ]);
 

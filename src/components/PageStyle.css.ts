@@ -18,7 +18,7 @@ export const sectionStyle = style({
 
 export const pageHeader = style({
 	width: '100%',
-	color: vars.color['darker-gray'],
+	color: vars.color.darkerGray,
 	fontSize: '30px',
 	fontWeight: '600',
 	textAlign: 'left',

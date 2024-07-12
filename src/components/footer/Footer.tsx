@@ -51,30 +51,30 @@ const Footer = () => {
 							</a>
 						</Flex>
 						<Spacing margin="20px" />
-						<p className={s.pText} style={{ color: vars.color['light-gray'] }}>
+						<p className={s.pText} style={{ color: vars.color.lightGray }}>
 							ⓒ 핀토스. All rights reserved.
 						</p>
 					</div>
 					<Flex direction="column" align="flex-end">
-						<div style={{ color: vars.color['darker-gray'], fontSize: '18px', fontWeight: '600' }}>
+						<div style={{ color: vars.color.darkerGray, fontSize: '18px', fontWeight: '600' }}>
 							고객센터
 						</div>
 						<Spacing margin="15px" />
-						<div style={{ color: vars.color['dark-blue'], fontSize: '30px', fontWeight: 'bold' }}>
+						<div style={{ color: vars.color.darkBlue, fontSize: '30px', fontWeight: 'bold' }}>
 							1544-4202
 						</div>
 						<Spacing margin="5px" />
-						<p style={{ color: vars.color['darker-gray'], fontSize: '18px' }}>
+						<p style={{ color: vars.color.darkerGray, fontSize: '18px' }}>
 							오전 09:00 ~ 새벽 01:00 연중무휴
 						</p>
 						<Spacing margin="20px" />
 						<div>
-							<Link href="/" style={{ color: vars.color['dark-blue'], fontSize: '15px' }}>
+							<Link href="/" style={{ color: vars.color.darkBlue, fontSize: '15px' }}>
 								개인정보 처리방침
 							</Link>
 							<Link
 								href="/"
-								style={{ color: vars.color['medium-gray'], marginLeft: '14px', fontSize: '15px' }}>
+								style={{ color: vars.color.mediumGray, marginLeft: '14px', fontSize: '15px' }}>
 								이용약관
 							</Link>
 						</div>

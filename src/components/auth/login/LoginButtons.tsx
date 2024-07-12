@@ -19,7 +19,7 @@ const LoginButtons = () => {
 			<Spacing margin="25px" />
 			<Flex justify="center" align="center">
 				<Divider
-					color={vars.color['pale-gray']}
+					color={vars.color.paleGray}
 					size={1}
 					style={{ width: '44%', backgroundColor: 'transparent' }}
 				/>
@@ -27,7 +27,7 @@ const LoginButtons = () => {
 					또는
 				</span>
 				<Divider
-					color={vars.color['pale-gray']}
+					color={vars.color.paleGray}
 					size={1}
 					style={{ width: '44%', backgroundColor: 'transparent' }}
 				/>

@@ -8,25 +8,25 @@ export const container = style({
 });
 
 export const orderListInfoBox = style({
-	border: `1px solid ${vars.color['lighter-gray']}`,
+	border: `1px solid ${vars.color.lighterGray}`,
 	borderRadius: '0px 10px 10px 10px',
 });
 
 export const loginHistoryInfoBox = style({
 	marginRight: '20px',
-	border: `1px solid ${vars.color['lighter-gray']}`,
+	border: `1px solid ${vars.color.lighterGray}`,
 	borderRadius: '0px 10px 10px 10px',
 });
 
 export const orderInstructionInfoBox = style({
 	padding: '30px',
-	backgroundColor: vars.color['white-smoke'],
+	backgroundColor: vars.color.whiteSmoke,
 	borderRadius: '0px 10px 10px 10px',
 });
 
 export const menuBarTitle = style({
 	height: '50px',
-	backgroundColor: vars.color['pale-gray'],
+	backgroundColor: vars.color.paleGray,
 });
 
 export const flexItem1 = style({
@@ -55,26 +55,26 @@ export const flexItem6 = style({
 
 export const loginFlexItem1 = style({
 	flex: 1,
-	color: vars.color['dark-gray'],
+	color: vars.color.darkGray,
 	fontSize: '14px',
 });
 
 export const loginFlexItem2 = style({
 	flex: 1,
-	color: vars.color['dark-gray'],
+	color: vars.color.darkGray,
 	fontSize: '14px',
 });
 
 export const orderListItem = style({
 	height: '55px',
 	fontSize: '14px',
-	borderBottom: `1px solid ${vars.color['lightest-gray']}`,
+	borderBottom: `1px solid ${vars.color.lightestGray}`,
 });
 
 export const loginHistoryItem = style({
 	height: '55px',
 	fontSize: '14px',
-	borderBottom: `1px solid ${vars.color['lightest-gray']}`,
+	borderBottom: `1px solid ${vars.color.lightestGray}`,
 });
 
 export const orderInstructionCircle = style({
@@ -84,11 +84,11 @@ export const orderInstructionCircle = style({
 	color: vars.color.white,
 	fontSize: '10px',
 	borderRadius: '50%',
-	backgroundColor: vars.color['dark-blue'],
+	backgroundColor: vars.color.darkBlue,
 });
 
 export const orderInstructionText = style({
-	color: vars.color['dark-gray'],
+	color: vars.color.darkGray,
 	fontSize: '14px',
 	textAlign: 'left',
 });

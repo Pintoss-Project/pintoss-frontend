@@ -32,7 +32,7 @@ const CartOrderListItem = ({ icon, name, price, quantity }: Props) => {
 			<span className={clsx(s.flexItem3, s.grayText)}>{price.toLocaleString()} 원</span>
 			<Flex justify="center" align="center" className={clsx(s.flexItem4)}>
 				<Button
-					color={vars.color['lighter-gray']}
+					color={vars.color.lighterGray}
 					className={s.quantityLeftButton}
 					onClick={() => setCount(count - 1)}>
 					-
@@ -41,7 +41,7 @@ const CartOrderListItem = ({ icon, name, price, quantity }: Props) => {
 					{count}
 				</Flex>
 				<Button
-					color={vars.color['dark-gray']}
+					color={vars.color.darkGray}
 					className={s.quantityRightButton}
 					onClick={() => setCount(count + 1)}>
 					+

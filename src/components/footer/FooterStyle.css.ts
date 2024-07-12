@@ -13,5 +13,5 @@ export const footerBox = style([
 
 export const pText = style({
 	fontSize: '14px',
-	color: vars.color['medium-gray'],
+	color: vars.color.mediumGray,
 });

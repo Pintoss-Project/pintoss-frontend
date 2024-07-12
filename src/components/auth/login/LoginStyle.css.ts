@@ -8,17 +8,17 @@ export const loginMainContainer = style({
 export const loginInputStyle = style({
 	height: '50px',
 	padding: '18px',
-	border: `1px solid ${vars.color['pale-gray']}`,
+	border: `1px solid ${vars.color.paleGray}`,
 	borderRadius: '5px',
 });
 
 export const grayText = style({
 	fontSize: '14px',
-	color: vars.color['light-gray'],
+	color: vars.color.lightGray,
 });
 
 export const blueText = style({
 	marginLeft: '7px',
 	fontSize: '14px',
-	color: vars.color['light-blue'],
+	color: vars.color.lightBlue,
 });

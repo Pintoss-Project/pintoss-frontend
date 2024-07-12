@@ -8,23 +8,23 @@ export const container = style({
 });
 
 export const cartOrderListInfoBox = style({
-	border: `1px solid ${vars.color['lighter-gray']}`,
+	border: `1px solid ${vars.color.lighterGray}`,
 	borderRadius: '0px 10px 10px 10px',
 });
 
 export const menuBarTitle = style({
 	height: '50px',
-	backgroundColor: vars.color['white-smoke'],
+	backgroundColor: vars.color.whiteSmoke,
 });
 
 export const cartOrderListItemBox = style({
 	height: '70px',
-	border: `1px solid ${vars.color['lightest-gray']}`,
+	border: `1px solid ${vars.color.lightestGray}`,
 });
 
 export const cartOrderInstructionInfoBox = style({
 	padding: '30px',
-	backgroundColor: vars.color['white-smoke'],
+	backgroundColor: vars.color.whiteSmoke,
 	borderRadius: '0 10px 10px 10px',
 });
 
@@ -39,7 +39,7 @@ export const cartOrdererInfoItem = style({
 });
 
 export const cartOrdererInfoDivider = style({
-	border: `1px dashed ${vars.color['pale-gray']}`,
+	border: `1px dashed ${vars.color.paleGray}`,
 });
 
 export const flexItem1 = style({
@@ -67,19 +67,19 @@ export const flexItem6 = style({
 });
 
 export const grayText = style({
-	color: vars.color['dark-gray'],
+	color: vars.color.darkGray,
 	fontSize: '14px',
 });
 
 export const smallGrayText = style({
 	marginLeft: '12px',
-	color: vars.color['medium-gray'],
+	color: vars.color.mediumGray,
 	fontSize: '12px',
 	textAlign: 'left',
 });
 
 export const darkBlueText = style({
-	color: vars.color['dark-blue'],
+	color: vars.color.darkBlue,
 	fontSize: '14px',
 	fontWeight: '600',
 });
@@ -88,24 +88,24 @@ export const quantityLeftButton = style({
 	width: '30px',
 	height: '30px',
 	fontSize: '20px',
-	backgroundColor: vars.color['lightest-gray'],
-	border: `1px solid ${vars.color['lighter-gray']}`,
+	backgroundColor: vars.color.lightestGray,
+	border: `1px solid ${vars.color.lighterGray}`,
 });
 
 export const quantityText = style({
 	width: '30px',
 	height: '30px',
-	color: vars.color['darker-gray'],
+	color: vars.color.darkerGray,
 	fontSize: '14px',
-	border: `1px solid ${vars.color['lighter-gray']}`,
+	border: `1px solid ${vars.color.lighterGray}`,
 });
 
 export const quantityRightButton = style({
 	width: '30px',
 	height: '30px',
 	fontSize: '20px',
-	backgroundColor: vars.color['lighter-gray'],
-	border: `1px solid ${vars.color['lighter-gray']}`,
+	backgroundColor: vars.color.lighterGray,
+	border: `1px solid ${vars.color.lighterGray}`,
 });
 
 export const cartOrderTotalInfoBox = style({
@@ -114,7 +114,7 @@ export const cartOrderTotalInfoBox = style({
 
 export const orderTotalPrice = style({
 	marginLeft: '10px',
-	color: vars.color['dark-blue'],
+	color: vars.color.darkBlue,
 	fontSize: '20px',
 	fontWeight: '600',
 });
@@ -123,7 +123,7 @@ export const cartItemRemoveButton = style([
 	{
 		paddingBottom: '2px',
 		fontSize: '12px',
-		backgroundColor: vars.color['lighter-gray'],
+		backgroundColor: vars.color.lighterGray,
 		borderRadius: '50%',
 	},
 ]);
@@ -136,7 +136,7 @@ export const cartRemoveButton = style({
 
 export const cartPaymentInfoItemBox = style({
 	padding: '30px 55px 52px 55px',
-	border: `1px solid ${vars.color['lightest-gray']}`,
+	border: `1px solid ${vars.color.lightestGray}`,
 });
 
 export const paymentMethodBox = style([
@@ -144,7 +144,7 @@ export const paymentMethodBox = style([
 	{
 		padding: '15px 10px',
 		marginRight: '6px',
-		border: `1px solid ${vars.color['pale-gray']}`,
+		border: `1px solid ${vars.color.paleGray}`,
 		borderRadius: '0px 10px 10px 10px',
 		cursor: 'pointer',
 	},
@@ -153,7 +153,7 @@ export const paymentMethodBox = style([
 export const paymentMethodBoxSelected = style([
 	paymentMethodBox,
 	{
-		border: `1px solid ${vars.color['sky-blue']}`,
+		border: `1px solid ${vars.color.skyBlue}`,
 	},
 ]);
 
@@ -161,14 +161,14 @@ export const circleCheckIcon = style({
 	width: '21px',
 	height: '21px',
 	color: vars.color.white,
-	backgroundColor: vars.color['lightest-gray'],
+	backgroundColor: vars.color.lightestGray,
 	borderRadius: '50%',
 });
 
 export const circleCheckIconSelected = style([
 	circleCheckIcon,
 	{
-		backgroundColor: vars.color['sky-blue'],
+		backgroundColor: vars.color.skyBlue,
 		color: vars.color.white,
 	},
 ]);
@@ -180,7 +180,7 @@ export const confirmAndPayTheAmountBox = style({
 
 export const totalPayAmountBox = style({
 	padding: '24px 20px',
-	backgroundColor: vars.color['dim-gray'],
+	backgroundColor: vars.color.dimGray,
 	borderRadius: '5px',
 });
 

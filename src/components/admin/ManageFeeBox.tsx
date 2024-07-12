@@ -14,7 +14,7 @@ const ManageFeeBox = () => {
 				padding: '18px 30px',
 				marginRight: '16px',
 				backgroundColor: vars.color.white,
-				border: `1px solid ${vars.color['lighter-gray']}`,
+				border: `1px solid ${vars.color.lighterGray}`,
 			}}>
 			<div className={s.blackMediumText}>수수료 관리</div>
 			<Flex direction="column" justify="center" align="center" style={{ height: '85%' }}>
@@ -22,8 +22,7 @@ const ManageFeeBox = () => {
 					<div className={s.lightGrayMediumText} style={{ width: '100px' }}>
 						카드결제
 					</div>
-					<div
-						style={{ marginLeft: '27px', borderBottom: `1px solid ${vars.color['lighter-gray']}` }}>
+					<div style={{ marginLeft: '27px', borderBottom: `1px solid ${vars.color.lighterGray}` }}>
 						<Input
 							type="number"
 							step="0.1"
@@ -38,8 +37,7 @@ const ManageFeeBox = () => {
 					<div className={s.lightGrayMediumText} style={{ width: '100px' }}>
 						휴대폰결제
 					</div>
-					<div
-						style={{ marginLeft: '27px', borderBottom: `1px solid ${vars.color['lighter-gray']}` }}>
+					<div style={{ marginLeft: '27px', borderBottom: `1px solid ${vars.color.lighterGray}` }}>
 						<Input
 							type="number"
 							step="0.1"

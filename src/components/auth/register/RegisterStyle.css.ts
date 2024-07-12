@@ -10,7 +10,7 @@ export const subTitle = style({
 export const starStyle = style({
 	margin: '0px 10px 0px 2px',
 	fontSize: '14px',
-	color: vars.color['sky-blue'],
+	color: vars.color.skyBlue,
 });
 
 export const labelText = style({
@@ -24,14 +24,14 @@ export const inputStyle = style({
 	height: '40px',
 	padding: '10px',
 	fontSize: '12px',
-	border: `1px solid ${vars.color['lighter-gray']}`,
+	border: `1px solid ${vars.color.lighterGray}`,
 	borderRadius: '5px',
 });
 
 export const pText = style({
 	width: '100%',
 	fontSize: '10px',
-	color: vars.color['medium-gray'],
+	color: vars.color.mediumGray,
 	textAlign: 'right',
 });
 
@@ -39,7 +39,7 @@ export const phoneInfoBox = style({
 	width: '417px',
 	height: '153px',
 	padding: '20px',
-	backgroundColor: vars.color['white-smoke'],
+	backgroundColor: vars.color.whiteSmoke,
 });
 
 export const baseText = style({
@@ -48,20 +48,20 @@ export const baseText = style({
 
 export const smallText = style({
 	fontSize: '12px',
-	color: vars.color['dark-gray'],
+	color: vars.color.darkGray,
 	textAlign: 'left',
 });
 
 export const skyBlueText = style({
 	marginLeft: '5px',
-	color: vars.color['sky-blue'],
+	color: vars.color.skyBlue,
 	fontSize: '12px',
 	fontWeight: '500',
 });
 
 export const redText = style({
 	fontSize: '12px',
-	color: vars.color['soft-red'],
+	color: vars.color.softRed,
 	textAlign: 'left',
 });
 
@@ -69,13 +69,13 @@ export const acceptTermsBox = style({
 	width: '418px',
 	height: '110px',
 	padding: '15px 12px',
-	border: `1px solid ${vars.color['pale-gray']}`,
+	border: `1px solid ${vars.color.paleGray}`,
 	borderRadius: '5px',
 });
 
 export const acceptTermsText = style({
 	fontSize: '12px',
-	color: vars.color['dim-gray'],
+	color: vars.color.dimGray,
 	lineHeight: '1.5',
 	textAlign: 'left',
 });
@@ -91,11 +91,11 @@ export const acceptTermsInnerWrap = style({
 			width: '3px',
 		},
 		'&::-webkit-scrollbar-thumb': {
-			backgroundColor: vars.color['lighter-gray'],
+			backgroundColor: vars.color.lighterGray,
 			borderRadius: '3px',
 		},
 		'&::-webkit-scrollbar-thumb:hover': {
-			backgroundColor: vars.color['light-gray'],
+			backgroundColor: vars.color.lightGray,
 		},
 		'&::-webkit-scrollbar-track': {
 			backgroundColor: 'transparent',
@@ -123,7 +123,7 @@ export const customCheckboxContainer = style({
 export const customCheckbox = style({
 	width: '16px',
 	height: '16px',
-	backgroundColor: vars.color['lightest-gray'],
+	backgroundColor: vars.color.lightestGray,
 	borderRadius: '50%',
 	position: 'relative',
 	cursor: 'pointer',
@@ -147,11 +147,11 @@ export const checkboxLabel = style({
 });
 
 export const acceptTermsBoxChecked = style({
-	border: `1px solid ${vars.color['sky-blue']}`,
+	border: `1px solid ${vars.color.skyBlue}`,
 });
 
 globalStyle(`${hiddenCheckbox}:checked + div > div`, {
-	backgroundColor: vars.color['sky-blue'],
+	backgroundColor: vars.color.skyBlue,
 });
 
 globalStyle(`${hiddenCheckbox}:checked + div::after`, {
