@@ -41,7 +41,10 @@ const CartPaymentInfoItemBox = ({ totalAmount }: Props) => {
 				</span>
 			</Flex>
 			<Spacing margin="15px" />
-			<Button color={vars.color.white} className={clsx(s.responsiveLargeText, cs.lightBlueButton)}>
+			<Button
+				color={vars.color.white}
+				className={clsx(s.responsiveLargeText, cs.lightBlueButton)}
+				style={{ height: '60px' }}>
 				결제요청
 			</Button>
 		</div>

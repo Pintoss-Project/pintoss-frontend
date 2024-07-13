@@ -44,6 +44,7 @@ export const lightBlueButton = style([
 				height: '40px',
 			},
 			[responsive.tabletSmall]: {
+				maxWidth: '100%',
 				height: '37px',
 			},
 			[responsive.mobile]: {

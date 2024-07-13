@@ -244,10 +244,38 @@ export const homeProductBox = style([
 			[responsive.tablet]: {
 				height: '230px',
 			},
-			[responsive.tablet]: {
+			[responsive.mobile]: {
 				height: '200px',
 			},
 		},
+	},
+]);
+
+export const homeProductBoxWrap = style({
+	'display': 'block',
+	'@media': {
+		[responsive.mobile]: {
+			display: 'none',
+		},
+	},
+});
+
+export const homeProductMobileBoxWrap = style({
+	'display': 'none',
+	'@media': {
+		[responsive.mobile]: {
+			display: 'block',
+		},
+	},
+});
+
+export const homeProductMobileBox = style([
+	f.pRelative,
+	{
+		height: '130px',
+		backgroundColor: vars.color.white,
+		borderRadius: '0 10px 10px 10px',
+		boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
 	},
 ]);
 
@@ -345,6 +373,17 @@ export const productName = style({
 	},
 });
 
+export const mobileBoxProductName = style({
+	marginTop: '30px',
+	fontSize: '14px',
+	fontWeight: '600',
+	textAlign: 'center',
+	lineHeight: '1.3',
+	wordBreak: 'keep-all',
+	whiteSpace: 'normal',
+	wordWrap: 'break-word',
+});
+
 export const productIconBox = style([
 	f.pAbsolute,
 	{
@@ -394,6 +433,13 @@ export const responsiveGrid = style({
 			gridTemplateColumns: 'repeat(2, 1fr)',
 		},
 	},
+});
+
+export const mobileBoxResponsiveGrid = style({
+	display: 'grid',
+	gridTemplateColumns: 'repeat(3, 1fr)',
+	gap: '5px',
+	width: '100%',
 });
 
 export const homeProductTextBox = style({

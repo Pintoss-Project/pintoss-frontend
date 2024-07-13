@@ -2,6 +2,7 @@ import * as s from './HomeStyle.css';
 import { Grid } from '@/shared/components/layout';
 import HomeProductBox from './HomeProductBox';
 import { vars } from '@/shared/styles/theme.css';
+import HomeProductMobileBox from './HomeProductMobileBox';
 
 const SALE_PRODUCTS = [
 	{
@@ -85,15 +86,30 @@ const COLORS = [vars.color.lightRed, vars.color.blue, vars.color.green, vars.col
 
 const HomeProductsOnSale = () => {
 	return (
-		<Grid style={{ width: '100%' }} className={s.responsiveGrid}>
-			{SALE_PRODUCTS.map((product, index) => (
-				<HomeProductBox
-					key={product.id}
-					headerColor={COLORS[index % COLORS.length]}
-					product={product}
-				/>
-			))}
-		</Grid>
+		<>
+			<div className={s.homeProductBoxWrap}>
+				<Grid style={{ width: '100%' }} className={s.responsiveGrid}>
+					{SALE_PRODUCTS.map((product, index) => (
+						<HomeProductBox
+							key={product.id}
+							headerColor={COLORS[index % COLORS.length]}
+							product={product}
+						/>
+					))}
+				</Grid>
+			</div>
+			<div className={s.homeProductMobileBoxWrap}>
+				<Grid style={{ width: '100%' }} className={s.mobileBoxResponsiveGrid}>
+					{SALE_PRODUCTS.map((product, index) => (
+						<HomeProductMobileBox
+							key={product.id}
+							headerColor={COLORS[index % COLORS.length]}
+							product={product}
+						/>
+					))}
+				</Grid>
+			</div>
+		</>
 	);
 };
 

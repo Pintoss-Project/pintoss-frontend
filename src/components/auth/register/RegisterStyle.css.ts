@@ -55,7 +55,6 @@ export const pText = style({
 	'@media': {
 		[responsive.mobile]: {
 			textAlign: 'center',
-			marginLeft: '40px',
 		},
 	},
 });
