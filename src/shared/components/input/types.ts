@@ -1,5 +1,4 @@
 import { ChangeEvent } from 'react';
-import { AsElementProps } from '../layout/core/types';
 
 export type InputProps = {
 	name?: string;

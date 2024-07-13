@@ -1,18 +1,18 @@
 'use client';
 
-import * as s from './CustomerStyle.css';
 import * as hs from '@/components/home/HomeStyle.css';
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
+import clsx from 'clsx';
 import { useState } from 'react';
 import { IoIosArrowDown } from 'react-icons/io';
-import clsx from 'clsx';
 import {
 	MdKeyboardArrowLeft,
 	MdKeyboardArrowRight,
 	MdKeyboardDoubleArrowLeft,
 	MdKeyboardDoubleArrowRight,
 } from 'react-icons/md';
+import * as s from './CustomerStyle.css';
 
 const addInformation =
 	'안녕하세요 상품권 전문 매입회사 핀토스 입니다. 수수료 단가 공지안내드립니다.\n기존과 동일하며 은행점검시간 00시부터00:30분사이에는 입금이 지연될수 있으니 참고 부탁드립니다.\n■ 상품권 매입가(수수료) 안내\n- 컬쳐랜드 문화상품권 : 89% (수수료 11%)\n- 컬쳐랜드 교환권 : 89% (수수료 11%)\n- 해피머니 문화상품권 : 89% (수수료 11%)\n- 해피머니 교환권 : 89% (수수료 11%)\n- 구글기프트 카톡 교환권 : 89% (수수료 11%)\n- 북앤라이프 도서 문화상품권 : 89% (수수료 11%)\n- 북앤라이프 교환권 : 89% (수수료 11%)\n■ 카톡&문자 거래 \n- 롯데모바일상품권 카톡 ﻿교환권 92%(수수료 8%) 이체수수료X\n■ 등기거래\n- 롯데&신세계&현대지류상품권 : 92%(수수료 8%) (롯데&신세계&현대 지류상품권은 우체국 등기거래만 가능합니다)\n※ 카톡&문자&등기거래 문의는 AM09~AM01 고객센터 운영시간에만 가능합니다.  \n※ 상품권 매입 수수료는 시장 상황에 따라 변동될 수 있습니다. \n※ 문화상품권현금 교환 은 거래신청 후 환불 및 취소가 불가능합니다.\n항상 저희 핀토스를 애용해주셔서 감사합니다\n';

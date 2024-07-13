@@ -15,7 +15,7 @@ import QuantitySelectBox from './QuantitySelectBox';
 const ProductDetailSelectAndPayBox = () => {
 	const [selectedType, setSelectedType] = useState<string>('card');
 	const [saleRate, setSaleRate] = useState(0);
-	const [totalAmount, setTotalAmount] = useState(0);
+	const [totalAmount, _] = useState(0);
 
 	useEffect(() => {
 		setSaleRate(selectedType === 'card' ? 1.2 : 0);

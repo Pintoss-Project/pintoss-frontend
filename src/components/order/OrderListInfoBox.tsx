@@ -51,6 +51,7 @@ const OrderListInfoBox = () => {
 			<div>
 				{ORDER_LIST_INFO.map((order) => (
 					<OrderListItem
+						key={order.orderNo}
 						orderNo={order.orderNo}
 						payResult={order.payResult}
 						orderStatus={order.orderStatus}

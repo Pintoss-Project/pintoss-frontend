@@ -1,4 +1,3 @@
-import { f } from '@/shared/styles/functions';
 import { responsive, vars } from '@/shared/styles/theme.css';
 import { style } from '@vanilla-extract/css';
 
@@ -22,6 +21,7 @@ export const customerHeader = style({
 			textAlign: 'center',
 		},
 		[responsive.mobile]: {
+			padding: '40px 10px 0 10px',
 			fontSize: '25px',
 			textAlign: 'center',
 		},

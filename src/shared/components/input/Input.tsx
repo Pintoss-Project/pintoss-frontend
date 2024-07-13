@@ -15,7 +15,6 @@ const Input = (props: InputProps, ref: Ref<HTMLInputElement>) => {
 		checked,
 		placeholder = '',
 		color = 'gray',
-		variant = 'outline',
 		errorBorderColor = '#E53E3E',
 		focusBorderColor = '#3182CE',
 		className,
@@ -24,7 +23,6 @@ const Input = (props: InputProps, ref: Ref<HTMLInputElement>) => {
 		onChange,
 		onBlur,
 		value,
-		...rest
 	} = props;
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

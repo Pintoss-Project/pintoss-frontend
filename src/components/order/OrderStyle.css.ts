@@ -1,4 +1,3 @@
-import { f } from '@/shared/styles/functions';
 import { responsive, vars } from '@/shared/styles/theme.css';
 import { style } from '@vanilla-extract/css';
 

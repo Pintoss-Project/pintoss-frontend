@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { InputGroupProps } from './types';
-import { Children, cloneElement, isValidElement } from 'react';
+import { Children, cloneElement, isValidElement, ReactElement } from 'react';
 import { clsx } from 'clsx';
 
 const InputGroup = (props: InputGroupProps, ref: React.Ref<HTMLDivElement>) => {
@@ -11,17 +11,18 @@ const InputGroup = (props: InputGroupProps, ref: React.Ref<HTMLDivElement>) => {
 	const inputStyle: React.CSSProperties = {};
 
 	childrenWithProps.forEach((child) => {
-		// @ts-ignore
-		if (child.type.displayName === 'InputLeftAddon') {
+		if (
+			isValidElement(child) &&
+			(child.type as React.ComponentType).displayName === 'InputLeftAddon'
+		) {
 			inputStyle.borderStartStartRadius = 0;
 			inputStyle.borderEndStartRadius = 0;
 		}
 	});
 
 	const inputGroupChildren = childrenWithProps.map((child) => {
-		if (isValidElement(child)) {
-			// @ts-ignore
-			if (child.type.displayName === 'Input') {
+		if (isValidElement(child) && child.type) {
+			if ((child.type as React.ComponentType).displayName === 'Input') {
 				return cloneElement(child, {
 					...child.props,
 					color,

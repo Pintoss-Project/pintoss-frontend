@@ -1,5 +1,3 @@
-import Spacing from '@/shared/components/layout/Spacing';
-
 const LoginCompleteText = () => {
 	return (
 		<div style={{ width: '100%', height: '100px' }}>

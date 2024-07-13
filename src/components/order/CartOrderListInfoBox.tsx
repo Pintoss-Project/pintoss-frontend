@@ -1,9 +1,8 @@
-import { Flex } from '@/shared/components/layout';
-import * as s from './CartStyle.css';
-import CartOrderListItem from './CartOrderListItem';
-import { CultureLandLogo } from '../../../public/svgs';
-import CartOrderTotalInfoBox from './CartOrderTotalInfoBox';
 import { Dispatch, SetStateAction, useEffect } from 'react';
+import { CultureLandLogo } from '../../../public/svgs';
+import CartOrderListItem from './CartOrderListItem';
+import CartOrderTotalInfoBox from './CartOrderTotalInfoBox';
+import * as s from './CartStyle.css';
 
 interface Props {
 	setTotalAmount: Dispatch<SetStateAction<number>>;

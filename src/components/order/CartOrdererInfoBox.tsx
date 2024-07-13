@@ -1,8 +1,6 @@
-import { Divider } from '@/shared/components/layout';
+import Spacing from '@/shared/components/layout/Spacing';
 import CartOrdererInfoItem from './CartOrdererInfoItem';
 import * as s from './CartStyle.css';
-import Spacing from '@/shared/components/layout/Spacing';
-import { vars } from '@/shared/styles/theme.css';
 
 const CartOrdererInfoBox = () => {
 	return (

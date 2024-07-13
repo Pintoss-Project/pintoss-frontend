@@ -1,12 +1,11 @@
 'use client';
 
-import * as s from './CartStyle.css';
 import Spacing from '@/shared/components/layout/Spacing';
-import CartOrderListInfoBox from './CartOrderListInfoBox';
-import { Flex } from '@/shared/components/layout';
-import CartOrderEtcInfoBox from './CartOrderEtcInfoBox';
-import CartPaymentInfoBox from './CartPaymentInfoBox';
 import { useState } from 'react';
+import CartOrderEtcInfoBox from './CartOrderEtcInfoBox';
+import CartOrderListInfoBox from './CartOrderListInfoBox';
+import CartPaymentInfoBox from './CartPaymentInfoBox';
+import * as s from './CartStyle.css';
 
 const CartMain = () => {
 	const [totalAmount, setTotalAmount] = useState(0);

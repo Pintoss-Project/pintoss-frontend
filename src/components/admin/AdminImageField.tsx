@@ -1,8 +1,6 @@
-import * as s from './AdminStyle.css';
-import { Input } from '@/shared/components/input';
 import { Flex } from '@/shared/components/layout';
-import { vars } from '@/shared/styles/theme.css';
 import { ReactNode } from 'react';
+import * as s from './AdminStyle.css';
 
 interface Props {
 	label: string;

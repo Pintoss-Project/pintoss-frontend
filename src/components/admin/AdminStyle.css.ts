@@ -84,7 +84,7 @@ export const userSearchButton = style({
 	border: `1px solid ${vars.color.lightGray}`,
 });
 
-const microText = style({
+export const microText = style({
 	fontSize: '12px',
 });
 

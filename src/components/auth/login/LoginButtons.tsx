@@ -4,7 +4,7 @@ import * as cs from '@/shared/styles/common.css';
 import * as s from './LoginStyle.css';
 
 import { Button } from '@/shared/components/button';
-import { Divider, Flex } from '@/shared/components/layout';
+import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import { vars } from '@/shared/styles/theme.css';
 import Image from 'next/image';

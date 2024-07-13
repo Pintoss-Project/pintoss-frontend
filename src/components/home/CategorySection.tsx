@@ -4,7 +4,6 @@ import * as s from './HomeStyle.css';
 
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
-import clsx from 'clsx';
 import { ReactNode, useState } from 'react';
 
 interface Props {

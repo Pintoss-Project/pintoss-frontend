@@ -19,7 +19,7 @@ const LoginHistoryInfoBox = () => {
 				<span className={s.loginFlexItem2}>접속일시</span>
 			</Flex>
 			{LOGIN_HISTORY.map((history) => (
-				<Flex align="center" className={s.loginHistoryItem}>
+				<Flex key={history.id} align="center" className={s.loginHistoryItem}>
 					<span className={s.loginFlexItem1}>{history.ip}</span>
 					<span className={s.loginFlexItem2}>{history.date}</span>
 				</Flex>

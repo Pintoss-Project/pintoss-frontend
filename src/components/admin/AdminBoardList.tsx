@@ -39,7 +39,7 @@ const AdminBoardList = ({ type }: Props) => {
 		};
 
 		fetchData();
-	}, []);
+	}, [type]);
 
 	const handleClickPage = (pageNumber: number) => {
 		setCurrentPage(pageNumber);

@@ -1,7 +1,6 @@
 import * as s from './NavBarStyle.css';
 
 import { Flex } from '@/shared/components/layout';
-import Spacing from '@/shared/components/layout/Spacing';
 import Image from 'next/image';
 
 interface Props {
