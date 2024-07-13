@@ -59,11 +59,11 @@ const ProductDetailSelectAndPayBox = () => {
 				<Button
 					color={vars.color.white}
 					className={cs.lightBlueButton}
-					style={{ fontSize: '18px' }}>
+					style={{ fontSize: '18px', height: '60px' }}>
 					바로 구매
 				</Button>
 				<div style={{ margin: '0 3px' }}></div>
-				<Button color={vars.color.white} className={cs.lightGrayButton}>
+				<Button color={vars.color.white} className={cs.lightGrayButton} style={{ height: '60px' }}>
 					장바구니 담기
 				</Button>
 			</Flex>

@@ -8,6 +8,7 @@ import { vars } from '@/shared/styles/theme.css';
 import { Flex, GridItem } from '@/shared/components/layout';
 import Image from 'next/image';
 import Link from 'next/link';
+import clsx from 'clsx';
 
 interface Props {
 	headerColor?: string;
@@ -30,7 +31,7 @@ const HomeProductBox = ({ headerColor, product }: Props) => {
 				<div
 					className={s.homeProductBoxTop}
 					style={assignInlineVars({ [s.headerColor]: headerColor || 'initial' })}></div>
-				<div style={{ height: '45%', margin: '0px 16px' }}>
+				<div className={s.homeProductTextBox}>
 					<div style={{ height: '40%' }}></div>
 					<Flex
 						justify="center"
@@ -43,23 +44,22 @@ const HomeProductBox = ({ headerColor, product }: Props) => {
 							<span className={s.rateGrayText}>카드</span>
 							<span className={s.rateRedText}>{product.card}%↓</span>
 						</Flex>
-						<div style={{ margin: '0px 3px' }}></div>
+						<div className={s.rateBoxMarginBox}></div>
 						<Flex justify="center" align="center" className={s.rateBox}>
 							<span className={s.rateGrayText}>휴대폰</span>
 							<span className={s.rateRedText}>{product.phone}%↓</span>
 						</Flex>
 					</Flex>
 				</div>
-				<div style={{ height: '30%', padding: '15px 16px' }}>
+				<div className={s.purchaseButtonWrap}>
 					<Button
 						color={vars.color.white}
-						className={cs.lightBlueButton}
-						style={{ fontSize: '18px' }}>
+						className={clsx(cs.lightBlueButton, s.purchaseButtonText)}>
 						구매하기
 					</Button>
 				</div>
 				<div className={s.productIconBox}>
-					<Image src={product.icon} alt="상품권 로고 이미지" width={106} height={106} />
+					<img src={product.icon} alt="상품권 로고 이미지" className={s.productIconImage} />
 				</div>
 			</GridItem>
 		</Link>

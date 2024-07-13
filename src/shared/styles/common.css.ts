@@ -35,10 +35,21 @@ export const darkBlueButton = style([
 export const lightBlueButton = style([
 	f.wFull,
 	{
-		maxWidth: '420px',
-		height: '56px',
-		backgroundColor: vars.color.lightBlue,
-		borderRadius: '5px',
+		'maxWidth': '420px',
+		'height': '56px',
+		'backgroundColor': vars.color.lightBlue,
+		'borderRadius': '5px',
+		'@media': {
+			[responsive.tablet]: {
+				height: '40px',
+			},
+			[responsive.tabletSmall]: {
+				height: '37px',
+			},
+			[responsive.mobile]: {
+				height: '34px',
+			},
+		},
 	},
 ]);
 

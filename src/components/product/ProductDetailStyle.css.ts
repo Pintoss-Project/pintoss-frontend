@@ -174,9 +174,15 @@ export const productDetailSelectAndPayBox = style({
 });
 
 export const totalPayInfoBox = style({
-	padding: '24px 20px',
-	backgroundColor: vars.color.dimGray,
-	borderRadius: '0 10px 10px 10px',
+	'padding': '24px 20px',
+	'backgroundColor': vars.color.dimGray,
+	'borderRadius': '0 10px 10px 10px',
+	'@media': {
+		[responsive.tablet]: {
+			padding: '20px',
+			height: '60px',
+		},
+	},
 });
 
 export const whiteBoldText = style({
