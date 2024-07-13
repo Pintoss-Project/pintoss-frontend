@@ -26,31 +26,31 @@ type ProductType = {
 
 const HomeProductBox = ({ headerColor, product }: Props) => {
 	return (
-		<Link href={`/product/${product.code}`}>
-			<GridItem className={s.homeProductBox}>
-				<div
-					className={s.homeProductBoxTop}
-					style={assignInlineVars({ [s.headerColor]: headerColor || 'initial' })}></div>
-				<div className={s.homeProductTextBox}>
-					<div style={{ height: '40%' }}></div>
-					<Flex
-						justify="center"
-						style={{ height: '30%', color: vars.color.darkGray }}
-						className={s.productName}>
-						{product.name}
+		<GridItem className={s.homeProductBox}>
+			<div
+				className={s.homeProductBoxTop}
+				style={assignInlineVars({ [s.headerColor]: headerColor || 'initial' })}></div>
+			<div className={s.homeProductTextBox}>
+				<div style={{ height: '40%' }}></div>
+				<Flex
+					justify="center"
+					style={{ height: '30%', color: vars.color.darkGray }}
+					className={s.productName}>
+					{product.name}
+				</Flex>
+				<Flex style={{ height: '30%' }}>
+					<Flex justify="center" align="center" className={s.rateBox}>
+						<span className={s.rateGrayText}>카드</span>
+						<span className={s.rateRedText}>{product.card}%↓</span>
 					</Flex>
-					<Flex style={{ height: '30%' }}>
-						<Flex justify="center" align="center" className={s.rateBox}>
-							<span className={s.rateGrayText}>카드</span>
-							<span className={s.rateRedText}>{product.card}%↓</span>
-						</Flex>
-						<div className={s.rateBoxMarginBox}></div>
-						<Flex justify="center" align="center" className={s.rateBox}>
-							<span className={s.rateGrayText}>휴대폰</span>
-							<span className={s.rateRedText}>{product.phone}%↓</span>
-						</Flex>
+					<div className={s.rateBoxMarginBox}></div>
+					<Flex justify="center" align="center" className={s.rateBox}>
+						<span className={s.rateGrayText}>휴대폰</span>
+						<span className={s.rateRedText}>{product.phone}%↓</span>
 					</Flex>
-				</div>
+				</Flex>
+			</div>
+			<Link href={`/product/${product.code}`}>
 				<div className={s.purchaseButtonWrap}>
 					<Button
 						color={vars.color.white}
@@ -61,8 +61,8 @@ const HomeProductBox = ({ headerColor, product }: Props) => {
 				<div className={s.productIconBox}>
 					<img src={product.icon} alt="상품권 로고 이미지" className={s.productIconImage} />
 				</div>
-			</GridItem>
-		</Link>
+			</Link>
+		</GridItem>
 	);
 };
 

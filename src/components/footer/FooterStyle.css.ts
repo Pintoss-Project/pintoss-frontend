@@ -23,8 +23,13 @@ export const footerBox = style([
 ]);
 
 export const pText = style({
-	fontSize: '14px',
-	color: vars.color.mediumGray,
+	'fontSize': '14px',
+	'color': vars.color.mediumGray,
+	'@media': {
+		[responsive.mobile]: {
+			fontSize: '12px',
+		},
+	},
 });
 
 export const footerFlexBox = style({
