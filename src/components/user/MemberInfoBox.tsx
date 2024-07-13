@@ -10,12 +10,12 @@ const MemberInfoBox = () => {
 				<span className={s.darkGrayText}>이름</span>
 				<span className={s.darkerGrayText}>홍길동</span>
 			</Flex>
-			<Divider color={vars.color['pale-gray']} />
+			<Divider color={vars.color.paleGray} />
 			<Flex justify="space-between" align="center">
 				<span className={s.darkGrayText}>휴대폰</span>
 				<span className={s.darkerGrayText}>010-1234-5678</span>
 			</Flex>
-			<Divider color={vars.color['pale-gray']} />
+			<Divider color={vars.color.paleGray} />
 			<Flex justify="space-between" align="center">
 				<span className={s.darkGrayText}>이메일</span>
 				<span className={s.darkerGrayText}>abc@gmail.com</span>

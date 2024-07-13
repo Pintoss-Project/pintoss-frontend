@@ -18,7 +18,7 @@ const AdminInputField = ({ label, placeholder }: Props) => {
 				style={{
 					flex: 3,
 					marginLeft: '20px',
-					borderBottom: `1px solid ${vars.color['lighter-gray']}`,
+					borderBottom: `1px solid ${vars.color.lighterGray}`,
 				}}>
 				<Input className={s.noInputStyle} placeholder={placeholder} />
 			</div>

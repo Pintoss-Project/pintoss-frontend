@@ -23,7 +23,7 @@ const AlertTitle = ({ title, iconColor = CheckDocIconBlue }: Props) => {
 				<span>{title}</span>
 			</Flex>
 			<Spacing margin="15px" />
-			<Divider color={vars.color['lightest-gray']} />
+			<Divider color={vars.color.lightestGray} />
 			<Spacing margin="15px" />
 		</>
 	);

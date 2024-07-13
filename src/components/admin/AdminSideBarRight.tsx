@@ -21,7 +21,7 @@ const AdminSideBarRight = ({ title, menus = [] }: Props) => {
 			style={{
 				width: '75%',
 				padding: '40px 30px',
-				borderRight: `1px solid ${vars.color['lighter-gray']}`,
+				borderRight: `1px solid ${vars.color.lighterGray}`,
 			}}>
 			<h3 style={{ fontSize: '20px', fontWeight: '600' }}>{title}</h3>
 			<Spacing margin="10px" />

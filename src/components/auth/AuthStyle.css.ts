@@ -1,9 +1,19 @@
-import { vars } from '@/shared/styles/theme.css';
+import { responsive, vars } from '@/shared/styles/theme.css';
 import { style } from '@vanilla-extract/css';
 
 export const container = style({
-	padding: '8px 20px',
-	backgroundColor: vars.color.background,
+	'padding': '8px 20px',
+	'backgroundColor': vars.color.background,
+	'@media': {
+		[responsive.mobile]: {
+			padding: '0',
+			backgroundColor: vars.color.white,
+		},
+		[responsive.tabletSmall]: {
+			padding: '0 10px',
+			backgroundColor: vars.color.white,
+		},
+	},
 });
 
 export const sectionStyle = style({
@@ -16,7 +26,18 @@ export const sectionStyle = style({
 });
 
 export const innerWrap = style({
-	width: '428px',
+	'width': '100%',
+	'maxWidth': '460px',
+	'@media': {
+		[responsive.mobile]: {
+			width: '97%',
+			padding: '0 10px',
+		},
+		[responsive.tabletSmall]: {
+			width: '100%',
+			padding: '0 10px',
+		},
+	},
 });
 
 export const mainWrap = style({

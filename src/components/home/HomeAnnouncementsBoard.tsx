@@ -93,7 +93,7 @@ const HomeAnnouncementsBoard = () => {
 						: '/customer-service?announce=notice'
 				}>
 				<Flex justify="center" align="center">
-					<Button color={vars.color['dark-gray']} className={s.moreButton}>
+					<Button color={vars.color.darkGray} className={s.moreButton}>
 						더보기 +
 					</Button>
 				</Flex>

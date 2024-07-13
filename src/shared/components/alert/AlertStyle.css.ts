@@ -62,7 +62,7 @@ export const AlertBlueButtonStyle = style({
 	width: '33%',
 	height: '50px',
 	fontSize: '18px',
-	backgroundColor: vars.color['light-blue'],
+	backgroundColor: vars.color.lightBlue,
 	borderRadius: '10px',
 });
 

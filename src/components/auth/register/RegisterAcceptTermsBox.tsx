@@ -33,7 +33,7 @@ const RegisterAcceptTermsBox = ({ label }: Props) => {
 					</div>
 				</label>
 				<span className={s.skyBlueText}>[필수]</span>
-				<label className={s.labelText} style={{ marginLeft: '3px', fontWeight: '400' }}>
+				<label className={s.label} style={{ marginLeft: '3px', fontWeight: '400' }}>
 					{label}
 				</label>
 			</Flex>

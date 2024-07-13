@@ -57,7 +57,7 @@ const AddProductBox = () => {
 				height: '500px',
 				padding: '18px 2.5%',
 				backgroundColor: vars.color.white,
-				border: `1px solid ${vars.color['lighter-gray']}`,
+				border: `1px solid ${vars.color.lighterGray}`,
 			}}>
 			<div className={s.blackMediumText}>상품권 추가</div>
 			<Spacing margin="23px" />
@@ -72,7 +72,7 @@ const AddProductBox = () => {
 								flex: '3',
 								marginLeft: '1.5%',
 								padding: '0 10px',
-								borderBottom: `1px solid ${vars.color['lighter-gray']}`,
+								borderBottom: `1px solid ${vars.color.lighterGray}`,
 							}}>
 							<Input className={s.baseInputStyle} />
 						</div>
@@ -102,7 +102,7 @@ const AddProductBox = () => {
 								flex: '3',
 								marginLeft: '1.5%',
 								padding: '0 10px',
-								borderBottom: `1px solid ${vars.color['lighter-gray']}`,
+								borderBottom: `1px solid ${vars.color.lighterGray}`,
 							}}>
 							<Input className={s.baseInputStyle} />
 						</div>
@@ -117,7 +117,7 @@ const AddProductBox = () => {
 								flex: '3',
 								marginLeft: '1.5%',
 								padding: '0 10px',
-								borderBottom: `1px solid ${vars.color['lighter-gray']}`,
+								borderBottom: `1px solid ${vars.color.lighterGray}`,
 							}}>
 							<Input className={s.baseInputStyle} />
 						</div>
@@ -149,7 +149,7 @@ const AddProductBox = () => {
 								flex: '3',
 								marginLeft: '1.5%',
 								padding: '0 10px',
-								borderBottom: `1px solid ${vars.color['lighter-gray']}`,
+								borderBottom: `1px solid ${vars.color.lighterGray}`,
 							}}>
 							<Input className={s.baseInputStyle} />
 						</div>
@@ -185,7 +185,7 @@ const AddProductBox = () => {
 								style={{
 									flex: '1',
 									marginRight: '15px',
-									borderBottom: `1px solid ${vars.color['lighter-gray']}`,
+									borderBottom: `1px solid ${vars.color.lighterGray}`,
 								}}>
 								<Input
 									placeholder="금액명"
@@ -197,7 +197,7 @@ const AddProductBox = () => {
 								style={{
 									flex: '1',
 									marginRight: '15px',
-									borderBottom: `1px solid ${vars.color['lighter-gray']}`,
+									borderBottom: `1px solid ${vars.color.lighterGray}`,
 								}}>
 								<Input
 									type="number"
@@ -213,7 +213,7 @@ const AddProductBox = () => {
 									minWidth: '40px',
 									padding: '4px',
 									backgroundColor: vars.color.white,
-									border: `1px solid ${vars.color['lightest-gray']}`,
+									border: `1px solid ${vars.color.lightestGray}`,
 								}}>
 								추가
 							</Button>

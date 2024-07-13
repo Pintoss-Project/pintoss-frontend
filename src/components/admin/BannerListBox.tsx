@@ -37,11 +37,11 @@ const BannerListBox = () => {
 			style={{
 				width: '100%',
 				marginRight: '16px',
-				border: `1px solid ${vars.color['lighter-gray']}`,
+				border: `1px solid ${vars.color.lighterGray}`,
 			}}>
 			<Flex
 				align="center"
-				style={{ padding: '12px 20px', borderBottom: `1px solid ${vars.color['lighter-gray']}` }}>
+				style={{ padding: '12px 20px', borderBottom: `1px solid ${vars.color.lighterGray}` }}>
 				<div className={s.darkGraySmallText} style={{ flex: '0.5' }}>
 					번호
 				</div>
@@ -62,7 +62,7 @@ const BannerListBox = () => {
 				<Flex
 					key={banner.banner_id}
 					align="center"
-					style={{ padding: '12px 20px', borderBottom: `1px solid ${vars.color['lighter-gray']}` }}>
+					style={{ padding: '12px 20px', borderBottom: `1px solid ${vars.color.lighterGray}` }}>
 					<div className={s.darkGraySmallText} style={{ flex: '0.5' }}>
 						{index + 1}
 					</div>
@@ -90,24 +90,24 @@ const BannerListBox = () => {
 					<div className={s.darkGraySmallText} style={{ flex: '1' }}>
 						<Flex direction="column" justify="center" align="center">
 							<Button
-								color={vars.color['dark-gray']}
+								color={vars.color.darkGray}
 								style={{
 									width: '55px',
 									padding: '2px 4px',
 									backgroundColor: vars.color.white,
-									border: `1px solid ${vars.color['lighter-gray']}`,
+									border: `1px solid ${vars.color.lighterGray}`,
 									borderRadius: '5px',
 								}}>
 								수정
 							</Button>
 							<Spacing margin="7px" />
 							<Button
-								color={vars.color['dark-gray']}
+								color={vars.color.darkGray}
 								style={{
 									width: '55px',
 									padding: '2px 4px',
 									backgroundColor: vars.color.white,
-									border: `1px solid ${vars.color['lighter-gray']}`,
+									border: `1px solid ${vars.color.lighterGray}`,
 									borderRadius: '5px',
 								}}>
 								삭제

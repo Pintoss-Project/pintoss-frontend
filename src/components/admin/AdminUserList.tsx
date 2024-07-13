@@ -105,11 +105,11 @@ const AdminUserList = () => {
 				</div>
 			</Flex>
 			<Spacing margin="10px" />
-			<div style={{ height: '100%', border: `1px solid ${vars.color['lighter-gray']}` }}>
+			<div style={{ height: '100%', border: `1px solid ${vars.color.lighterGray}` }}>
 				<Flex
 					justify="center"
 					align="center"
-					style={{ padding: '13px 0', borderBottom: `1px solid ${vars.color['lighter-gray']}` }}>
+					style={{ padding: '13px 0', borderBottom: `1px solid ${vars.color.lighterGray}` }}>
 					<div className={s.userFlexItem1}>
 						<Input
 							name="all"
@@ -129,7 +129,7 @@ const AdminUserList = () => {
 					<Flex
 						justify="center"
 						align="center"
-						style={{ padding: '13px 0', borderBottom: `1px solid ${vars.color['lighter-gray']}` }}
+						style={{ padding: '13px 0', borderBottom: `1px solid ${vars.color.lighterGray}` }}
 						key={user.user_id}>
 						<div className={s.userFlexItem1}>
 							<Input

@@ -15,7 +15,7 @@ const AddBannerBox = () => {
 				height: '600px',
 				padding: '18px 30px',
 				backgroundColor: vars.color.white,
-				border: `1px solid ${vars.color['lighter-gray']}`,
+				border: `1px solid ${vars.color.lighterGray}`,
 			}}>
 			<div className={s.blackMediumText}>배너 추가</div>
 			<Spacing margin="30px" />
@@ -54,8 +54,8 @@ const AddBannerBox = () => {
 					style={{
 						width: '90px',
 						padding: '8px 8px',
-						backgroundColor: vars.color['lightest-gray'],
-						border: `1px solid ${vars.color['light-gray']}`,
+						backgroundColor: vars.color.lightestGray,
+						border: `1px solid ${vars.color.lightGray}`,
 						borderRadius: '5px',
 					}}>
 					추가

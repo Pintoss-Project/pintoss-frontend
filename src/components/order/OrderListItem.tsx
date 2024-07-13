@@ -15,22 +15,22 @@ interface Props {
 const OrderListItem = ({ orderNo, payResult, orderStatus, payment, orderDate, pay }: Props) => {
 	return (
 		<Flex align="center" className={s.orderListItem}>
-			<span className={s.flexItem1} style={{ color: vars.color['dark-gray'] }}>
+			<span className={s.flexItem1} style={{ color: vars.color.darkGray }}>
 				{orderNo}
 			</span>
-			<span className={s.flexItem2} style={{ color: vars.color['sky-blue'] }}>
+			<span className={s.flexItem2} style={{ color: vars.color.skyBlue }}>
 				{payResult}
 			</span>
-			<span className={s.flexItem3} style={{ color: vars.color['dark-blue'] }}>
+			<span className={s.flexItem3} style={{ color: vars.color.darkBlue }}>
 				{orderStatus}
 			</span>
-			<span className={s.flexItem4} style={{ color: vars.color['dark-gray'] }}>
+			<span className={s.flexItem4} style={{ color: vars.color.darkGray }}>
 				{payment}
 			</span>
-			<span className={s.flexItem5} style={{ color: vars.color['dark-gray'] }}>
+			<span className={s.flexItem5} style={{ color: vars.color.darkGray }}>
 				{orderDate}
 			</span>
-			<span className={s.flexItem6} style={{ color: vars.color['dark-gray'] }}>
+			<span className={s.flexItem6} style={{ color: vars.color.darkGray }}>
 				{pay}
 			</span>
 		</Flex>

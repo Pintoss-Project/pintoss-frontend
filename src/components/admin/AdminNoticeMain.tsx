@@ -10,7 +10,7 @@ const AdminNoticeMain = () => {
 				width: '100%',
 				height: '400px',
 				padding: '22px 30px',
-				border: `1px solid ${vars.color['lighter-gray']}`,
+				border: `1px solid ${vars.color.lighterGray}`,
 			}}>
 			<Spacing margin="10px" />
 			<BoardWriter title="공지사항 작성" formId={'notice-writer-form'} />

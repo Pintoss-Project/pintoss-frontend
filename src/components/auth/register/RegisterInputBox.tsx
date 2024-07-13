@@ -13,7 +13,7 @@ interface Props {
 
 const RegisterInputBox = ({ name, label, star, type, placeholder }: Props) => {
 	return (
-		<Flex align="center">
+		<Flex align="center" className={s.personalInfoInputBox}>
 			<label className={s.labelText}>
 				{label}
 				{star && <span className={s.starStyle}>*</span>}

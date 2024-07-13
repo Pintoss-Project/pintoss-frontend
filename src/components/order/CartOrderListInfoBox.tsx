@@ -26,14 +26,14 @@ const CartOrderListInfoBox = ({ setTotalAmount }: Props) => {
 
 	return (
 		<div className={s.cartOrderListInfoBox}>
-			<Flex align="center" className={s.menuBarTitle}>
+			<div className={s.menuBarTitle}>
 				<span className={s.flexItem1}></span>
 				<span className={s.flexItem2}>상품명</span>
 				<span className={s.flexItem3}>금액</span>
 				<span className={s.flexItem4}>수량</span>
 				<span className={s.flexItem5}>합계금액</span>
 				<span className={s.flexItem6}></span>
-			</Flex>
+			</div>
 			<div>
 				{CART_ORDER_ITEM_LIST.map((item) => (
 					<CartOrderListItem

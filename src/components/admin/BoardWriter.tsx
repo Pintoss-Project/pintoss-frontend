@@ -36,7 +36,7 @@ const BoardWriter = ({ title, formId }: Props) => {
 						style={{
 							width: '300px',
 							height: '25px',
-							border: `1px solid ${vars.color['lighter-gray']}`,
+							border: `1px solid ${vars.color.lighterGray}`,
 						}}
 					/>
 				</Flex>
@@ -60,7 +60,7 @@ const BoardWriter = ({ title, formId }: Props) => {
 						style={{
 							width: '100px',
 							padding: '10px 20px',
-							backgroundColor: vars.color['lightest-gray'],
+							backgroundColor: vars.color.lightestGray,
 							borderRadius: '5px',
 						}}>
 						작성

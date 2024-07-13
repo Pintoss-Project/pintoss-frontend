@@ -9,14 +9,10 @@ import ProductDetailSelectAndPayBox from './ProductDetailSelectAndPayBox';
 
 const ProductDetailMain = () => {
 	return (
-		<Flex justify="space-between">
-			<div style={{ width: '58%' }}>
+		<Flex justify="space-between" className={s.productDetailFlexBox}>
+			<div className={s.productDetailLeftBox}>
 				<div className={s.productDetailLogoImageBox}>
-					<Flex
-						justify="center"
-						align="center"
-						className={s.productDetailImageInnerBox}
-						style={{ minHeight: '300px' }}>
+					<Flex justify="center" align="center" className={s.productDetailImageInnerBox}>
 						<Image
 							src={BookAndLifeLogo}
 							alt="상품권 로고 이미지"
@@ -25,7 +21,7 @@ const ProductDetailMain = () => {
 					</Flex>
 				</div>
 				<Spacing margin="15px" />
-				<div className={s.noticeBox}>
+				<div className={s.noticeTopBox}>
 					<ProductInstructionItem text="구매하실 권종과 수량을 선태해주세요. 여러상품 구매시 장바구니를 이용해주세요" />
 					<Spacing margin="18px" />
 					<ProductInstructionItem text="구매후 발송되어 노출된 상품권은 교환/환불이 불가능합니다." />
@@ -54,7 +50,7 @@ const ProductDetailMain = () => {
 					<ProductDetailInfoBox />
 				</div>
 			</div>
-			<div style={{ width: '42%' }}>
+			<div className={s.productDetailRightBox}>
 				<ProductDetailSelectAndPayBox />
 			</div>
 		</Flex>
