@@ -15,6 +15,7 @@ import QuantitySelectBox from './QuantitySelectBox';
 const ProductDetailSelectAndPayBox = () => {
 	const [selectedType, setSelectedType] = useState<string>('card');
 	const [saleRate, setSaleRate] = useState(0);
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	const [totalAmount, _] = useState(0);
 
 	useEffect(() => {

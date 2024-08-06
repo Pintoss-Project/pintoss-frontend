@@ -12,7 +12,6 @@ import {
 	MdKeyboardDoubleArrowRight,
 } from 'react-icons/md';
 import * as s from './AdminStyle.css';
-import Image from 'next/image';
 import ChatIcon from '../icons/ChatIcon';
 
 interface Order {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { InputGroupProps } from './types';
-import { Children, cloneElement, isValidElement, ReactElement } from 'react';
+import { Children, cloneElement, isValidElement } from 'react';
 import { clsx } from 'clsx';
 
 const InputGroup = (props: InputGroupProps, ref: React.Ref<HTMLDivElement>) => {

@@ -6,7 +6,6 @@ import { assignInlineVars } from '@vanilla-extract/dynamic';
 import { Button } from '@/shared/components/button';
 import { vars } from '@/shared/styles/theme.css';
 import { Flex, GridItem } from '@/shared/components/layout';
-import Image from 'next/image';
 import Link from 'next/link';
 import clsx from 'clsx';
 

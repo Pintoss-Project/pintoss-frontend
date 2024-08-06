@@ -29,6 +29,7 @@ const MENU_BUTTONS = {
 };
 
 const MobileMenuBox = ({ setIsMenuOpen }: Props) => {
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const router = useRouter();
 
