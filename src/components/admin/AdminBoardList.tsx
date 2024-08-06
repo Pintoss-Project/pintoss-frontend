@@ -2,6 +2,7 @@
 
 import { Button } from '@/shared/components/button';
 import * as s from './AdminStyle.css';
+import * as cs from '@/shared/styles/common.css';
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import { vars } from '@/shared/styles/theme.css';
@@ -14,8 +15,11 @@ import {
 	MdKeyboardDoubleArrowRight,
 } from 'react-icons/md';
 import { getBoardList } from '@/app/api/board/getBoardList';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { formatDate } from '@/utils/formatDate';
+import { deleteBoard } from '@/app/api/board/deleteBoard';
+import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
+import useAlertContext from '@/hooks/useAlertContext';
 
 interface Props {
 	type: string;
@@ -25,6 +29,9 @@ const AdminBoardList = ({ type }: Props) => {
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [boardsPerPage] = useState<number>(10);
 	const [currentPageGroup, setCurrentPageGroup] = useState<number>(1);
+
+	const { open, close } = useAlertContext();
+	const queryClient = useQueryClient();
 
 	const { data: boards } = useQuery({
 		queryKey: ['boardList', type],
@@ -68,6 +75,35 @@ const AdminBoardList = ({ type }: Props) => {
 			pages.push(i);
 		}
 		return pages;
+	};
+
+	const deleteMutation = useMutation({
+		mutationFn: (id: number) => deleteBoard(id),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['boardList', type] });
+		},
+	});
+
+	const handleDelete = (id: number) => {
+		open({
+			width: '300px',
+			height: '200px',
+			title: `${type === 'notice' ? '공지사항' : '자주묻는질문'} 삭제`,
+			main: (
+				<AlertMainTextBox
+					text={`${type === 'notice' ? '공지사항' : '자주묻는질문'}을 삭제하시겠습니까?`}
+				/>
+			),
+			leftButtonLabel: '취소',
+			rightButtonLabel: '확인',
+			leftButtonStyle: cs.whiteAndBlackButton,
+			rightButtonStyle: cs.lightBlueButton,
+			onRightButtonClick: () => {
+				deleteMutation.mutate(id);
+				close();
+			},
+			onLeftButtonClick: close,
+		});
 	};
 
 	if (type === '') return null;
@@ -126,7 +162,9 @@ const AdminBoardList = ({ type }: Props) => {
 										backgroundColor: vars.color.white,
 										border: `1px solid ${vars.color.lighterGray}`,
 										borderRadius: '5px',
-									}}>
+									}}
+									onClick={() => handleDelete(board.id)}
+									>
 									삭제
 								</Button>
 							</Flex>

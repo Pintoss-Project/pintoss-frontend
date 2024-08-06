@@ -79,11 +79,23 @@ export const whiteAndBlueButton = style([
 export const whiteAndBlackButton = style([
 	f.wFull,
 	{
-		maxWidth: '420px',
-		height: '50px',
-		backgroundColor: vars.color.white,
-		borderRadius: '5px',
-		border: `1px solid ${vars.color.black}`,
+		'maxWidth': '420px',
+		'height': '50px',
+		'backgroundColor': vars.color.white,
+		'borderRadius': '5px',
+		'border': `1px solid ${vars.color.black}`,
+		'@media': {
+			[responsive.tablet]: {
+				height: '40px',
+			},
+			[responsive.tabletSmall]: {
+				maxWidth: '100%',
+				height: '37px',
+			},
+			[responsive.mobile]: {
+				height: '34px',
+			},
+		},
 	},
 ]);
 
