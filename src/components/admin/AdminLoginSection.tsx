@@ -13,9 +13,12 @@ import { LogInFormData, loginSchema } from '@/utils/validation/auth';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import LoginInput from '@/shared/components/input/LoginInput';
 import { setLocalToken } from '@/utils/localToken';
+import useRedirect from '@/hooks/useRedirect';
+import { useEffect } from 'react';
 
 const AdminLoginSection = () => {
 	const { open, close } = useAlertContext();
+	const { setRedirectPath } = useRedirect();
 
 	const methods = useForm<LogInFormData>({
 		resolver: zodResolver(loginSchema),
@@ -26,7 +29,12 @@ const AdminLoginSection = () => {
 		},
 	});
 
-	const { handleSubmit } = methods;
+	const {
+		handleSubmit,
+		formState: { errors },
+	} = methods;
+
+	const emailErrorMessage = errors.email?.message as string;
 
 	const onSubmit: SubmitHandler<LogInFormData> = async (data, event) => {
 		event?.preventDefault();
@@ -49,9 +57,7 @@ const AdminLoginSection = () => {
 				main: <AlertMainTextBox text="로그인에 성공했습니다." />,
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: () => {
-					close();
-				},
-				onBackDropClick: () => {
+					setRedirectPath('/admin/manage/users');
 					close();
 				},
 			});
@@ -76,6 +82,24 @@ const AdminLoginSection = () => {
 			}
 		}
 	};
+
+	useEffect(() => {
+		if (errors.email) {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '유효성 검사 오류',
+				main: <AlertMainTextBox text={emailErrorMessage} />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: () => {
+					close();
+				},
+				onBackDropClick: () => {
+					close();
+				},
+			});
+		}
+	}, [errors]);
 
 	return (
 		<Flex direction="column" justify="center" align="center" className={s.adminLoginContainer}>
