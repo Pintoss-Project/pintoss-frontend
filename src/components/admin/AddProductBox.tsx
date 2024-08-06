@@ -86,7 +86,7 @@ const AddProductBox = () => {
 						</div>
 						<div
 							{...getRootProps({ className: s.dropzone })}
-							style={{ position: 'relative', flex: '3', marginLeft: '1.5%' }}>
+							style={{ position: 'relative', flex: '3', height: '100px', marginLeft: '1.5%' }}>
 							<input {...getInputProps()} />
 							{!isImageAdded && (
 								<Image src={DropImageBox} alt="이미지 등록 하기" className={s.dropImageBox} />
