@@ -13,4 +13,10 @@ export const siteInfoSchema = z.object({
 	businessHour: z.string().optional(),
 });
 
+export const bannerInfoSchema = z.object({
+	bannerTitle: z.string().min(1, '배너 제목을 입력해주세요'),
+	bannerLink: z.string().optional(),
+});
+
 export type SiteInfoFormData = z.infer<typeof siteInfoSchema>;
+export type BannerInfoFormData = z.infer<typeof bannerInfoSchema>;
