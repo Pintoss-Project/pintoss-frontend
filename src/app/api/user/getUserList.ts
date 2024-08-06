@@ -2,14 +2,14 @@ import { ErrorResponse } from '@/models/error';
 import { ManageUserInfo } from '@/models/user';
 import CustomError from '@/utils/error/CustomError';
 
-interface UserListResponse {
+export interface UserListResponse {
 	code: number;
 	status: string;
 	message: string;
 	data: ManageUserInfo[];
 }
 
-export const getUserList = async () => {
+export const getUserList = async (): Promise<UserListResponse> => {
 	const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/user/all`);
 
 	if (!response.ok) {
