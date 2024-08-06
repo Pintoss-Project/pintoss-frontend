@@ -28,7 +28,9 @@ const MyPageMain = () => {
 			<Spacing margin="170px" />
 			<div className={s.excludeMemberButtonWrap}>
 				<Flex justify="center" align="center" className={s.grayButton}>
-					<Button color={vars.color.lightGray} style={{ fontSize: '18px' }}>
+					<Button
+						color={vars.color.lightGray}
+						style={{ fontSize: '18px', backgroundColor: 'transparent' }}>
 						회원탈퇴
 					</Button>
 				</Flex>

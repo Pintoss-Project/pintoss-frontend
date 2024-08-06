@@ -3,6 +3,7 @@ import * as s from './LoginStyle.css';
 import { Input } from '@/shared/components/input';
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
+import { vars } from '@/shared/styles/theme.css';
 import Link from 'next/link';
 
 const LoginMain = () => {
@@ -20,9 +21,9 @@ const LoginMain = () => {
 				/>
 				<Spacing margin="18px" />
 			</Flex>
-			<Flex justify="flex-end">
+			<Flex justify="flex-end" align="center">
 				<Link href="" className={s.grayText}>
-					비밀번호 찾기
+					비밀번호 재설정
 				</Link>
 				<Link href="/register" className={s.blueText}>
 					회원가입
