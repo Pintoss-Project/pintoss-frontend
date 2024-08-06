@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Button } from '@/shared/components/button';
 import * as s from './AdminStyle.css';
 import * as cs from '@/shared/styles/common.css';
@@ -7,7 +8,6 @@ import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import { vars } from '@/shared/styles/theme.css';
 import clsx from 'clsx';
-import { useState } from 'react';
 import {
 	MdKeyboardArrowLeft,
 	MdKeyboardArrowRight,
@@ -23,9 +23,10 @@ import useAlertContext from '@/hooks/useAlertContext';
 
 interface Props {
 	type: string;
+	onEdit: (board: { id: number; title: string; content: string }) => void; // Edit function prop
 }
 
-const AdminBoardList = ({ type }: Props) => {
+const AdminBoardList = ({ type, onEdit }: Props) => {
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [boardsPerPage] = useState<number>(10);
 	const [currentPageGroup, setCurrentPageGroup] = useState<number>(1);
@@ -106,7 +107,9 @@ const AdminBoardList = ({ type }: Props) => {
 		});
 	};
 
-	if (type === '') return null;
+	const handleEdit = (board: { id: number; title: string; content: string }) => {
+		onEdit(board);
+	};
 
 	return (
 		<div>
@@ -152,7 +155,11 @@ const AdminBoardList = ({ type }: Props) => {
 										backgroundColor: vars.color.white,
 										border: `1px solid ${vars.color.lighterGray}`,
 										borderRadius: '5px',
-									}}>
+									}}
+									onClick={() =>
+										handleEdit({ id: board.id, title: board.title, content: board.content })
+									} // Pass data to edit
+								>
 									수정
 								</Button>
 								<Button
@@ -163,8 +170,7 @@ const AdminBoardList = ({ type }: Props) => {
 										border: `1px solid ${vars.color.lighterGray}`,
 										borderRadius: '5px',
 									}}
-									onClick={() => handleDelete(board.id)}
-									>
+									onClick={() => handleDelete(board.id)}>
 									삭제
 								</Button>
 							</Flex>

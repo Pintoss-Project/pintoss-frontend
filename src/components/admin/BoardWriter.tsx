@@ -5,7 +5,7 @@ import { Input } from '@/shared/components/input';
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import { vars } from '@/shared/styles/theme.css';
-import { ChangeEvent, FormEvent, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import * as s from './AdminStyle.css';
@@ -17,47 +17,27 @@ import { useSearchParams } from 'next/navigation';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import BoardError from '@/utils/error/BoardError';
+import { updateBoard } from '@/app/api/board/updateBoard';
 
 interface Props {
 	title: string;
 	formId: string;
+	editBoard?: { id: number; title: string; content: string } | null;
+	resetEditBoard: () => void;
 }
 
-const BoardWriter = ({ title, formId }: Props) => {
+const BoardWriter = ({ title, formId, editBoard, resetEditBoard }: Props) => {
+	const [boardTitle, setBoardTitle] = useState<string>('');
+	const [boardContent, setBoardContent] = useState<string>('');
+
 	const { open, close } = useAlertContext();
 
 	const searchParams = useSearchParams();
 	const type = searchParams.get('type') as string;
 
-	const [titleValue, setTitleValue] = useState('');
-	const [value, setValue] = useState('');
-
 	const queryClient = useQueryClient();
 
 	const quillRef = useRef<ReactQuill>(null);
-
-	const handleTitleValueChange = (event: ChangeEvent<HTMLInputElement>) => {
-		setTitleValue(event.target.value);
-	};
-
-	const handleEditorChange = (content: string) => {
-		setValue(content);
-	};
-
-	const modules = useMemo(() => {
-		return {
-			toolbar: {
-				container: [
-					[{ header: [1, 2, 3, false] }],
-					['bold', 'italic', 'underline', 'strike'],
-					['blockquote'],
-					[{ list: 'ordered' }, { list: 'bullet' }],
-					[{ color: [] }, { background: [] }],
-					[{ align: [] }, 'link', 'image'],
-				],
-			},
-		};
-	}, []);
 
 	const imageHandler = () => {
 		const input = document.createElement('input');
@@ -77,6 +57,32 @@ const BoardWriter = ({ title, formId }: Props) => {
 		});
 	};
 
+	const modules = useMemo(() => {
+		return {
+			toolbar: {
+				container: [
+					[{ header: [1, 2, 3, false] }],
+					['bold', 'italic', 'underline', 'strike'],
+					['blockquote'],
+					[{ list: 'ordered' }, { list: 'bullet' }],
+					[{ color: [] }, { background: [] }],
+					[{ align: [] }, 'link', 'image'],
+				],
+				handlers: {
+					image: imageHandler,
+				},
+			},
+		};
+	}, []);
+
+	const handleTitleValueChange = (event: ChangeEvent<HTMLInputElement>) => {
+		setBoardTitle(event.target.value);
+	};
+
+	const handleEditorChange = (content: string) => {
+		setBoardContent(content);
+	};
+
 	const mutation = useMutation({
 		mutationFn: (data: BoardInfoFormData) => postBoard(type, data),
 		onSuccess: () => {
@@ -89,8 +95,8 @@ const BoardWriter = ({ title, formId }: Props) => {
 				onRightButtonClick: close,
 			});
 			queryClient.invalidateQueries({ queryKey: ['boardList'] });
-			setTitleValue('');
-			setValue('');
+			setBoardTitle('');
+			setBoardContent('');
 		},
 		onError: (error: BoardError) => {
 			open({
@@ -104,13 +110,55 @@ const BoardWriter = ({ title, formId }: Props) => {
 		},
 	});
 
+	const updateMutation = useMutation({
+		mutationFn: (data: BoardInfoFormData) => updateBoard(type, editBoard?.id as number, data),
+		onSuccess: () => {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '수정 완료',
+				main: <AlertMainTextBox text="게시글 정보가 수정되었습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+			queryClient.invalidateQueries({ queryKey: ['boardList'] });
+			setBoardTitle('');
+			setBoardContent('');
+			resetEditBoard();
+		},
+		onError: (error: BoardError) => {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '수정 실패',
+				main: <AlertMainTextBox text={error.errorMessage} />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		},
+	});
+
 	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		mutation.mutate({
-			title: titleValue,
-			content: value,
-		});
+		if (editBoard) {
+			updateMutation.mutate({
+				title: boardTitle,
+				content: boardContent,
+			});
+		} else {
+			mutation.mutate({
+				title: boardTitle,
+				content: boardContent,
+			});
+		}
 	};
+
+	useEffect(() => {
+		if (editBoard) {
+			setBoardTitle(editBoard.title);
+			setBoardContent(editBoard.content);
+		}
+	}, [editBoard]);
 
 	return (
 		<form id={formId} onSubmit={handleSubmit}>
@@ -125,8 +173,10 @@ const BoardWriter = ({ title, formId }: Props) => {
 						style={{
 							width: '300px',
 							height: '25px',
+							paddingLeft: '10px',
 							border: `1px solid ${vars.color.lighterGray}`,
 						}}
+						value={boardTitle}
 						onChange={handleTitleValueChange}
 					/>
 				</Flex>
@@ -137,7 +187,7 @@ const BoardWriter = ({ title, formId }: Props) => {
 					</div>
 					<ReactQuill
 						ref={quillRef}
-						value={value}
+						value={boardContent}
 						onChange={handleEditorChange}
 						style={{ width: '95%', height: '170px' }}
 						theme="snow"
@@ -156,7 +206,7 @@ const BoardWriter = ({ title, formId }: Props) => {
 							backgroundColor: vars.color.lightestGray,
 							borderRadius: '5px',
 						}}>
-						작성
+						{editBoard ? '수정' : '작성'}
 					</Button>
 				</Flex>
 			</Flex>
