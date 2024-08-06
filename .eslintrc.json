@@ -43,6 +43,7 @@
 		"no-unused-vars": "off",
 		"react/react-in-jsx-scope": "off",
 		"no-mixed-spaces-and-tabs": "off",
-		"@next/next/no-img-element": "off"
+		"@next/next/no-img-element": "off",
+		"react-hooks/exhaustive-deps": "off"
 	}
 }
