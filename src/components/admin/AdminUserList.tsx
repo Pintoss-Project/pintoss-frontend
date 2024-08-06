@@ -6,7 +6,7 @@ import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import { vars } from '@/shared/styles/theme.css';
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
 	MdKeyboardDoubleArrowRight,
 	MdKeyboardDoubleArrowLeft,
@@ -18,67 +18,38 @@ import { formatDate } from '@/utils/formatDate';
 
 interface AdminUserListProps {
 	users: ManageUserInfo[] | undefined;
+	totalPages?: number;
+	currentPage: number;
+	onPageChange: (page: number) => void;
 }
 
-const AdminUserList = ({ users }: AdminUserListProps) => {
-	const [displayedUsers, setDisplayedUsers] = useState<ManageUserInfo[]>([]);
+const AdminUserList = ({
+	users,
+	totalPages = 1,
+	currentPage,
+	onPageChange,
+}: AdminUserListProps) => {
 	const [selectedCount, setSelectedCount] = useState<number>(0);
-	const [currentPage, setCurrentPage] = useState<number>(1);
-	const [usersPerPage] = useState<number>(10);
-	const [currentPageGroup, setCurrentPageGroup] = useState<number>(1);
 
 	useEffect(() => {
-		if (users) {
-			setDisplayedUsers(users);
-		}
+		setSelectedCount(users?.filter((user) => user.selected).length || 0);
 	}, [users]);
 
 	const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const checked = e.target.checked;
-		const updatedUsers = displayedUsers.map((user) => ({ ...user, selected: checked }));
-		setDisplayedUsers(updatedUsers);
-		setSelectedCount(checked ? updatedUsers.length : 0);
+		const updatedUsers = users?.map((user) => ({ ...user, selected: checked }));
+		setSelectedCount(checked ? updatedUsers?.length || 0 : 0);
 	};
 
 	const handleSelectUser = (index: number) => {
-		const updatedUsers = [...displayedUsers];
+		const updatedUsers = [...(users || [])];
 		updatedUsers[index].selected = !updatedUsers[index].selected;
-		setDisplayedUsers(updatedUsers);
 		setSelectedCount(updatedUsers.filter((user) => user.selected).length);
 	};
 
-	const handleClickPage = (pageNumber: number) => {
-		setCurrentPage(pageNumber);
-	};
-
-	const handlePageGroupChange = (direction: 'prev' | 'next' | 'first' | 'last') => {
-		const totalGroups = Math.ceil(Math.ceil(displayedUsers.length / usersPerPage) / 10);
-		if (direction === 'prev' && currentPageGroup > 1) {
-			setCurrentPageGroup(currentPageGroup - 1);
-			setCurrentPage((currentPageGroup - 2) * 10 + 1);
-		} else if (direction === 'next' && currentPageGroup < totalGroups) {
-			setCurrentPageGroup(currentPageGroup + 1);
-			setCurrentPage(currentPageGroup * 10 + 1);
-		} else if (direction === 'first') {
-			setCurrentPageGroup(1);
-			setCurrentPage(1);
-		} else if (direction === 'last') {
-			setCurrentPageGroup(totalGroups);
-			setCurrentPage((totalGroups - 1) * 10 + 1);
-		}
-	};
-
-	const totalPages = Math.ceil(displayedUsers.length / usersPerPage);
-	const paginatedUsers = displayedUsers.slice(
-		(currentPage - 1) * usersPerPage,
-		currentPage * usersPerPage,
-	);
-
 	const getPageNumbers = () => {
-		const start = (currentPageGroup - 1) * 10 + 1;
-		const end = Math.min(start + 9, totalPages);
 		const pages = [];
-		for (let i = start; i <= end; i++) {
+		for (let i = 0; i < totalPages; i++) {
 			pages.push(i);
 		}
 		return pages;
@@ -97,7 +68,7 @@ const AdminUserList = ({ users }: AdminUserListProps) => {
 				<div>
 					<span className={s.darkGraySmallText}>검색결과 / </span>
 					<span className={s.blackSmallText} style={{ fontWeight: 'bold' }}>
-						{displayedUsers.length}
+						{users?.length}
 					</span>
 					<span className={s.darkGraySmallText}>명 검색결과</span>
 				</div>
@@ -123,7 +94,7 @@ const AdminUserList = ({ users }: AdminUserListProps) => {
 					<div className={clsx(s.userFlexItem6, s.darkGraySmallText)}>휴대폰</div>
 					<div className={clsx(s.userFlexItem7, s.darkGraySmallText)}>소셜로그인</div>
 				</Flex>
-				{paginatedUsers.map((user, index) => (
+				{users?.map((user, index) => (
 					<Flex
 						justify="center"
 						align="center"
@@ -134,11 +105,11 @@ const AdminUserList = ({ users }: AdminUserListProps) => {
 								type="checkbox"
 								className={clsx(s.checkbox)}
 								checked={user.selected || false}
-								onChange={() => handleSelectUser((currentPage - 1) * usersPerPage + index)}
+								onChange={() => handleSelectUser(index)}
 							/>
 						</div>
 						<div className={clsx(s.userFlexItem2, s.darkGraySmallText)}>
-							{(currentPage - 1) * usersPerPage + index + 1}
+							{currentPage * users.length + index + 1}
 						</div>
 						<div className={clsx(s.userFlexItem3, s.darkGraySmallText)}>{user.email}</div>
 						<div className={clsx(s.userFlexItem4, s.darkGraySmallText)}>
@@ -152,24 +123,26 @@ const AdminUserList = ({ users }: AdminUserListProps) => {
 			</div>
 			<Spacing margin="30px" />
 			<Flex justify="center" className={s.paginationBox} style={{ padding: '30px 0' }}>
-				<button className={s.pageButton} onClick={() => handlePageGroupChange('first')}>
+				<button className={s.pageButton} onClick={() => onPageChange(0)}>
 					<MdKeyboardDoubleArrowLeft />
 				</button>
-				<button className={s.pageButton} onClick={() => handlePageGroupChange('prev')}>
+				<button className={s.pageButton} onClick={() => onPageChange(Math.max(0, currentPage - 1))}>
 					<MdKeyboardArrowLeft />
 				</button>
 				{getPageNumbers().map((pageNumber) => (
 					<button
 						key={pageNumber}
 						className={clsx(s.pageButton, { [s.activePageButton]: currentPage === pageNumber })}
-						onClick={() => handleClickPage(pageNumber)}>
-						{pageNumber}
+						onClick={() => onPageChange(pageNumber)}>
+						{pageNumber + 1}
 					</button>
 				))}
-				<button className={s.pageButton} onClick={() => handlePageGroupChange('next')}>
+				<button
+					className={s.pageButton}
+					onClick={() => onPageChange(Math.min(totalPages - 1, currentPage + 1))}>
 					<MdKeyboardArrowRight />
 				</button>
-				<button className={s.pageButton} onClick={() => handlePageGroupChange('last')}>
+				<button className={s.pageButton} onClick={() => onPageChange(totalPages - 1)}>
 					<MdKeyboardDoubleArrowRight />
 				</button>
 			</Flex>
