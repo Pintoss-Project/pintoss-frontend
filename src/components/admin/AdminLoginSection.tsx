@@ -15,6 +15,9 @@ import LoginInput from '@/shared/components/input/LoginInput';
 import { setLocalToken } from '@/utils/localToken';
 import useRedirect from '@/hooks/useRedirect';
 import { useEffect } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { fetchAdminLogin } from '@/app/api/auth/fetchAdminLogin';
+import LoginError from '@/utils/error/LoginError';
 
 const AdminLoginSection = () => {
 	const { open, close } = useAlertContext();
@@ -36,18 +39,9 @@ const AdminLoginSection = () => {
 
 	const emailErrorMessage = errors.email?.message as string;
 
-	const onSubmit: SubmitHandler<LogInFormData> = async (data, event) => {
-		event?.preventDefault();
-
-		const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/login`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(data),
-		});
-
-		if (response.ok) {
-			const { data } = await response.json();
-
+	const mutation = useMutation({
+		mutationFn: fetchAdminLogin,
+		onSuccess: (data) => {
 			setLocalToken(data.accessToken);
 
 			open({
@@ -61,16 +55,14 @@ const AdminLoginSection = () => {
 					close();
 				},
 			});
-		} else {
-			await response.json();
-			const errorStatus = response.status;
-
-			if (errorStatus === 401) {
+		},
+		onError: (error: Error) => {
+			if (error instanceof LoginError) {
 				open({
 					width: '300px',
 					height: '200px',
 					title: '로그인 실패',
-					main: <AlertMainTextBox text="관리자만 로그인 가능합니다." />,
+					main: <AlertMainTextBox text={error.errorMessage} />,
 					rightButtonStyle: cs.lightBlueButton,
 					onRightButtonClick: () => {
 						close();
@@ -80,7 +72,12 @@ const AdminLoginSection = () => {
 					},
 				});
 			}
-		}
+		},
+	});
+
+	const onSubmit: SubmitHandler<LogInFormData> = (data, event) => {
+		event?.preventDefault();
+		mutation.mutate(data);
 	};
 
 	useEffect(() => {
