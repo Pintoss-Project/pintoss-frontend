@@ -31,6 +31,7 @@ const RAW_RUNTIME_STATE =
           ["@tanstack/react-query", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:5.49.2"],\
           ["@tanstack/react-query-next-experimental", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:5.49.2"],\
           ["@types/node", "npm:20.14.9"],\
+          ["@types/quill", "npm:2.0.14"],\
           ["@types/react", "npm:18.3.3"],\
           ["@types/react-beautiful-dnd", "npm:13.1.8"],\
           ["@types/react-dom", "npm:18.3.0"],\
@@ -1232,6 +1233,15 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@types/quill", "npm:1.3.10"],\
           ["parchment", "npm:1.1.4"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:2.0.14", {\
+        "packageLocation": "./.yarn/cache/@types-quill-npm-2.0.14-bbe71d85ce-ef9a5f2bc9.zip/node_modules/@types/quill/",\
+        "packageDependencies": [\
+          ["@types/quill", "npm:2.0.14"],\
+          ["parchment", "npm:1.1.4"],\
+          ["quill-delta", "npm:5.1.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -3391,6 +3401,13 @@ const RAW_RUNTIME_STATE =
           ["fast-diff", "npm:1.1.2"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:1.3.0", {\
+        "packageLocation": "./.yarn/cache/fast-diff-npm-1.3.0-9f19e3b743-9e57415bc6.zip/node_modules/fast-diff/",\
+        "packageDependencies": [\
+          ["fast-diff", "npm:1.3.0"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["fast-glob", [\
@@ -4502,6 +4519,24 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["lodash.clonedeep", [\
+      ["npm:4.5.0", {\
+        "packageLocation": "./.yarn/cache/lodash.clonedeep-npm-4.5.0-fbc3cda4e5-957ed243f8.zip/node_modules/lodash.clonedeep/",\
+        "packageDependencies": [\
+          ["lodash.clonedeep", "npm:4.5.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["lodash.isequal", [\
+      ["npm:4.5.0", {\
+        "packageLocation": "./.yarn/cache/lodash.isequal-npm-4.5.0-f8b0f64d63-82fc58a83a.zip/node_modules/lodash.isequal/",\
+        "packageDependencies": [\
+          ["lodash.isequal", "npm:4.5.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["lodash.merge", [\
       ["npm:4.6.2", {\
         "packageLocation": "./.yarn/cache/lodash.merge-npm-4.6.2-77cb4416bf-d0ea2dd009.zip/node_modules/lodash.merge/",\
@@ -5179,6 +5214,7 @@ const RAW_RUNTIME_STATE =
           ["@tanstack/react-query", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:5.49.2"],\
           ["@tanstack/react-query-next-experimental", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:5.49.2"],\
           ["@types/node", "npm:20.14.9"],\
+          ["@types/quill", "npm:2.0.14"],\
           ["@types/react", "npm:18.3.3"],\
           ["@types/react-beautiful-dnd", "npm:13.1.8"],\
           ["@types/react-dom", "npm:18.3.0"],\
@@ -5353,6 +5389,16 @@ const RAW_RUNTIME_STATE =
           ["deep-equal", "npm:1.1.2"],\
           ["extend", "npm:3.0.2"],\
           ["fast-diff", "npm:1.1.2"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:5.1.0", {\
+        "packageLocation": "./.yarn/cache/quill-delta-npm-5.1.0-885ccecbe2-6cd9a634dd.zip/node_modules/quill-delta/",\
+        "packageDependencies": [\
+          ["quill-delta", "npm:5.1.0"],\
+          ["fast-diff", "npm:1.3.0"],\
+          ["lodash.clonedeep", "npm:4.5.0"],\
+          ["lodash.isequal", "npm:4.5.0"]\
         ],\
         "linkType": "HARD"\
       }]\

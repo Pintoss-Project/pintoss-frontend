@@ -1,15 +1,22 @@
 'use client';
 
-import * as s from './AdminStyle.css';
 import { Button } from '@/shared/components/button';
 import { Input } from '@/shared/components/input';
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import { vars } from '@/shared/styles/theme.css';
-import dynamic from 'next/dynamic';
-import { useState } from 'react';
-
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+import { ChangeEvent, FormEvent, useMemo, useRef, useState } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import * as s from './AdminStyle.css';
+import * as cs from '@/shared/styles/common.css';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { BoardInfoFormData } from '@/utils/validation/board';
+import { postBoard } from '@/app/api/board/postBoard';
+import { useSearchParams } from 'next/navigation';
+import useAlertContext from '@/hooks/useAlertContext';
+import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
+import BoardError from '@/utils/error/BoardError';
 
 interface Props {
 	title: string;
@@ -17,14 +24,96 @@ interface Props {
 }
 
 const BoardWriter = ({ title, formId }: Props) => {
+	const { open, close } = useAlertContext();
+
+	const searchParams = useSearchParams();
+	const type = searchParams.get('type') as string;
+
+	const [titleValue, setTitleValue] = useState('');
 	const [value, setValue] = useState('');
+
+	const queryClient = useQueryClient();
+
+	const quillRef = useRef<ReactQuill>(null);
+
+	const handleTitleValueChange = (event: ChangeEvent<HTMLInputElement>) => {
+		setTitleValue(event.target.value);
+	};
 
 	const handleEditorChange = (content: string) => {
 		setValue(content);
 	};
 
+	const modules = useMemo(() => {
+		return {
+			toolbar: {
+				container: [
+					[{ header: [1, 2, 3, false] }],
+					['bold', 'italic', 'underline', 'strike'],
+					['blockquote'],
+					[{ list: 'ordered' }, { list: 'bullet' }],
+					[{ color: [] }, { background: [] }],
+					[{ align: [] }, 'link', 'image'],
+				],
+			},
+		};
+	}, []);
+
+	const imageHandler = () => {
+		const input = document.createElement('input');
+		input.setAttribute('type', 'file');
+		input.setAttribute('accept', 'image/*');
+		input.click();
+		input.addEventListener('change', async () => {
+			const file = input.files ? input.files[0] : null;
+			if (file && quillRef.current) {
+				const editor = quillRef.current.getEditor();
+				const range = editor.getSelection(true);
+
+				const imageUrl = '';
+
+				editor.insertEmbed(range.index, 'image', imageUrl);
+			}
+		});
+	};
+
+	const mutation = useMutation({
+		mutationFn: (data: BoardInfoFormData) => postBoard(type, data),
+		onSuccess: () => {
+			open({
+				width: '300px',
+				height: '200px',
+				title: `${type === 'notice' ? '공지사항' : '자주묻는질문'} 등록 완료`,
+				main: <AlertMainTextBox text="게시글이 등록 되었습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+			queryClient.invalidateQueries({ queryKey: ['boardList'] });
+			setTitleValue('');
+			setValue('');
+		},
+		onError: (error: BoardError) => {
+			open({
+				width: '300px',
+				height: '200px',
+				title: `${type === 'notice' ? '공지사항' : '자주묻는질문'} 등록 실패`,
+				main: <AlertMainTextBox text={error.errorMessage} />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		},
+	});
+
+	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		mutation.mutate({
+			title: titleValue,
+			content: value,
+		});
+	};
+
 	return (
-		<form id={formId}>
+		<form id={formId} onSubmit={handleSubmit}>
 			<div style={{ fontSize: '18px', fontWeight: '500' }}>{title}</div>
 			<Spacing margin="27px" />
 			<Flex direction="column">
@@ -38,6 +127,7 @@ const BoardWriter = ({ title, formId }: Props) => {
 							height: '25px',
 							border: `1px solid ${vars.color.lighterGray}`,
 						}}
+						onChange={handleTitleValueChange}
 					/>
 				</Flex>
 				<Spacing margin="14px" />
@@ -46,9 +136,12 @@ const BoardWriter = ({ title, formId }: Props) => {
 						내용
 					</div>
 					<ReactQuill
+						ref={quillRef}
 						value={value}
 						onChange={handleEditorChange}
 						style={{ width: '95%', height: '170px' }}
+						theme="snow"
+						modules={modules}
 					/>
 				</Flex>
 				<Spacing margin="60px" />
