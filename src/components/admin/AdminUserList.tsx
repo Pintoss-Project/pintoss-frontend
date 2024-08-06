@@ -11,36 +11,32 @@ import { MdKeyboardDoubleArrowRight } from 'react-icons/md';
 import { MdKeyboardDoubleArrowLeft } from 'react-icons/md';
 import { MdKeyboardArrowRight } from 'react-icons/md';
 import { MdKeyboardArrowLeft } from 'react-icons/md';
-
-interface User {
-	user_id: string;
-	join_date: string;
-	inflow: string;
-	phone: string;
-	sns: string;
-	selected?: boolean;
-}
+import { ManageUserInfo } from '@/models/user';
+import { useQuery } from '@tanstack/react-query';
+import { getUserList } from '@/app/api/user/getUserList';
+import { formatDate } from '@/utils/formatDate';
 
 const AdminUserList = () => {
-	const [users, setUsers] = useState<User[]>([]);
+	const [users, setUsers] = useState<ManageUserInfo[]>([]);
 	const [selectedCount, setSelectedCount] = useState<number>(0);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [usersPerPage] = useState<number>(10);
 	const [currentPageGroup, setCurrentPageGroup] = useState<number>(1);
 
-	useEffect(() => {
-		const fetchData = async () => {
-			const response = await fetch('/json/user.json');
-			const data = await response.json();
-			setUsers(data);
-		};
+	const { data: userList, isSuccess } = useQuery({
+		queryKey: ['users'],
+		queryFn: getUserList,
+	});
 
-		fetchData();
-	}, []);
+	useEffect(() => {
+		if (isSuccess && userList?.data) {
+			setUsers(userList.data);
+		}
+	}, [userList, isSuccess]);
 
 	const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const checked = e.target.checked;
-		const updatedUsers = users.map((user) => ({ ...user, selected: checked }));
+		const updatedUsers = users?.map((user) => ({ ...user, selected: checked }));
 		setUsers(updatedUsers);
 		setSelectedCount(checked ? updatedUsers.length : 0);
 	};
@@ -73,8 +69,8 @@ const AdminUserList = () => {
 		}
 	};
 
-	const totalPages = Math.ceil(users.length / usersPerPage);
-	const displayedUsers = users.slice((currentPage - 1) * usersPerPage, currentPage * usersPerPage);
+	const totalPages = Math.ceil(users?.length / usersPerPage);
+	const displayedUsers = users?.slice((currentPage - 1) * usersPerPage, currentPage * usersPerPage);
 
 	const getPageNumbers = () => {
 		const start = (currentPageGroup - 1) * 10 + 1;
@@ -99,7 +95,7 @@ const AdminUserList = () => {
 				<div>
 					<span className={s.darkGraySmallText}>검색결과 / </span>
 					<span className={s.blackSmallText} style={{ fontWeight: 'bold' }}>
-						{users.length}
+						{users?.length}
 					</span>
 					<span className={s.darkGraySmallText}>명 검색결과</span>
 				</div>
@@ -125,12 +121,12 @@ const AdminUserList = () => {
 					<div className={clsx(s.userFlexItem6, s.darkGraySmallText)}>휴대폰</div>
 					<div className={clsx(s.userFlexItem7, s.darkGraySmallText)}>소셜로그인</div>
 				</Flex>
-				{displayedUsers.map((user, index) => (
+				{displayedUsers?.map((user, index) => (
 					<Flex
 						justify="center"
 						align="center"
 						style={{ padding: '13px 0', borderBottom: `1px solid ${vars.color.lighterGray}` }}
-						key={user.user_id}>
+						key={user.email}>
 						<div className={s.userFlexItem1}>
 							<Input
 								type="checkbox"
@@ -142,8 +138,10 @@ const AdminUserList = () => {
 						<div className={clsx(s.userFlexItem2, s.darkGraySmallText)}>
 							{(currentPage - 1) * usersPerPage + index + 1}
 						</div>
-						<div className={clsx(s.userFlexItem3, s.darkGraySmallText)}>{user.user_id}</div>
-						<div className={clsx(s.userFlexItem4, s.darkGraySmallText)}>{user.join_date}</div>
+						<div className={clsx(s.userFlexItem3, s.darkGraySmallText)}>{user.email}</div>
+						<div className={clsx(s.userFlexItem4, s.darkGraySmallText)}>
+							{formatDate(user.timestamp!)}
+						</div>
 						<div className={clsx(s.userFlexItem5, s.darkGraySmallText)}>{user.inflow}</div>
 						<div className={clsx(s.userFlexItem6, s.darkGraySmallText)}>{user.phone}</div>
 						<div className={clsx(s.userFlexItem7, s.darkGraySmallText)}>{user.sns}</div>
