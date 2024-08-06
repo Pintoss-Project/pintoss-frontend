@@ -14,3 +14,11 @@ export interface SiteInfo {
 	createdAt?: string;
 	updatedAt?: string;
 }
+
+export interface BannerInfo {
+	id: number;
+	bannerTitle: string;
+	bannerLink: string;
+	createdAt?: string;
+	updatedAt?: string;
+}

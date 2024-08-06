@@ -76,6 +76,17 @@ export const whiteAndBlueButton = style([
 	},
 ]);
 
+export const whiteAndBlackButton = style([
+	f.wFull,
+	{
+		maxWidth: '420px',
+		height: '50px',
+		backgroundColor: vars.color.white,
+		borderRadius: '5px',
+		border: `1px solid ${vars.color.black}`,
+	},
+]);
+
 export const naverButtonBox = style([
 	f.pRelative,
 	f.wFull,

@@ -10,7 +10,7 @@ import AdminImageField from './AdminImageField';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { BannerInfoFormData, bannerInfoSchema } from '@/utils/validation/site';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { postBanner } from '@/app/api/site/postBanner';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
@@ -18,6 +18,7 @@ import SiteError from '@/utils/error/SiteError';
 
 const AddBannerBox = () => {
 	const { open, close } = useAlertContext();
+	const queryClient = useQueryClient();
 
 	const methods = useForm<BannerInfoFormData>({
 		resolver: zodResolver(bannerInfoSchema),
@@ -41,6 +42,7 @@ const AddBannerBox = () => {
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: close,
 			});
+			queryClient.invalidateQueries({ queryKey: ['bannerList'] });
 			reset();
 		},
 		onError: (error: SiteError) => {
@@ -56,7 +58,6 @@ const AddBannerBox = () => {
 	});
 
 	const onSubmit: SubmitHandler<BannerInfoFormData> = (data, event) => {
-		console.log(1);
 		event?.preventDefault();
 		mutation.mutate(data);
 	};

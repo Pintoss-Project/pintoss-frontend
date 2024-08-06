@@ -60,7 +60,7 @@ const Alert = ({
 						{leftButtonLabel !== '' && (
 							<>
 								<Button
-									color={vars.color.white}
+									color={vars.color.black}
 									className={leftButtonStyle}
 									onClick={onLeftButtonClick}>
 									{leftButtonLabel}
