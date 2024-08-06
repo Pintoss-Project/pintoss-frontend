@@ -95,7 +95,7 @@ const CustomerMain = () => {
 	const totalAnnouncementPages = Math.ceil(ANNOUNCEMENTS.length / itemsPerPage);
 	const totalFaqsPages = Math.ceil(FAQS.length / itemsPerPage);
 
-	const getPageNumbers = (totalPages: number, currentPage: number) => {
+	const getPageNumbers = (totalPages: number) => {
 		const pages = [];
 		for (let i = 1; i <= totalPages; i++) {
 			pages.push(i);
@@ -172,7 +172,7 @@ const CustomerMain = () => {
 					<MdKeyboardArrowLeft />
 				</button>
 				{selectedMenu === 'announcement' &&
-					getPageNumbers(totalAnnouncementPages, announcementPage).map((pageNumber) => (
+					getPageNumbers(totalAnnouncementPages).map((pageNumber) => (
 						<button
 							key={pageNumber}
 							className={clsx(s.pageButton, {
@@ -183,7 +183,7 @@ const CustomerMain = () => {
 						</button>
 					))}
 				{selectedMenu === 'FAQs' &&
-					getPageNumbers(totalFaqsPages, faqsPage).map((pageNumber) => (
+					getPageNumbers(totalFaqsPages).map((pageNumber) => (
 						<button
 							key={pageNumber}
 							className={clsx(s.pageButton, { [s.activePageButton]: faqsPage === pageNumber })}
