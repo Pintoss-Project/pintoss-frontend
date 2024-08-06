@@ -12,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { LogInFormData, loginSchema } from '@/utils/validation/auth';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import LoginInput from '@/shared/components/input/LoginInput';
+import { setLocalToken } from '@/utils/localToken';
 
 const AdminLoginSection = () => {
 	const { open, close } = useAlertContext();
@@ -28,7 +29,6 @@ const AdminLoginSection = () => {
 	const { handleSubmit } = methods;
 
 	const onSubmit: SubmitHandler<LogInFormData> = async (data, event) => {
-		console.log(data);
 		event?.preventDefault();
 
 		const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/login`, {
@@ -38,7 +38,9 @@ const AdminLoginSection = () => {
 		});
 
 		if (response.ok) {
-			const data = await response.json();
+			const { data } = await response.json();
+
+			setLocalToken(data.accessToken);
 
 			open({
 				width: '300px',
