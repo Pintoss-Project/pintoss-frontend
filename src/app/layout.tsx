@@ -7,6 +7,7 @@ import 'react-quill/dist/quill.snow.css';
 import '@/shared/styles';
 
 import type { Metadata } from 'next';
+import Providers from '@/react-query/Providers';
 
 export const metadata: Metadata = {
 	title: '핀토스',
@@ -17,16 +18,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 	return (
 		<html lang="ko">
 			<body>
-				<AlertContextProvider>
-					<NavBarTop />
-					<Flex justify="center">
-						<SideNavBar />
-						<div style={{ width: '100%' }}>
-							{children}
-							<Footer />
-						</div>
-					</Flex>
-				</AlertContextProvider>
+				<Providers>
+					<AlertContextProvider>
+						<NavBarTop />
+						<Flex justify="center">
+							<SideNavBar />
+							<div style={{ width: '100%' }}>
+								{children}
+								<Footer />
+							</div>
+						</Flex>
+					</AlertContextProvider>
+				</Providers>
 			</body>
 		</html>
 	);
