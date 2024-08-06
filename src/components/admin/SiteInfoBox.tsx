@@ -26,8 +26,6 @@ const SiteInfoBox = () => {
 		queryFn: () => getSiteInfo(1),
 	});
 
-	console.log(siteInfo);
-
 	const methods = useForm<SiteInfoFormData>({
 		resolver: zodResolver(siteInfoSchema),
 		mode: 'onChange',

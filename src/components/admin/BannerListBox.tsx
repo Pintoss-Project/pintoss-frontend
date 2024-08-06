@@ -13,7 +13,11 @@ import { deleteBanner } from '@/app/api/site/deleteBanner';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 
-const BannerListBox = () => {
+interface Props {
+	onEdit: (id: number) => void;
+}
+
+const BannerListBox = ({ onEdit }: Props) => {
 	const { open, close } = useAlertContext();
 
 	const queryClient = useQueryClient();
@@ -130,6 +134,9 @@ const BannerListBox = () => {
 									backgroundColor: vars.color.white,
 									border: `1px solid ${vars.color.lighterGray}`,
 									borderRadius: '5px',
+								}}
+								onClick={() => {
+									onEdit(banner.id);
 								}}>
 								수정
 							</Button>

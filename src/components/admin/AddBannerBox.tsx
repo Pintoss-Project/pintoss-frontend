@@ -10,15 +10,24 @@ import AdminImageField from './AdminImageField';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { BannerInfoFormData, bannerInfoSchema } from '@/utils/validation/site';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { postBanner } from '@/app/api/site/postBanner';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import SiteError from '@/utils/error/SiteError';
+import { useEffect } from 'react';
+import { updateBanner } from '@/app/api/site/updateBanner';
+import { getBannerById } from '@/app/api/site/getBannerById';
 
-const AddBannerBox = () => {
+const AddBannerBox = ({ editingBannerId, initialBannerData, onResetEdit }: any) => {
 	const { open, close } = useAlertContext();
 	const queryClient = useQueryClient();
+
+	const { data: bannerInfo } = useQuery({
+		queryKey: ['banner', editingBannerId],
+		queryFn: () => getBannerById(editingBannerId),
+		enabled: Boolean(editingBannerId),
+	});
 
 	const methods = useForm<BannerInfoFormData>({
 		resolver: zodResolver(bannerInfoSchema),
@@ -31,25 +40,42 @@ const AddBannerBox = () => {
 
 	const { handleSubmit, reset } = methods;
 
+	useEffect(() => {
+		if (editingBannerId && bannerInfo) {
+			reset({
+				bannerTitle: bannerInfo.data.bannerTitle,
+				bannerLink: bannerInfo.data.bannerLink,
+			});
+		} else if (!editingBannerId) {
+			reset(initialBannerData);
+		}
+	}, [editingBannerId, bannerInfo, initialBannerData, reset]);
+
 	const mutation = useMutation({
-		mutationFn: (data: BannerInfoFormData) => postBanner(data),
+		mutationFn: (data: BannerInfoFormData) =>
+			editingBannerId ? updateBanner(editingBannerId, data) : postBanner(data),
 		onSuccess: () => {
 			open({
 				width: '300px',
 				height: '200px',
-				title: '배너 생성 완료',
-				main: <AlertMainTextBox text="배너가 생성되었습니다." />,
+				title: editingBannerId ? '배너 수정 완료' : '배너 생성 완료',
+				main: (
+					<AlertMainTextBox
+						text={editingBannerId ? '배너가 수정되었습니다.' : '배너가 생성되었습니다.'}
+					/>
+				),
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: close,
 			});
 			queryClient.invalidateQueries({ queryKey: ['bannerList'] });
-			reset();
+			reset(initialBannerData);
+			onResetEdit();
 		},
 		onError: (error: SiteError) => {
 			open({
 				width: '300px',
 				height: '200px',
-				title: '배너 생성 실패',
+				title: editingBannerId ? '배너 수정 실패' : '배너 생성 실패',
 				main: <AlertMainTextBox text={error.errorMessage} />,
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: close,
@@ -74,7 +100,7 @@ const AddBannerBox = () => {
 					border: `1px solid ${vars.color.lighterGray}`,
 				}}
 				onSubmit={handleSubmit(onSubmit)}>
-				<div className={s.blackMediumText}>배너 추가</div>
+				<div className={s.blackMediumText}>{editingBannerId ? '배너 수정' : '배너 추가'}</div>
 				<Spacing margin="30px" />
 				<AdminInputField
 					label="제목"
@@ -121,7 +147,7 @@ const AddBannerBox = () => {
 							borderRadius: '5px',
 						}}
 						type="submit">
-						추가
+						{editingBannerId ? '수정' : '추가'}
 					</Button>
 				</Flex>
 			</form>
