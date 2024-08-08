@@ -84,6 +84,7 @@ export const grayButton = style({
 			width: '100%',
 		},
 	},
+	'cursor': 'pointer',
 });
 
 export const authenticationInfoCircle = style({

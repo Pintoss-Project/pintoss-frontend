@@ -35,7 +35,14 @@ export const listItemStyle = style({
 });
 
 export const navbarTopMenuBox = style({
+	'position': 'fixed',
+	'top': '0',
+	'right': '20px',
 	'display': 'none',
+	'padding': '25px 40px',
+	'backgroundColor': vars.color.white,
+	'borderRadius': '0 0 15px 15px',
+	'boxShadow': '0 2px 4px rgba(0,0,0,0.1)',
 	'@media': {
 		[responsive.desktop]: {
 			display: 'block',

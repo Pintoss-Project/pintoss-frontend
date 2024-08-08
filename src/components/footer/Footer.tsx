@@ -43,7 +43,7 @@ const Footer = () => {
 						<Spacing margin="25px" />
 						<Flex justify="center" align="center" className={cs.darkBlueButton}>
 							<a href="mailto:c0818@naver.com" style={{ color: vars.color.white }}>
-								대량구매/제휴문의 : c0818@naver.com
+								대량구매/제휴문의 : c0810@naver.com
 							</a>
 						</Flex>
 						<Spacing margin="20px" />

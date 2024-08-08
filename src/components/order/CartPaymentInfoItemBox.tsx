@@ -44,7 +44,7 @@ const CartPaymentInfoItemBox = ({ totalAmount }: Props) => {
 			<Button
 				color={vars.color.white}
 				className={clsx(s.responsiveLargeText, cs.lightBlueButton)}
-				style={{ height: '60px' }}>
+				style={{ height: '60px', maxWidth: '100%' }}>
 				결제요청
 			</Button>
 		</div>

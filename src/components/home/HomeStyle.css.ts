@@ -423,10 +423,13 @@ export const responsiveGrid = style({
 	'gap': '16px',
 	'width': '100%',
 	'@media': {
-		'(min-width: 1450px)': {
+		'(min-width: 1901px)': {
+			gridTemplateColumns: 'repeat(5, 1fr)',
+		},
+		'(max-width: 1900px)': {
 			gridTemplateColumns: 'repeat(4, 1fr)',
 		},
-		[responsive.tablet]: {
+		'(max-width: 1640px)': {
 			gridTemplateColumns: 'repeat(3, 1fr)',
 		},
 		'(max-width: 620px)': {

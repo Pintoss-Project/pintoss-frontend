@@ -21,7 +21,6 @@ export default function Home() {
 			<Spacing margin="60px" />
 			<HomeAnnouncementsBoard />
 			<Spacing margin="60px" />
-			<HomeRecruitingBanner />
 		</main>
 	);
 }

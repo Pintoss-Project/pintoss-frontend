@@ -48,15 +48,11 @@ export const inputStyle = style({
 });
 
 export const pText = style({
-	'width': '100%',
-	'fontSize': '10px',
-	'color': vars.color.mediumGray,
-	'textAlign': 'right',
-	'@media': {
-		[responsive.mobile]: {
-			textAlign: 'center',
-		},
-	},
+	width: '100%',
+	paddingRight: '20px',
+	fontSize: '10px',
+	color: vars.color.mediumGray,
+	textAlign: 'right',
 });
 
 export const phoneInfoBox = style({
