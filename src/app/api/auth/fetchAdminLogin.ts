@@ -11,8 +11,6 @@ export const fetchAdminLogin = async (data: LogInFormData): Promise<{ accessToke
 
 	if (!response.ok) {
 		const errorResponse: ErrorResponse = await response.json();
-
-		console.log(errorResponse);
 		throw new LoginError('로그인 실패', errorResponse);
 	}
 

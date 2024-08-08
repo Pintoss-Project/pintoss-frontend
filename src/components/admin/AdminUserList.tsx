@@ -7,48 +7,43 @@ import Spacing from '@/shared/components/layout/Spacing';
 import { vars } from '@/shared/styles/theme.css';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
-import { MdKeyboardDoubleArrowRight } from 'react-icons/md';
-import { MdKeyboardDoubleArrowLeft } from 'react-icons/md';
-import { MdKeyboardArrowRight } from 'react-icons/md';
-import { MdKeyboardArrowLeft } from 'react-icons/md';
+import {
+	MdKeyboardDoubleArrowRight,
+	MdKeyboardDoubleArrowLeft,
+	MdKeyboardArrowRight,
+	MdKeyboardArrowLeft,
+} from 'react-icons/md';
+import { ManageUserInfo } from '@/models/user';
+import { formatDate } from '@/utils/formatDate';
 
-interface User {
-	user_id: string;
-	join_date: string;
-	inflow: string;
-	phone: string;
-	sns: string;
-	selected?: boolean;
+interface AdminUserListProps {
+	users: ManageUserInfo[] | undefined;
 }
 
-const AdminUserList = () => {
-	const [users, setUsers] = useState<User[]>([]);
+const AdminUserList = ({ users }: AdminUserListProps) => {
+	const [displayedUsers, setDisplayedUsers] = useState<ManageUserInfo[]>([]);
 	const [selectedCount, setSelectedCount] = useState<number>(0);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [usersPerPage] = useState<number>(10);
 	const [currentPageGroup, setCurrentPageGroup] = useState<number>(1);
 
 	useEffect(() => {
-		const fetchData = async () => {
-			const response = await fetch('/json/user.json');
-			const data = await response.json();
-			setUsers(data);
-		};
-
-		fetchData();
-	}, []);
+		if (users) {
+			setDisplayedUsers(users);
+		}
+	}, [users]);
 
 	const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const checked = e.target.checked;
-		const updatedUsers = users.map((user) => ({ ...user, selected: checked }));
-		setUsers(updatedUsers);
+		const updatedUsers = displayedUsers.map((user) => ({ ...user, selected: checked }));
+		setDisplayedUsers(updatedUsers);
 		setSelectedCount(checked ? updatedUsers.length : 0);
 	};
 
 	const handleSelectUser = (index: number) => {
-		const updatedUsers = [...users];
+		const updatedUsers = [...displayedUsers];
 		updatedUsers[index].selected = !updatedUsers[index].selected;
-		setUsers(updatedUsers);
+		setDisplayedUsers(updatedUsers);
 		setSelectedCount(updatedUsers.filter((user) => user.selected).length);
 	};
 
@@ -57,7 +52,7 @@ const AdminUserList = () => {
 	};
 
 	const handlePageGroupChange = (direction: 'prev' | 'next' | 'first' | 'last') => {
-		const totalGroups = Math.ceil(Math.ceil(users.length / usersPerPage) / 10);
+		const totalGroups = Math.ceil(Math.ceil(displayedUsers.length / usersPerPage) / 10);
 		if (direction === 'prev' && currentPageGroup > 1) {
 			setCurrentPageGroup(currentPageGroup - 1);
 			setCurrentPage((currentPageGroup - 2) * 10 + 1);
@@ -73,8 +68,11 @@ const AdminUserList = () => {
 		}
 	};
 
-	const totalPages = Math.ceil(users.length / usersPerPage);
-	const displayedUsers = users.slice((currentPage - 1) * usersPerPage, currentPage * usersPerPage);
+	const totalPages = Math.ceil(displayedUsers.length / usersPerPage);
+	const paginatedUsers = displayedUsers.slice(
+		(currentPage - 1) * usersPerPage,
+		currentPage * usersPerPage,
+	);
 
 	const getPageNumbers = () => {
 		const start = (currentPageGroup - 1) * 10 + 1;
@@ -99,7 +97,7 @@ const AdminUserList = () => {
 				<div>
 					<span className={s.darkGraySmallText}>검색결과 / </span>
 					<span className={s.blackSmallText} style={{ fontWeight: 'bold' }}>
-						{users.length}
+						{displayedUsers.length}
 					</span>
 					<span className={s.darkGraySmallText}>명 검색결과</span>
 				</div>
@@ -125,12 +123,12 @@ const AdminUserList = () => {
 					<div className={clsx(s.userFlexItem6, s.darkGraySmallText)}>휴대폰</div>
 					<div className={clsx(s.userFlexItem7, s.darkGraySmallText)}>소셜로그인</div>
 				</Flex>
-				{displayedUsers.map((user, index) => (
+				{paginatedUsers.map((user, index) => (
 					<Flex
 						justify="center"
 						align="center"
 						style={{ padding: '13px 0', borderBottom: `1px solid ${vars.color.lighterGray}` }}
-						key={user.user_id}>
+						key={user.email}>
 						<div className={s.userFlexItem1}>
 							<Input
 								type="checkbox"
@@ -142,8 +140,10 @@ const AdminUserList = () => {
 						<div className={clsx(s.userFlexItem2, s.darkGraySmallText)}>
 							{(currentPage - 1) * usersPerPage + index + 1}
 						</div>
-						<div className={clsx(s.userFlexItem3, s.darkGraySmallText)}>{user.user_id}</div>
-						<div className={clsx(s.userFlexItem4, s.darkGraySmallText)}>{user.join_date}</div>
+						<div className={clsx(s.userFlexItem3, s.darkGraySmallText)}>{user.email}</div>
+						<div className={clsx(s.userFlexItem4, s.darkGraySmallText)}>
+							{formatDate(user.timestamp!)}
+						</div>
 						<div className={clsx(s.userFlexItem5, s.darkGraySmallText)}>{user.inflow}</div>
 						<div className={clsx(s.userFlexItem6, s.darkGraySmallText)}>{user.phone}</div>
 						<div className={clsx(s.userFlexItem7, s.darkGraySmallText)}>{user.sns}</div>
