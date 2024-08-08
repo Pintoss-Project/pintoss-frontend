@@ -50,12 +50,15 @@ export const alertTitle = style([
 ]);
 
 export const AlertMainTextWrap = style({
+	width: '100%',
 	margin: '10px 4px',
+	padding: '16px 0',
 });
 
 export const AlertMainText = style({
 	padding: '4px 8px',
 	lineHeight: '1.3',
+	textAlign: 'center',
 });
 
 export const AlertBlueButtonStyle = style({
