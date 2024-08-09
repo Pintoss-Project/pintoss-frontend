@@ -8,3 +8,16 @@ export interface ManageUserInfo {
 	sns?: string;
 	selected?: boolean;
 }
+
+export interface ManageUserInfoResponse {
+	code: number;
+	status: string;
+	message: string;
+	data: {
+		totalPages: number;
+		totalElements: number;
+		currentPage: number;
+		pageSize: number;
+		content: ManageUserInfo[];
+	};
+}

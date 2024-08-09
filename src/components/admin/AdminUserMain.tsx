@@ -7,49 +7,29 @@ import { Button } from '@/shared/components/button';
 import { vars } from '@/shared/styles/theme.css';
 import { Input } from '@/shared/components/input';
 import AdminUserList from './AdminUserList';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getUserList } from '@/app/api/user/getUserList';
-import { getFilteredUserList } from '@/app/api/user/getFilteredUserList';
 
 const AdminUserMain = () => {
 	const [startDate, setStartDate] = useState('');
 	const [endDate, setEndDate] = useState('');
 	const [search, setSearch] = useState('');
-	const [filterParams, setFilterParams] = useState<{
-		startDate?: string;
-		endDate?: string;
-		search?: string;
-	}>({});
+	const [page, setPage] = useState(0);
+	const [pageSize] = useState(10);
 
-	const { data: userList } = useQuery({
-		queryKey: ['users'],
-		queryFn: getUserList,
-	});
-
-	const { data: filteredUsers, refetch: refetchFilteredUsers } = useQuery({
-		queryKey: ['filteredUsers', filterParams],
-		queryFn: () => getFilteredUserList(filterParams),
-		enabled: false,
+	const { data: paginatedUsers, refetch: refetchFilteredUsers } = useQuery({
+		queryKey: ['userList', { startDate, endDate, search, page, pageSize }],
+		queryFn: () => getUserList({ startDate, endDate, search, page, pageSize }),
 	});
 
 	const handleSearch = () => {
-		const params: { startDate?: string; endDate?: string; search?: string } = {};
-		if (startDate) params.startDate = startDate;
-		if (endDate) params.endDate = endDate;
-		if (search) params.search = search;
-
-		setFilterParams(params);
 		refetchFilteredUsers();
 	};
 
-	useEffect(() => {
-		if (filterParams) {
-			refetchFilteredUsers();
-		}
-	}, [filterParams, refetchFilteredUsers]);
-
-	const displayedUsers = filteredUsers?.data ?? userList?.data;
+	const handlePageChange = (newPage: number) => {
+		setPage(newPage);
+	};
 
 	return (
 		<div>
@@ -100,7 +80,12 @@ const AdminUserMain = () => {
 				</Flex>
 			</div>
 			<Spacing margin="30px" />
-			<AdminUserList users={displayedUsers} />
+			<AdminUserList
+				users={paginatedUsers?.data.content}
+				totalPages={paginatedUsers?.data.totalPages}
+				currentPage={page}
+				onPageChange={handlePageChange}
+			/>
 		</div>
 	);
 };
