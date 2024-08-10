@@ -24,23 +24,18 @@ export const useProductWithPriceCategoryMutation = ({
 
 			if (productId && variables.priceCategories.length > 0) {
 				try {
-					await Promise.all(
-						variables.priceCategories.map((category: PriceCategoryInfoFormData) =>
-							postPriceCategory(productId, category),
-						),
-					);
-
-					open({
-						width: '300px',
-						height: '200px',
-						title: '상품 및 가격 카테고리 생성 완료',
-						main: '상품과 가격 카테고리가 성공적으로 생성되었습니다.',
-						rightButtonStyle: cs.lightBlueButton,
-						onRightButtonClick: () => {
-							close();
-							if (onSuccess) onSuccess();
-						},
-					});
+					postPriceCategory(productId, variables.priceCategories),
+						open({
+							width: '300px',
+							height: '200px',
+							title: '상품 및 가격 카테고리 생성 완료',
+							main: '상품과 가격 카테고리가 성공적으로 생성되었습니다.',
+							rightButtonStyle: cs.lightBlueButton,
+							onRightButtonClick: () => {
+								close();
+								if (onSuccess) onSuccess();
+							},
+						});
 
 					queryClient.invalidateQueries({ queryKey: ['productList'] });
 				} catch (error) {
@@ -66,7 +61,6 @@ export const useProductWithPriceCategoryMutation = ({
 					},
 				});
 
-				// 상품 리스트 캐시 무효화
 				queryClient.invalidateQueries({ queryKey: ['productList'] });
 			}
 		},

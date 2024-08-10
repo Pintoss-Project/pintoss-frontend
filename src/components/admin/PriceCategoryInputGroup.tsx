@@ -5,20 +5,110 @@ import { Input } from '@/shared/components/input';
 import { Flex } from '@/shared/components/layout';
 import { vars } from '@/shared/styles/theme.css';
 import { PriceCategoryInfoFormData } from '@/utils/validation/product';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as s from './AdminStyle.css';
+import * as cs from '@/shared/styles/common.css';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { getPriceCategoryList } from '@/app/api/product/getPriceCategoryList';
+import { postPriceCategory } from '@/app/api/product/postPriceCategory';
+import useAlertContext from '@/hooks/useAlertContext';
+import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 
 interface Props {
-	onAddCategory: (category: PriceCategoryInfoFormData) => void;
+	productId?: number;
+	onAddCategory: (priceCategory: PriceCategoryInfoFormData) => void;
 }
 
-const PriceCategoryInputGroup = ({ onAddCategory }: Props) => {
+const PriceCategoryInputGroup = ({ productId, onAddCategory }: Props) => {
 	const [priceName, setPriceName] = useState<string>('');
 	const [price, setPrice] = useState<number | ''>('');
+	const [existingCategories, setExistingCategories] = useState<PriceCategoryInfoFormData[]>([]);
+	const [newCategories, setNewCategories] = useState<PriceCategoryInfoFormData[]>([]);
 
-	const handleAddClick = () => {
+	const queryClient = useQueryClient();
+
+	const { open, close } = useAlertContext();
+
+	const { data: categories, isSuccess } = useQuery({
+		queryKey: ['priceCategoryList', productId],
+		queryFn: () => getPriceCategoryList(productId!),
+		enabled: !!productId,
+	});
+
+	const postPriceCategoryMutation = useMutation({
+		mutationFn: (data: PriceCategoryInfoFormData[]) => postPriceCategory(productId!, data),
+		onSuccess: () => {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '가격 카테고리 생성 성공',
+				main: <AlertMainTextBox text="가격 카테고리가 생성되었습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		},
+		onError: () => {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '가격 카테고리 생성 실패',
+				main: <AlertMainTextBox text="가격 카테고리 생성이 실패되었습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		},
+	});
+
+	useEffect(() => {
+		if (isSuccess) setExistingCategories(categories.data);
+	}, [isSuccess, categories]);
+
+	const handleAddClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		event.preventDefault();
+
 		if (priceName && price) {
-			onAddCategory({ name: priceName, price: Number(price) });
+			const isDuplicateName = existingCategories.some((category) => category.name === priceName);
+			const isDuplicatePrice = existingCategories.some(
+				(category) => category.price === Number(price),
+			);
+
+			if (isDuplicateName) {
+				open({
+					width: '300px',
+					height: '200px',
+					title: '가격 카테고리 중복',
+					main: <AlertMainTextBox text="가격 카테고리 이름이 중복되었습니다." />,
+					rightButtonStyle: cs.lightBlueButton,
+					onRightButtonClick: close,
+				});
+				return;
+			}
+
+			if (isDuplicatePrice) {
+				open({
+					width: '300px',
+					height: '200px',
+					title: '가격 카테고리 중복',
+					main: <AlertMainTextBox text="가격 카테고리 가격이 중복되었습니다." />,
+					rightButtonStyle: cs.lightBlueButton,
+					onRightButtonClick: close,
+				});
+				return;
+			}
+
+			const newCategory: PriceCategoryInfoFormData = { name: priceName, price: Number(price) };
+
+			setNewCategories((prevCategories) => [...prevCategories, newCategory]);
+
+			if (productId) {
+				postPriceCategoryMutation.mutate([newCategory]);
+				setNewCategories([]);
+				queryClient.invalidateQueries({ queryKey: ['priceCategoryList', productId] });
+				queryClient.invalidateQueries({ queryKey: ['productList'] });
+			} else {
+				onAddCategory(newCategory);
+			}
+
 			setPriceName('');
 			setPrice('');
 		}

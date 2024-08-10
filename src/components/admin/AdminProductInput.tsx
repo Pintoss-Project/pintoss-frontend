@@ -25,7 +25,6 @@ const AdminProductInput = <T extends FieldValues>({
 	label,
 	children,
 	placeholder,
-	value,
 	className,
 	style,
 	flex,
@@ -61,7 +60,7 @@ const AdminProductInput = <T extends FieldValues>({
 								id={name}
 								className={className || s.baseInputStyle}
 								placeholder={placeholder}
-								value={value}
+								value={field.value}
 								onChange={field.onChange}
 								style={style}
 							/>

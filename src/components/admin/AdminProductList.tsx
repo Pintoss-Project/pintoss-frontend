@@ -11,7 +11,11 @@ import { useQuery } from '@tanstack/react-query';
 import { getProductList } from '@/app/api/product/getProductList';
 import { ProductInfo } from '@/models/product';
 
-const AdminProductList = () => {
+interface Props {
+	onSelectProduct: (productId: number) => void;
+}
+
+const AdminProductList = ({ onSelectProduct }: Props) => {
 	const [selectedKind, setSelectedKind] = useState<{ [key: string]: string }>({});
 	const [quantity, setQuantity] = useState<{ [key: string]: number }>({});
 
@@ -117,7 +121,7 @@ const AdminProductList = () => {
 							name=""
 							className={s.customSelect}
 							onChange={(e) => handleSelectChange(e, product)}
-							value={selectedKind[product.id]}>
+							value={selectedKind?.[product.id]}>
 							{product.priceCategories?.map((kind) => (
 								<option key={kind.id} value={kind.id}>
 									{kind.name}
@@ -129,7 +133,7 @@ const AdminProductList = () => {
 						<Flex justify="center" align="center">
 							<Input
 								type="number"
-								value={quantity[product.id] || 0}
+								value={quantity?.[product.id] || 0}
 								onChange={(e) => handleQuantityChange(e, product)}
 								style={{
 									width: '50px',
@@ -165,7 +169,8 @@ const AdminProductList = () => {
 									backgroundColor: vars.color.white,
 									border: `1px solid ${vars.color.lighterGray}`,
 									borderRadius: '5px',
-								}}>
+								}}
+								onClick={() => onSelectProduct(product.id)}>
 								수정
 							</Button>
 							<Button

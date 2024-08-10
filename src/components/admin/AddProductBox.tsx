@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Flex } from '@/shared/components/layout';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import {
@@ -22,15 +22,36 @@ import { IoIosRemoveCircle } from 'react-icons/io';
 import { Accept, useDropzone } from 'react-dropzone';
 import Image from 'next/image';
 import { DropImageBox } from '../../../out/svgs';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getPriceCategoryList } from '@/app/api/product/getPriceCategoryList';
+import { getProduct } from '@/app/api/product/getProduct';
 
 interface FileWithPreview extends File {
 	preview: string;
 }
 
-const AddProductBox = () => {
+interface Props {
+	productId?: number;
+}
+
+const AddProductBox = ({ productId }: Props) => {
 	const [files, setFiles] = useState<FileWithPreview[]>([]);
 	const [isImageAdded, setIsImageAdded] = useState(false);
 	const [priceCategories, setPriceCategories] = useState<PriceCategoryInfoFormData[]>([]);
+
+	const queryClient = useQueryClient();
+
+	const { data: productDetails, isSuccess } = useQuery({
+		queryKey: ['productDetails', productId],
+		queryFn: () => getProduct(productId!),
+		enabled: !!productId,
+	});
+
+	const { data: priceCategoryList } = useQuery({
+		queryKey: ['priceCategoryList', productId],
+		queryFn: () => getPriceCategoryList(productId!),
+		enabled: !!productId,
+	});
 
 	const methods = useForm<ProductInfoFormData>({
 		resolver: zodResolver(productInfoSchema),
@@ -44,6 +65,22 @@ const AddProductBox = () => {
 			category: '',
 		},
 	});
+
+	useEffect(() => {
+		if (isSuccess && productDetails) {
+			const product = productDetails.data;
+
+			methods.reset({
+				name: product.name,
+				homePage: product.homePage,
+				csCenter: product.csCenter,
+				description: product.description,
+				publisher: product.publisher,
+				category: product.category,
+			});
+			setPriceCategories(product.priceCategories || []);
+		}
+	}, [isSuccess, productDetails, methods]);
 
 	const onDrop = useCallback((acceptedFiles: File[]) => {
 		setFiles(
@@ -78,13 +115,22 @@ const AddProductBox = () => {
 		</div>
 	));
 
-	const { handleSubmit, reset, setValue } = methods;
+	const { handleSubmit, setValue } = methods;
 
-	const { mutate: createProductWithCategory } = useProductWithPriceCategoryMutation();
+	const { mutate: createProductWithCategory } = useProductWithPriceCategoryMutation({
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ['priceCategoryList', productId],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ['productList'],
+			});
+		},
+	});
 
-	const handleAddCategory = (category: PriceCategoryInfoFormData) => {
-		setPriceCategories([...priceCategories, category]);
-		setValue('priceCategories', [...priceCategories, category]);
+	const handleAddCategory = (priceCategory: PriceCategoryInfoFormData) => {
+		setPriceCategories((prevCategories) => [...prevCategories, priceCategory]);
+		setValue('priceCategories', [...priceCategories, priceCategory]);
 	};
 
 	const onSubmit: SubmitHandler<ProductInfoFormData> = (data, event) => {
@@ -99,6 +145,8 @@ const AddProductBox = () => {
 			return updatedCategories;
 		});
 	};
+
+	const displayedCategories = priceCategoryList?.data || priceCategories;
 
 	return (
 		<FormProvider {...methods}>
@@ -148,9 +196,9 @@ const AddProductBox = () => {
 						<Spacing margin="25px" />
 						<AdminProductSelect label="카테고리" name="category" />
 						<Spacing margin="25px" />
-						<PriceCategoryInputGroup onAddCategory={handleAddCategory} />
+						<PriceCategoryInputGroup productId={productId} onAddCategory={handleAddCategory} />
 						<Spacing margin="25px" />
-						{priceCategories.length > 0 && (
+						{displayedCategories.length > 0 && (
 							<div style={{ padding: '4px', marginLeft: '30px' }}>
 								<Flex align="center" className={s.categoryListHeader}>
 									<Flex
@@ -178,7 +226,7 @@ const AddProductBox = () => {
 										삭제
 									</Flex>
 								</Flex>
-								{priceCategories.map((category, index) => (
+								{displayedCategories.map((category, index) => (
 									<Flex align="center" key={index} className={s.categoryListItem}>
 										<Flex justify="center" align="center" style={{ flex: 1, fontSize: '12px' }}>
 											{index + 1}
@@ -209,7 +257,7 @@ const AddProductBox = () => {
 								position: 'absolute',
 								bottom: '10px',
 								right: '30px',
-								width: '100%',
+								minWidth: '100px',
 								height: '56%',
 							}}>
 							<Button

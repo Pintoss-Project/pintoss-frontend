@@ -2,17 +2,19 @@ import { ErrorResponse } from '@/models/error';
 import ProductError from '@/utils/error/ProductError';
 import { PriceCategoryInfoFormData } from '@/utils/validation/product';
 
-export const postPriceCategory = async (id: number, data: PriceCategoryInfoFormData) => {
+export const postPriceCategory = async (id: number, data: PriceCategoryInfoFormData[]) => {
+	const requestBody = data.map((category) => ({
+		productId: id,
+		stock: 1,
+		...category,
+	}));
+
 	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/product/${id}/category`,
 		{
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({
-				productId: id,
-				stock: 1,
-				...data,
-			}),
+			body: JSON.stringify(requestBody),
 		},
 	);
 
@@ -24,5 +26,5 @@ export const postPriceCategory = async (id: number, data: PriceCategoryInfoFormD
 		);
 	}
 
-	return await response.json();
+	return response.json();
 };
