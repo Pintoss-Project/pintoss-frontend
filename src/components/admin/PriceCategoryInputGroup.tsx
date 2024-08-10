@@ -49,6 +49,9 @@ const PriceCategoryInputGroup = ({ productId, onAddCategory }: Props) => {
 			queryClient.invalidateQueries({
 				queryKey: ['priceCategoryList', productId],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ['productList'],
+			});
 		},
 		onError: () => {
 			open({

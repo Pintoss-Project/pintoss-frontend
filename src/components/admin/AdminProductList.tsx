@@ -14,6 +14,7 @@ import { ProductInfo } from '@/models/product';
 import { deleteProduct } from '@/app/api/product/deleteProduct';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
+import { updateStock, UpdateStockParams } from '@/app/api/product/updateStock';
 
 interface Props {
 	onSelectProduct: (productId: number) => void;
@@ -35,12 +36,15 @@ const AdminProductList = ({ onSelectProduct }: Props) => {
 	useEffect(() => {
 		if (isSuccess && products) {
 			const initialSelected = products.data.reduce((acc, product) => {
-				acc[product.id] = String(product?.priceCategories?.[0]?.id || '');
+				const sortedCategories = product.priceCategories
+					? [...product.priceCategories].sort((a, b) => a.price - b.price)
+					: [];
+				acc[product.id] = String(sortedCategories[0]?.id || '');
 				return acc;
 			}, {} as { [key: string]: string });
 
 			const initialQuantity = products.data.reduce((acc, product) => {
-				acc[product.id] = product?.priceCategories?.[0]?.stock || 0;
+				acc[product.id] = product.priceCategories?.[0]?.stock || 0;
 				return acc;
 			}, {} as { [key: string]: number });
 
@@ -136,6 +140,51 @@ const AdminProductList = ({ onSelectProduct }: Props) => {
 		});
 	};
 
+	const updateStockMutation = useMutation({
+		mutationFn: (params: UpdateStockParams) => updateStock(params),
+		onSuccess: () => {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '재고 업데이트 성공',
+				main: <AlertMainTextBox text="재고가 업데이트 되었습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+			queryClient.invalidateQueries({
+				queryKey: ['productList'],
+			});
+		},
+		onError: () => {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '재고 업데이트 실패',
+				main: <AlertMainTextBox text="재고 업데이트가 실패되었습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		},
+	});
+
+	const handleUpdateStock = (productId: number) => {
+		const categoryId = selectedKind[productId];
+		const data = quantity[productId];
+
+		if (categoryId) {
+			updateStockMutation.mutate({ productId, categoryId: Number(categoryId), data });
+		} else {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '카테고리 선택 오류',
+				main: <AlertMainTextBox text="카테고리를 선택해주세요." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		}
+	};
+
 	return (
 		<div style={{ border: `1px solid ${vars.color.lighterGray}` }}>
 			<Flex
@@ -197,11 +246,14 @@ const AdminProductList = ({ onSelectProduct }: Props) => {
 							className={s.customSelect}
 							onChange={(e) => handleSelectChange(e, product)}
 							value={selectedKind?.[product.id]}>
-							{product.priceCategories?.map((kind) => (
-								<option key={kind.id} value={kind.id}>
-									{kind.name}
-								</option>
-							))}
+							{product.priceCategories &&
+								[...product.priceCategories]
+									.sort((a, b) => a.price - b.price)
+									.map((kind) => (
+										<option key={kind.id} value={kind.id}>
+											{kind.name}
+										</option>
+									))}
 						</select>
 					</div>
 					<div className={s.darkGraySmallText} style={{ flex: '2.5' }}>
@@ -228,7 +280,8 @@ const AdminProductList = ({ onSelectProduct }: Props) => {
 									color: vars.color.white,
 									backgroundColor: vars.color.lighterGray,
 									borderRadius: '5px',
-								}}>
+								}}
+								onClick={() => handleUpdateStock(product.id)}>
 								수정
 							</Button>
 						</Flex>

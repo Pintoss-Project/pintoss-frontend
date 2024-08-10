@@ -1,11 +1,75 @@
+'use client';
+
 import { Flex } from '@/shared/components/layout';
 import * as s from './AdminStyle.css';
+import * as cs from '@/shared/styles/common.css';
 import { vars } from '@/shared/styles/theme.css';
 import { Input } from '@/shared/components/input';
 import { Button } from '@/shared/components/button';
 import Spacing from '@/shared/components/layout/Spacing';
+import { useMutation } from '@tanstack/react-query';
+import { FeeData, updateFee, UpdateFeeParams } from '@/app/api/product/updateFee';
+import useAlertContext from '@/hooks/useAlertContext';
+import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
+import { ChangeEvent, useEffect, useState } from 'react';
 
-const ManageFeeBox = () => {
+interface Props {
+	productId?: number;
+	cardDiscount: number | undefined;
+	phoneDiscount: number | undefined;
+}
+
+const ManageFeeBox = ({ productId, cardDiscount, phoneDiscount }: Props) => {
+	const [discount, setDiscount] = useState<FeeData>({
+		cardDiscount: cardDiscount || 0,
+		phoneDiscount: phoneDiscount || 0,
+	});
+	const { open, close } = useAlertContext();
+
+	const handleDiscountChange = (event: ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = event.target;
+
+		setDiscount((prevState) => ({
+			...prevState,
+			[name]: parseFloat(value),
+		}));
+	};
+
+	const updateFeeMutation = useMutation({
+		mutationFn: (params: UpdateFeeParams) => updateFee(params),
+		onSuccess: () => {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '상품수수료 업데이트 성공',
+				main: <AlertMainTextBox text="상품수수료가 업데이트 되었습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		},
+		onError: () => {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '상품수수료 업데이트 실패',
+				main: <AlertMainTextBox text="상품수수료가 업데이트 실패 되었습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		},
+	});
+
+	const handleUpdateFee = (data: FeeData) => {
+		updateFeeMutation.mutate({ productId: productId as number, data });
+	};
+
+	useEffect(() => {
+		setDiscount({
+			cardDiscount: cardDiscount || 0,
+			phoneDiscount: phoneDiscount || 0,
+		});
+	}, [productId, cardDiscount, phoneDiscount]);
+
 	return (
 		<div
 			style={{
@@ -24,9 +88,12 @@ const ManageFeeBox = () => {
 					</div>
 					<div style={{ marginLeft: '27px', borderBottom: `1px solid ${vars.color.lighterGray}` }}>
 						<Input
+							name="cardDiscount"
+							value={discount.cardDiscount}
 							type="number"
 							step="0.1"
 							placeholder="수수료를 입력하세요"
+							onChange={handleDiscountChange}
 							className={s.rateInputStyle}
 						/>
 						%
@@ -39,9 +106,12 @@ const ManageFeeBox = () => {
 					</div>
 					<div style={{ marginLeft: '27px', borderBottom: `1px solid ${vars.color.lighterGray}` }}>
 						<Input
+							name="phoneDiscount"
 							type="number"
+							value={discount.phoneDiscount}
 							step="0.1"
 							placeholder="수수료를 입력하세요"
+							onChange={handleDiscountChange}
 							className={s.rateInputStyle}
 						/>
 						%
@@ -49,7 +119,10 @@ const ManageFeeBox = () => {
 				</Flex>
 			</Flex>
 			<Flex justify="flex-end">
-				<Button color={vars.color.black} className={s.lightGrayButton}>
+				<Button
+					color={vars.color.black}
+					className={s.lightGrayButton}
+					onClick={() => handleUpdateFee(discount)}>
 					수정
 				</Button>
 			</Flex>
