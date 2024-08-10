@@ -22,5 +22,5 @@ export const postProduct = async (data: ProductInfoFormData) => {
 		);
 	}
 
-	return response.json();
+	return await response.json();
 };

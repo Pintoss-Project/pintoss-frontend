@@ -1,27 +1,27 @@
 'use client';
 
+import { useCallback, useState } from 'react';
 import { Flex } from '@/shared/components/layout';
-import * as s from './AdminStyle.css';
-import * as cs from '@/shared/styles/common.css';
-import { vars } from '@/shared/styles/theme.css';
-import Spacing from '@/shared/components/layout/Spacing';
-import { Input } from '@/shared/components/input';
-import { DropImageBox } from '../../../public/svgs';
-import Image from 'next/image';
-import { useDropzone, Accept } from 'react-dropzone';
-import { useState, useCallback } from 'react';
-import { Button } from '@/shared/components/button';
-import AdminProductInput from './AdminProductInput';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { ProductInfoFormData, productInfoSchema } from '@/utils/validation/product';
+import {
+	ProductInfoFormData,
+	PriceCategoryInfoFormData,
+	productInfoSchema,
+} from '@/utils/validation/product';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { postProduct } from '@/app/api/product/postProduct';
-import useAlertContext from '@/hooks/useAlertContext';
-import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
-import ProductError from '@/utils/error/ProductError';
+import * as s from './AdminStyle.css';
+import { vars } from '@/shared/styles/theme.css';
+import AdminProductInput from './AdminProductInput';
 import AdminProductSelect from './AdminProductSelect';
 import AdminProductTextArea from './AdminProductTextArea';
+import PriceCategoryInputGroup from './PriceCategoryInputGroup';
+import { useProductWithPriceCategoryMutation } from '@/hooks/useProductWithPriceCategoryMutation';
+import Spacing from '@/shared/components/layout/Spacing';
+import { Button } from '@/shared/components/button';
+import { IoIosRemoveCircle } from 'react-icons/io';
+import { Accept, useDropzone } from 'react-dropzone';
+import Image from 'next/image';
+import { DropImageBox } from '../../../out/svgs';
 
 interface FileWithPreview extends File {
 	preview: string;
@@ -30,10 +30,20 @@ interface FileWithPreview extends File {
 const AddProductBox = () => {
 	const [files, setFiles] = useState<FileWithPreview[]>([]);
 	const [isImageAdded, setIsImageAdded] = useState(false);
+	const [priceCategories, setPriceCategories] = useState<PriceCategoryInfoFormData[]>([]);
 
-	const { open, close } = useAlertContext();
-
-	const queryClient = useQueryClient();
+	const methods = useForm<ProductInfoFormData>({
+		resolver: zodResolver(productInfoSchema),
+		mode: 'onChange',
+		defaultValues: {
+			name: '',
+			homePage: '',
+			csCenter: '',
+			description: '',
+			publisher: '',
+			category: '',
+		},
+	});
 
 	const onDrop = useCallback((acceptedFiles: File[]) => {
 		setFiles(
@@ -68,57 +78,26 @@ const AddProductBox = () => {
 		</div>
 	));
 
-	const methods = useForm<ProductInfoFormData>({
-		resolver: zodResolver(productInfoSchema),
-		mode: 'onChange',
-		defaultValues: {
-			name: '',
-			homePage: '',
-			csCenter: '',
-			description: '',
-			publisher: '',
-			category: '',
-		},
-	});
+	const { handleSubmit, reset, setValue } = methods;
 
-	const { handleSubmit, reset } = methods;
+	const { mutate: createProductWithCategory } = useProductWithPriceCategoryMutation();
 
-	const postProductMutation = useMutation({
-		mutationFn: (data: ProductInfoFormData) => postProduct(data),
-		onSuccess: () => {
-			open({
-				width: '300px',
-				height: '200px',
-				title: '상품권 생성 완료',
-				main: <AlertMainTextBox text="상품권이 생성되었습니다." />,
-				rightButtonStyle: cs.lightBlueButton,
-				onRightButtonClick: close,
-			});
-			queryClient.invalidateQueries({ queryKey: ['productList'] });
-			reset({
-				name: '',
-				homePage: '',
-				csCenter: '',
-				description: '',
-				publisher: '',
-				category: '',
-			});
-		},
-		onError: (error: ProductError) => {
-			open({
-				width: '300px',
-				height: '200px',
-				title: '상품권 생성 실패',
-				main: <AlertMainTextBox text={error.errorMessage} />,
-				rightButtonStyle: cs.lightBlueButton,
-				onRightButtonClick: close,
-			});
-		},
-	});
+	const handleAddCategory = (category: PriceCategoryInfoFormData) => {
+		setPriceCategories([...priceCategories, category]);
+		setValue('priceCategories', [...priceCategories, category]);
+	};
 
 	const onSubmit: SubmitHandler<ProductInfoFormData> = (data, event) => {
 		event?.preventDefault();
-		postProductMutation.mutate(data);
+		createProductWithCategory({ ...data, priceCategories });
+	};
+
+	const handleDeleteCategory = (index: number) => {
+		setPriceCategories((prevCategories) => {
+			const updatedCategories = prevCategories.filter((_, i) => i !== index);
+			setValue('priceCategories', updatedCategories);
+			return updatedCategories;
+		});
 	};
 
 	return (
@@ -126,6 +105,7 @@ const AddProductBox = () => {
 			<form
 				id="admin-product-form"
 				style={{
+					position: 'relative',
 					width: '65%',
 					height: '500px',
 					padding: '18px 2.5%',
@@ -168,49 +148,70 @@ const AddProductBox = () => {
 						<Spacing margin="25px" />
 						<AdminProductSelect label="카테고리" name="category" />
 						<Spacing margin="25px" />
-						<Flex align="center">
-							<div className={s.darkGraySmallText} style={{ flex: '1', minWidth: '50px' }}>
-								판매금액
-							</div>
-							<Flex
-								style={{
-									flex: '3',
-									marginLeft: '1.5%',
-									alignItems: 'center',
-									overflow: 'hidden',
-								}}>
-								<div style={{ marginRight: '4px' }}>
-									<AdminProductInput
-										name="priceName"
-										flex="1"
-										placeholder="금액명"
-										className={s.rateInputStyle}
-										style={{ textAlign: 'left', width: '100%' }}
-									/>
-								</div>
-								<AdminProductInput name="price" flex="1.5">
-									<Input
-										type="number"
-										step="1000"
-										placeholder="상품금액(원)"
-										className={s.rateInputStyle}
-										style={{ textAlign: 'left', width: '100%' }}
-									/>
-								</AdminProductInput>
-								<Button
-									color={vars.color.black}
-									style={{
-										minWidth: '40px',
-										padding: '4px',
-										backgroundColor: vars.color.white,
-										border: `1px solid ${vars.color.lightestGray}`,
-									}}>
-									추가
-								</Button>
-							</Flex>
-						</Flex>
+						<PriceCategoryInputGroup onAddCategory={handleAddCategory} />
 						<Spacing margin="25px" />
-						<Flex justify="flex-end" align="flex-end" style={{ width: '100%', height: '56%' }}>
+						{priceCategories.length > 0 && (
+							<div style={{ padding: '4px', marginLeft: '30px' }}>
+								<Flex align="center" className={s.categoryListHeader}>
+									<Flex
+										justify="center"
+										align="center"
+										style={{ flex: 1, height: '20px', fontSize: '12px' }}>
+										순번
+									</Flex>
+									<Flex
+										justify="center"
+										align="center"
+										style={{ flex: 2, height: '20px', fontSize: '12px' }}>
+										금액명
+									</Flex>
+									<Flex
+										justify="center"
+										align="center"
+										style={{ flex: 2, height: '20px', fontSize: '12px' }}>
+										금액(원)
+									</Flex>
+									<Flex
+										justify="center"
+										align="center"
+										style={{ flex: 1, height: '20px', fontSize: '12px' }}>
+										삭제
+									</Flex>
+								</Flex>
+								{priceCategories.map((category, index) => (
+									<Flex align="center" key={index} className={s.categoryListItem}>
+										<Flex justify="center" align="center" style={{ flex: 1, fontSize: '12px' }}>
+											{index + 1}
+										</Flex>
+										<Flex justify="center" align="center" style={{ flex: 2, fontSize: '12px' }}>
+											{category.name}
+										</Flex>
+										<Flex justify="center" align="center" style={{ flex: 2, fontSize: '12px' }}>
+											{category.price.toLocaleString()}원
+										</Flex>
+										<Flex justify="center" align="center" style={{ flex: 1, fontSize: '12px' }}>
+											<Flex justify="center" align="center">
+												<Button
+													style={{ backgroundColor: 'transparent' }}
+													onClick={() => handleDeleteCategory(index)}>
+													<IoIosRemoveCircle style={{ backgroundColor: 'transparent' }} />
+												</Button>
+											</Flex>
+										</Flex>
+									</Flex>
+								))}
+							</div>
+						)}
+						<Flex
+							justify="flex-end"
+							align="flex-end"
+							style={{
+								position: 'absolute',
+								bottom: '10px',
+								right: '30px',
+								width: '100%',
+								height: '56%',
+							}}>
 							<Button
 								id="admin-product-form"
 								color={vars.color.black}

@@ -409,3 +409,16 @@ export const noInputStyle = style({
 	outline: 'none',
 	textAlign: 'left',
 });
+
+export const categoryListHeader = style({
+	color: vars.color.dimGray,
+	backgroundColor: '#EEEEEE',
+	border: `1px solid ${vars.color.lighterGray}`,
+});
+export const categoryListItem = style({
+	color: vars.color.dimGray,
+	height: '20px',
+	borderLeft: `1px solid ${vars.color.lighterGray}`,
+	borderRight: `1px solid ${vars.color.lighterGray}`,
+	borderBottom: `1px solid ${vars.color.lighterGray}`,
+});

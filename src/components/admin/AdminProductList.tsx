@@ -11,82 +11,6 @@ import { useQuery } from '@tanstack/react-query';
 import { getProductList } from '@/app/api/product/getProductList';
 import { ProductInfo } from '@/models/product';
 
-interface Kind {
-	id: string;
-	name: string;
-	quantity: number;
-}
-
-interface Product {
-	product_id: string;
-	product_name: string;
-	logo: string;
-	kinds: Kind[];
-}
-
-const PRODUCT_LIST: Product[] = [
-	{
-		product_id: '001',
-		product_name: '컬쳐랜드',
-		logo: '로고',
-		kinds: [
-			{ id: '1', name: '3천원권', quantity: 15 },
-			{ id: '2', name: '5천원권', quantity: 20 },
-			{ id: '3', name: '1만원권', quantity: 30 },
-		],
-	},
-	{
-		product_id: '002',
-		product_name: '북앤라이프 도서상품권',
-		logo: '로고',
-		kinds: [
-			{ id: '1', name: '3천원권', quantity: 15 },
-			{ id: '2', name: '5천원권', quantity: 20 },
-			{ id: '3', name: '1만원권', quantity: 30 },
-		],
-	},
-	{
-		product_id: '003',
-		product_name: '올리브영 상품권',
-		logo: '로고',
-		kinds: [
-			{ id: '1', name: '3천원권', quantity: 15 },
-			{ id: '2', name: '5천원권', quantity: 20 },
-			{ id: '3', name: '1만원권', quantity: 30 },
-		],
-	},
-	{
-		product_id: '004',
-		product_name: '문화상품권',
-		logo: '로고',
-		kinds: [
-			{ id: '1', name: '3천원권', quantity: 15 },
-			{ id: '2', name: '5천원권', quantity: 20 },
-			{ id: '3', name: '1만원권', quantity: 30 },
-		],
-	},
-	{
-		product_id: '005',
-		product_name: '넥슨카드',
-		logo: '로고',
-		kinds: [
-			{ id: '1', name: '3천원권', quantity: 15 },
-			{ id: '2', name: '5천원권', quantity: 20 },
-			{ id: '3', name: '1만원권', quantity: 30 },
-		],
-	},
-	{
-		product_id: '006',
-		product_name: '해피머니',
-		logo: '로고',
-		kinds: [
-			{ id: '1', name: '3천원권', quantity: 15 },
-			{ id: '2', name: '5천원권', quantity: 20 },
-			{ id: '3', name: '1만원권', quantity: 30 },
-		],
-	},
-];
-
 const AdminProductList = () => {
 	const [selectedKind, setSelectedKind] = useState<{ [key: string]: string }>({});
 	const [quantity, setQuantity] = useState<{ [key: string]: number }>({});
@@ -97,18 +21,18 @@ const AdminProductList = () => {
 	});
 
 	useEffect(() => {
-		const initialSelected = PRODUCT_LIST.reduce((acc, product) => {
-			acc[product.product_id] = product.kinds[0].id;
+		const initialSelected = products?.data.reduce((acc, product) => {
+			acc[product.id] = String(product?.priceCategories?.[0].id);
 			return acc;
 		}, {} as { [key: string]: string });
 
-		const initialQuantity = PRODUCT_LIST.reduce((acc, product) => {
-			acc[product.product_id] = product.kinds[0].quantity;
+		const initialQuantity = products?.data.reduce((acc, product) => {
+			acc[product.id] = product?.priceCategories?.[0].stock as number;
 			return acc;
 		}, {} as { [key: string]: number });
 
-		setSelectedKind(initialSelected);
-		setQuantity(initialQuantity);
+		setSelectedKind(initialSelected as { [key: string]: string });
+		setQuantity(initialQuantity as { [key: string]: number });
 	}, []);
 
 	const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>, product: ProductInfo) => {
