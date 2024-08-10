@@ -1,24 +1,24 @@
-export interface PriceCategory {
-	category_id: number;
+export interface PriceCategoryInfo {
+	id: number;
 	name: string;
 	price: number;
 	stock: number;
 	created_at: string;
 }
 
-export interface Product {
-	product_id: number;
+export interface ProductInfo {
+	id: number;
 	name: string;
 	isPopular: boolean;
-	card_discount: number;
-	phone_discount: number;
-	home_page: string;
-	cs_center: string;
+	cardDiscount: number;
+	phoneDiscount: number;
+	homePage: string;
+	csCenter: string;
 	description: string;
 	publisher: string;
 	category: string;
-	created_at: string;
-	updated_at: string;
-	image_url: string;
-	price_categories: PriceCategory[];
+	logo?: string;
+	createdAt: string;
+	updatedAt: string;
+	priceCategories?: PriceCategoryInfo[];
 }

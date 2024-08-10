@@ -7,6 +7,9 @@ import { FiMenu } from 'react-icons/fi';
 import { useState, useEffect, ChangeEvent } from 'react';
 import { Button } from '@/shared/components/button';
 import { Input } from '@/shared/components/input';
+import { useQuery } from '@tanstack/react-query';
+import { getProductList } from '@/app/api/product/getProductList';
+import { ProductInfo } from '@/models/product';
 
 interface Kind {
 	id: string;
@@ -88,6 +91,11 @@ const AdminProductList = () => {
 	const [selectedKind, setSelectedKind] = useState<{ [key: string]: string }>({});
 	const [quantity, setQuantity] = useState<{ [key: string]: number }>({});
 
+	const { data: products } = useQuery({
+		queryKey: ['productList'],
+		queryFn: getProductList,
+	});
+
 	useEffect(() => {
 		const initialSelected = PRODUCT_LIST.reduce((acc, product) => {
 			acc[product.product_id] = product.kinds[0].id;
@@ -103,25 +111,25 @@ const AdminProductList = () => {
 		setQuantity(initialQuantity);
 	}, []);
 
-	const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>, product: Product) => {
-		const kind = product.kinds.find((k) => k.id === event.target.value);
+	const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>, product: ProductInfo) => {
+		const kind = product.priceCategories?.find((k) => k.id === +event.target.value);
 		if (kind) {
 			setSelectedKind((prevState) => ({
 				...prevState,
-				[product.product_id]: kind.id,
+				[product.id]: kind.id,
 			}));
 
 			setQuantity((prevState) => ({
 				...prevState,
-				[product.product_id]: kind.quantity,
+				[product.id]: kind.stock,
 			}));
 		}
 	};
 
-	const handleQuantityChange = (event: ChangeEvent<HTMLInputElement>, product: Product) => {
+	const handleQuantityChange = (event: ChangeEvent<HTMLInputElement>, product: ProductInfo) => {
 		setQuantity((prevState) => ({
 			...prevState,
-			[product.product_id]: Number(event.target.value),
+			[product.id]: Number(event.target.value),
 		}));
 	};
 
@@ -151,9 +159,9 @@ const AdminProductList = () => {
 					상품권관리
 				</div>
 			</Flex>
-			{PRODUCT_LIST.map((product, index) => (
+			{products?.data.map((product, index) => (
 				<Flex
-					key={product.product_id}
+					key={product.id}
 					align="center"
 					style={{ padding: '12px 18px', borderBottom: `1px solid ${vars.color.lighterGray}` }}>
 					<div className={s.darkGraySmallText} style={{ flex: '1' }}>
@@ -165,7 +173,7 @@ const AdminProductList = () => {
 						</Flex>
 					</div>
 					<div className={s.darkGraySmallText} style={{ flex: '2' }}>
-						{product.product_name}
+						{product.name}
 					</div>
 					<div className={s.darkGraySmallText} style={{ flex: '2' }}>
 						<Flex
@@ -185,8 +193,8 @@ const AdminProductList = () => {
 							name=""
 							className={s.customSelect}
 							onChange={(e) => handleSelectChange(e, product)}
-							value={selectedKind[product.product_id]}>
-							{product.kinds.map((kind) => (
+							value={selectedKind[product.id]}>
+							{product.priceCategories?.map((kind) => (
 								<option key={kind.id} value={kind.id}>
 									{kind.name}
 								</option>
@@ -197,7 +205,7 @@ const AdminProductList = () => {
 						<Flex justify="center" align="center">
 							<Input
 								type="number"
-								value={quantity[product.product_id] || 0}
+								value={quantity[product.id] || 0}
 								onChange={(e) => handleQuantityChange(e, product)}
 								style={{
 									width: '50px',
