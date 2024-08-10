@@ -2,14 +2,18 @@
 
 import { vars } from '@/shared/styles/theme.css';
 import * as s from './AdminStyle.css';
+import * as cs from '@/shared/styles/common.css';
 import { Flex } from '@/shared/components/layout';
 import { FiMenu } from 'react-icons/fi';
 import { useState, useEffect, ChangeEvent } from 'react';
 import { Button } from '@/shared/components/button';
 import { Input } from '@/shared/components/input';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getProductList } from '@/app/api/product/getProductList';
 import { ProductInfo } from '@/models/product';
+import { deleteProduct } from '@/app/api/product/deleteProduct';
+import useAlertContext from '@/hooks/useAlertContext';
+import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 
 interface Props {
 	onSelectProduct: (productId: number) => void;
@@ -19,25 +23,31 @@ const AdminProductList = ({ onSelectProduct }: Props) => {
 	const [selectedKind, setSelectedKind] = useState<{ [key: string]: string }>({});
 	const [quantity, setQuantity] = useState<{ [key: string]: number }>({});
 
-	const { data: products } = useQuery({
+	const { open, close } = useAlertContext();
+
+	const queryClient = useQueryClient();
+
+	const { data: products, isSuccess } = useQuery({
 		queryKey: ['productList'],
 		queryFn: getProductList,
 	});
 
 	useEffect(() => {
-		const initialSelected = products?.data.reduce((acc, product) => {
-			acc[product.id] = String(product?.priceCategories?.[0].id);
-			return acc;
-		}, {} as { [key: string]: string });
+		if (isSuccess && products) {
+			const initialSelected = products.data.reduce((acc, product) => {
+				acc[product.id] = String(product?.priceCategories?.[0]?.id || '');
+				return acc;
+			}, {} as { [key: string]: string });
 
-		const initialQuantity = products?.data.reduce((acc, product) => {
-			acc[product.id] = product?.priceCategories?.[0].stock as number;
-			return acc;
-		}, {} as { [key: string]: number });
+			const initialQuantity = products.data.reduce((acc, product) => {
+				acc[product.id] = product?.priceCategories?.[0]?.stock || 0;
+				return acc;
+			}, {} as { [key: string]: number });
 
-		setSelectedKind(initialSelected as { [key: string]: string });
-		setQuantity(initialQuantity as { [key: string]: number });
-	}, []);
+			setSelectedKind(initialSelected);
+			setQuantity(initialQuantity);
+		}
+	}, [isSuccess, products]);
 
 	const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>, product: ProductInfo) => {
 		const kind = product.priceCategories?.find((k) => k.id === +event.target.value);
@@ -59,6 +69,71 @@ const AdminProductList = ({ onSelectProduct }: Props) => {
 			...prevState,
 			[product.id]: Number(event.target.value),
 		}));
+	};
+
+	const deleteProductMutation = useMutation({
+		mutationFn: (productId: number) => deleteProduct(productId),
+		onMutate: async (productId: number) => {
+			await queryClient.invalidateQueries({
+				queryKey: ['productList'],
+			});
+
+			const previousProductList = queryClient.getQueryData(['productList']);
+
+			queryClient.setQueryData(['productList'], (old: any) => {
+				return {
+					...old,
+					data: old.data.filter((product: ProductInfo) => product.id !== productId),
+				};
+			});
+
+			return { previousProductList };
+		},
+		onError: (err, productId, context) => {
+			queryClient.setQueryData(['productList'], context?.previousProductList);
+
+			open({
+				width: '300px',
+				height: '200px',
+				title: '상품권 삭제 실패',
+				main: <AlertMainTextBox text="상품권 삭제가 실패되었습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		},
+		onSettled: () => {
+			queryClient.invalidateQueries({
+				queryKey: ['productList'],
+			});
+			open({
+				width: '300px',
+				height: '200px',
+				title: '상품권 삭제 성공',
+				main: <AlertMainTextBox text="상품권 삭제가 완료되었습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		},
+	});
+
+	const handleDeleteProduct = (productId: number) => {
+		open({
+			width: '300px',
+			height: '200px',
+			title: '상품권 삭제',
+			main: <AlertMainTextBox text="상품권를 삭제하시겠습니까?" />,
+			rightButtonLabel: '확인',
+			leftButtonLabel: '취소',
+			rightButtonStyle: cs.lightBlueButton,
+			leftButtonStyle: cs.whiteAndBlackButton,
+			onRightButtonClick: () => {
+				deleteProductMutation.mutate(productId);
+				close();
+			},
+			onLeftButtonClick: () => {
+				close();
+			},
+		});
 	};
 
 	return (
@@ -181,7 +256,8 @@ const AdminProductList = ({ onSelectProduct }: Props) => {
 									backgroundColor: vars.color.white,
 									border: `1px solid ${vars.color.lighterGray}`,
 									borderRadius: '5px',
-								}}>
+								}}
+								onClick={() => handleDeleteProduct(product.id)}>
 								삭제
 							</Button>
 						</Flex>
