@@ -46,6 +46,9 @@ const PriceCategoryInputGroup = ({ productId, onAddCategory }: Props) => {
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: close,
 			});
+			queryClient.invalidateQueries({
+				queryKey: ['priceCategoryList', productId],
+			});
 		},
 		onError: () => {
 			open({

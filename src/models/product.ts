@@ -3,7 +3,7 @@ export interface PriceCategoryInfo {
 	name: string;
 	price: number;
 	stock: number;
-	created_at: string;
+	createdAt: string;
 }
 
 export interface ProductInfo {

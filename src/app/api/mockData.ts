@@ -25,14 +25,14 @@ export const getProductData = async (id: string): Promise<ProductInfo> => {
 				name: '3천원권',
 				price: 3000,
 				stock: 10,
-				created_at: '2024-07-10',
+				createdAt: '2024-07-10',
 			},
 			{
 				id: 2,
 				name: '5천원권',
 				price: 5000,
 				stock: 20,
-				created_at: '2024-07-10',
+				createdAt: '2024-07-10',
 			},
 		],
 	};

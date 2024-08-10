@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { MouseEvent, useCallback, useEffect, useState } from 'react';
 import { Flex } from '@/shared/components/layout';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import {
@@ -10,6 +10,7 @@ import {
 } from '@/utils/validation/product';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as s from './AdminStyle.css';
+import * as cs from '@/shared/styles/common.css';
 import { vars } from '@/shared/styles/theme.css';
 import AdminProductInput from './AdminProductInput';
 import AdminProductSelect from './AdminProductSelect';
@@ -22,9 +23,13 @@ import { IoIosRemoveCircle } from 'react-icons/io';
 import { Accept, useDropzone } from 'react-dropzone';
 import Image from 'next/image';
 import { DropImageBox } from '../../../out/svgs';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getPriceCategoryList } from '@/app/api/product/getPriceCategoryList';
 import { getProduct } from '@/app/api/product/getProduct';
+import { deletePriceCategory } from '@/app/api/product/deletePriceCategory';
+import { PriceCategoryInfo } from '@/models/product';
+import useAlertContext from '@/hooks/useAlertContext';
+import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 
 interface FileWithPreview extends File {
 	preview: string;
@@ -37,9 +42,11 @@ interface Props {
 const AddProductBox = ({ productId }: Props) => {
 	const [files, setFiles] = useState<FileWithPreview[]>([]);
 	const [isImageAdded, setIsImageAdded] = useState(false);
-	const [priceCategories, setPriceCategories] = useState<PriceCategoryInfoFormData[]>([]);
+	const [priceCategories, setPriceCategories] = useState<PriceCategoryInfo[]>([]);
 
 	const queryClient = useQueryClient();
+
+	const { open, close } = useAlertContext();
 
 	const { data: productDetails, isSuccess } = useQuery({
 		queryKey: ['productDetails', productId],
@@ -128,8 +135,42 @@ const AddProductBox = ({ productId }: Props) => {
 		},
 	});
 
+	const deletePriceCategoryMutation = useMutation({
+		mutationFn: (categoryId: number) => deletePriceCategory(productId!, categoryId),
+		onSuccess: () => {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '가격 카테고리 삭제 성공',
+				main: <AlertMainTextBox text="가격 카테고리 삭제가 완료되었습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+			queryClient.invalidateQueries({
+				queryKey: ['priceCategoryList', productId],
+			});
+		},
+		onError: () => {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '가격 카테고리 삭제 실패',
+				main: <AlertMainTextBox text="가격 카테고리 삭제가 실패되었습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		},
+	});
+
 	const handleAddCategory = (priceCategory: PriceCategoryInfoFormData) => {
-		setPriceCategories((prevCategories) => [...prevCategories, priceCategory]);
+		const newCategory: PriceCategoryInfo = {
+			...priceCategory,
+			id: Date.now(),
+			createdAt: Date.now().toString(),
+			stock: 1,
+		};
+
+		setPriceCategories((prevCategories) => [...prevCategories, newCategory]);
 		setValue('priceCategories', [...priceCategories, priceCategory]);
 	};
 
@@ -138,11 +179,30 @@ const AddProductBox = ({ productId }: Props) => {
 		createProductWithCategory({ ...data, priceCategories });
 	};
 
-	const handleDeleteCategory = (index: number) => {
-		setPriceCategories((prevCategories) => {
-			const updatedCategories = prevCategories.filter((_, i) => i !== index);
-			setValue('priceCategories', updatedCategories);
-			return updatedCategories;
+	const handleDeleteCategory = (index: number, categoryId: number) => {
+		open({
+			width: '300px',
+			height: '200px',
+			title: '가격 카테고리 삭제',
+			main: <AlertMainTextBox text="가격 카테고리를 삭제하시겠습니까?" />,
+			rightButtonLabel: '확인',
+			leftButtonLabel: '취소',
+			rightButtonStyle: cs.lightBlueButton,
+			leftButtonStyle: cs.whiteAndBlackButton,
+			onRightButtonClick: () => {
+				deletePriceCategoryMutation.mutate(categoryId);
+
+				setPriceCategories((prevCategories) => {
+					const updatedCategories = prevCategories.filter((_, i) => i !== index);
+					setValue('priceCategories', updatedCategories);
+					return updatedCategories;
+				});
+
+				close();
+			},
+			onLeftButtonClick: () => {
+				close();
+			},
 		});
 	};
 
@@ -240,8 +300,8 @@ const AddProductBox = ({ productId }: Props) => {
 										<Flex justify="center" align="center" style={{ flex: 1, fontSize: '12px' }}>
 											<Flex justify="center" align="center">
 												<Button
-													style={{ backgroundColor: 'transparent' }}
-													onClick={() => handleDeleteCategory(index)}>
+													style={{ backgroundColor: 'transparent', cursor: 'pointer' }}
+													onClick={() => handleDeleteCategory(index, category.id)}>
 													<IoIosRemoveCircle style={{ backgroundColor: 'transparent' }} />
 												</Button>
 											</Flex>
@@ -258,7 +318,6 @@ const AddProductBox = ({ productId }: Props) => {
 								bottom: '10px',
 								right: '30px',
 								minWidth: '100px',
-								height: '56%',
 							}}>
 							<Button
 								id="admin-product-form"
