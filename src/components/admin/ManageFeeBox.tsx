@@ -7,24 +7,32 @@ import { vars } from '@/shared/styles/theme.css';
 import { Input } from '@/shared/components/input';
 import { Button } from '@/shared/components/button';
 import Spacing from '@/shared/components/layout/Spacing';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { FeeData, updateFee, UpdateFeeParams } from '@/app/api/product/updateFee';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { ChangeEvent, useEffect, useState } from 'react';
+import { getProduct } from '@/app/api/product/getProduct';
 
 interface Props {
 	productId?: number;
-	cardDiscount: number | undefined;
-	phoneDiscount: number | undefined;
 }
 
-const ManageFeeBox = ({ productId, cardDiscount, phoneDiscount }: Props) => {
-	const [discount, setDiscount] = useState<FeeData>({
-		cardDiscount: cardDiscount || 0,
-		phoneDiscount: phoneDiscount || 0,
+const ManageFeeBox = ({ productId }: Props) => {
+	const { data: productDetails } = useQuery({
+		queryKey: ['productDetails', productId],
+		queryFn: () => getProduct(productId!),
+		enabled: !!productId,
 	});
+
+	const [discount, setDiscount] = useState<FeeData>({
+		cardDiscount: productDetails?.data.cardDiscount || 0,
+		phoneDiscount: productDetails?.data.phoneDiscount || 0,
+	});
+
 	const { open, close } = useAlertContext();
+
+	const queryClient = useQueryClient();
 
 	const handleDiscountChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
@@ -46,6 +54,9 @@ const ManageFeeBox = ({ productId, cardDiscount, phoneDiscount }: Props) => {
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: close,
 			});
+			queryClient.invalidateQueries({
+				queryKey: ['productDetails', productId],
+			});
 		},
 		onError: () => {
 			open({
@@ -64,11 +75,13 @@ const ManageFeeBox = ({ productId, cardDiscount, phoneDiscount }: Props) => {
 	};
 
 	useEffect(() => {
-		setDiscount({
-			cardDiscount: cardDiscount || 0,
-			phoneDiscount: phoneDiscount || 0,
-		});
-	}, [productId, cardDiscount, phoneDiscount]);
+		if (productDetails) {
+			setDiscount({
+				cardDiscount: productDetails.data.cardDiscount || 0,
+				phoneDiscount: productDetails.data.phoneDiscount || 0,
+			});
+		}
+	}, [productDetails]);
 
 	return (
 		<div

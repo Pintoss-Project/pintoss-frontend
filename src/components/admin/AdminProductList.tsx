@@ -5,7 +5,7 @@ import * as s from './AdminStyle.css';
 import * as cs from '@/shared/styles/common.css';
 import { Flex } from '@/shared/components/layout';
 import { FiMenu } from 'react-icons/fi';
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useState, useEffect, ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { Button } from '@/shared/components/button';
 import { Input } from '@/shared/components/input';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -142,25 +142,49 @@ const AdminProductList = ({ onSelectProduct }: Props) => {
 
 	const updateStockMutation = useMutation({
 		mutationFn: (params: UpdateStockParams) => updateStock(params),
-		onSuccess: () => {
-			open({
-				width: '300px',
-				height: '200px',
-				title: '재고 업데이트 성공',
-				main: <AlertMainTextBox text="재고가 업데이트 되었습니다." />,
-				rightButtonStyle: cs.lightBlueButton,
-				onRightButtonClick: close,
+		onMutate: async (updatedStock) => {
+			const previousProductList = queryClient.getQueryData<ProductInfo[]>(['productList']);
+
+			queryClient.setQueryData(['productList'], (oldData: any) => {
+				return {
+					...oldData,
+					data: oldData.data.map((product: ProductInfo) =>
+						product.id === updatedStock.productId
+							? {
+									...product,
+									priceCategories: product.priceCategories?.map((category) =>
+										category.id === updatedStock.categoryId
+											? { ...category, stock: updatedStock.data }
+											: category,
+									),
+							  }
+							: product,
+					),
+				};
 			});
-			queryClient.invalidateQueries({
-				queryKey: ['productList'],
-			});
+
+			return { previousProductList };
 		},
-		onError: () => {
+		onError: (err, newStock, context) => {
+			queryClient.setQueryData(['productList'], context?.previousProductList);
 			open({
 				width: '300px',
 				height: '200px',
 				title: '재고 업데이트 실패',
 				main: <AlertMainTextBox text="재고 업데이트가 실패되었습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		},
+		onSettled: () => {
+			queryClient.invalidateQueries({
+				queryKey: ['productList'],
+			});
+			open({
+				width: '300px',
+				height: '200px',
+				title: '재고 업데이트 성공',
+				main: <AlertMainTextBox text="재고가 업데이트 되었습니다." />,
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: close,
 			});
@@ -173,6 +197,9 @@ const AdminProductList = ({ onSelectProduct }: Props) => {
 
 		if (categoryId) {
 			updateStockMutation.mutate({ productId, categoryId: Number(categoryId), data });
+			queryClient.invalidateQueries({
+				queryKey: ['productDetails', productId],
+			});
 		} else {
 			open({
 				width: '300px',

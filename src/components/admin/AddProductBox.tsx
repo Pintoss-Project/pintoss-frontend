@@ -1,35 +1,36 @@
 'use client';
 
-import { MouseEvent, useCallback, useEffect, useState } from 'react';
+import { deletePriceCategory } from '@/app/api/product/deletePriceCategory';
+import { getPriceCategoryList } from '@/app/api/product/getPriceCategoryList';
+import { getProduct } from '@/app/api/product/getProduct';
+import { updateProduct } from '@/app/api/product/updateProduct';
+import useAlertContext from '@/hooks/useAlertContext';
+import { useProductWithPriceCategoryMutation } from '@/hooks/useProductWithPriceCategoryMutation';
+import { PriceCategoryInfo } from '@/models/product';
+import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
+import { Button } from '@/shared/components/button';
 import { Flex } from '@/shared/components/layout';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import Spacing from '@/shared/components/layout/Spacing';
+import * as cs from '@/shared/styles/common.css';
+import { vars } from '@/shared/styles/theme.css';
 import {
-	ProductInfoFormData,
 	PriceCategoryInfoFormData,
+	ProductInfoFormData,
 	productInfoSchema,
 } from '@/utils/validation/product';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as s from './AdminStyle.css';
-import * as cs from '@/shared/styles/common.css';
-import { vars } from '@/shared/styles/theme.css';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import Image from 'next/image';
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
+import { Accept, useDropzone } from 'react-dropzone';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { IoIosRemoveCircle } from 'react-icons/io';
+import { DropImageBox } from '../../../out/svgs';
 import AdminProductInput from './AdminProductInput';
 import AdminProductSelect from './AdminProductSelect';
 import AdminProductTextArea from './AdminProductTextArea';
+import * as s from './AdminStyle.css';
 import PriceCategoryInputGroup from './PriceCategoryInputGroup';
-import { useProductWithPriceCategoryMutation } from '@/hooks/useProductWithPriceCategoryMutation';
-import Spacing from '@/shared/components/layout/Spacing';
-import { Button } from '@/shared/components/button';
-import { IoIosRemoveCircle } from 'react-icons/io';
-import { Accept, useDropzone } from 'react-dropzone';
-import Image from 'next/image';
-import { DropImageBox } from '../../../out/svgs';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getPriceCategoryList } from '@/app/api/product/getPriceCategoryList';
-import { getProduct } from '@/app/api/product/getProduct';
-import { deletePriceCategory } from '@/app/api/product/deletePriceCategory';
-import { PriceCategoryInfo } from '@/models/product';
-import useAlertContext from '@/hooks/useAlertContext';
-import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 
 interface FileWithPreview extends File {
 	preview: string;
@@ -37,16 +38,19 @@ interface FileWithPreview extends File {
 
 interface Props {
 	productId?: number;
+	setSelectedProductId?: Dispatch<SetStateAction<number | undefined>>;
+	setIsEditing: Dispatch<SetStateAction<boolean>>;
+	isEditing: boolean;
 }
 
-const AddProductBox = ({ productId }: Props) => {
+const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditing }: Props) => {
 	const [files, setFiles] = useState<FileWithPreview[]>([]);
 	const [isImageAdded, setIsImageAdded] = useState(false);
 	const [priceCategories, setPriceCategories] = useState<PriceCategoryInfo[]>([]);
 
-	const queryClient = useQueryClient();
-
 	const { open, close } = useAlertContext();
+
+	const queryClient = useQueryClient();
 
 	const { data: productDetails, isSuccess } = useQuery({
 		queryKey: ['productDetails', productId],
@@ -122,7 +126,7 @@ const AddProductBox = ({ productId }: Props) => {
 		</div>
 	));
 
-	const { handleSubmit, setValue } = methods;
+	const { handleSubmit, setValue, reset } = methods;
 
 	const { mutate: createProductWithCategory } = useProductWithPriceCategoryMutation({
 		onSuccess: () => {
@@ -162,6 +166,33 @@ const AddProductBox = ({ productId }: Props) => {
 		},
 	});
 
+	const updateProductMutation = useMutation({
+		mutationFn: (data: ProductInfoFormData) => updateProduct(productId as number, data),
+		onSuccess: () => {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '상품 업데이트 성공',
+				main: <AlertMainTextBox text="상품 업데이트가 완료되었습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+			queryClient.invalidateQueries({
+				queryKey: ['productDetails', productId],
+			});
+		},
+		onError: () => {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '상품 업데이트 실패',
+				main: <AlertMainTextBox text="상품 업데이트가 실패되었습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		},
+	});
+
 	const handleAddCategory = (priceCategory: PriceCategoryInfoFormData) => {
 		const newCategory: PriceCategoryInfo = {
 			...priceCategory,
@@ -176,9 +207,39 @@ const AddProductBox = ({ productId }: Props) => {
 
 	const onSubmit: SubmitHandler<ProductInfoFormData> = (data, event) => {
 		event?.preventDefault();
-		createProductWithCategory({ ...data, priceCategories });
-	};
 
+		if (!!productId) {
+			updateProductMutation.mutate(
+				{ ...data, priceCategories },
+				{
+					onSuccess: () => {
+						reset({
+							name: '',
+							homePage: '',
+							csCenter: '',
+							description: '',
+							publisher: '',
+							category: '',
+						});
+						setPriceCategories([]);
+						setIsEditing?.(false);
+
+						setSelectedProductId?.(undefined);
+					},
+				},
+			);
+		} else {
+			createProductWithCategory(
+				{ ...data, priceCategories },
+				{
+					onSuccess: () => {
+						reset();
+						setPriceCategories([]);
+					},
+				},
+			);
+		}
+	};
 	const handleDeleteCategory = (index: number, categoryId: number) => {
 		open({
 			width: '300px',
@@ -221,7 +282,9 @@ const AddProductBox = ({ productId }: Props) => {
 					border: `1px solid ${vars.color.lighterGray}`,
 				}}
 				onSubmit={handleSubmit(onSubmit)}>
-				<div className={s.blackMediumText}>상품권 추가</div>
+				<div className={s.blackMediumText}>
+					상품권 {(productId as number) > 0 ? '수정' : '추가'}
+				</div>
 				<Spacing margin="23px" />
 				<Flex>
 					<div style={{ flex: 1, marginRight: '10px' }}>
@@ -328,7 +391,7 @@ const AddProductBox = ({ productId }: Props) => {
 									padding: '4px',
 								}}
 								type="submit">
-								추가
+								{isEditing ? '수정' : '추가'}
 							</Button>
 						</Flex>
 					</div>

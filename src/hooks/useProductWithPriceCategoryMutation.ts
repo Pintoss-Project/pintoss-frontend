@@ -22,7 +22,7 @@ export const useProductWithPriceCategoryMutation = ({
 		onSuccess: async (productData, variables) => {
 			const productId = productData.data;
 
-			if (productId && variables.priceCategories.length > 0) {
+			if (productId && variables.priceCategories && variables.priceCategories.length > 0) {
 				try {
 					postPriceCategory(productId, variables.priceCategories),
 						open({
