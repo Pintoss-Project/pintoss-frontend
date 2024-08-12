@@ -7,21 +7,18 @@ import { Flex, List } from '@/shared/components/layout';
 import SideNavBarProductsForSale from './SideNavBarProductsForSale';
 import Spacing from '@/shared/components/layout/Spacing';
 import Image from 'next/image';
+import { useQuery } from '@tanstack/react-query';
+import { getProductListForSideBar } from '@/app/api/product/getProductList';
 
 const EXCLUDE_PATH = ['/login', '/register'];
 
-const PRODUCTS_FOR_SALE_LIST = [
-	{ id: 1, svg: CultureLandLogo, name: '북앤라이프 도서상품권' },
-	{ id: 2, svg: CultureLandLogo, name: '북앤라이프 도서상품권' },
-	{ id: 3, svg: CultureLandLogo, name: '북앤라이프 도서상품권' },
-	{ id: 4, svg: CultureLandLogo, name: '북앤라이프 도서상품권' },
-	{ id: 5, svg: CultureLandLogo, name: '북앤라이프 도서상품권' },
-	{ id: 6, svg: CultureLandLogo, name: '북앤라이프 도서상품권' },
-	{ id: 7, svg: CultureLandLogo, name: '북앤라이프 도서상품권' },
-];
-
 const SideNavBar = () => {
 	const path = usePathname();
+
+	const { data: products } = useQuery({
+		queryKey: ['sidebarProductList'],
+		queryFn: getProductListForSideBar,
+	});
 
 	if (EXCLUDE_PATH.includes(path) || path.includes('admin')) return null;
 
@@ -30,8 +27,8 @@ const SideNavBar = () => {
 			<span className={s.grayText}>판매 상품</span>
 			<Spacing margin="26px" />
 			<List spacing={35}>
-				{PRODUCTS_FOR_SALE_LIST.map((item) => (
-					<SideNavBarProductsForSale key={item.id} svg={item.svg} name={item.name} />
+				{products?.data.map((item) => (
+					<SideNavBarProductsForSale key={item.id} svg={CultureLandLogo} name={item.name} />
 				))}
 			</List>
 			<Spacing margin="56px" />

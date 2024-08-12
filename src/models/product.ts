@@ -22,3 +22,9 @@ export interface ProductInfo {
 	updatedAt: string;
 	priceCategories?: PriceCategoryInfo[];
 }
+
+export interface ProductInfoForSideBar {
+	id: number;
+	name: string;
+	logo?: string;
+}
