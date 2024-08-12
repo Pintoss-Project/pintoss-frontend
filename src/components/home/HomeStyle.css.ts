@@ -125,7 +125,6 @@ export const homeRecruitingBanner = style([
 export const homeRecruitingBannerContent = style([homeServiceInfoBoxContent]);
 
 export const homeAnnouncementsBoard = style({
-	'height': '690px',
 	'padding': '50px',
 	'backgroundColor': vars.color.white,
 	'borderRadius': '0 10px 10px 10px',
@@ -471,4 +470,22 @@ export const rateBoxMarginBox = style({
 			margin: '0px 1px',
 		},
 	},
+});
+
+export const arrowIconRotated = style({
+	transform: 'rotate(180deg)',
+	transition: 'transform 0.3s ease',
+});
+
+export const expandedContent = style({
+	padding: '0',
+	maxHeight: '0',
+	backgroundColor: vars.color.whiteSmoke,
+	transition: 'max-height 0.3s ease, padding 0.3s ease',
+	overflow: 'hidden',
+});
+
+export const expandedContentVisible = style({
+	maxHeight: '2000px',
+	padding: '50px 45px',
 });

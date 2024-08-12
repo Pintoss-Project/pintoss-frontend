@@ -8,35 +8,34 @@ import Spacing from '@/shared/components/layout/Spacing';
 import { Button } from '@/shared/components/button';
 import { vars } from '@/shared/styles/theme.css';
 import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query';
+import { getBoardList } from '@/app/api/board/getBoardList';
+import { formatDate } from '@/utils/formatDate';
+import parse from 'html-react-parser';
 
 const ANNOUNCEMENTS_MENU = [
-	{ id: 'announcement', name: '공지사항' },
-	{ id: 'FAQs', name: '자주 묻는 질문' },
-];
-
-const ANNOUNCEMENTS = [
-	{ id: 1, tag: '알림', content: '[이벤트] 별풍선, 1000개 이벤트 안내', date: '2024-06-13' },
-	{ id: 2, tag: '알림', content: '[이벤트] 별풍선, 1000개 이벤트 안내', date: '2024-06-13' },
-	{ id: 3, tag: '알림', content: '[이벤트] 별풍선, 1000개 이벤트 안내', date: '2024-06-13' },
-	{ id: 4, tag: '알림', content: '[이벤트] 별풍선, 1000개 이벤트 안내', date: '2024-06-13' },
-	{ id: 5, tag: '알림', content: '[이벤트] 별풍선, 1000개 이벤트 안내', date: '2024-06-13' },
-	{ id: 6, tag: '알림', content: '[이벤트] 별풍선, 1000개 이벤트 안내', date: '2024-06-13' },
-];
-
-const FAQS = [
-	{ id: 1, tag: '질문', content: '자주 묻는 질문', date: '2024-07-13' },
-	{ id: 2, tag: '질문', content: '자주 묻는 질문', date: '2024-07-13' },
-	{ id: 3, tag: '질문', content: '자주 묻는 질문', date: '2024-07-13' },
-	{ id: 4, tag: '질문', content: '자주 묻는 질문', date: '2024-07-13' },
-	{ id: 5, tag: '질문', content: '자주 묻는 질문', date: '2024-07-13' },
-	{ id: 6, tag: '질문', content: '자주 묻는 질문', date: '2024-07-13' },
+	{ id: 'NOTICE', name: '공지사항' },
+	{ id: 'FAQS', name: '자주 묻는 질문' },
 ];
 
 const HomeAnnouncementsBoard = () => {
-	const [selectedMenu, setSelectedMenu] = useState<string>('announcement');
+	const [selectedMenu, setSelectedMenu] = useState<string>('NOTICE');
+	const [expandedItems, setExpandedItems] = useState<{ [key: number]: boolean }>({});
+
+	const { data: boardList } = useQuery({
+		queryKey: ['boardList', selectedMenu],
+		queryFn: () => getBoardList(selectedMenu),
+	});
 
 	const handleMenuClick = (id: string) => {
 		setSelectedMenu(id);
+	};
+
+	const handleExpandClick = (id: number) => {
+		setExpandedItems((prevState) => ({
+			...prevState,
+			[id]: !prevState[id],
+		}));
 	};
 
 	return (
@@ -59,36 +58,35 @@ const HomeAnnouncementsBoard = () => {
 				<span className={s.flexItem3}>작성일</span>
 				<span className={s.flexItem4}></span>
 			</Flex>
-			{selectedMenu === 'announcement' &&
-				ANNOUNCEMENTS.map((content) => (
-					<Flex justify="center" align="center" className={s.announceContent} key={content.id}>
+			{boardList?.data?.slice(0, 5).map((content) => (
+				<div key={content.id}>
+					<Flex justify="center" align="center" className={s.announceContent}>
 						<div className={s.flexItem1}>
 							<Flex justify="center" align="center" className={s.announceTag}>
-								{content.tag}
+								{content.type === 'NOTICE' ? '알림' : '질문'}
 							</Flex>
 						</div>
-						<span className={s.announceContentText}>{content.content}</span>
-						<span className={s.announceDate}>{content.date}</span>
-						<IoIosArrowDown className={s.announceArrowIcon} />
+						<span className={s.announceContentText}>{content.title}</span>
+						<span className={s.announceDate}>{formatDate(content.createdAt as string)}</span>
+						<IoIosArrowDown
+							className={`s.announceArrowIcon  ${
+								expandedItems[content.id] ? s.arrowIconRotated : ''
+							}`}
+							onClick={() => handleExpandClick(content.id)}
+						/>
 					</Flex>
-				))}
-			{selectedMenu === 'FAQs' &&
-				FAQS.map((content) => (
-					<Flex justify="center" align="center" className={s.announceContent} key={content.id}>
-						<div className={s.flexItem1}>
-							<Flex justify="center" align="center" className={s.announceTag}>
-								{content.tag}
-							</Flex>
-						</div>
-						<span className={s.announceContentText}>{content.content}</span>
-						<span className={s.announceDate}>{content.date}</span>
-						<IoIosArrowDown className={s.announceArrowIcon} />
-					</Flex>
-				))}
+					<div
+						className={`${s.expandedContent} ${
+							expandedItems[content.id] ? s.expandedContentVisible : ''
+						}`}>
+						{parse(content.content)}
+					</div>
+				</div>
+			))}
 			<Spacing margin="25px" />
 			<Link
 				href={
-					selectedMenu === 'FAQs'
+					selectedMenu === 'FAQS'
 						? '/customer-service?announce=faqs'
 						: '/customer-service?announce=notice'
 				}>
