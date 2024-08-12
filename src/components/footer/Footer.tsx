@@ -10,9 +10,16 @@ import { Flex } from '@/shared/components/layout';
 import { vars } from '@/shared/styles/theme.css';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import { getSiteInfo } from '@/app/api/site/getSiteInfo';
 
 const Footer = () => {
 	const path = usePathname();
+
+	const { data: siteInfo } = useQuery({
+		queryKey: ['siteInfo', 1],
+		queryFn: () => getSiteInfo(1),
+	});
 
 	if (path.includes('admin')) return null;
 
@@ -26,24 +33,22 @@ const Footer = () => {
 							<Image src={PintossLogo} alt="로고 이미지" width={165} height={45} />
 						</Link>
 						<Spacing margin="25px" />
+						<p className={s.pText}>(47190) {siteInfo?.data.address}</p>
+						<Spacing margin="8px" />
 						<p className={s.pText}>
-							(47190) 부산광역시 부산진구 당감로17 (당감동,삼익) 7-906 핀토스
+							대표 {siteInfo?.data.owner} l 사업자등록번호: {siteInfo?.data.businesses} l
+							통신판매업신고 {siteInfo?.data.reportNumber} l Email : {siteInfo?.data.email}
 						</p>
 						<Spacing margin="8px" />
 						<p className={s.pText}>
-							대표 조문국 l 사업자등록번호: 590 -95- 01527 l 통신판매업신고 제 2024-부산진-1016호 l
-							Email : c0810@naver.com
-						</p>
-						<Spacing margin="8px" />
-						<p className={s.pText}>
-							고객센터 주소 : 부산광역시 부산진구 당감로17 7-906호 l 핀토스 고객센터 Tel:1544-4202{' '}
+							고객센터 주소 : {siteInfo?.data.address} l 핀토스 고객센터 Tel:{siteInfo?.data.tel}{' '}
 						</p>
 						<Spacing margin="8px" />
 						<p className={s.pText}>Copyright 핀토스 Information Service.All rights reserved</p>
 						<Spacing margin="25px" />
 						<Flex justify="center" align="center" className={cs.darkBlueButton}>
 							<a href="mailto:c0818@naver.com" style={{ color: vars.color.white }}>
-								대량구매/제휴문의 : c0810@naver.com
+								대량구매/제휴문의 : {siteInfo?.data.email}
 							</a>
 						</Flex>
 						<Spacing margin="20px" />
@@ -57,11 +62,11 @@ const Footer = () => {
 						</div>
 						<Spacing margin="15px" />
 						<div style={{ color: vars.color.darkBlue, fontSize: '30px', fontWeight: 'bold' }}>
-							1544-4202
+							{siteInfo?.data.tel}
 						</div>
 						<Spacing margin="5px" />
 						<p style={{ color: vars.color.darkerGray, fontSize: '18px' }}>
-							오전 09:00 ~ 새벽 01:00 연중무휴
+							{siteInfo?.data.businessHour}
 						</p>
 						<Spacing margin="20px" />
 						<div>
