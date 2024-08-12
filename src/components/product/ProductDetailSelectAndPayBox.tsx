@@ -11,21 +11,78 @@ import ConfirmAndPayTheAmountBox from '../order/ConfirmAndPayTheAmountBox';
 import { useEffect, useState } from 'react';
 import ProductSelectBox from './ProductSelectBox';
 import QuantitySelectBox from './QuantitySelectBox';
-import { ProductInfo } from '@/models/product';
+import { PriceCategoryInfo, ProductInfo } from '@/models/product';
+import { CartItem } from '@/models/cart';
+import { useMutation } from '@tanstack/react-query';
+import { postCartItem } from '@/app/api/cart/postCartItem';
+import useAlertContext from '@/hooks/useAlertContext';
+import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 
 interface Props {
 	product: ProductInfo;
 }
 
 const ProductDetailSelectAndPayBox = ({ product }: Props) => {
+	const [cartItems, setCartItems] = useState<CartItem[]>([]);
 	const [selectedType, setSelectedType] = useState<string>('card');
-	const [saleRate, setSaleRate] = useState(0);
-	/* eslint-disable @typescript-eslint/no-unused-vars */
-	const [totalAmount, _] = useState(0);
+	const [saleRate, setSaleRate] = useState(product?.cardDiscount || 0);
+
+	const { open, close } = useAlertContext();
 
 	useEffect(() => {
 		setSaleRate(selectedType === 'card' ? product?.cardDiscount : product?.phoneDiscount);
-	}, [selectedType]);
+	}, [selectedType, product]);
+
+	const postCartItemMutation = useMutation({
+		mutationFn: (data: CartItem) => postCartItem(data.productId, data.priceCategoryId, data),
+		onSuccess: () => {
+			open({
+				width: '200px',
+				height: '300px',
+				title: '장바구니 추가',
+				main: <AlertMainTextBox text="장바구니에 상품이 추가되었습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		},
+		onError: () => {
+			open({
+				width: '200px',
+				height: '300px',
+				title: '장바구니 추가',
+				main: <AlertMainTextBox text="장바구니 추가가 실패되었습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		},
+	});
+
+	const handleAddToCart = () => {
+		cartItems.forEach((item) => {
+			postCartItemMutation.mutate(item);
+		});
+	};
+
+	const handleSelectCategory = (category: PriceCategoryInfo) => {
+		setCartItems((prevItems) => [
+			...prevItems,
+			{
+				productId: product.id,
+				priceCategoryId: category.id,
+				price: category.price,
+				quantity: 1,
+				payMethod: selectedType,
+			},
+		]);
+	};
+
+	const handleQuantityChange = (updatedItems: CartItem[]) => {
+		setCartItems(updatedItems);
+	};
+
+	const handleRemoveItem = (index: number) => {
+		setCartItems((prevItems) => prevItems.filter((_, i) => i !== index));
+	};
 
 	return (
 		<div className={s.productDetailSelectAndPayBox}>
@@ -34,14 +91,18 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 					상품 선택
 				</div>
 				<Spacing margin="9px" />
-				<ProductSelectBox product={product} />
+				<ProductSelectBox product={product} onSelectCategory={handleSelectCategory} />
 			</div>
 			<Spacing margin="30px" />
 			<div>
 				<div className={s.darkerGrayText} style={{ fontSize: '16px' }}>
 					수량 선택
 				</div>
-				<QuantitySelectBox />
+				<QuantitySelectBox
+					cartItems={cartItems}
+					onQuantityChange={handleQuantityChange}
+					onRemoveItem={handleRemoveItem}
+				/>
 			</div>
 			<Spacing margin="30px" />
 			<PaymentMethodSelectBox
@@ -53,8 +114,10 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 			<Spacing margin="30px" />
 			<ConfirmAndPayTheAmountBox
 				selectedType={selectedType}
-				saleRate={saleRate}
-				totalAmount={totalAmount}
+				totalAmount={cartItems.reduce(
+					(total, item) => total + item.quantity * item.price * ((100 - saleRate) / 100),
+					0,
+				)}
 			/>
 			<Spacing margin="15px" />
 			<Flex justify="space-between" className={s.totalPayInfoBox}>
@@ -62,7 +125,13 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 					최종 결제 금액
 				</span>
 				<span className={s.whiteBoldText} style={{ fontWeight: '600' }}>
-					{Number('9880').toLocaleString()}원
+					{cartItems
+						.reduce(
+							(total, item) => total + item.quantity * item.price * ((100 - saleRate) / 100),
+							0,
+						)
+						.toLocaleString()}
+					원
 				</span>
 			</Flex>
 			<Spacing margin="15px" />
@@ -70,11 +139,8 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 				<Button
 					color={vars.color.white}
 					className={cs.lightBlueButton}
-					style={{ fontSize: '18px', height: '60px' }}>
-					바로 구매
-				</Button>
-				<div style={{ margin: '0 3px' }}></div>
-				<Button color={vars.color.white} className={cs.lightGrayButton} style={{ height: '60px' }}>
+					style={{ fontSize: '18px', height: '60px' }}
+					onClick={handleAddToCart}>
 					장바구니 담기
 				</Button>
 			</Flex>
