@@ -1,27 +1,19 @@
 'use client';
 
-import * as s from './HomeStyle.css';
-import * as cs from '@/shared/styles/common.css';
-import { assignInlineVars } from '@vanilla-extract/dynamic';
+import { SimpleProductInfo } from '@/models/product';
 import { Button } from '@/shared/components/button';
-import { vars } from '@/shared/styles/theme.css';
 import { Flex, GridItem } from '@/shared/components/layout';
-import Link from 'next/link';
+import * as cs from '@/shared/styles/common.css';
+import { vars } from '@/shared/styles/theme.css';
+import { assignInlineVars } from '@vanilla-extract/dynamic';
 import clsx from 'clsx';
+import Link from 'next/link';
+import * as s from './HomeStyle.css';
 
 interface Props {
 	headerColor?: string;
-	product: ProductType;
+	product: SimpleProductInfo;
 }
-
-type ProductType = {
-	id: number;
-	code: string;
-	name: string;
-	card: number;
-	phone: number;
-	icon: string;
-};
 
 const HomeProductBox = ({ headerColor, product }: Props) => {
 	return (
@@ -40,16 +32,16 @@ const HomeProductBox = ({ headerColor, product }: Props) => {
 				<Flex style={{ height: '30%' }}>
 					<Flex justify="center" align="center" className={s.rateBox}>
 						<span className={s.rateGrayText}>카드</span>
-						<span className={s.rateRedText}>{product.card}%↓</span>
+						<span className={s.rateRedText}>{product.cardDiscount}%↓</span>
 					</Flex>
 					<div className={s.rateBoxMarginBox}></div>
 					<Flex justify="center" align="center" className={s.rateBox}>
 						<span className={s.rateGrayText}>휴대폰</span>
-						<span className={s.rateRedText}>{product.phone}%↓</span>
+						<span className={s.rateRedText}>{product.phoneDiscount}%↓</span>
 					</Flex>
 				</Flex>
 			</div>
-			<Link href={`/product/${product.code}`}>
+			<Link href={`/product/${product.id}`}>
 				<div className={s.purchaseButtonWrap}>
 					<Button
 						color={vars.color.white}
@@ -58,7 +50,11 @@ const HomeProductBox = ({ headerColor, product }: Props) => {
 					</Button>
 				</div>
 				<div className={s.productIconBox}>
-					<img src={product.icon} alt="상품권 로고 이미지" className={s.productIconImage} />
+					<img
+						src={'/images/olive-logo.png'}
+						alt="상품권 로고 이미지"
+						className={s.productIconImage}
+					/>
 				</div>
 			</Link>
 		</GridItem>

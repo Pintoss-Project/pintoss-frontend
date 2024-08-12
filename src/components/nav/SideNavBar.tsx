@@ -8,7 +8,7 @@ import SideNavBarProductsForSale from './SideNavBarProductsForSale';
 import Spacing from '@/shared/components/layout/Spacing';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import { getProductListForSideBar } from '@/app/api/product/getProductList';
+import { getSimpleProductList } from '@/app/api/product/getProductList';
 import { getSiteInfo } from '@/app/api/site/getSiteInfo';
 
 const EXCLUDE_PATH = ['/login', '/register'];
@@ -17,8 +17,8 @@ const SideNavBar = () => {
 	const path = usePathname();
 
 	const { data: products } = useQuery({
-		queryKey: ['sidebarProductList'],
-		queryFn: getProductListForSideBar,
+		queryKey: ['simpleProductList'],
+		queryFn: () => getSimpleProductList(''),
 	});
 
 	const { data: siteInfo } = useQuery({

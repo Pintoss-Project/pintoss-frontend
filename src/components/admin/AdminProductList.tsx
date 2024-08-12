@@ -30,7 +30,7 @@ const AdminProductList = ({ onSelectProduct }: Props) => {
 
 	const { data: products, isSuccess } = useQuery({
 		queryKey: ['productList'],
-		queryFn: getProductList,
+		queryFn: () => getProductList(''),
 	});
 
 	useEffect(() => {

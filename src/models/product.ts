@@ -23,8 +23,10 @@ export interface ProductInfo {
 	priceCategories?: PriceCategoryInfo[];
 }
 
-export interface ProductInfoForSideBar {
+export interface SimpleProductInfo {
 	id: number;
 	name: string;
 	logo?: string;
+	cardDiscount?: number;
+	phoneDiscount?: number;
 }

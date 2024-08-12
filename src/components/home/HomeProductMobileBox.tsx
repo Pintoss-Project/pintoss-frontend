@@ -6,6 +6,8 @@ import { assignInlineVars } from '@vanilla-extract/dynamic';
 import Link from 'next/link';
 import * as s from './HomeStyle.css';
 import Image from 'next/image';
+import { SimpleProductInfo } from '@/models/product';
+import { CultureLandLogo, NexonLogo } from '../../../out/svgs';
 
 type ProductType = {
 	id: number;
@@ -18,12 +20,12 @@ type ProductType = {
 
 interface Props {
 	headerColor?: string;
-	product: ProductType;
+	product: SimpleProductInfo;
 }
 
 const HomeProductMobileBox = ({ headerColor, product }: Props) => {
 	return (
-		<Link href={`/product/${product.code}`}>
+		<Link href={`/product/${product.id}`}>
 			<GridItem className={s.homeProductMobileBox}>
 				<div
 					className={s.homeProductBoxTop}
@@ -39,7 +41,7 @@ const HomeProductMobileBox = ({ headerColor, product }: Props) => {
 				</div>
 				<div className={s.productIconBox}>
 					<Image
-						src={product.icon}
+						src={'/images/olive-logo.png'}
 						alt="상품권 로고 이미지"
 						className={s.productIconImage}
 						width={70}

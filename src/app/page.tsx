@@ -1,21 +1,19 @@
-import * as s from '@/components/home/HomeStyle.css';
-import CategorySection from '@/components/home/CategorySection';
-import Spacing from '@/shared/components/layout/Spacing';
-import HomeBanner from '@/components/home/HomeBanner';
-import HomeServiceInfoBox from '@/components/home/HomeServiceInfoBox';
-import HomeRecruitingBanner from '@/components/home/HomeRecruitingBanner';
 import HomeAnnouncementsBoard from '@/components/home/HomeAnnouncementsBoard';
-import HomePopularProducts from '@/components/home/HomePopularProducts';
-import HomeProductsOnSale from '@/components/home/HomeProductsOnSale';
+import HomeBanner from '@/components/home/HomeBanner';
+import HomeOnSaleSection from '@/components/home/HomeOnSaleSection';
+import HomePopularSection from '@/components/home/HomePopularSection';
+import HomeServiceInfoBox from '@/components/home/HomeServiceInfoBox';
+import * as s from '@/components/home/HomeStyle.css';
+import Spacing from '@/shared/components/layout/Spacing';
 
 export default function Home() {
 	return (
 		<main className={s.homeSection}>
 			<HomeBanner />
 			<Spacing margin="42px" />
-			<CategorySection title="인기 상품" products={<HomePopularProducts />} />
+			<HomePopularSection title="인기 상품" />
 			<Spacing margin="74px" />
-			<CategorySection title="판매 상품" products={<HomeProductsOnSale />} filter />
+			<HomeOnSaleSection title="판매 상품" />
 			<Spacing margin="60px" />
 			<HomeServiceInfoBox />
 			<Spacing margin="60px" />
