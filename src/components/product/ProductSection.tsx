@@ -1,25 +1,29 @@
-import { ReactNode } from 'react';
+'use client';
+
 import * as s from './ProductDetailStyle.css';
 import Spacing from '@/shared/components/layout/Spacing';
+import ProductDetailMain from './ProductDetailMain';
+import { useQuery } from '@tanstack/react-query';
+import { getProduct } from '@/app/api/product/getProduct';
+import { ProductInfo } from '@/models/product';
 
 interface Props {
-	header: string;
-	main: ReactNode;
+	id: number;
 }
 
-const headerMap: Record<string, string> = {
-	'book-life': '북앤라이프 도서상품권',
-	'nexon': '넥슨카드',
-	'olive': '올리브영 상품권',
-	'happy': '해피머니 상품권',
-};
+const ProductSection = ({ id }: Props) => {
+	const { data: productDetail } = useQuery({
+		queryKey: ['productDetails', id],
+		queryFn: () => getProduct(id),
+	});
 
-const ProductSection = ({ header, main }: Props) => {
 	return (
 		<section className={s.productDetailSection}>
-			<h1 className={s.productDetailHeader}>{headerMap[header]}</h1>
+			<h1 className={s.productDetailHeader}>{productDetail?.data.name}</h1>
 			<Spacing margin="40px" />
-			<main>{main}</main>
+			<main>
+				<ProductDetailMain product={productDetail?.data as ProductInfo} />
+			</main>
 		</section>
 	);
 };

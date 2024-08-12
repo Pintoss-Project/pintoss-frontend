@@ -11,15 +11,20 @@ import ConfirmAndPayTheAmountBox from '../order/ConfirmAndPayTheAmountBox';
 import { useEffect, useState } from 'react';
 import ProductSelectBox from './ProductSelectBox';
 import QuantitySelectBox from './QuantitySelectBox';
+import { ProductInfo } from '@/models/product';
 
-const ProductDetailSelectAndPayBox = () => {
+interface Props {
+	product: ProductInfo;
+}
+
+const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 	const [selectedType, setSelectedType] = useState<string>('card');
 	const [saleRate, setSaleRate] = useState(0);
 	/* eslint-disable @typescript-eslint/no-unused-vars */
 	const [totalAmount, _] = useState(0);
 
 	useEffect(() => {
-		setSaleRate(selectedType === 'card' ? 1.2 : 0);
+		setSaleRate(selectedType === 'card' ? product?.cardDiscount : product?.phoneDiscount);
 	}, [selectedType]);
 
 	return (
@@ -29,7 +34,7 @@ const ProductDetailSelectAndPayBox = () => {
 					상품 선택
 				</div>
 				<Spacing margin="9px" />
-				<ProductSelectBox />
+				<ProductSelectBox product={product} />
 			</div>
 			<Spacing margin="30px" />
 			<div>
@@ -39,7 +44,12 @@ const ProductDetailSelectAndPayBox = () => {
 				<QuantitySelectBox />
 			</div>
 			<Spacing margin="30px" />
-			<PaymentMethodSelectBox selectedType={selectedType} setSelectedType={setSelectedType} />
+			<PaymentMethodSelectBox
+				selectedType={selectedType}
+				setSelectedType={setSelectedType}
+				cardDiscount={product?.cardDiscount}
+				phoneDiscount={product?.phoneDiscount}
+			/>
 			<Spacing margin="30px" />
 			<ConfirmAndPayTheAmountBox
 				selectedType={selectedType}

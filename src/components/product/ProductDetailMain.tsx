@@ -6,8 +6,13 @@ import Spacing from '@/shared/components/layout/Spacing';
 import ProductInstructionItem from './ProductInstructionItem';
 import ProductDetailInfoBox from './ProductDetailInfoBox';
 import ProductDetailSelectAndPayBox from './ProductDetailSelectAndPayBox';
+import { ProductInfo } from '@/models/product';
 
-const ProductDetailMain = () => {
+interface Props {
+	product: ProductInfo;
+}
+
+const ProductDetailMain = ({ product }: Props) => {
 	return (
 		<Flex justify="space-between" className={s.productDetailFlexBox}>
 			<div className={s.productDetailLeftBox}>
@@ -34,24 +39,24 @@ const ProductDetailMain = () => {
 				<div className={s.noticeBox}>
 					<Flex>
 						<div className={s.darkerGrayText}>발행업체</div>
-						<div className={s.darkGrayText}>(주)한국문화진흥</div>
+						<div className={s.darkGrayText}>{product?.publisher}</div>
 					</Flex>
 					<Spacing margin="10px" />
 					<Flex>
 						<div className={s.darkerGrayText}>홈페이지</div>
-						<div className={s.darkGrayText}>https://cultureland.co.kr</div>
+						<div className={s.darkGrayText}>{product?.homePage}</div>
 					</Flex>
 					<Spacing margin="10px" />
 					<Flex>
 						<div className={s.darkerGrayText}>고객센터</div>
-						<div className={s.darkGrayText}>1577-2111</div>
+						<div className={s.darkGrayText}>{product?.csCenter}</div>
 					</Flex>
 					<Spacing margin="25px" />
 					<ProductDetailInfoBox />
 				</div>
 			</div>
 			<div className={s.productDetailRightBox}>
-				<ProductDetailSelectAndPayBox />
+				<ProductDetailSelectAndPayBox product={product} />
 			</div>
 		</Flex>
 	);

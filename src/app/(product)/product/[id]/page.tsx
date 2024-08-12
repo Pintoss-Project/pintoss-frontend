@@ -4,19 +4,12 @@ import ProductSection from '@/components/product/ProductSection';
 
 interface Props {
 	params: {
-		id: string;
+		id: number;
 	};
 }
 
-export async function generateStaticParams() {
-	const ids = await getAllProductIds();
-	return ids.map((product: { id: string }) => ({
-		id: product.id,
-	}));
-}
-
 const ProductDetail = ({ params }: Props) => {
-	return <ProductSection header={params.id} main={<ProductDetailMain />} />;
+	return <ProductSection id={params.id} />;
 };
 
 export default ProductDetail;
