@@ -148,7 +148,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 				<Button
 					color={vars.color.white}
 					className={cs.lightBlueButton}
-					style={{ fontSize: '18px', height: '60px' }}
+					style={{ maxWidth: '900px', fontSize: '18px', height: '60px' }}
 					onClick={handleAddToCart}>
 					장바구니 담기
 				</Button>
