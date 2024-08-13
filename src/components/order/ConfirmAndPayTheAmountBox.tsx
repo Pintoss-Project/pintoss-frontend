@@ -8,12 +8,12 @@ import { Dispatch, SetStateAction, useEffect } from 'react';
 interface Props {
 	selectedType: string;
 	totalAmount: number;
-	setPayAmount: Dispatch<SetStateAction<number>>;
+	setPayAmount?: Dispatch<SetStateAction<number>>;
 }
 
 const ConfirmAndPayTheAmountBox = ({ selectedType, totalAmount, setPayAmount }: Props) => {
 	useEffect(() => {
-		setPayAmount(totalAmount + (selectedType === 'card' ? 0 : totalAmount * 0.1));
+		setPayAmount && setPayAmount(totalAmount + (selectedType === 'card' ? 0 : totalAmount * 0.1));
 	}, [totalAmount, selectedType]);
 
 	return (
@@ -41,7 +41,7 @@ const ConfirmAndPayTheAmountBox = ({ selectedType, totalAmount, setPayAmount }: 
 					<Flex justify="space-between" align="center">
 						<span className={s.grayText}>통신사 수수료 10%</span>
 						<span className={s.grayText} style={{ fontWeight: 'bold' }}>
-							{(totalAmount * 0.1)?.toLocaleString()} 원
+							{Math.round(totalAmount * 0.1)?.toLocaleString()} 원
 						</span>
 					</Flex>
 				)}

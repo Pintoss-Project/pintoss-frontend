@@ -13,9 +13,10 @@ import { getCartItems } from '@/app/api/cart/getCartItems';
 interface Props {
 	setTotalAmount: Dispatch<SetStateAction<number>>;
 	userId: number | undefined;
+	selectedType: string;
 }
 
-const CartOrderListInfoBox = ({ setTotalAmount, userId }: Props) => {
+const CartOrderListInfoBox = ({ setTotalAmount, userId, selectedType }: Props) => {
 	const { open, close } = useAlertContext();
 	const queryClient = useQueryClient();
 
@@ -24,6 +25,8 @@ const CartOrderListInfoBox = ({ setTotalAmount, userId }: Props) => {
 		queryFn: () => getCartItems(userId as number),
 		enabled: !!userId,
 	});
+
+	console.log(cartItemsData);
 
 	const [cartItems, setCartItems] = useState<CartItemResponse[]>(cartItemsData?.data || []);
 	const [cartItemsOrder, setCartItemsOrder] = useState<number[]>([]);

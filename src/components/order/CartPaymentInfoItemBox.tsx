@@ -9,16 +9,17 @@ import { Button } from '@/shared/components/button';
 import { Flex } from '@/shared/components/layout';
 import { vars } from '@/shared/styles/theme.css';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import PaymentMethodSelectBox from './PaymentMethodSelectBox';
 
 interface Props {
 	totalAmount: number;
 	userId: number;
+	selectedType: string;
+	setSelectedType: Dispatch<SetStateAction<string>>;
 }
 
-const CartPaymentInfoItemBox = ({ totalAmount, userId }: Props) => {
-	const [selectedType, setSelectedType] = useState<string>('card');
+const CartPaymentInfoItemBox = ({ totalAmount, userId, selectedType, setSelectedType }: Props) => {
 	const [payAmount, setPayAmount] = useState(0);
 
 	return (
@@ -34,7 +35,7 @@ const CartPaymentInfoItemBox = ({ totalAmount, userId }: Props) => {
 			<Flex justify="space-between" align="center" className={s.totalPayAmountBox}>
 				<span className={s.whiteText}>최종 결제 금액</span>
 				<span className={s.whiteText} style={{ fontWeight: 'bold' }}>
-					{payAmount.toLocaleString()} 원
+					{Math.round(payAmount).toLocaleString()} 원
 				</span>
 			</Flex>
 			<Spacing margin="15px" />

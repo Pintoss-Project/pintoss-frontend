@@ -46,8 +46,8 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 			postCartItem(data.productId, userInfo?.data?.id as number, data),
 		onSuccess: () => {
 			open({
-				width: '200px',
-				height: '300px',
+				width: '300px',
+				height: '200px',
 				title: '장바구니 추가',
 				main: <AlertMainTextBox text="장바구니에 상품이 추가되었습니다." />,
 				rightButtonStyle: cs.lightBlueButton,
@@ -56,8 +56,8 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 		},
 		onError: () => {
 			open({
-				width: '200px',
-				height: '300px',
+				width: '300px',
+				height: '200px',
 				title: '장바구니 추가',
 				main: <AlertMainTextBox text="장바구니 추가가 실패되었습니다." />,
 				rightButtonStyle: cs.lightBlueButton,
