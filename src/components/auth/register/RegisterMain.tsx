@@ -10,13 +10,15 @@ import RegisterAccountInfo from './RegisterAccountInfo';
 import RegisterPersonalInfo from './RegisterPersonalInfo';
 import RegisterAcceptTermsInfo from './RegisterAcceptTermsInfo';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { RegisterFormData, registerSchema } from '@/utils/validation/auth';
 import { postRegister } from '@/app/api/auth/postRegister';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { zodResolver } from '@hookform/resolvers/zod';
 import RegisterButton from './RegisterButton';
+import { getCheckIdResult } from '@/app/api/auth/checkDuplicateEmail';
+import { useEffect, useState } from 'react';
 
 const RegisterMain = () => {
 	const { open, close } = useAlertContext();
@@ -35,7 +37,9 @@ const RegisterMain = () => {
 		},
 	});
 
-	const { handleSubmit } = methods;
+	const { handleSubmit, watch } = methods;
+	const email = watch('email');
+	const [isEmailChecked, setIsEmailChecked] = useState(false);
 
 	const registerMutation = useMutation({
 		mutationFn: (data: RegisterFormData) => postRegister(data),
@@ -61,10 +65,31 @@ const RegisterMain = () => {
 		},
 	});
 
-	const onSubmit: SubmitHandler<RegisterFormData> = (data, event) => {
+	const onSubmit: SubmitHandler<RegisterFormData> = async (data, event) => {
 		event?.preventDefault();
+
+		if (!isEmailChecked) {
+			const { data } = await getCheckIdResult(email);
+			if (data) {
+				open({
+					width: '300px',
+					height: '200px',
+					title: '회원가입 오류',
+					main: <AlertMainTextBox text="이미 등록된 이메일입니다." />,
+					rightButtonStyle: cs.lightBlueButton,
+					onRightButtonClick: close,
+				});
+				setIsEmailChecked(true);
+				return;
+			}
+		}
+
 		registerMutation.mutate(data);
 	};
+
+	useEffect(() => {
+		setIsEmailChecked(false);
+	}, [email]);
 
 	return (
 		<FormProvider {...methods}>
