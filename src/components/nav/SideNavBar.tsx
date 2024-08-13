@@ -34,7 +34,12 @@ const SideNavBar = () => {
 			<Spacing margin="26px" />
 			<List spacing={35}>
 				{products?.data.map((item) => (
-					<SideNavBarProductsForSale key={item.id} svg={CultureLandLogo} name={item.name} />
+					<SideNavBarProductsForSale
+						key={item.id}
+						svg={CultureLandLogo}
+						name={item.name}
+						productId={item.id}
+					/>
 				))}
 			</List>
 			<Spacing margin="56px" />
