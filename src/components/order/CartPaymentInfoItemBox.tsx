@@ -19,17 +19,22 @@ interface Props {
 
 const CartPaymentInfoItemBox = ({ totalAmount, userId }: Props) => {
 	const [selectedType, setSelectedType] = useState<string>('card');
+	const [payAmount, setPayAmount] = useState(0);
 
 	return (
 		<div className={s.cartPaymentInfoItemBox}>
 			<PaymentMethodSelectBox selectedType={selectedType} setSelectedType={setSelectedType} />
 			<Spacing margin="30px" />
-			<ConfirmAndPayTheAmountBox selectedType={selectedType} totalAmount={totalAmount} />
+			<ConfirmAndPayTheAmountBox
+				selectedType={selectedType}
+				totalAmount={totalAmount}
+				setPayAmount={setPayAmount}
+			/>
 			<Spacing margin="30px" />
 			<Flex justify="space-between" align="center" className={s.totalPayAmountBox}>
 				<span className={s.whiteText}>최종 결제 금액</span>
 				<span className={s.whiteText} style={{ fontWeight: 'bold' }}>
-					{totalAmount.toLocaleString()} 원
+					{payAmount.toLocaleString()} 원
 				</span>
 			</Flex>
 			<Spacing margin="15px" />

@@ -3,13 +3,19 @@ import * as s from './CartStyle.css';
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import { vars } from '@/shared/styles/theme.css';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 
 interface Props {
 	selectedType: string;
 	totalAmount: number;
+	setPayAmount: Dispatch<SetStateAction<number>>;
 }
 
-const ConfirmAndPayTheAmountBox = ({ selectedType, totalAmount }: Props) => {
+const ConfirmAndPayTheAmountBox = ({ selectedType, totalAmount, setPayAmount }: Props) => {
+	useEffect(() => {
+		setPayAmount(totalAmount + (selectedType === 'card' ? 0 : totalAmount * 0.1));
+	}, [totalAmount, selectedType]);
+
 	return (
 		<div>
 			<div className={s.payInfoTitle}>금액 확민 및 결제</div>
@@ -30,6 +36,15 @@ const ConfirmAndPayTheAmountBox = ({ selectedType, totalAmount }: Props) => {
 						{totalAmount?.toLocaleString()} 원
 					</span>
 				</Flex>
+				<Spacing margin="15px" />
+				{selectedType === 'phone' && (
+					<Flex justify="space-between" align="center">
+						<span className={s.grayText}>통신사 수수료 10%</span>
+						<span className={s.grayText} style={{ fontWeight: 'bold' }}>
+							{(totalAmount * 0.1)?.toLocaleString()} 원
+						</span>
+					</Flex>
+				)}
 			</div>
 		</div>
 	);
