@@ -12,9 +12,7 @@ const Register = () => {
 			<AuthSection
 				header={<AuthHeader title="회원가입" />}
 				main={<RegisterMain />}
-				footer={<RegisterButton />}
 				marginTop="84px"
-				marginBottom="165px"
 			/>
 		</Flex>
 	);

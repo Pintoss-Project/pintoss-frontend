@@ -193,3 +193,9 @@ export const personalInfoInputBox = style({
 		},
 	},
 });
+
+export const ValidationMessageStyle = style({
+	margin: '6px 0px 8px 4px',
+	fontSize: '10px',
+	color: vars.color.softRed,
+});
