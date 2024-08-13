@@ -43,7 +43,7 @@ export const expandedContent = style({
 
 export const expandedContentVisible = style({
 	padding: '50px 45px',
-	minHeight: '700px',
+	maxHeight: '2000px',
 });
 
 export const paginationBox = style({
