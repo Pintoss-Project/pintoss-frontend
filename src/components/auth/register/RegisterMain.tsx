@@ -1,24 +1,24 @@
 'use client';
 
-import * as cs from '@/shared/styles/common.css';
-import * as as from '@/components/auth/AuthStyle.css';
-import { Divider } from '@/shared/components/layout';
-import RegisterInfoBox from './RegisterInfoBox';
-import { vars } from '@/shared/styles/theme.css';
-import Spacing from '@/shared/components/layout/Spacing';
-import RegisterAccountInfo from './RegisterAccountInfo';
-import RegisterPersonalInfo from './RegisterPersonalInfo';
-import RegisterAcceptTermsInfo from './RegisterAcceptTermsInfo';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { RegisterFormData, registerSchema } from '@/utils/validation/auth';
+import { getCheckIdResult } from '@/app/api/auth/checkDuplicateEmail';
 import { postRegister } from '@/app/api/auth/postRegister';
+import * as as from '@/components/auth/AuthStyle.css';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
+import { Divider } from '@/shared/components/layout';
+import Spacing from '@/shared/components/layout/Spacing';
+import * as cs from '@/shared/styles/common.css';
+import { vars } from '@/shared/styles/theme.css';
+import { RegisterFormData, registerSchema } from '@/utils/validation/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
-import RegisterButton from './RegisterButton';
-import { getCheckIdResult } from '@/app/api/auth/checkDuplicateEmail';
+import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import RegisterAcceptTermsInfo from './RegisterAcceptTermsInfo';
+import RegisterAccountInfo from './RegisterAccountInfo';
+import RegisterButton from './RegisterButton';
+import RegisterInfoBox from './RegisterInfoBox';
+import RegisterPersonalInfo from './RegisterPersonalInfo';
 
 const RegisterMain = () => {
 	const { open, close } = useAlertContext();

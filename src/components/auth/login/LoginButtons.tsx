@@ -13,7 +13,12 @@ import { KakaoLogo, NaverLogo } from '../../../../public/svgs';
 const LoginButtons = () => {
 	return (
 		<div>
-			<Button color={vars.color.white} className={cs.lightBlueButton} style={{ fontSize: '18px' }}>
+			<Button
+				form="login-form"
+				color={vars.color.white}
+				className={cs.lightBlueButton}
+				style={{ fontSize: '18px' }}
+				type="submit">
 				로그인
 			</Button>
 			<Spacing margin="25px" />
