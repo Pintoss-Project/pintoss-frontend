@@ -47,6 +47,8 @@ const CartOrderListInfoBox = ({ setTotalAmount, userId, selectedType }: Props) =
 				0,
 			);
 			setTotalAmount(calculatedTotal);
+		} else {
+			setTotalAmount(0);
 		}
 	}, [cartItems, setTotalAmount]);
 

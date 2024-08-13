@@ -70,7 +70,21 @@ const CartOrderListItem = ({ id, icon, name, price, quantity, onQuantityChange }
 	};
 
 	const handleDelete = () => {
-		deleteCartItemMutation.mutate(id);
+		open({
+			width: '300px',
+			height: '200px',
+			title: '장바구니 아이템 삭제',
+			main: <AlertMainTextBox text="장바구니 아이템을 삭제하시겠습니까?" />,
+			rightButtonLabel: '확인',
+			rightButtonStyle: cs.lightBlueButton,
+			leftButtonLabel: '취소',
+			leftButtonStyle: cs.whiteAndBlackButton,
+			onRightButtonClick: () => {
+				deleteCartItemMutation.mutate(id);
+				close();
+			},
+			onLeftButtonClick: close,
+		});
 	};
 
 	return (
