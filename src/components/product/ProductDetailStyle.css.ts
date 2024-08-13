@@ -138,13 +138,12 @@ export const productInfoTabMenuBox = style({
 	width: '50%',
 	height: '47px',
 	textAlign: 'center',
+	cursor: 'pointer',
 });
 
 export const leftTabMenuBox = style([
 	productInfoTabMenuBox,
 	{
-		color: vars.color.white,
-		backgroundColor: vars.color.darkGray,
 		borderRadius: '18px 0 0 0',
 	},
 ]);
@@ -152,13 +151,22 @@ export const leftTabMenuBox = style([
 export const rightTabMenuBox = style([
 	productInfoTabMenuBox,
 	{
-		color: vars.color.mediumGray,
-		backgroundColor: vars.color.lightestGray,
-		borderRadius: '0 18px  0 0',
+		borderRadius: '0 18px 0 0',
 	},
 ]);
 
+export const selectedTab = style({
+	color: vars.color.white,
+	backgroundColor: vars.color.darkGray,
+});
+
+export const unselectedTab = style({
+	color: vars.color.mediumGray,
+	backgroundColor: vars.color.lightestGray,
+});
+
 export const productInfoListBox = style({
+	padding: '30px',
 	minHeight: '400px',
 	backgroundColor: vars.color.white,
 	borderRadius: '0 0 18px 18px',
