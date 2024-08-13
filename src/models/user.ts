@@ -1,3 +1,11 @@
+export interface UserInfo {
+	id: number;
+	email: string;
+	name: string;
+	phone: string;
+	selected?: boolean;
+}
+
 export interface ManageUserInfo {
 	id: number;
 	email: string;

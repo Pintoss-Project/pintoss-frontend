@@ -13,10 +13,12 @@ import ProductSelectBox from './ProductSelectBox';
 import QuantitySelectBox from './QuantitySelectBox';
 import { PriceCategoryInfo, ProductInfo } from '@/models/product';
 import { CartItem } from '@/models/cart';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { postCartItem } from '@/app/api/cart/postCartItem';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
+import { getUserList } from '@/app/api/user/getUserList';
+import { getUserInfo } from '@/app/api/user/getUserInfo';
 
 interface Props {
 	product: ProductInfo;
@@ -29,12 +31,18 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 
 	const { open, close } = useAlertContext();
 
+	const { data: userInfo } = useQuery({
+		queryKey: ['userInfo'],
+		queryFn: getUserInfo,
+	});
+
 	useEffect(() => {
 		setSaleRate(selectedType === 'card' ? product?.cardDiscount : product?.phoneDiscount);
 	}, [selectedType, product]);
 
 	const postCartItemMutation = useMutation({
-		mutationFn: (data: CartItem) => postCartItem(data.productId, data.priceCategoryId, data),
+		mutationFn: (data: CartItem) =>
+			postCartItem(data.productId, userInfo?.data?.id as number, data),
 		onSuccess: () => {
 			open({
 				width: '200px',
@@ -69,9 +77,10 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 			{
 				productId: product.id,
 				priceCategoryId: category.id,
+				name: product.name,
 				price: category.price,
 				quantity: 1,
-				payMethod: selectedType,
+				payMethod: selectedType.toUpperCase(),
 			},
 		]);
 	};
