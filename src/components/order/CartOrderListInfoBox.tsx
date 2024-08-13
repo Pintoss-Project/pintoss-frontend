@@ -103,6 +103,7 @@ const CartOrderListInfoBox = ({ setTotalAmount, userId }: Props) => {
 				))}
 			</div>
 			<CartOrderTotalInfoBox
+				userId={userId as number}
 				finalTotalPrice={sortedCartItems.reduce(
 					(acc: number, item: CartItemResponse) => acc + item.price * item.quantity,
 					0,

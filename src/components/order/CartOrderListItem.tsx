@@ -7,6 +7,12 @@ import clsx from 'clsx';
 import Image from 'next/image';
 import { useState } from 'react';
 import * as s from './CartStyle.css';
+import * as cs from '@/shared/styles/common.css';
+import useAlertContext from '@/hooks/useAlertContext';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { deleteCartItem } from '@/app/api/cart/deleteCart';
+import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
+import CartError from '@/utils/error/CartError';
 
 interface Props {
 	id: number;
@@ -19,6 +25,35 @@ interface Props {
 
 const CartOrderListItem = ({ id, icon, name, price, quantity, onQuantityChange }: Props) => {
 	const [count, setCount] = useState(quantity);
+	const { open, close } = useAlertContext();
+	const queryClient = useQueryClient();
+
+	const deleteCartItemMutation = useMutation({
+		mutationFn: (cartItemId: number) => deleteCartItem(cartItemId),
+		onSuccess: () => {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '삭제 성공',
+				main: <AlertMainTextBox text="장바구니 아이템이 삭제되었습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+			queryClient.invalidateQueries({
+				queryKey: ['cartItems'],
+			});
+		},
+		onError: (error: CartError) => {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '삭제 실패',
+				main: <AlertMainTextBox text={error.message || '장바구니 아이템 삭제에 실패했습니다.'} />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		},
+	});
 
 	const handleIncrease = () => {
 		const newCount = count + 1;
@@ -32,6 +67,10 @@ const CartOrderListItem = ({ id, icon, name, price, quantity, onQuantityChange }
 			setCount(newCount);
 			onQuantityChange(id, newCount);
 		}
+	};
+
+	const handleDelete = () => {
+		deleteCartItemMutation.mutate(id);
 	};
 
 	return (
@@ -75,7 +114,10 @@ const CartOrderListItem = ({ id, icon, name, price, quantity, onQuantityChange }
 					<span className={clsx(s.darkBlueText)}>{(price * count).toLocaleString()} 원</span>
 				</Flex>
 				<Flex justify="center" align="center" className={s.flexItem6}>
-					<Button color={vars.color.white} className={s.cartItemRemoveButton}>
+					<Button
+						color={vars.color.white}
+						className={s.cartItemRemoveButton}
+						onClick={handleDelete}>
 						<Flex justify="center" align="center" style={{ width: '20px', height: '20px' }}>
 							ㅡ
 						</Flex>
