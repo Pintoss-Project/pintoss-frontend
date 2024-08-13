@@ -1,27 +1,83 @@
-import { Dispatch, SetStateAction, useEffect } from 'react';
-import { CultureLandLogo } from '../../../public/svgs';
+import { CartItemResponse } from '@/models/cart';
+import { Dispatch, SetStateAction, useEffect, useCallback, useState } from 'react';
 import CartOrderListItem from './CartOrderListItem';
 import CartOrderTotalInfoBox from './CartOrderTotalInfoBox';
 import * as s from './CartStyle.css';
+import * as cs from '@/shared/styles/common.css';
+import useAlertContext from '@/hooks/useAlertContext';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { updateCart } from '@/app/api/cart/updateCart';
+import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
+import { getCartItems } from '@/app/api/cart/getCartItems';
 
 interface Props {
 	setTotalAmount: Dispatch<SetStateAction<number>>;
+	userId: number | undefined;
 }
 
-const CART_ORDER_ITEM_LIST = [
-	{ id: 1, icon: CultureLandLogo, name: '컬쳐랜드 1만원권', price: 10000, quantity: 10 },
-	{ id: 2, icon: CultureLandLogo, name: '컬쳐랜드 1만원권', price: 10000, quantity: 10 },
-];
+const CartOrderListInfoBox = ({ setTotalAmount, userId }: Props) => {
+	const { open, close } = useAlertContext();
+	const queryClient = useQueryClient();
 
-const CartOrderListInfoBox = ({ setTotalAmount }: Props) => {
-	const totalAmount = CART_ORDER_ITEM_LIST.reduce(
-		(acc, item) => acc + item.price * item.quantity,
-		0,
-	);
+	const { data: cartItemsData } = useQuery({
+		queryKey: ['cartItems', userId],
+		queryFn: () => getCartItems(userId as number),
+		enabled: !!userId,
+	});
+
+	const [cartItems, setCartItems] = useState<CartItemResponse[]>(cartItemsData?.data || []);
+	const [cartItemsOrder, setCartItemsOrder] = useState<number[]>([]);
 
 	useEffect(() => {
-		setTotalAmount(totalAmount);
-	}, []);
+		if (cartItemsData?.data) {
+			setCartItems(cartItemsData.data);
+			if (cartItemsOrder.length === 0) {
+				setCartItemsOrder(cartItemsData.data.map((item: CartItemResponse) => item.id));
+			}
+		}
+	}, [cartItemsData, cartItemsOrder.length]);
+
+	useEffect(() => {
+		if (cartItems.length > 0) {
+			const calculatedTotal = cartItems.reduce(
+				(acc: number, item: CartItemResponse) => acc + item.price * item.quantity,
+				0,
+			);
+			setTotalAmount(calculatedTotal);
+		}
+	}, [cartItems, setTotalAmount]);
+
+	const handleItemQuantityChange = useCallback(
+		(id: number, newQuantity: number) => {
+			updateCartMutation.mutate(
+				{ id, quantity: newQuantity },
+				{
+					onSuccess: () => {
+						queryClient.invalidateQueries({ queryKey: ['cartItems', userId] });
+					},
+				},
+			);
+		},
+		[userId, queryClient],
+	);
+
+	const updateCartMutation = useMutation({
+		mutationFn: ({ id, quantity }: { id: number; quantity: number }) => updateCart(id, quantity),
+		onError: () => {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '오류 발생',
+				main: <AlertMainTextBox text="알 수 없는 오류가 발생했습니다. 다시 시도해주세요." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		},
+	});
+
+	const sortedCartItems = cartItemsOrder
+		.map((orderId) => cartItems.find((item) => item.id === orderId))
+		.filter(Boolean) as CartItemResponse[];
 
 	return (
 		<div className={s.cartOrderListInfoBox}>
@@ -34,17 +90,24 @@ const CartOrderListInfoBox = ({ setTotalAmount }: Props) => {
 				<span className={s.flexItem6}></span>
 			</div>
 			<div>
-				{CART_ORDER_ITEM_LIST.map((item) => (
+				{sortedCartItems.map((item: CartItemResponse) => (
 					<CartOrderListItem
 						key={item.id}
-						icon={item.icon}
+						id={item.id}
+						icon={'/images/book-logo.png'}
 						name={item.name}
 						price={item.price}
 						quantity={item.quantity}
+						onQuantityChange={handleItemQuantityChange}
 					/>
 				))}
 			</div>
-			<CartOrderTotalInfoBox finalTotalPrice={totalAmount} />
+			<CartOrderTotalInfoBox
+				finalTotalPrice={sortedCartItems.reduce(
+					(acc: number, item: CartItemResponse) => acc + item.price * item.quantity,
+					0,
+				)}
+			/>
 		</div>
 	);
 };

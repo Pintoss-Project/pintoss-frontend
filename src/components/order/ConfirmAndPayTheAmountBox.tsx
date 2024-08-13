@@ -27,7 +27,7 @@ const ConfirmAndPayTheAmountBox = ({ selectedType, totalAmount }: Props) => {
 				<Flex justify="space-between" align="center">
 					<span className={s.grayText}>상품 합계금액</span>
 					<span className={s.grayText} style={{ fontWeight: 'bold' }}>
-						{totalAmount.toLocaleString()} 원
+						{totalAmount?.toLocaleString()} 원
 					</span>
 				</Flex>
 			</div>

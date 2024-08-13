@@ -1,23 +1,38 @@
 'use client';
 
-import * as s from './CartStyle.css';
-
 import { Button } from '@/shared/components/button';
 import { Flex } from '@/shared/components/layout';
 import { vars } from '@/shared/styles/theme.css';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { useState } from 'react';
+import * as s from './CartStyle.css';
 
 interface Props {
+	id: number;
 	icon: string;
 	name: string;
 	price: number;
 	quantity: number;
+	onQuantityChange: (id: number, newQuantity: number) => void;
 }
 
-const CartOrderListItem = ({ icon, name, price, quantity }: Props) => {
+const CartOrderListItem = ({ id, icon, name, price, quantity, onQuantityChange }: Props) => {
 	const [count, setCount] = useState(quantity);
+
+	const handleIncrease = () => {
+		const newCount = count + 1;
+		setCount(newCount);
+		onQuantityChange(id, newCount);
+	};
+
+	const handleDecrease = () => {
+		if (count > 1) {
+			const newCount = count - 1;
+			setCount(newCount);
+			onQuantityChange(id, newCount);
+		}
+	};
 
 	return (
 		<div className={s.cartOrderListItemBox}>
@@ -41,7 +56,7 @@ const CartOrderListItem = ({ icon, name, price, quantity }: Props) => {
 					<Button
 						color={vars.color.lighterGray}
 						className={s.quantityLeftButton}
-						onClick={() => setCount(count - 1)}>
+						onClick={handleDecrease}>
 						-
 					</Button>
 					<Flex justify="center" align="center" className={s.quantityText}>
@@ -50,7 +65,7 @@ const CartOrderListItem = ({ icon, name, price, quantity }: Props) => {
 					<Button
 						color={vars.color.darkGray}
 						className={s.quantityRightButton}
-						onClick={() => setCount(count + 1)}>
+						onClick={handleIncrease}>
 						+
 					</Button>
 				</Flex>

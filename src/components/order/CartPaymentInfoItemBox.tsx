@@ -11,14 +11,25 @@ import { Button } from '@/shared/components/button';
 import { vars } from '@/shared/styles/theme.css';
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
+import { useQuery } from '@tanstack/react-query';
+import { getCartItems } from '@/app/api/cart/getCartItems';
 
 interface Props {
 	totalAmount: number;
+	userId: number;
 }
 
-const CartPaymentInfoItemBox = ({ totalAmount }: Props) => {
+const CartPaymentInfoItemBox = ({ totalAmount, userId }: Props) => {
 	const [selectedType, setSelectedType] = useState<string>('card');
 	const [saleRate, setSaleRate] = useState(0);
+
+	const { data: cartItemsData } = useQuery({
+		queryKey: ['cartItems', userId],
+		queryFn: () => getCartItems(userId as number),
+		enabled: !!userId,
+	});
+
+	console.log(cartItemsData?.data);
 
 	useEffect(() => {
 		setSaleRate(selectedType === 'card' ? 1.2 : 0);
