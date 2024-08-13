@@ -2,21 +2,26 @@
 
 import * as s from './ProductDetailStyle.css';
 
-import { IoClose } from 'react-icons/io5';
+import { CartItem } from '@/models/cart';
+import { Button } from '@/shared/components/button';
 import { Divider, Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import { vars } from '@/shared/styles/theme.css';
-import { Button } from '@/shared/components/button';
-import { useState } from 'react';
-import { CartItem } from '@/models/cart';
+import { IoClose } from 'react-icons/io5';
 
 interface Props {
 	cartItems: CartItem[];
+	originalPrices: { [categoryId: number]: number };
 	onQuantityChange: (updatedItems: CartItem[]) => void;
 	onRemoveItem: (index: number) => void;
 }
 
-const QuantitySelectBox = ({ cartItems, onQuantityChange, onRemoveItem }: Props) => {
+const QuantitySelectBox = ({
+	cartItems,
+	originalPrices,
+	onQuantityChange,
+	onRemoveItem,
+}: Props) => {
 	const handleQuantityChange = (categoryId: number, newQuantity: number) => {
 		const updatedItems = cartItems.map((item) =>
 			item.priceCategoryId === categoryId ? { ...item, quantity: newQuantity } : item,
@@ -34,9 +39,11 @@ const QuantitySelectBox = ({ cartItems, onQuantityChange, onRemoveItem }: Props)
 					<Flex justify="space-between" align="center" style={{ padding: '0 10px' }}>
 						<div>
 							<span className={s.darkGrayText} style={{ fontSize: '16px' }}>
-								{item?.category?.name}
+								{item?.name}
 							</span>
-							<span style={{ color: vars.color.softRed, marginLeft: '10px' }}>{item.price}원</span>
+							<span style={{ color: vars.color.softRed, marginLeft: '10px' }}>
+								{originalPrices?.[item.priceCategoryId].toLocaleString()}원
+							</span>
 						</div>
 						<div onClick={() => onRemoveItem(index)}>
 							<IoClose style={{ width: '20px', height: '20px', color: '#BBBBBB' }} />
@@ -63,7 +70,7 @@ const QuantitySelectBox = ({ cartItems, onQuantityChange, onRemoveItem }: Props)
 							</Button>
 						</Flex>
 						<div style={{ fontSize: '18px', fontWeight: '600', color: vars.color.darkerGray }}>
-							{(item.price * item.quantity).toLocaleString()} 원
+							{(+originalPrices?.[item.priceCategoryId] * item.quantity).toLocaleString()} 원
 						</div>
 					</Flex>
 					<Spacing margin="15px" />

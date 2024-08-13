@@ -9,8 +9,8 @@ import { Dispatch, SetStateAction } from 'react';
 interface Props {
 	selectedType: string;
 	setSelectedType: Dispatch<SetStateAction<string>>;
-	cardDiscount: number;
-	phoneDiscount: number;
+	cardDiscount?: number;
+	phoneDiscount?: number;
 }
 
 const PaymentMethodSelectBox = ({
@@ -29,13 +29,13 @@ const PaymentMethodSelectBox = ({
 			<Spacing margin="10px" />
 			<Flex>
 				<PaymentSelectBox
-					sale={cardDiscount}
+					sale={cardDiscount as number}
 					type="card"
 					isSelected={selectedType === 'card'}
 					onSelect={() => handleSelect('card')}
 				/>
 				<PaymentSelectBox
-					sale={phoneDiscount}
+					sale={phoneDiscount as number}
 					type="phone"
 					isSelected={selectedType === 'phone'}
 					onSelect={() => handleSelect('phone')}

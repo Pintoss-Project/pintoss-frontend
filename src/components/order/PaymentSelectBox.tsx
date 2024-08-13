@@ -15,12 +15,17 @@ const PaymentSelectBox = ({ sale, type, isSelected, onSelect }: Props) => {
 		<div
 			className={isSelected ? s.paymentMethodBoxSelected : s.paymentMethodBox}
 			onClick={onSelect}>
-			<div
-				className={s.responsiveSmallText}
-				style={{ color: vars.color.skyBlue, textAlign: 'left' }}>
-				할인 {sale}% ↓
-			</div>
-			<Spacing margin="9px" />
+			{sale !== undefined && (
+				<>
+					<div
+						className={s.responsiveSmallText}
+						style={{ color: vars.color.skyBlue, textAlign: 'left' }}>
+						할인 {sale}% ↓
+					</div>
+
+					<Spacing margin="9px" />
+				</>
+			)}
 			<Flex justify="space-between" align="center">
 				<div
 					className={s.responsiveText}

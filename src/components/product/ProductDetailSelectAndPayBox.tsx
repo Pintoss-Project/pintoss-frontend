@@ -28,6 +28,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 	const [cartItems, setCartItems] = useState<CartItem[]>([]);
 	const [selectedType, setSelectedType] = useState<string>('card');
 	const [saleRate, setSaleRate] = useState(product?.cardDiscount || 0);
+	const [originalPrices, setOriginalPrices] = useState<{ [categoryId: number]: number }>({});
 
 	const { open, close } = useAlertContext();
 
@@ -72,13 +73,21 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 	};
 
 	const handleSelectCategory = (category: PriceCategoryInfo) => {
+		const discountRate = selectedType === 'card' ? product.cardDiscount : product.phoneDiscount;
+		const discountedPrice = category.price * ((100 - discountRate) / 100);
+
+		setOriginalPrices((prevPrices) => ({
+			...prevPrices,
+			[category.id]: category.price,
+		}));
+
 		setCartItems((prevItems) => [
 			...prevItems,
 			{
 				productId: product.id,
 				priceCategoryId: category.id,
 				name: product.name,
-				price: category.price,
+				price: discountedPrice,
 				quantity: 1,
 				payMethod: selectedType.toUpperCase(),
 			},
@@ -109,6 +118,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 				</div>
 				<QuantitySelectBox
 					cartItems={cartItems}
+					originalPrices={originalPrices}
 					onQuantityChange={handleQuantityChange}
 					onRemoveItem={handleRemoveItem}
 				/>
@@ -123,10 +133,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 			<Spacing margin="30px" />
 			<ConfirmAndPayTheAmountBox
 				selectedType={selectedType}
-				totalAmount={cartItems.reduce(
-					(total, item) => total + item.quantity * item.price * ((100 - saleRate) / 100),
-					0,
-				)}
+				totalAmount={cartItems.reduce((total, item) => total + item.quantity * item.price, 0)}
 			/>
 			<Spacing margin="15px" />
 			<Flex justify="space-between" className={s.totalPayInfoBox}>
@@ -135,10 +142,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 				</span>
 				<span className={s.whiteBoldText} style={{ fontWeight: '600' }}>
 					{cartItems
-						.reduce(
-							(total, item) => total + item.quantity * item.price * ((100 - saleRate) / 100),
-							0,
-						)
+						.reduce((total, item) => total + item.quantity * item.price, 0)
 						.toLocaleString()}
 					원
 				</span>
