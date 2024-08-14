@@ -1,24 +1,33 @@
+'use client';
+
 import { vars } from '@/shared/styles/theme.css';
 import * as s from './MyPageStyle.css';
 
 import { Divider, Flex } from '@/shared/components/layout';
+import { useQuery } from '@tanstack/react-query';
+import { getUserInfo } from '@/app/api/user/getUserInfo';
 
 const MemberInfoBox = () => {
+	const { data: userInfo } = useQuery({
+		queryKey: ['userInfo'],
+		queryFn: getUserInfo,
+	});
+
 	return (
 		<Flex direction="column" justify="space-around" className={s.memberInfoInnerBox}>
 			<Flex justify="space-between" align="center">
 				<span className={s.darkGrayText}>이름</span>
-				<span className={s.darkerGrayText}>홍길동</span>
+				<span className={s.darkerGrayText}>{userInfo?.data.name}</span>
 			</Flex>
 			<Divider color={vars.color.paleGray} />
 			<Flex justify="space-between" align="center">
 				<span className={s.darkGrayText}>휴대폰</span>
-				<span className={s.darkerGrayText}>010-1234-5678</span>
+				<span className={s.darkerGrayText}>{userInfo?.data.phone}</span>
 			</Flex>
 			<Divider color={vars.color.paleGray} />
 			<Flex justify="space-between" align="center">
 				<span className={s.darkGrayText}>이메일</span>
-				<span className={s.darkerGrayText}>abc@gmail.com</span>
+				<span className={s.darkerGrayText}>{userInfo?.data.email}</span>
 			</Flex>
 		</Flex>
 	);
