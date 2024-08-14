@@ -17,6 +17,7 @@ import { postLogin } from '@/app/api/auth/postLogin';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import LoginInputBox from './LoginInputBox';
 import useRedirect from '@/hooks/useRedirect';
+import { setLocalToken } from '@/utils/localToken';
 
 const LoginMain = () => {
 	const { open, close } = useAlertContext();
@@ -35,7 +36,9 @@ const LoginMain = () => {
 
 	const loginMutation = useMutation({
 		mutationFn: (data: LogInFormData) => postLogin(data),
-		onSuccess: () => {
+		onSuccess: (data) => {
+			const { accessToken } = data?.data;
+
 			open({
 				width: '300px',
 				height: '200px',
@@ -43,6 +46,7 @@ const LoginMain = () => {
 				main: <AlertMainTextBox text="로그인이 완료되었습니다." />,
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: () => {
+					setLocalToken(accessToken);
 					setRedirectPath('/');
 					close();
 				},
