@@ -97,7 +97,7 @@ const MobileMenuBox = ({ setIsMenuOpen }: Props) => {
 					/>
 				</Flex>
 			</div>
-			<MobileProducts />
+			<MobileProducts setIsMenuOpen={setIsMenuOpen} />
 			<div style={{ border: `1px solid ${vars.color.paleGray}` }}>
 				<Flex direction="column" align="center">
 					{menuButtons.map((button, index) => (

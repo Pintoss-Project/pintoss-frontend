@@ -4,8 +4,13 @@ import { BookAndLifeLogo } from '../../../public/svgs';
 import MobileProductBox from './MobileProductBox';
 import { useQuery } from '@tanstack/react-query';
 import { getSimpleProductList } from '@/app/api/product/getProductList';
+import Link from 'next/link';
 
-const MobileProducts = () => {
+interface Props {
+	setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const MobileProducts = ({ setIsMenuOpen }: Props) => {
 	const { data: products } = useQuery({
 		queryKey: ['simpleProductList'],
 		queryFn: () => getSimpleProductList(),
@@ -15,7 +20,13 @@ const MobileProducts = () => {
 		<div className={s.gridWrap}>
 			<Grid className={s.responsiveGrid}>
 				{products?.data.map((product) => (
-					<MobileProductBox key={product.id} name={product.name} image={'/images/book-logo.png'} />
+					<Link
+						key={product.id}
+						href={`/product/${product.id}`}
+						style={{ color: 'black', textDecoration: 'none' }}
+						onClick={() => setIsMenuOpen(false)}>
+						<MobileProductBox name={product.name} image={'/images/book-logo.png'} />
+					</Link>
 				))}
 			</Grid>
 		</div>
