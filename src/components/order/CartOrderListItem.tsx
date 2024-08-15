@@ -5,7 +5,7 @@ import { Flex } from '@/shared/components/layout';
 import { vars } from '@/shared/styles/theme.css';
 import clsx from 'clsx';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as s from './CartStyle.css';
 import * as cs from '@/shared/styles/common.css';
 import useAlertContext from '@/hooks/useAlertContext';
@@ -86,6 +86,10 @@ const CartOrderListItem = ({ id, icon, name, price, quantity, onQuantityChange }
 			onLeftButtonClick: close,
 		});
 	};
+
+	useEffect(() => {
+		setCount(quantity);
+	}, [quantity]);
 
 	return (
 		<div className={s.cartOrderListItemBox}>

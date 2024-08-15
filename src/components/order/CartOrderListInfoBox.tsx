@@ -26,7 +26,31 @@ const CartOrderListInfoBox = ({ setTotalAmount, userId, selectedType }: Props) =
 		enabled: !!userId,
 	});
 
-	const [cartItems, setCartItems] = useState<CartItemResponse[]>(cartItemsData?.data || []);
+	const [cartItems, setCartItems] = useState<CartItemResponse[]>([]);
+
+	const mergeCartItems = (items: CartItemResponse[]): CartItemResponse[] => {
+		const mergedItems = items.reduce((acc: CartItemResponse[], currentItem) => {
+			const existingItemIndex = acc.findIndex(
+				(item) => item.priceCategoryId === currentItem.priceCategoryId,
+			);
+			if (existingItemIndex >= 0) {
+				acc[existingItemIndex].quantity += currentItem.quantity;
+			} else {
+				acc.push({ ...currentItem });
+			}
+			return acc;
+		}, []);
+
+		return mergedItems;
+	};
+
+	useEffect(() => {
+		if (cartItemsData?.data) {
+			const mergedItems = mergeCartItems(cartItemsData.data);
+			setCartItems(mergedItems);
+			queryClient.invalidateQueries({ queryKey: ['cartItems', userId] });
+		}
+	}, [cartItemsData]);
 
 	useEffect(() => {
 		if (cartItems.length > 0 && userId) {
@@ -35,12 +59,6 @@ const CartOrderListInfoBox = ({ setTotalAmount, userId, selectedType }: Props) =
 			});
 		}
 	}, [cartItems.length, selectedType, userId, queryClient]);
-
-	useEffect(() => {
-		if (cartItemsData?.data) {
-			setCartItems(cartItemsData.data);
-		}
-	}, [cartItemsData]);
 
 	useEffect(() => {
 		if (cartItems.length > 0) {

@@ -133,16 +133,26 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 				return updatedCategories.map((c) => (c.id === category.id ? categoryPriceInfo?.data : c));
 			});
 
-			setCartItems((prevItems) => [
-				...prevItems,
-				{
-					productId: product.id,
-					priceCategoryId: category.id,
-					name: product.name,
-					quantity: 1,
-					payMethod: selectedType.toUpperCase(),
-				},
-			]);
+			setCartItems((prevItems) => {
+				const existingItem = prevItems.find((item) => item.priceCategoryId === category.id);
+
+				if (existingItem) {
+					return prevItems.map((item) =>
+						item.priceCategoryId === category.id ? { ...item, quantity: item.quantity + 1 } : item,
+					);
+				} else {
+					return [
+						...prevItems,
+						{
+							productId: product.id,
+							priceCategoryId: category.id,
+							name: product.name,
+							quantity: 1,
+							payMethod: selectedType.toUpperCase(),
+						},
+					];
+				}
+			});
 		} catch (error) {
 			open({
 				width: '300px',
