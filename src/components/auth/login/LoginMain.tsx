@@ -18,10 +18,14 @@ import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import LoginInputBox from './LoginInputBox';
 import useRedirect from '@/hooks/useRedirect';
 import { setLocalToken } from '@/utils/localToken';
+import { useSetRecoilState } from 'recoil';
+import authState from '@/recoil/authAtom';
 
 const LoginMain = () => {
 	const { open, close } = useAlertContext();
 	const { setRedirectPath } = useRedirect();
+
+	const setAuthStateValue = useSetRecoilState(authState);
 
 	const methods = useForm<LogInFormData>({
 		resolver: zodResolver(loginSchema),
@@ -47,6 +51,7 @@ const LoginMain = () => {
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: () => {
 					setLocalToken(accessToken);
+					setAuthStateValue({ isLoggedIn: true });
 					setRedirectPath('/');
 					close();
 				},

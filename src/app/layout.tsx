@@ -8,6 +8,7 @@ import '@/shared/styles';
 
 import type { Metadata } from 'next';
 import Providers from '@/react-query/Providers';
+import RecoilRootProvider from '@/recoil/RecoilRootProvider';
 
 export const metadata: Metadata = {
 	title: '핀토스',
@@ -19,16 +20,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html lang="ko">
 			<body>
 				<Providers>
-					<AlertContextProvider>
-						<NavBarTop />
-						<Flex justify="center">
-							<SideNavBar />
-							<div style={{ width: '100%' }}>
-								{children}
-								<Footer />
-							</div>
-						</Flex>
-					</AlertContextProvider>
+					<RecoilRootProvider>
+						<AlertContextProvider>
+							<NavBarTop />
+							<Flex justify="center">
+								<SideNavBar />
+								<div style={{ width: '100%' }}>
+									{children}
+									<Footer />
+								</div>
+							</Flex>
+						</AlertContextProvider>
+					</RecoilRootProvider>
 				</Providers>
 			</body>
 		</html>
