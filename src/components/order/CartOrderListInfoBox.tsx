@@ -28,29 +28,12 @@ const CartOrderListInfoBox = ({ setTotalAmount, userId, selectedType }: Props) =
 
 	const [cartItems, setCartItems] = useState<CartItemResponse[]>([]);
 
-	const mergeCartItems = (items: CartItemResponse[]): CartItemResponse[] => {
-		const mergedItems = items.reduce((acc: CartItemResponse[], currentItem) => {
-			const existingItemIndex = acc.findIndex(
-				(item) => item.priceCategoryId === currentItem.priceCategoryId,
-			);
-			if (existingItemIndex >= 0) {
-				acc[existingItemIndex].quantity += currentItem.quantity;
-			} else {
-				acc.push({ ...currentItem });
-			}
-			return acc;
-		}, []);
-
-		return mergedItems;
-	};
-
 	useEffect(() => {
 		if (cartItemsData?.data) {
-			const mergedItems = mergeCartItems(cartItemsData.data);
-			setCartItems(mergedItems);
+			setCartItems(cartItemsData.data);
 			queryClient.invalidateQueries({ queryKey: ['cartItems', userId] });
 		}
-	}, [cartItemsData]);
+	}, [cartItemsData, queryClient, userId]);
 
 	useEffect(() => {
 		if (cartItems.length > 0 && userId) {
