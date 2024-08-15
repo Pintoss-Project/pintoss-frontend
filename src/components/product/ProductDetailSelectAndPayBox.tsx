@@ -1,24 +1,26 @@
 'use client';
 
+import { postCartItem } from '@/app/api/cart/postCartItem';
+import { getUserInfo } from '@/app/api/user/getUserInfo';
+import useAlertContext from '@/hooks/useAlertContext';
+import useRedirect from '@/hooks/useRedirect';
+import { CartItem } from '@/models/cart';
+import { PriceCategoryInfo, ProductInfo } from '@/models/product';
+import authState from '@/recoil/authAtom';
+import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
+import { Button } from '@/shared/components/button';
+import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import * as cs from '@/shared/styles/common.css';
-import * as s from './ProductDetailStyle.css';
-import { Flex } from '@/shared/components/layout';
-import { Button } from '@/shared/components/button';
 import { vars } from '@/shared/styles/theme.css';
-import PaymentMethodSelectBox from '../order/PaymentMethodSelectBox';
-import ConfirmAndPayTheAmountBox from '../order/ConfirmAndPayTheAmountBox';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import ConfirmAndPayTheAmountBox from '../order/ConfirmAndPayTheAmountBox';
+import PaymentMethodSelectBox from '../order/PaymentMethodSelectBox';
+import * as s from './ProductDetailStyle.css';
 import ProductSelectBox from './ProductSelectBox';
 import QuantitySelectBox from './QuantitySelectBox';
-import { PriceCategoryInfo, ProductInfo } from '@/models/product';
-import { CartItem } from '@/models/cart';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { postCartItem } from '@/app/api/cart/postCartItem';
-import useAlertContext from '@/hooks/useAlertContext';
-import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
-import { getUserList } from '@/app/api/user/getUserList';
-import { getUserInfo } from '@/app/api/user/getUserInfo';
 
 interface Props {
 	product: ProductInfo;
@@ -29,6 +31,9 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 	const [selectedType, setSelectedType] = useState<string>('card');
 	const [saleRate, setSaleRate] = useState(product?.cardDiscount || 0);
 	const [originalPrices, setOriginalPrices] = useState<{ [categoryId: number]: number }>({});
+
+	const authStateValue = useRecoilValue(authState);
+	const { setRedirectPath } = useRedirect();
 
 	const { open, close } = useAlertContext();
 
@@ -67,6 +72,25 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 	});
 
 	const handleAddToCart = () => {
+		if (!authStateValue.isLoggedIn) {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '로그인 확인',
+				main: (
+					<AlertMainTextBox text="장바구니 담기는 로그인 후에 이용가능합니다. 로그인 페이지로 이동하시겠습니까?" />
+				),
+				rightButtonLabel: '확인',
+				rightButtonStyle: cs.lightBlueButton,
+				leftButtonLabel: '취소',
+				leftButtonStyle: cs.whiteAndBlackButton,
+				onRightButtonClick: () => {
+					setRedirectPath('/login');
+					close();
+				},
+				onLeftButtonClick: close,
+			});
+		}
 		cartItems.forEach((item) => {
 			postCartItemMutation.mutate(item);
 		});
