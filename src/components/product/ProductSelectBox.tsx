@@ -20,9 +20,7 @@ const ProductSelectBox = ({ product, onSelectCategory }: Props) => {
 	return (
 		<div className={s.selectContainer}>
 			<select className={clsx(s.selectBox, s.mediumGrayText)} onChange={handleChange}>
-				<option selected disabled>
-					상품을 선택해주세요.
-				</option>
+				<option defaultChecked>상품을 선택해주세요.</option>
 				{product?.priceCategories?.map((category) => (
 					<option key={category.id} value={category.id}>
 						{product.name} {category.name} (카드할인 {product.cardDiscount}% / 휴대폰할인{' '}
