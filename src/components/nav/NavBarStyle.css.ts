@@ -27,6 +27,7 @@ export const listItemStyle = style({
 	width: '100px',
 	color: vars.color.darkerGray,
 	fontSize: '20px',
+	cursor: 'pointer',
 	selectors: {
 		'&:hover': {
 			color: vars.color.skyBlue,
@@ -118,6 +119,12 @@ export const logoBox = style({
 			height: '27px',
 		},
 	},
+});
+
+export const cartDesktopIcon = style({
+	width: '40px',
+	height: '40px',
+	marginLeft: '12px',
 });
 
 export const cartIcon = style({
