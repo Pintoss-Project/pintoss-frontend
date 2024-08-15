@@ -17,4 +17,7 @@ export interface CartItemResponse {
 	quantity: number;
 	payMethod: string;
 	category?: PriceCategoryInfo;
+	price: number;
+	cardDiscount: number;
+	phoneDiscount: number;
 }

@@ -6,7 +6,7 @@ import * as s from './CartStyle.css';
 import * as cs from '@/shared/styles/common.css';
 import useAlertContext from '@/hooks/useAlertContext';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { updateCart } from '@/app/api/cart/updateCart';
+import { updateCart, updateCartPayMethodAndPrice } from '@/app/api/cart/updateCart';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { getCartItems } from '@/app/api/cart/getCartItems';
 
@@ -26,42 +26,38 @@ const CartOrderListInfoBox = ({ setTotalAmount, userId, selectedType }: Props) =
 		enabled: !!userId,
 	});
 
-	console.log(cartItemsData);
-
 	const [cartItems, setCartItems] = useState<CartItemResponse[]>(cartItemsData?.data || []);
-	const [cartItemsOrder, setCartItemsOrder] = useState<number[]>([]);
+
+	useEffect(() => {
+		if (cartItems.length > 0 && userId) {
+			updateCartPayMethodAndPrice(userId, selectedType.toUpperCase()).then(() => {
+				queryClient.invalidateQueries({ queryKey: ['cartItems', userId] });
+			});
+		}
+	}, [cartItems.length, selectedType, userId, queryClient]);
 
 	useEffect(() => {
 		if (cartItemsData?.data) {
 			setCartItems(cartItemsData.data);
-			if (cartItemsOrder.length === 0) {
-				setCartItemsOrder(cartItemsData.data.map((item: CartItemResponse) => item.id));
-			}
 		}
-	}, [cartItemsData, cartItemsOrder.length]);
+	}, [cartItemsData]);
 
 	useEffect(() => {
 		if (cartItems.length > 0) {
-			const calculatedTotal = cartItems.reduce(
-				(acc: number, item: CartItemResponse) => acc + item.price * item.quantity,
-				0,
-			);
+			const calculatedTotal = cartItems.reduce((acc: number, item: CartItemResponse) => {
+				const discount = selectedType === 'card' ? item.cardDiscount : item.phoneDiscount;
+				const discountedPrice = item.price * (1 - discount / 100);
+				return acc + discountedPrice * item.quantity;
+			}, 0);
 			setTotalAmount(calculatedTotal);
 		} else {
 			setTotalAmount(0);
 		}
-	}, [cartItems, setTotalAmount]);
+	}, [cartItems, selectedType, setTotalAmount]);
 
 	const handleItemQuantityChange = useCallback(
 		(id: number, newQuantity: number) => {
-			updateCartMutation.mutate(
-				{ id, quantity: newQuantity },
-				{
-					onSuccess: () => {
-						queryClient.invalidateQueries({ queryKey: ['cartItems', userId] });
-					},
-				},
-			);
+			updateCartMutation.mutate({ id, quantity: newQuantity });
 		},
 		[userId, queryClient],
 	);
@@ -80,9 +76,7 @@ const CartOrderListInfoBox = ({ setTotalAmount, userId, selectedType }: Props) =
 		},
 	});
 
-	const sortedCartItems = cartItemsOrder
-		.map((orderId) => cartItems.find((item) => item.id === orderId))
-		.filter(Boolean) as CartItemResponse[];
+	const sortedCartItems = cartItems.slice().sort((a, b) => a.id - b.id);
 
 	return (
 		<div className={s.cartOrderListInfoBox}>
@@ -95,24 +89,29 @@ const CartOrderListInfoBox = ({ setTotalAmount, userId, selectedType }: Props) =
 				<span className={s.flexItem6}></span>
 			</div>
 			<div>
-				{sortedCartItems.map((item: CartItemResponse) => (
-					<CartOrderListItem
-						key={item.id}
-						id={item.id}
-						icon={'/images/book-logo.png'}
-						name={item.name}
-						price={item.price}
-						quantity={item.quantity}
-						onQuantityChange={handleItemQuantityChange}
-					/>
-				))}
+				{sortedCartItems.map((item: CartItemResponse) => {
+					const discount = selectedType === 'card' ? item.cardDiscount : item.phoneDiscount;
+					const discountedPrice = Math.round(item.price * (1 - discount / 100));
+					return (
+						<CartOrderListItem
+							key={item.id}
+							id={item.id}
+							icon={'/images/book-logo.png'}
+							name={item.name}
+							price={discountedPrice}
+							quantity={item.quantity}
+							onQuantityChange={handleItemQuantityChange}
+						/>
+					);
+				})}
 			</div>
 			<CartOrderTotalInfoBox
 				userId={userId as number}
-				finalTotalPrice={sortedCartItems.reduce(
-					(acc: number, item: CartItemResponse) => acc + item.price * item.quantity,
-					0,
-				)}
+				finalTotalPrice={sortedCartItems.reduce((acc: number, item: CartItemResponse) => {
+					const discount = selectedType === 'card' ? item.cardDiscount : item.phoneDiscount;
+					const discountedPrice = Math.round(item.price * (1 - discount / 100));
+					return acc + discountedPrice * item.quantity;
+				}, 0)}
 			/>
 		</div>
 	);

@@ -13,7 +13,7 @@ import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import * as cs from '@/shared/styles/common.css';
 import { vars } from '@/shared/styles/theme.css';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import ConfirmAndPayTheAmountBox from '../order/ConfirmAndPayTheAmountBox';
@@ -39,6 +39,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 	const { setRedirectPath } = useRedirect();
 
 	const { open, close } = useAlertContext();
+	const queryClient = useQueryClient();
 
 	const { data: userInfo } = useQuery({
 		queryKey: ['userInfo'],
@@ -76,8 +77,11 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 				title: '장바구니 추가',
 				main: <AlertMainTextBox text="장바구니에 상품이 추가되었습니다." />,
 				rightButtonStyle: cs.lightBlueButton,
-				onRightButtonClick: close,
+				onRightButtonClick: () => {
+					close();
+				},
 			});
+			queryClient.invalidateQueries({ queryKey: ['cartItems', userInfo?.data.id] });
 		},
 		onError: () => {
 			open({

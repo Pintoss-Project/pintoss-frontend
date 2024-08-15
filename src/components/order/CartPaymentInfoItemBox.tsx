@@ -9,7 +9,7 @@ import { Button } from '@/shared/components/button';
 import { Flex } from '@/shared/components/layout';
 import { vars } from '@/shared/styles/theme.css';
 import clsx from 'clsx';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import PaymentMethodSelectBox from './PaymentMethodSelectBox';
 
 interface Props {
@@ -22,13 +22,21 @@ interface Props {
 const CartPaymentInfoItemBox = ({ totalAmount, userId, selectedType, setSelectedType }: Props) => {
 	const [payAmount, setPayAmount] = useState(0);
 
+	useEffect(() => {
+		if (selectedType === 'phone') {
+			setPayAmount(totalAmount * 1.1);
+		} else {
+			setPayAmount(totalAmount);
+		}
+	}, [totalAmount, selectedType]);
+
 	return (
 		<div className={s.cartPaymentInfoItemBox}>
 			<PaymentMethodSelectBox selectedType={selectedType} setSelectedType={setSelectedType} />
 			<Spacing margin="30px" />
 			<ConfirmAndPayTheAmountBox
 				selectedType={selectedType}
-				totalAmount={totalAmount}
+				totalAmount={Math.round(totalAmount)}
 				setPayAmount={setPayAmount}
 			/>
 			<Spacing margin="30px" />
