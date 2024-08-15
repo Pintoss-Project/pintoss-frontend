@@ -3,6 +3,7 @@
 import * as s from './ProductDetailStyle.css';
 
 import { CartItem } from '@/models/cart';
+import { PriceCategoryInfo } from '@/models/product';
 import { Button } from '@/shared/components/button';
 import { Divider, Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
@@ -11,14 +12,14 @@ import { IoClose } from 'react-icons/io5';
 
 interface Props {
 	cartItems: CartItem[];
-	originalPrices: { [categoryId: number]: number };
+	priceCategories: PriceCategoryInfo[];
 	onQuantityChange: (updatedItems: CartItem[]) => void;
 	onRemoveItem: (index: number) => void;
 }
 
 const QuantitySelectBox = ({
 	cartItems,
-	originalPrices,
+	priceCategories,
 	onQuantityChange,
 	onRemoveItem,
 }: Props) => {
@@ -27,6 +28,11 @@ const QuantitySelectBox = ({
 			item.priceCategoryId === categoryId ? { ...item, quantity: newQuantity } : item,
 		);
 		onQuantityChange(updatedItems);
+	};
+
+	const getPriceByCategoryId = (categoryId: number) => {
+		const category = priceCategories.find((cat) => cat.id === categoryId);
+		return category ? category.price : 0;
 	};
 
 	return (
@@ -42,7 +48,7 @@ const QuantitySelectBox = ({
 								{item?.name}
 							</span>
 							<span style={{ color: vars.color.softRed, marginLeft: '10px' }}>
-								{originalPrices?.[item.priceCategoryId].toLocaleString()}원
+								{getPriceByCategoryId(item.priceCategoryId).toLocaleString()}원
 							</span>
 						</div>
 						<div onClick={() => onRemoveItem(index)}>
@@ -70,7 +76,7 @@ const QuantitySelectBox = ({
 							</Button>
 						</Flex>
 						<div style={{ fontSize: '18px', fontWeight: '600', color: vars.color.darkerGray }}>
-							{(+originalPrices?.[item.priceCategoryId] * item.quantity).toLocaleString()} 원
+							{(getPriceByCategoryId(item.priceCategoryId) * item.quantity).toLocaleString()} 원
 						</div>
 					</Flex>
 					<Spacing margin="15px" />

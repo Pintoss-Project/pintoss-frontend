@@ -21,6 +21,7 @@ import PaymentMethodSelectBox from '../order/PaymentMethodSelectBox';
 import * as s from './ProductDetailStyle.css';
 import ProductSelectBox from './ProductSelectBox';
 import QuantitySelectBox from './QuantitySelectBox';
+import { getPriceCategory } from '@/app/api/product/getPriceCategoryList';
 
 interface Props {
 	product: ProductInfo;
@@ -28,9 +29,11 @@ interface Props {
 
 const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 	const [cartItems, setCartItems] = useState<CartItem[]>([]);
+	const [priceCategories, setPriceCategories] = useState<PriceCategoryInfo[]>();
 	const [selectedType, setSelectedType] = useState<string>('card');
 	const [saleRate, setSaleRate] = useState(product?.cardDiscount || 0);
-	const [originalPrices, setOriginalPrices] = useState<{ [categoryId: number]: number }>({});
+	const [totalAmount, setTotalAmount] = useState(0);
+	const [finalAmount, setFinalAmount] = useState(0);
 
 	const authStateValue = useRecoilValue(authState);
 	const { setRedirectPath } = useRedirect();
@@ -45,6 +48,23 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 	useEffect(() => {
 		setSaleRate(selectedType === 'card' ? product?.cardDiscount : product?.phoneDiscount);
 	}, [selectedType, product]);
+
+	useEffect(() => {
+		const calculatedTotalAmount = cartItems.reduce((total, item) => {
+			const category = priceCategories?.find((c) => c.id === item.priceCategoryId);
+			const price = category ? category.price : 0;
+			const discountedPrice = price * (1 - saleRate / 100);
+			const itemTotal = discountedPrice * item.quantity;
+			return Math.round(total + itemTotal);
+		}, 0);
+
+		setTotalAmount(calculatedTotalAmount);
+
+		const calculatedFinalAmount =
+			selectedType === 'phone' ? Math.round(calculatedTotalAmount * 1.1) : calculatedTotalAmount;
+
+		setFinalAmount(calculatedFinalAmount);
+	}, [cartItems, priceCategories, saleRate, selectedType]);
 
 	const postCartItemMutation = useMutation({
 		mutationFn: (data: CartItem) =>
@@ -96,26 +116,39 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 		});
 	};
 
-	const handleSelectCategory = (category: PriceCategoryInfo) => {
-		const discountRate = selectedType === 'card' ? product.cardDiscount : product.phoneDiscount;
-		const discountedPrice = category.price * ((100 - discountRate) / 100);
+	const handleSelectCategory = async (category: PriceCategoryInfo) => {
+		try {
+			const categoryPriceInfo = await getPriceCategory(product.id, category.id);
 
-		setOriginalPrices((prevPrices) => ({
-			...prevPrices,
-			[category.id]: category.price,
-		}));
+			setPriceCategories((prev) => {
+				const updatedCategories = prev ? [...prev] : [];
+				const exists = updatedCategories.find((c) => c.id === category.id);
+				if (!exists) {
+					return [...updatedCategories, categoryPriceInfo?.data];
+				}
+				return updatedCategories.map((c) => (c.id === category.id ? categoryPriceInfo?.data : c));
+			});
 
-		setCartItems((prevItems) => [
-			...prevItems,
-			{
-				productId: product.id,
-				priceCategoryId: category.id,
-				name: product.name,
-				price: discountedPrice,
-				quantity: 1,
-				payMethod: selectedType.toUpperCase(),
-			},
-		]);
+			setCartItems((prevItems) => [
+				...prevItems,
+				{
+					productId: product.id,
+					priceCategoryId: category.id,
+					name: product.name,
+					quantity: 1,
+					payMethod: selectedType.toUpperCase(),
+				},
+			]);
+		} catch (error) {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '가격 정보 불러오기 실패',
+				main: <AlertMainTextBox text="가격 정보를 불러오지 못했습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		}
 	};
 
 	const handleQuantityChange = (updatedItems: CartItem[]) => {
@@ -142,7 +175,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 				</div>
 				<QuantitySelectBox
 					cartItems={cartItems}
-					originalPrices={originalPrices}
+					priceCategories={priceCategories as PriceCategoryInfo[]}
 					onQuantityChange={handleQuantityChange}
 					onRemoveItem={handleRemoveItem}
 				/>
@@ -155,24 +188,24 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 				phoneDiscount={product?.phoneDiscount}
 			/>
 			<Spacing margin="30px" />
-			<ConfirmAndPayTheAmountBox
-				selectedType={selectedType}
-				totalAmount={cartItems.reduce((total, item) => total + item.quantity * item.price, 0)}
-			/>
+			<ConfirmAndPayTheAmountBox selectedType={selectedType} totalAmount={totalAmount} />
 			<Spacing margin="15px" />
 			<Flex justify="space-between" className={s.totalPayInfoBox}>
 				<span className={s.whiteBoldText} style={{ fontWeight: '400' }}>
 					최종 결제 금액
 				</span>
 				<span className={s.whiteBoldText} style={{ fontWeight: '600' }}>
-					{cartItems
-						.reduce((total, item) => total + item.quantity * item.price, 0)
-						.toLocaleString()}
-					원
+					{finalAmount.toLocaleString()} 원
 				</span>
 			</Flex>
 			<Spacing margin="15px" />
 			<Flex style={{ width: '100%' }}>
+				<Button
+					color={vars.color.white}
+					className={cs.lightGrayButton}
+					style={{ maxWidth: '900px', fontSize: '18px', height: '60px' }}>
+					바로 구매
+				</Button>
 				<Button
 					color={vars.color.white}
 					className={cs.lightBlueButton}

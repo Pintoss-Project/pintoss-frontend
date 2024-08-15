@@ -5,7 +5,6 @@ export interface CartItem {
 	priceCategoryId: number;
 	name: string;
 	quantity: number;
-	price: number;
 	payMethod: string;
 	category?: PriceCategoryInfo;
 }
@@ -16,7 +15,6 @@ export interface CartItemResponse {
 	priceCategoryId: number;
 	name: string;
 	quantity: number;
-	price: number;
 	payMethod: string;
 	category?: PriceCategoryInfo;
 }
