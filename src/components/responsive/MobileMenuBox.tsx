@@ -9,6 +9,10 @@ import { Button } from '@/shared/components/button';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import MobileProducts from './MobileProducts';
+import { useRecoilState } from 'recoil';
+import authState from '@/recoil/authAtom';
+import { removeLocalToken } from '@/utils/localToken';
+import useRedirect from '@/hooks/useRedirect';
 
 interface Props {
 	setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,7 +23,6 @@ const MENU_BUTTONS = {
 		{ label: '마이페이지', url: '/my-page' },
 		{ label: '주문조회', url: '/order/list' },
 		{ label: '고객센터', url: '/customer-service' },
-		{ label: '로그아웃', url: '' },
 	],
 	logout: [
 		{ label: '고객센터', url: '/customer-service' },
@@ -29,8 +32,8 @@ const MENU_BUTTONS = {
 };
 
 const MobileMenuBox = ({ setIsMenuOpen }: Props) => {
-	/* eslint-disable @typescript-eslint/no-unused-vars */
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [authStateValue, setAuthStateValue] = useRecoilState(authState);
+	const { setRedirectPath } = useRedirect();
 	const router = useRouter();
 
 	const handleClose = () => {
@@ -38,7 +41,9 @@ const MobileMenuBox = ({ setIsMenuOpen }: Props) => {
 	};
 
 	const handleLogout = () => {
-		alert('로그아웃 되었습니다.');
+		setAuthStateValue({ isLoggedIn: false });
+		removeLocalToken();
+		setRedirectPath('/');
 		setIsMenuOpen(false);
 	};
 
@@ -47,7 +52,7 @@ const MobileMenuBox = ({ setIsMenuOpen }: Props) => {
 		router.push(url);
 	};
 
-	const menuButtons = isLoggedIn ? MENU_BUTTONS.login : MENU_BUTTONS.logout;
+	const menuButtons = authStateValue.isLoggedIn ? MENU_BUTTONS.login : MENU_BUTTONS.logout;
 
 	useEffect(() => {
 		document.body.style.overflow = 'hidden';
@@ -71,7 +76,11 @@ const MobileMenuBox = ({ setIsMenuOpen }: Props) => {
 			}}>
 			<div>
 				<Flex justify="space-between" align="center" className={s.tableMenuNavBox}>
-					<img src="/images/cart-icon.png" alt="장바구니 아이콘" className={s.cartIcon} />
+					{authStateValue.isLoggedIn && (
+						<Link href="/order/cart">
+							<img src="/images/cart-icon.png" alt="장바구니 아이콘" className={s.cartIcon} />
+						</Link>
+					)}
 					<Link href="/" className={s.logoBox} onClick={() => setIsMenuOpen(false)}>
 						<div className={s.logoBox}>
 							<Image
@@ -91,33 +100,27 @@ const MobileMenuBox = ({ setIsMenuOpen }: Props) => {
 			<MobileProducts />
 			<div style={{ border: `1px solid ${vars.color.paleGray}` }}>
 				<Flex direction="column" align="center">
-					{menuButtons.map((button, index) =>
-						button.label === '로그아웃' ? (
-							<Flex key={button.label} justify="center" align="center" className={s.menuButtonBox}>
-								<Button
-									key={index}
-									onClick={handleLogout}
-									color={vars.color.black}
-									style={
-										button.label === '로그아웃'
-											? { color: vars.color.softRed }
-											: { color: vars.color.black }
-									}
-									className={s.menuButton}>
-									{button.label}
-								</Button>
-							</Flex>
-						) : (
-							<Flex key={button.label} justify="center" align="center" className={s.menuButtonBox}>
-								<Button
-									key={index}
-									onClick={() => handleLinkClick(button.url)}
-									color={vars.color.black}
-									className={s.menuButton}>
-									{button.label}
-								</Button>
-							</Flex>
-						),
+					{menuButtons.map((button, index) => (
+						<Flex key={button.label} justify="center" align="center" className={s.menuButtonBox}>
+							<Button
+								key={index}
+								onClick={() => handleLinkClick(button.url)}
+								color={vars.color.black}
+								className={s.menuButton}>
+								{button.label}
+							</Button>
+						</Flex>
+					))}
+					{authStateValue.isLoggedIn && (
+						<Flex justify="center" align="center" className={s.menuButtonBox}>
+							<Button
+								onClick={handleLogout}
+								color={vars.color.black}
+								style={{ color: vars.color.softRed }}
+								className={s.menuButton}>
+								로그아웃
+							</Button>
+						</Flex>
 					)}
 				</Flex>
 			</div>

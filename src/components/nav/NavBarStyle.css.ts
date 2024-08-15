@@ -104,17 +104,20 @@ export const brownText = style({
 });
 
 export const logoBox = style({
-	'position': 'relative',
+	'position': 'fixed',
+	'zIndex': '1',
 	'@media': {
 		[responsive.desktop]: {
 			width: '165px',
 			height: '45px',
 		},
 		[responsive.tablet]: {
+			position: 'relative',
 			width: '132px',
 			height: '36px',
 		},
 		[responsive.mobile]: {
+			position: 'relative',
 			width: '99px',
 			height: '27px',
 		},

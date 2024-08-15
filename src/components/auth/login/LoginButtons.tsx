@@ -17,7 +17,7 @@ const LoginButtons = () => {
 				form="login-form"
 				color={vars.color.white}
 				className={cs.lightBlueButton}
-				style={{ fontSize: '18px' }}
+				style={{ fontSize: '18px', height: '56px' }}
 				type="submit">
 				로그인
 			</Button>
