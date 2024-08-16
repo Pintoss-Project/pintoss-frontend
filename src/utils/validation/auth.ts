@@ -49,10 +49,31 @@ export const registerSchema = z
 		}
 	});
 
+export const oAuthRegisterSchema = z.object({
+	termsOfUse: z.boolean({ message: '이용약관에 동의해주세요.' }).refine((val) => val === true, {
+		message: '이용약관에 동의해주세요.',
+	}),
+	privacyPolicy: z
+		.boolean({ message: '개인정보 처리방침에 동의해주세요.' })
+		.refine((val) => val === true, {
+			message: '개인정보 처리방침에 동의해주세요.',
+		}),
+	email: z.string().email({ message: '유효하지 않은 이메일 형식입니다.' }),
+	name: z
+		.string()
+		.min(2, { message: '이름을 정확히 입력해주세요. (2글자 이상, 숫자 제외)' })
+		.regex(/^[가-힣a-zA-Z]+$/, { message: '이름은 한글 또는 영문자만 가능합니다.' }),
+	phone: z.string().regex(/^01([0 | 1 | 6 | 7 | 8 | 9])-([0-9]{3,4})-([0-9]{4})$/, {
+		message: '휴대폰 번호를 정확하게 입력해주세요. (- 포함)',
+	}),
+	inflow: z.string(),
+});
+
 export const loginSchema = z.object({
 	email: z.string().email({ message: '유효하지 않은 이메일 형식입니다.' }),
 	password: z.string(),
 });
 
 export type RegisterFormData = z.infer<typeof registerSchema>;
+export type OAuthRegisterFormData = z.infer<typeof oAuthRegisterSchema>;
 export type LogInFormData = z.infer<typeof loginSchema>;

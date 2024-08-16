@@ -11,11 +11,13 @@ import Image from 'next/image';
 import { KakaoLogo, NaverLogo } from '../../../../public/svgs';
 
 const LoginButtons = () => {
-	const handleNaverLogin = () => {
+	const handleNaverLogin = (event: React.MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
 		window.location.href = 'http://localhost:8080/oauth2/authorization/naver';
 	};
 
-	const handleKakaoLogin = () => {
+	const handleKakaoLogin = (event: React.MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
 		window.location.href = 'http://localhost:8080/oauth2/authorization/kakao';
 	};
 
@@ -46,7 +48,7 @@ const LoginButtons = () => {
 					height={20}
 					className={cs.snsLogoStyle}
 				/>
-				<Button color={vars.color.white} className={cs.naverButtonStyle}>
+				<Button color={vars.color.white} className={cs.naverButtonStyle} type="button">
 					네이버 로그인
 				</Button>
 			</Flex>
@@ -59,7 +61,7 @@ const LoginButtons = () => {
 					height={20}
 					className={cs.snsLogoStyle}
 				/>
-				<Button color={vars.color.black} className={cs.kakaoButtonStyle}>
+				<Button color={vars.color.black} className={cs.kakaoButtonStyle} type="button">
 					카카오 로그인
 				</Button>
 			</Flex>

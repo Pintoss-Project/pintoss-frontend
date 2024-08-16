@@ -29,3 +29,10 @@ export interface ManageUserInfoResponse {
 		content: ManageUserInfo[];
 	};
 }
+
+export interface OAuthUserRequest {
+	email: string;
+	name: string;
+	phone: string;
+	inflow?: string;
+}

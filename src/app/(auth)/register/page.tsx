@@ -9,15 +9,19 @@ const Register = () => {
 	const cookieStore = cookies();
 	const nameFromCookie = cookieStore.get('name');
 	const emailFromCookie = cookieStore.get('email');
-
-	console.log(nameFromCookie);
-	console.log(emailFromCookie);
+	const accessTokenCookie = cookieStore.get('accessToken');
 
 	return (
 		<Flex justify="center" className={s.container}>
 			<AuthSection
 				header={<AuthHeader title="회원가입" />}
-				main={<RegisterMain />}
+				main={
+					<RegisterMain
+						oAUthEmail={emailFromCookie?.value}
+						oAuthName={nameFromCookie?.value}
+						accessToken={accessTokenCookie?.value}
+					/>
+				}
 				marginTop="84px"
 			/>
 		</Flex>
