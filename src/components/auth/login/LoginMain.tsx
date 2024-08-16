@@ -20,6 +20,7 @@ import useRedirect from '@/hooks/useRedirect';
 import { setLocalToken } from '@/utils/localToken';
 import { useSetRecoilState } from 'recoil';
 import authState from '@/recoil/authAtom';
+import { useEffect } from 'react';
 
 const LoginMain = () => {
 	const { open, close } = useAlertContext();

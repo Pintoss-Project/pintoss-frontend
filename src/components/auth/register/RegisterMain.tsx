@@ -2,13 +2,17 @@
 
 import { getCheckIdResult } from '@/app/api/auth/checkDuplicateEmail';
 import { postRegister } from '@/app/api/auth/postRegister';
+import { updateUserInfo } from '@/app/api/user/updateUserInfo';
 import * as as from '@/components/auth/AuthStyle.css';
 import useAlertContext from '@/hooks/useAlertContext';
+import useRedirect from '@/hooks/useRedirect';
+import authState from '@/recoil/authAtom';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Divider } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import * as cs from '@/shared/styles/common.css';
 import { vars } from '@/shared/styles/theme.css';
+import { setLocalToken } from '@/utils/localToken';
 import {
 	OAuthRegisterFormData,
 	oAuthRegisterSchema,
@@ -17,16 +21,15 @@ import {
 } from '@/utils/validation/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { useSetRecoilState } from 'recoil';
 import RegisterAcceptTermsInfo from './RegisterAcceptTermsInfo';
 import RegisterAccountInfo from './RegisterAccountInfo';
 import RegisterButton from './RegisterButton';
 import RegisterInfoBox from './RegisterInfoBox';
 import RegisterPersonalInfo from './RegisterPersonalInfo';
-import { useSearchParams } from 'next/navigation';
-import { updateUserInfo } from '@/app/api/user/updateUserInfo';
-import { setLocalToken } from '@/utils/localToken';
 
 interface Props {
 	oAuthName?: string;
@@ -36,6 +39,9 @@ interface Props {
 
 const RegisterMain = ({ oAuthName, oAUthEmail, accessToken }: Props) => {
 	const { open, close } = useAlertContext();
+	const { setRedirectPath } = useRedirect();
+
+	const setAuthState = useSetRecoilState(authState);
 
 	const searchParam = useSearchParams();
 	const [isOAuth, setIsOAuth] = useState(false);
@@ -70,7 +76,7 @@ const RegisterMain = ({ oAuthName, oAUthEmail, accessToken }: Props) => {
 		},
 	});
 
-	const { watch, setValue, handleSubmit } = methods;
+	const { watch, handleSubmit } = methods;
 	const email = watch('email');
 	const [isEmailChecked, setIsEmailChecked] = useState(false);
 
@@ -109,6 +115,8 @@ const RegisterMain = ({ oAuthName, oAUthEmail, accessToken }: Props) => {
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: close,
 			});
+			setRedirectPath('/');
+			setAuthState({ isLoggedIn: true });
 		},
 		onError: () => {
 			open({
