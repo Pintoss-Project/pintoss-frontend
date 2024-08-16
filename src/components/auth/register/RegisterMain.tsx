@@ -1,5 +1,6 @@
 'use client';
 
+import { cookies } from 'next/headers';
 import { getCheckIdResult } from '@/app/api/auth/checkDuplicateEmail';
 import { postRegister } from '@/app/api/auth/postRegister';
 import * as as from '@/components/auth/AuthStyle.css';
@@ -37,7 +38,7 @@ const RegisterMain = () => {
 		},
 	});
 
-	const { handleSubmit, watch } = methods;
+	const { handleSubmit, watch, setValue } = methods;
 	const email = watch('email');
 	const [isEmailChecked, setIsEmailChecked] = useState(false);
 
@@ -90,6 +91,18 @@ const RegisterMain = () => {
 	useEffect(() => {
 		setIsEmailChecked(false);
 	}, [email]);
+
+	// useEffect(() => {
+	// 	const cookieStore = cookies();
+	// 	const nameFromCookie = cookieStore.get('name');
+	// 	const emailFromCookie = cookieStore.get('email');
+
+	// 	console.log(nameFromCookie);
+	// 	console.log(emailFromCookie);
+
+	// 	// if (nameFromCookie) setValue('name', decodeURIComponent(nameFromCookie));
+	// 	// if (emailFromCookie) setValue('email', decodeURIComponent(emailFromCookie));
+	// }, [setValue]);
 
 	return (
 		<FormProvider {...methods}>

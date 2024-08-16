@@ -11,6 +11,14 @@ import Image from 'next/image';
 import { KakaoLogo, NaverLogo } from '../../../../public/svgs';
 
 const LoginButtons = () => {
+	const handleNaverLogin = () => {
+		window.location.href = 'http://localhost:8080/oauth2/authorization/naver';
+	};
+
+	const handleKakaoLogin = () => {
+		window.location.href = 'http://localhost:8080/oauth2/authorization/kakao';
+	};
+
 	return (
 		<div>
 			<Button
@@ -30,7 +38,7 @@ const LoginButtons = () => {
 				<div className={s.loginDivider} />
 			</Flex>
 			<Spacing margin="27px" />
-			<Flex align="center" className={cs.naverButtonBox}>
+			<Flex align="center" className={cs.naverButtonBox} onClick={handleNaverLogin}>
 				<Image
 					src={NaverLogo}
 					alt="네이버 로고 이미지"
@@ -43,7 +51,7 @@ const LoginButtons = () => {
 				</Button>
 			</Flex>
 			<Spacing margin="10px" />
-			<Flex align="center" className={cs.kakaoButtonBox}>
+			<Flex align="center" className={cs.kakaoButtonBox} onClick={handleKakaoLogin}>
 				<Image
 					src={KakaoLogo}
 					alt="카카오 로고 이미지"

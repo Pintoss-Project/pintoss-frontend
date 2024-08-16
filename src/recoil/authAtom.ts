@@ -17,16 +17,18 @@ const persistAuthState =
 		) => void;
 	}) => void) =>
 	({ setSelf, onSet }) => {
-		const savedValue = localStorage.getItem(key);
-		if (savedValue != null) {
-			setSelf(JSON.parse(savedValue));
-		}
-
-		onSet((newValue) => {
-			if (!(newValue instanceof DefaultValue)) {
-				localStorage.setItem(key, JSON.stringify(newValue));
+		if (typeof window !== 'undefined') {
+			const savedValue = localStorage.getItem(key);
+			if (savedValue != null) {
+				setSelf(JSON.parse(savedValue));
 			}
-		});
+
+			onSet((newValue) => {
+				if (!(newValue instanceof DefaultValue)) {
+					localStorage.setItem(key, JSON.stringify(newValue));
+				}
+			});
+		}
 	};
 
 const authState = atom<AuthState>({
