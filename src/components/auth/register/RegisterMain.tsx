@@ -116,7 +116,7 @@ const RegisterMain = ({ oAuthName, oAUthEmail, accessToken }: Props) => {
 				onRightButtonClick: close,
 			});
 			setRedirectPath('/');
-			setAuthState({ isLoggedIn: true });
+			setAuthState((prev) => ({ ...prev, isLoggedIn: true }));
 		},
 		onError: () => {
 			open({

@@ -9,15 +9,27 @@ import CartOrderEtcInfoBox from './CartOrderEtcInfoBox';
 import CartOrderListInfoBox from './CartOrderListInfoBox';
 import CartPaymentInfoBox from './CartPaymentInfoBox';
 import * as s from './CartStyle.css';
+import { useRecoilValue } from 'recoil';
+import authState from '@/recoil/authAtom';
+import useRedirect from '@/hooks/useRedirect';
+import { useRouter } from 'next/navigation';
 
 const CartMain = () => {
 	const [totalAmount, setTotalAmount] = useState(0);
 	const [selectedType, setSelectedType] = useState<string>('card');
+	const router = useRouter();
 
 	const { data: userInfo } = useQuery({
 		queryKey: ['userInfo'],
 		queryFn: getUserInfo,
 	});
+
+	const authStateValue = useRecoilValue(authState);
+	const { isLoggedIn } = authStateValue;
+
+	if (!isLoggedIn) {
+		router.push('/');
+	}
 
 	return (
 		<div>

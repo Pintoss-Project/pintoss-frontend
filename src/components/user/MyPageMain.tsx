@@ -16,10 +16,16 @@ import { postDeactivateUser } from '@/app/api/auth/postDeactivateUser';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import useRedirect from '@/hooks/useRedirect';
+import { useRecoilValue } from 'recoil';
+import authState from '@/recoil/authAtom';
+import { useRouter } from 'next/navigation';
 
 const MyPageMain = () => {
+	const authStateValue = useRecoilValue(authState);
+	const { isLoggedIn } = authStateValue;
+
 	const { open, close } = useAlertContext();
-	const { setRedirectPath } = useRedirect();
+	const router = useRouter();
 
 	const deactivateUserMutation = useMutation({
 		mutationFn: () => postDeactivateUser(),
@@ -31,7 +37,7 @@ const MyPageMain = () => {
 				main: <AlertMainTextBox text="회원탈퇴가 완료되었습니다." />,
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: () => {
-					setRedirectPath('/');
+					router.push('/');
 					close();
 				},
 			});
@@ -67,6 +73,10 @@ const MyPageMain = () => {
 			onLeftButtonClick: close,
 		});
 	};
+
+	if (!isLoggedIn) {
+		router.push('/');
+	}
 
 	return (
 		<div>

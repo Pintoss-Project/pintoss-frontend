@@ -1,12 +1,18 @@
 'use client';
 
 import authState from '@/recoil/authAtom';
+import * as cs from '@/shared/styles/common.css';
 import * as s from './NavBarStyle.css';
 
-import useRedirect from '@/hooks/useRedirect';
+import { postLogout } from '@/app/api/auth/postLogout';
+import useAlertContext from '@/hooks/useAlertContext';
+import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Flex, List } from '@/shared/components/layout';
-import { removeLocalToken } from '@/utils/localToken';
+import { getLocalToken, removeLocalToken } from '@/utils/localToken';
+import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
 const NAV_BAR_TOP_MENU = [
@@ -22,13 +28,52 @@ const NAV_BAR_LOGIN_TOP_MENU = [
 
 const NavBarTopMenuBox = () => {
 	const [authStateValue, setAuthStateValue] = useRecoilState(authState);
-	const { setRedirectPath } = useRedirect();
+	const router = useRouter();
+
+	const { open, close } = useAlertContext();
+
+	const logoutMutation = useMutation({
+		mutationFn: () => postLogout(),
+		onSuccess: () => {
+			setAuthStateValue({ isLoggedIn: false });
+			open({
+				width: '300px',
+				height: '200px',
+				title: '로그아웃',
+				main: <AlertMainTextBox text="로그아웃이 완료되었습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: () => {
+					removeLocalToken();
+					close();
+				},
+			});
+		},
+		onError: () => {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '로그아웃',
+				main: <AlertMainTextBox text="로그아웃에 실패했습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		},
+	});
 
 	const handleLogout = () => {
-		setAuthStateValue({ isLoggedIn: false });
-		removeLocalToken();
-		setRedirectPath('/');
+		logoutMutation.mutate();
+		router.push('/');
 	};
+
+	useEffect(() => {
+		const token = getLocalToken();
+
+		if (!token) {
+			setAuthStateValue({ isLoggedIn: false });
+		} else {
+			setAuthStateValue({ isLoggedIn: true });
+		}
+	}, []);
 
 	return (
 		<div className={s.navbarTopMenuBox}>
