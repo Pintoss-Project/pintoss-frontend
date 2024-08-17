@@ -9,6 +9,7 @@ import '@/shared/styles';
 import type { Metadata } from 'next';
 import Providers from '@/react-query/Providers';
 import RecoilRootProvider from '@/recoil/RecoilRootProvider';
+import ProtectedPage from '@/components/protected/ProtectedPage';
 
 export const metadata: Metadata = {
 	title: '핀토스',
@@ -21,16 +22,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			<body>
 				<Providers>
 					<RecoilRootProvider>
-						<AlertContextProvider>
-							<NavBarTop />
-							<Flex justify="center">
-								<SideNavBar />
-								<div style={{ width: '100%' }}>
-									{children}
-									<Footer />
-								</div>
-							</Flex>
-						</AlertContextProvider>
+						<ProtectedPage>
+							<AlertContextProvider>
+								<NavBarTop />
+								<Flex justify="center">
+									<SideNavBar />
+									<div style={{ width: '100%' }}>
+										{children}
+										<Footer />
+									</div>
+								</Flex>
+							</AlertContextProvider>
+						</ProtectedPage>
 					</RecoilRootProvider>
 				</Providers>
 			</body>
