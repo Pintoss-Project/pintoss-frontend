@@ -7,12 +7,25 @@ import Image from 'next/image';
 import { KakaoLogo, NaverLogo } from '../../../public/svgs';
 import { Button } from '@/shared/components/button';
 import Spacing from '@/shared/components/layout/Spacing';
+import { useMutation } from '@tanstack/react-query';
+import { getOAuthConnectUrl } from '@/app/api/auth/getOAuthConnectUrl';
 
 const SnsInfoBox = () => {
+	const naverConnectMutation = useMutation({
+		mutationFn: () => getOAuthConnectUrl('naver'),
+		onSuccess: (data) => {
+			window.location.href = data.url;
+		},
+	});
+
+	const handleNaverConnect = () => {
+		naverConnectMutation.mutate();
+	};
+
 	return (
 		<Flex justify="center" align="center" style={{ width: '100%' }}>
 			<div style={{ width: '100%', marginTop: '12px' }}>
-				<Flex align="center" className={cs.naverButtonBox}>
+				<Flex align="center" className={cs.naverButtonBox} onClick={handleNaverConnect}>
 					<Image
 						src={NaverLogo}
 						alt="네이버 로고 이미지"
