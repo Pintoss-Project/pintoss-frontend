@@ -4,15 +4,12 @@ import { getUserInfo } from '@/app/api/user/getUserInfo';
 import { UserInfo } from '@/models/user';
 import Spacing from '@/shared/components/layout/Spacing';
 import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import CartOrderEtcInfoBox from './CartOrderEtcInfoBox';
 import CartOrderListInfoBox from './CartOrderListInfoBox';
 import CartPaymentInfoBox from './CartPaymentInfoBox';
 import * as s from './CartStyle.css';
-import { useRecoilValue } from 'recoil';
-import authState from '@/recoil/authAtom';
-import useRedirect from '@/hooks/useRedirect';
-import { useRouter } from 'next/navigation';
 
 const CartMain = () => {
 	const [totalAmount, setTotalAmount] = useState(0);
@@ -23,13 +20,6 @@ const CartMain = () => {
 		queryKey: ['userInfo'],
 		queryFn: getUserInfo,
 	});
-
-	const authStateValue = useRecoilValue(authState);
-	const { isLoggedIn } = authStateValue;
-
-	if (!isLoggedIn) {
-		router.push('/');
-	}
 
 	return (
 		<div>
