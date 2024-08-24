@@ -50,6 +50,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-react-hooks", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:4.6.2"],\
           ["html-react-parser", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:5.1.12"],\
           ["next", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:13.5.6"],\
+          ["next-cloudinary", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:6.10.1"],\
           ["query-string", "npm:9.0.0"],\
           ["react", "npm:18.3.1"],\
           ["react-beautiful-dnd", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:13.1.1"],\
@@ -379,6 +380,72 @@ const RAW_RUNTIME_STATE =
           ["@babel/helper-string-parser", "npm:7.24.7"],\
           ["@babel/helper-validator-identifier", "npm:7.24.7"],\
           ["to-fast-properties", "npm:2.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@cloudinary-util/types", [\
+      ["npm:1.2.0", {\
+        "packageLocation": "./.yarn/cache/@cloudinary-util-types-npm-1.2.0-c9150eab6f-363ce858d1.zip/node_modules/@cloudinary-util/types/",\
+        "packageDependencies": [\
+          ["@cloudinary-util/types", "npm:1.2.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:1.3.0", {\
+        "packageLocation": "./.yarn/cache/@cloudinary-util-types-npm-1.3.0-b1e0b7027a-f63ee27fdf.zip/node_modules/@cloudinary-util/types/",\
+        "packageDependencies": [\
+          ["@cloudinary-util/types", "npm:1.3.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@cloudinary-util/url-loader", [\
+      ["npm:5.6.1", {\
+        "packageLocation": "./.yarn/cache/@cloudinary-util-url-loader-npm-5.6.1-872faf2172-1aa83f7c66.zip/node_modules/@cloudinary-util/url-loader/",\
+        "packageDependencies": [\
+          ["@cloudinary-util/url-loader", "npm:5.6.1"],\
+          ["@cloudinary-util/types", "npm:1.3.0"],\
+          ["@cloudinary-util/util", "npm:3.2.0"],\
+          ["@cloudinary/url-gen", "npm:1.15.0"],\
+          ["zod", "npm:3.23.8"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@cloudinary-util/util", [\
+      ["npm:3.2.0", {\
+        "packageLocation": "./.yarn/cache/@cloudinary-util-util-npm-3.2.0-3bb8773565-c670057a35.zip/node_modules/@cloudinary-util/util/",\
+        "packageDependencies": [\
+          ["@cloudinary-util/util", "npm:3.2.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@cloudinary/transformation-builder-sdk", [\
+      ["npm:1.14.1", {\
+        "packageLocation": "./.yarn/cache/@cloudinary-transformation-builder-sdk-npm-1.14.1-aa6de3dddf-cb989df51b.zip/node_modules/@cloudinary/transformation-builder-sdk/",\
+        "packageDependencies": [\
+          ["@cloudinary/transformation-builder-sdk", "npm:1.14.1"],\
+          ["@cloudinary/url-gen", "npm:1.20.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@cloudinary/url-gen", [\
+      ["npm:1.15.0", {\
+        "packageLocation": "./.yarn/cache/@cloudinary-url-gen-npm-1.15.0-15f64d51e9-3b22e155ae.zip/node_modules/@cloudinary/url-gen/",\
+        "packageDependencies": [\
+          ["@cloudinary/url-gen", "npm:1.15.0"],\
+          ["@cloudinary/transformation-builder-sdk", "npm:1.14.1"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:1.20.0", {\
+        "packageLocation": "./.yarn/cache/@cloudinary-url-gen-npm-1.20.0-28923b86fc-da6fd26b92.zip/node_modules/@cloudinary/url-gen/",\
+        "packageDependencies": [\
+          ["@cloudinary/url-gen", "npm:1.20.0"],\
+          ["@cloudinary/transformation-builder-sdk", "npm:1.14.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -1205,6 +1272,15 @@ const RAW_RUNTIME_STATE =
           "@types/tanstack__react-query",\
           "next",\
           "react"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@tsconfig/recommended", [\
+      ["npm:1.0.7", {\
+        "packageLocation": "./.yarn/cache/@tsconfig-recommended-npm-1.0.7-1ca458359c-1a453b4157.zip/node_modules/@tsconfig/recommended/",\
+        "packageDependencies": [\
+          ["@tsconfig/recommended", "npm:1.0.7"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -5097,6 +5173,36 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["next-cloudinary", [\
+      ["npm:6.10.1", {\
+        "packageLocation": "./.yarn/cache/next-cloudinary-npm-6.10.1-827202b3bf-7d8fc310bd.zip/node_modules/next-cloudinary/",\
+        "packageDependencies": [\
+          ["next-cloudinary", "npm:6.10.1"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:6.10.1", {\
+        "packageLocation": "./.yarn/__virtual__/next-cloudinary-virtual-4754c3da28/0/cache/next-cloudinary-npm-6.10.1-827202b3bf-7d8fc310bd.zip/node_modules/next-cloudinary/",\
+        "packageDependencies": [\
+          ["next-cloudinary", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:6.10.1"],\
+          ["@cloudinary-util/types", "npm:1.2.0"],\
+          ["@cloudinary-util/url-loader", "npm:5.6.1"],\
+          ["@cloudinary-util/util", "npm:3.2.0"],\
+          ["@tsconfig/recommended", "npm:1.0.7"],\
+          ["@types/next", null],\
+          ["@types/react", "npm:18.3.3"],\
+          ["next", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:13.5.6"],\
+          ["react", "npm:18.3.1"]\
+        ],\
+        "packagePeers": [\
+          "@types/next",\
+          "@types/react",\
+          "next",\
+          "react"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["node-gyp", [\
       ["npm:10.1.0", {\
         "packageLocation": "./.yarn/unplugged/node-gyp-npm-10.1.0-bdea7d2ece/node_modules/node-gyp/",\
@@ -5441,6 +5547,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-react-hooks", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:4.6.2"],\
           ["html-react-parser", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:5.1.12"],\
           ["next", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:13.5.6"],\
+          ["next-cloudinary", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:6.10.1"],\
           ["query-string", "npm:9.0.0"],\
           ["react", "npm:18.3.1"],\
           ["react-beautiful-dnd", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:13.1.1"],\

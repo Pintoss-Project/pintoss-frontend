@@ -17,18 +17,29 @@ import { useSearchParams } from 'next/navigation';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import BoardError from '@/utils/error/BoardError';
+import { uploadImageToCloudinary } from '@/app/api/image/uploadImageToCloudinary';
 import { updateBoard } from '@/app/api/board/updateBoard';
+import { deleteImageFromBackend } from '@/app/api/board/deleteBoard';
+import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
+
+interface UploadedImage {
+	id: string;
+	url: string;
+	savedToBackend?: boolean;
+}
 
 interface Props {
 	title: string;
 	formId: string;
-	editBoard?: { id: number; title: string; content: string } | null;
+	editBoard?: { id: number; title: string; content: string; images?: string[] } | null;
 	resetEditBoard: () => void;
 }
 
 const BoardWriter = ({ title, formId, editBoard, resetEditBoard }: Props) => {
 	const [boardTitle, setBoardTitle] = useState<string>('');
 	const [boardContent, setBoardContent] = useState<string>('');
+	const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
+	const [deletedImages, setDeletedImages] = useState<UploadedImage[]>([]);
 
 	const { open, close } = useAlertContext();
 
@@ -39,20 +50,68 @@ const BoardWriter = ({ title, formId, editBoard, resetEditBoard }: Props) => {
 
 	const quillRef = useRef<ReactQuill>(null);
 
+	const handleImageUpload = async (file: File) => {
+		try {
+			const result = await uploadImageToCloudinary(file);
+			const newImage = { id: result.public_id, url: result.secure_url, savedToBackend: false };
+			setUploadedImages((prevImages) => [...prevImages, newImage]);
+
+			if (quillRef.current) {
+				const editor = quillRef.current.getEditor();
+				const range = editor.getSelection(true);
+				editor.insertEmbed(range.index, 'image', newImage.url);
+			}
+		} catch (error: any) {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '이미지 업로드 실패',
+				main: <AlertMainTextBox text={error.message} />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		}
+	};
+
+	const handleImageDelete = (imageUrl: string) => {
+		const image = uploadedImages.find((img) => img.url === imageUrl);
+		if (!image) return;
+
+		setDeletedImages((prevImages) => [...prevImages, image]);
+		setUploadedImages((prevImages) => prevImages.filter((img) => img.url !== imageUrl));
+	};
+
+	const finalImageDeletion = async () => {
+		for (const image of deletedImages) {
+			try {
+				await deleteImageFromCloudinary(image.id);
+				if (image.savedToBackend) {
+					await deleteImageFromBackend(+image.id);
+				}
+			} catch (error: any) {
+				console.error('Image delete failed:', error);
+				open({
+					width: '300px',
+					height: '200px',
+					title: '이미지 삭제 실패',
+					main: <AlertMainTextBox text={error.message} />,
+					rightButtonStyle: cs.lightBlueButton,
+					onRightButtonClick: close,
+				});
+			}
+		}
+	};
+
 	const imageHandler = () => {
 		const input = document.createElement('input');
 		input.setAttribute('type', 'file');
 		input.setAttribute('accept', 'image/*');
 		input.click();
+
 		input.addEventListener('change', async () => {
 			const file = input.files ? input.files[0] : null;
-			if (file && quillRef.current) {
-				const editor = quillRef.current.getEditor();
-				const range = editor.getSelection(true);
-
-				const imageUrl = '';
-
-				editor.insertEmbed(range.index, 'image', imageUrl);
+			if (file) {
+				await handleImageUpload(file);
 			}
 		});
 	};
@@ -79,13 +138,25 @@ const BoardWriter = ({ title, formId, editBoard, resetEditBoard }: Props) => {
 		setBoardTitle(event.target.value);
 	};
 
-	const handleEditorChange = (content: string) => {
+	const handleEditorChange = (content: string, delta: any, source: any, editor: any) => {
 		setBoardContent(content);
+
+		const currentContents = editor.getContents();
+		const insertedImages = currentContents.ops
+			.filter((op: any) => op.insert && op.insert.image)
+			.map((op: any) => op.insert.image);
+
+		uploadedImages.forEach((img) => {
+			if (!insertedImages.includes(img.url) && !deletedImages.includes(img)) {
+				handleImageDelete(img.url);
+			}
+		});
 	};
 
 	const mutation = useMutation({
 		mutationFn: (data: BoardInfoFormData) => postBoard(type, data),
-		onSuccess: () => {
+		onSuccess: async () => {
+			await finalImageDeletion();
 			open({
 				width: '300px',
 				height: '200px',
@@ -97,6 +168,7 @@ const BoardWriter = ({ title, formId, editBoard, resetEditBoard }: Props) => {
 			queryClient.invalidateQueries({ queryKey: ['boardList'] });
 			setBoardTitle('');
 			setBoardContent('');
+			setDeletedImages([]);
 		},
 		onError: (error: BoardError) => {
 			open({
@@ -112,7 +184,8 @@ const BoardWriter = ({ title, formId, editBoard, resetEditBoard }: Props) => {
 
 	const updateMutation = useMutation({
 		mutationFn: (data: BoardInfoFormData) => updateBoard(type, editBoard?.id as number, data),
-		onSuccess: () => {
+		onSuccess: async () => {
+			await finalImageDeletion();
 			open({
 				width: '300px',
 				height: '200px',
@@ -125,6 +198,7 @@ const BoardWriter = ({ title, formId, editBoard, resetEditBoard }: Props) => {
 			setBoardTitle('');
 			setBoardContent('');
 			resetEditBoard();
+			setDeletedImages([]);
 		},
 		onError: (error: BoardError) => {
 			open({
@@ -140,15 +214,19 @@ const BoardWriter = ({ title, formId, editBoard, resetEditBoard }: Props) => {
 
 	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+		const imageUrls = uploadedImages.map((img) => img.url);
+
 		if (editBoard) {
 			updateMutation.mutate({
 				title: boardTitle,
 				content: boardContent,
+				imageUrls,
 			});
 		} else {
 			mutation.mutate({
 				title: boardTitle,
 				content: boardContent,
+				imageUrls,
 			});
 		}
 	};
@@ -157,6 +235,10 @@ const BoardWriter = ({ title, formId, editBoard, resetEditBoard }: Props) => {
 		if (editBoard) {
 			setBoardTitle(editBoard.title);
 			setBoardContent(editBoard.content);
+
+			if (editBoard.images) {
+				setUploadedImages(editBoard.images.map((url) => ({ id: url, url, savedToBackend: true })));
+			}
 		}
 	}, [editBoard]);
 
