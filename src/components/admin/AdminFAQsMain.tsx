@@ -1,20 +1,18 @@
 'use client';
 
-import { useState } from 'react';
 import Spacing from '@/shared/components/layout/Spacing';
 import BoardWriter from './BoardWriter';
 import { vars } from '@/shared/styles/theme.css';
 import AdminBoardList from './AdminBoardList';
 
-const AdminFAQsMain = () => {
-	const [editBoard, setEditBoard] = useState<{ id: number; title: string; content: string } | null>(
-		null,
-	);
+interface Props {
+	editBoard: { id: number; title: string; content: string; images?: string[] } | null;
+	resetEditBoard: () => void;
+	onDelete: () => void;
+	onEdit: (board: { id: number; title: string; content: string; images?: string[] }) => void;
+}
 
-	const handleEdit = (board: { id: number; title: string; content: string }) => {
-		setEditBoard(board);
-	};
-
+const AdminFAQsMain = ({ editBoard, resetEditBoard, onDelete, onEdit }: Props) => {
 	return (
 		<div
 			style={{
@@ -25,13 +23,14 @@ const AdminFAQsMain = () => {
 			}}>
 			<Spacing margin="10px" />
 			<BoardWriter
+				key={editBoard ? editBoard.id : 'new'}
 				title={editBoard ? '자주 묻는 질문 수정' : '자주 묻는 질문 작성'}
 				formId={'faqs-writer-form'}
 				editBoard={editBoard}
-				resetEditBoard={() => setEditBoard(null)}
+				resetEditBoard={resetEditBoard}
 			/>
 			<Spacing margin="10px" />
-			<AdminBoardList type="faqs" onEdit={handleEdit} />
+			<AdminBoardList type="faqs" onEdit={onEdit} onDelete={onDelete} />
 		</div>
 	);
 };

@@ -1,20 +1,18 @@
 'use client';
 
-import { useState } from 'react';
 import Spacing from '@/shared/components/layout/Spacing';
 import BoardWriter from './BoardWriter';
 import { vars } from '@/shared/styles/theme.css';
 import AdminBoardList from './AdminBoardList';
 
-const AdminNoticeMain = () => {
-	const [editBoard, setEditBoard] = useState<{ id: number; title: string; content: string } | null>(
-		null,
-	);
+interface Props {
+	editBoard: { id: number; title: string; content: string; images?: string[] } | null;
+	resetEditBoard: () => void;
+	onDelete: () => void;
+	onEdit: (board: { id: number; title: string; content: string; images?: string[] }) => void;
+}
 
-	const handleEdit = (board: { id: number; title: string; content: string }) => {
-		setEditBoard(board);
-	};
-
+const AdminNoticeMain = ({ editBoard, resetEditBoard, onDelete, onEdit }: Props) => {
 	return (
 		<div
 			style={{
@@ -25,13 +23,14 @@ const AdminNoticeMain = () => {
 			}}>
 			<Spacing margin="10px" />
 			<BoardWriter
+				key={editBoard ? editBoard.id : 'new'}
 				title={editBoard ? '공지사항 수정' : '공지사항 작성'}
 				formId={'notice-writer-form'}
 				editBoard={editBoard}
-				resetEditBoard={() => setEditBoard(null)}
+				resetEditBoard={resetEditBoard}
 			/>
 			<Spacing margin="10px" />
-			<AdminBoardList type="notice" onEdit={handleEdit} />
+			<AdminBoardList type="notice" onEdit={onEdit} onDelete={onDelete} />
 		</div>
 	);
 };

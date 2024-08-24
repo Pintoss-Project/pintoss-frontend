@@ -5,4 +5,5 @@ export interface BoardInfo {
 	content: string;
 	writer: string;
 	createdAt?: string;
+	images?: string[];
 }

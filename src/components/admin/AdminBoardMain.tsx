@@ -13,8 +13,16 @@ const TITLE_MAP: Record<string, string> = {
 	faqs: '자주 묻는 질문',
 };
 
+interface EditBoard {
+	id: number;
+	title: string;
+	content: string;
+	images?: string[];
+}
+
 const AdminBoardMain = () => {
 	const [type, setType] = useState('banner');
+	const [editBoard, setEditBoard] = useState<EditBoard | null>(null);
 
 	const searchParams = useSearchParams();
 	const currentType = searchParams.get('type') as string;
@@ -23,6 +31,18 @@ const AdminBoardMain = () => {
 		setType(currentType);
 	}, [currentType]);
 
+	const handleEdit = (board: EditBoard) => {
+		setEditBoard(board);
+	};
+
+	const resetEditBoard = () => {
+		setEditBoard(null);
+	};
+
+	const handleDelete = () => {
+		resetEditBoard();
+	};
+
 	return (
 		<AdminMainSection
 			title={TITLE_MAP[type]}
@@ -30,9 +50,19 @@ const AdminBoardMain = () => {
 				type === 'banner' ? (
 					<AdminBannerMain />
 				) : type === 'notice' ? (
-					<AdminNoticeMain />
+					<AdminNoticeMain
+						editBoard={editBoard}
+						resetEditBoard={resetEditBoard}
+						onDelete={handleDelete}
+						onEdit={handleEdit}
+					/>
 				) : (
-					<AdminFAQsMain />
+					<AdminFAQsMain
+						editBoard={editBoard}
+						resetEditBoard={resetEditBoard}
+						onDelete={handleDelete}
+						onEdit={handleEdit}
+					/>
 				)
 			}
 		/>

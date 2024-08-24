@@ -20,13 +20,15 @@ import { formatDate } from '@/utils/formatDate';
 import { deleteBoard } from '@/app/api/board/deleteBoard';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import useAlertContext from '@/hooks/useAlertContext';
+import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
 
 interface Props {
 	type: string;
-	onEdit: (board: { id: number; title: string; content: string }) => void; // Edit function prop
+	onEdit: (board: { id: number; title: string; content: string; images?: string[] }) => void;
+	onDelete: () => void;
 }
 
-const AdminBoardList = ({ type, onEdit }: Props) => {
+const AdminBoardList = ({ type, onEdit, onDelete }: Props) => {
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [boardsPerPage] = useState<number>(10);
 	const [currentPageGroup, setCurrentPageGroup] = useState<number>(1);
@@ -79,9 +81,24 @@ const AdminBoardList = ({ type, onEdit }: Props) => {
 	};
 
 	const deleteMutation = useMutation({
-		mutationFn: (id: number) => deleteBoard(id),
+		mutationFn: async (id: number) => {
+			const boardToDelete = displayedBoards?.find((board) => board.id === id);
+
+			if (boardToDelete?.images) {
+				for (const image of boardToDelete.images) {
+					try {
+						await deleteImageFromCloudinary(image);
+					} catch (error) {
+						console.error('Failed to delete image:', error);
+					}
+				}
+			}
+
+			await deleteBoard(id);
+		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['boardList', type] });
+			onDelete();
 		},
 	});
 
@@ -89,10 +106,10 @@ const AdminBoardList = ({ type, onEdit }: Props) => {
 		open({
 			width: '300px',
 			height: '200px',
-			title: `${type === 'notice' ? '공지사항' : '자주묻는질문'} 삭제`,
+			title: `${type === 'notice' ? '공지사항' : '자주 묻는 질문'} 삭제`,
 			main: (
 				<AlertMainTextBox
-					text={`${type === 'notice' ? '공지사항' : '자주묻는질문'}을 삭제하시겠습니까?`}
+					text={`${type === 'notice' ? '공지사항' : '자주 묻는 질문'}을 삭제하시겠습니까?`}
 				/>
 			),
 			leftButtonLabel: '취소',
@@ -107,7 +124,7 @@ const AdminBoardList = ({ type, onEdit }: Props) => {
 		});
 	};
 
-	const handleEdit = (board: { id: number; title: string; content: string }) => {
+	const handleEdit = (board: { id: number; title: string; content: string; images?: string[] }) => {
 		onEdit(board);
 	};
 
@@ -157,9 +174,13 @@ const AdminBoardList = ({ type, onEdit }: Props) => {
 										borderRadius: '5px',
 									}}
 									onClick={() =>
-										handleEdit({ id: board.id, title: board.title, content: board.content })
-									} // Pass data to edit
-								>
+										handleEdit({
+											id: board.id,
+											title: board.title,
+											content: board.content,
+											images: board.images,
+										})
+									}>
 									수정
 								</Button>
 								<Button

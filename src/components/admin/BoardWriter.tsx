@@ -45,10 +45,15 @@ const BoardWriter = ({ title, formId, editBoard, resetEditBoard }: Props) => {
 
 	const searchParams = useSearchParams();
 	const type = searchParams.get('type') as string;
-
 	const queryClient = useQueryClient();
-
 	const quillRef = useRef<ReactQuill>(null);
+
+	const initializeState = () => {
+		setBoardTitle('');
+		setBoardContent('');
+		setUploadedImages([]);
+		setDeletedImages([]);
+	};
 
 	const handleImageUpload = async (file: File) => {
 		try {
@@ -239,6 +244,8 @@ const BoardWriter = ({ title, formId, editBoard, resetEditBoard }: Props) => {
 			if (editBoard.images) {
 				setUploadedImages(editBoard.images.map((url) => ({ id: url, url, savedToBackend: true })));
 			}
+		} else {
+			initializeState();
 		}
 	}, [editBoard]);
 
