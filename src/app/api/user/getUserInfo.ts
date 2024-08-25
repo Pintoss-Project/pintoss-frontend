@@ -1,7 +1,7 @@
-import { getLocalToken } from './../../../utils/localToken';
 import { ErrorResponse } from '@/models/error';
-import { ManageUserInfoResponse, UserInfo } from '@/models/user';
+import { UserInfo } from '@/models/user';
 import UserError from '@/utils/error/UserError';
+import { getLocalToken } from './../../../utils/localToken';
 
 interface UserInfoResponse {
 	code: number;

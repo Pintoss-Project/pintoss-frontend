@@ -7,10 +7,11 @@ import BannerListBox from './BannerListBox';
 import Spacing from '@/shared/components/layout/Spacing';
 import { useState } from 'react';
 import { getBannerById } from '@/app/api/site/getBannerById';
+import { BannerInfoFormData } from '@/utils/validation/site';
 
 const AdminBannerMain = () => {
 	const [editingBannerId, setEditingBannerId] = useState<number | null>(null);
-	const [initialBannerData, setInitialBannerData] = useState<any>(null);
+	const [initialBannerData, setInitialBannerData] = useState<BannerInfoFormData | null>(null);
 
 	const handleEdit = async (id: number) => {
 		const banner = await getBannerById(id);

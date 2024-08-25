@@ -19,7 +19,7 @@ interface Props {
 	setSelectedType: Dispatch<SetStateAction<string>>;
 }
 
-const CartPaymentInfoItemBox = ({ totalAmount, userId, selectedType, setSelectedType }: Props) => {
+const CartPaymentInfoItemBox = ({ totalAmount, selectedType, setSelectedType }: Props) => {
 	const [payAmount, setPayAmount] = useState(0);
 
 	useEffect(() => {

@@ -13,8 +13,15 @@ import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudi
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 
+interface Banner {
+	id: number;
+	bannerTitle: string;
+	desktopImageUrl: string | null;
+	mobileImageUrl: string | null;
+}
+
 interface Props {
-	onEdit: (id: number, bannerData: any) => void;
+	onEdit: (id: number, bannerData: Banner) => void;
 	onDelete: () => void;
 }
 
@@ -28,7 +35,7 @@ const BannerListBox = ({ onEdit, onDelete }: Props) => {
 
 	const mutation = useMutation({
 		mutationFn: async (id: number) => {
-			const banner = bannerList?.data.find((banner) => banner.id === id);
+			const banner = bannerList?.data.find((banner: Banner) => banner.id === id);
 			if (banner?.desktopImageUrl) {
 				const publicId = banner.desktopImageUrl.split('/').pop()?.split('.')[0];
 				if (publicId) {
@@ -112,7 +119,7 @@ const BannerListBox = ({ onEdit, onDelete }: Props) => {
 					관리
 				</div>
 			</Flex>
-			{bannerList?.data.map((banner, index) => (
+			{bannerList?.data.map((banner: Banner, index: number) => (
 				<Flex
 					key={banner.id}
 					align="center"
@@ -121,7 +128,7 @@ const BannerListBox = ({ onEdit, onDelete }: Props) => {
 						{index + 1}
 					</div>
 					<div className={s.darkGraySmallText} style={{ flex: '2' }}>
-						{banner?.bannerTitle}
+						{banner.bannerTitle}
 					</div>
 					<div className={s.darkGraySmallText} style={{ flex: '4' }}>
 						<Flex

@@ -1,10 +1,10 @@
 'use client';
 
-import { ProductInfoFormData, PriceCategoryInfoFormData } from '@/utils/validation/product';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { postProduct } from '@/app/api/product/postProduct';
 import { postPriceCategory } from '@/app/api/product/postPriceCategory';
+import { postProduct } from '@/app/api/product/postProduct';
 import * as cs from '@/shared/styles/common.css';
+import { ProductInfoFormData } from '@/utils/validation/product';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useAlertContext from './useAlertContext';
 
 interface UseProductWithPriceCategoryMutationProps {
@@ -64,7 +64,7 @@ export const useProductWithPriceCategoryMutation = ({
 				queryClient.invalidateQueries({ queryKey: ['productList'] });
 			}
 		},
-		onError: (error) => {
+		onError: () => {
 			open({
 				width: '300px',
 				height: '200px',

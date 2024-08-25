@@ -23,20 +23,18 @@ const PriceCategoryInputGroup = ({ productId, onAddCategory }: Props) => {
 	const [priceName, setPriceName] = useState<string>('');
 	const [price, setPrice] = useState<number | ''>('');
 	const [existingCategories, setExistingCategories] = useState<PriceCategoryInfoFormData[]>([]);
-	const [newCategories, setNewCategories] = useState<PriceCategoryInfoFormData[]>([]);
 
 	const queryClient = useQueryClient();
-
 	const { open, close } = useAlertContext();
 
 	const { data: categories, isSuccess } = useQuery({
 		queryKey: ['priceCategoryList', productId],
-		queryFn: () => getPriceCategoryList(productId!),
-		enabled: !!productId,
+		queryFn: () => getPriceCategoryList(productId as number),
+		enabled: !!productId, // Only run the query if productId is defined
 	});
 
 	const postPriceCategoryMutation = useMutation({
-		mutationFn: (data: PriceCategoryInfoFormData[]) => postPriceCategory(productId!, data),
+		mutationFn: (data: PriceCategoryInfoFormData[]) => postPriceCategory(productId as number, data),
 		onSuccess: () => {
 			open({
 				width: '300px',
@@ -104,11 +102,8 @@ const PriceCategoryInputGroup = ({ productId, onAddCategory }: Props) => {
 
 			const newCategory: PriceCategoryInfoFormData = { name: priceName, price: Number(price) };
 
-			setNewCategories((prevCategories) => [...prevCategories, newCategory]);
-
 			if (productId) {
 				postPriceCategoryMutation.mutate([newCategory]);
-				setNewCategories([]);
 				queryClient.invalidateQueries({ queryKey: ['priceCategoryList', productId] });
 				queryClient.invalidateQueries({ queryKey: ['productList'] });
 			} else {

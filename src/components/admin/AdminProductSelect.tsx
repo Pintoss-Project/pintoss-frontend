@@ -1,11 +1,8 @@
 'use client';
 
 import { Flex } from '@/shared/components/layout';
-import { Input } from '@/shared/components/input';
-import { vars } from '@/shared/styles/theme.css';
-import * as s from './AdminStyle.css';
-import { ReactNode } from 'react';
 import { Controller, FieldValues, Path, useFormContext } from 'react-hook-form';
+import * as s from './AdminStyle.css';
 
 interface Props<T extends FieldValues> {
 	name: Path<T>;

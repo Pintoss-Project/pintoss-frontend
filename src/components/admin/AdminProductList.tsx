@@ -1,21 +1,21 @@
 'use client';
 
-import { vars } from '@/shared/styles/theme.css';
-import * as s from './AdminStyle.css';
-import * as cs from '@/shared/styles/common.css';
-import { Flex } from '@/shared/components/layout';
-import { FiMenu } from 'react-icons/fi';
-import { useState, useEffect, ChangeEvent, Dispatch, SetStateAction } from 'react';
+import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
+import { deleteProduct } from '@/app/api/product/deleteProduct';
+import { getProductList } from '@/app/api/product/getProductList';
+import { updateStock, UpdateStockParams } from '@/app/api/product/updateStock';
+import useAlertContext from '@/hooks/useAlertContext';
+import { ProductInfo } from '@/models/product';
+import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Button } from '@/shared/components/button';
 import { Input } from '@/shared/components/input';
+import { Flex } from '@/shared/components/layout';
+import * as cs from '@/shared/styles/common.css';
+import { vars } from '@/shared/styles/theme.css';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getProductList } from '@/app/api/product/getProductList';
-import { ProductInfo } from '@/models/product';
-import { deleteProduct } from '@/app/api/product/deleteProduct';
-import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
-import useAlertContext from '@/hooks/useAlertContext';
-import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
-import { updateStock, UpdateStockParams } from '@/app/api/product/updateStock';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { FiMenu } from 'react-icons/fi';
+import * as s from './AdminStyle.css';
 
 interface Props {
 	onSelectProduct: (productId: number) => void;
@@ -33,27 +33,27 @@ const AdminProductList = ({ onSelectProduct, onResetEdit }: Props) => {
 
 	const { data: products, isSuccess } = useQuery({
 		queryKey: ['productList'],
-		queryFn: () => getProductList(''),
+		queryFn: () => getProductList(),
 	});
 
 	useEffect(() => {
 		if (isSuccess && products) {
-			const initialSelected = products.data.reduce((acc, product) => {
+			const initialSelected: { [key: string]: string } = {};
+			const initialQuantity: { [key: string]: number } = {};
+
+			products.data.forEach((product: ProductInfo) => {
 				const sortedCategories = product.priceCategories
 					? [...product.priceCategories].sort((a, b) => a.price - b.price)
 					: [];
-				acc[product.id] = String(sortedCategories[0]?.id || '');
-				return acc;
-			}, {} as { [key: string]: string });
 
-			const initialQuantity = products.data.reduce((acc, product) => {
-				const selectedCategoryId = initialSelected[product.id];
-				const selectedCategory = product.priceCategories?.find(
-					(category) => category.id === +selectedCategoryId,
-				);
-				acc[product.id] = selectedCategory?.stock || 0;
-				return acc;
-			}, {} as { [key: string]: number });
+				if (sortedCategories.length > 0) {
+					initialSelected[product.id] = String(sortedCategories[0].id);
+					initialQuantity[product.id] = sortedCategories[0].stock || 0;
+				} else {
+					initialSelected[product.id] = '';
+					initialQuantity[product.id] = 0;
+				}
+			});
 
 			setSelectedKind(initialSelected);
 			setQuantity(initialQuantity);
@@ -65,7 +65,7 @@ const AdminProductList = ({ onSelectProduct, onResetEdit }: Props) => {
 		if (kind) {
 			setSelectedKind((prevState) => ({
 				...prevState,
-				[product.id]: kind.id,
+				[product.id]: String(kind.id),
 			}));
 
 			setQuantity((prevState) => ({
@@ -100,13 +100,11 @@ const AdminProductList = ({ onSelectProduct, onResetEdit }: Props) => {
 				queryKey: ['productList'],
 			});
 
-			const previousProductList = queryClient.getQueryData(['productList']);
+			const previousProductList = queryClient.getQueryData<ProductInfo[]>(['productList']);
 
-			queryClient.setQueryData(['productList'], (old: any) => {
-				return {
-					...old,
-					data: old.data.filter((product: ProductInfo) => product.id !== productId),
-				};
+			queryClient.setQueryData<ProductInfo[]>(['productList'], (oldData) => {
+				if (!oldData) return [];
+				return oldData.filter((product) => product.id !== productId);
 			});
 
 			return { previousProductList };
@@ -166,22 +164,20 @@ const AdminProductList = ({ onSelectProduct, onResetEdit }: Props) => {
 		onMutate: async (updatedStock) => {
 			const previousProductList = queryClient.getQueryData<ProductInfo[]>(['productList']);
 
-			queryClient.setQueryData(['productList'], (oldData: any) => {
-				return {
-					...oldData,
-					data: oldData.data.map((product: ProductInfo) =>
-						product.id === updatedStock.productId
-							? {
-									...product,
-									priceCategories: product.priceCategories?.map((category) =>
-										category.id === updatedStock.categoryId
-											? { ...category, stock: updatedStock.data }
-											: category,
-									),
-							  }
-							: product,
-					),
-				};
+			queryClient.setQueryData<ProductInfo[]>(['productList'], (oldData) => {
+				if (!oldData) return [];
+				return oldData.map((product) =>
+					product.id === updatedStock.productId
+						? {
+								...product,
+								priceCategories: product.priceCategories?.map((category) =>
+									category.id === updatedStock.categoryId
+										? { ...category, stock: updatedStock.data }
+										: category,
+								),
+						  }
+						: product,
+				);
 			});
 
 			setQuantity((prevQuantity) => ({

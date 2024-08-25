@@ -4,10 +4,10 @@ import { Input } from '@/shared/components/input';
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import clsx from 'clsx';
+import { ChangeEvent, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import * as s from './RegisterStyle.css';
 import ValidationMessages from './ValidationMessages';
-import { ChangeEvent, useEffect, useState } from 'react';
 
 interface Props {
 	name: string;

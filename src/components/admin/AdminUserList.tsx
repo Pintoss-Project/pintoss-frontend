@@ -109,11 +109,11 @@ const AdminUserList = ({
 							/>
 						</div>
 						<div className={clsx(s.userFlexItem2, s.darkGraySmallText)}>
-							{currentPage * users.length + index + 1}
+							{currentPage * (users?.length ?? 0) + index + 1}
 						</div>
 						<div className={clsx(s.userFlexItem3, s.darkGraySmallText)}>{user.email}</div>
 						<div className={clsx(s.userFlexItem4, s.darkGraySmallText)}>
-							{formatDate(user.timestamp!)}
+							{user.timestamp ? formatDate(user.timestamp) : 'N/A'}
 						</div>
 						<div className={clsx(s.userFlexItem5, s.darkGraySmallText)}>{user.inflow}</div>
 						<div className={clsx(s.userFlexItem6, s.darkGraySmallText)}>{user.phone}</div>

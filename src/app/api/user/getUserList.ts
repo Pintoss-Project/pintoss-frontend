@@ -9,7 +9,17 @@ export const getUserList = async (params?: {
 	page?: number;
 	pageSize?: number;
 }): Promise<ManageUserInfoResponse> => {
-	const queryString = params ? new URLSearchParams(params as any).toString() : '';
+	const queryString = params
+		? new URLSearchParams(
+				Object.entries(params).reduce((acc, [key, value]) => {
+					if (value !== undefined) {
+						acc[key] = String(value);
+					}
+					return acc;
+				}, {} as Record<string, string>),
+		  ).toString()
+		: '';
+
 	const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/user/list${
 		queryString ? `?${queryString}` : ''
 	}`;

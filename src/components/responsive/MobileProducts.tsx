@@ -1,10 +1,9 @@
-import * as s from './ResponsiveStyle.css';
-import { Grid } from '@/shared/components/layout';
-import { BookAndLifeLogo } from '../../../public/svgs';
-import MobileProductBox from './MobileProductBox';
-import { useQuery } from '@tanstack/react-query';
 import { getSimpleProductList } from '@/app/api/product/getProductList';
+import { Grid } from '@/shared/components/layout';
+import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
+import MobileProductBox from './MobileProductBox';
+import * as s from './ResponsiveStyle.css';
 
 interface Props {
 	setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;

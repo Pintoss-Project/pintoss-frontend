@@ -1,7 +1,6 @@
 import { ErrorResponse } from '@/models/error';
 import { BannerInfo } from '@/models/site';
 import SiteError from '@/utils/error/SiteError';
-import { BannerInfoFormData } from '@/utils/validation/site';
 
 export interface BannerInfoResponse {
 	code: number;

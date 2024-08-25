@@ -22,6 +22,16 @@ import { uploadImageToCloudinary } from '@/app/api/image/uploadImageToCloudinary
 import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+interface ImageUploadResponse {
+	public_id: string;
+	secure_url: string;
+}
+
+interface ImageUrls {
+	topImageUrl: string | null | undefined;
+	bottomImageUrl: string | null | undefined;
+}
+
 const SiteInfoBox = () => {
 	const { open, close } = useAlertContext();
 	const queryClient = useQueryClient();
@@ -31,8 +41,7 @@ const SiteInfoBox = () => {
 		queryFn: () => getAllSiteInfo(),
 	});
 
-	const firstSiteInfoId =
-		allSiteInfo && allSiteInfo?.data?.length > 0 ? allSiteInfo?.data[0].id : null;
+	const firstSiteInfoId = allSiteInfo?.data?.length ? allSiteInfo.data[0].id : null;
 
 	console.log(allSiteInfo?.data, firstSiteInfoId);
 
@@ -63,10 +72,7 @@ const SiteInfoBox = () => {
 
 	const { handleSubmit, reset, setValue, getValues } = methods;
 
-	const [imageUrls, setImageUrls] = useState<{
-		topImageUrl: string | null | undefined;
-		bottomImageUrl: string | null | undefined;
-	}>({
+	const [imageUrls, setImageUrls] = useState<ImageUrls>({
 		topImageUrl: null,
 		bottomImageUrl: null,
 	});
@@ -106,7 +112,7 @@ const SiteInfoBox = () => {
 	const handleImageUpload = async (file: File, imageType: 'top' | 'bottom'): Promise<string> => {
 		setIsUploading(true);
 		try {
-			const result = await uploadImageToCloudinary(file);
+			const result: ImageUploadResponse = await uploadImageToCloudinary(file);
 			const imageUrl = result.secure_url;
 
 			if (imageType === 'top') {
@@ -120,12 +126,12 @@ const SiteInfoBox = () => {
 			}
 
 			return imageUrl;
-		} catch (error: any) {
+		} catch (error: unknown) {
 			open({
 				width: '300px',
 				height: '200px',
 				title: '이미지 업로드 실패',
-				main: <AlertMainTextBox text={error.message} />,
+				main: <AlertMainTextBox text={(error as Error).message} />,
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: close,
 			});
@@ -151,12 +157,12 @@ const SiteInfoBox = () => {
 				setIsImageAddedBottom(false);
 				setImageUrls((prev) => ({ ...prev, bottomImageUrl: null }));
 			}
-		} catch (error: any) {
+		} catch (error: unknown) {
 			open({
 				width: '300px',
 				height: '200px',
 				title: '이미지 삭제 실패',
-				main: <AlertMainTextBox text={error.message} />,
+				main: <AlertMainTextBox text={(error as Error).message} />,
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: close,
 			});

@@ -19,24 +19,36 @@ interface Props {
 }
 
 const ManageFeeBox = ({ productId }: Props) => {
+	const { open, close } = useAlertContext();
+	const queryClient = useQueryClient();
+
 	const { data: productDetails } = useQuery({
 		queryKey: ['productDetails', productId],
-		queryFn: () => getProduct(productId!),
+		queryFn: () => {
+			if (productId) {
+				return getProduct(productId);
+			}
+			return Promise.resolve(undefined);
+		},
 		enabled: !!productId,
 	});
 
 	const [discount, setDiscount] = useState<FeeData>({
-		cardDiscount: productDetails?.data.cardDiscount || 0,
-		phoneDiscount: productDetails?.data.phoneDiscount || 0,
+		cardDiscount: 0,
+		phoneDiscount: 0,
 	});
 
-	const { open, close } = useAlertContext();
-
-	const queryClient = useQueryClient();
+	useEffect(() => {
+		if (productDetails) {
+			setDiscount({
+				cardDiscount: productDetails.data.cardDiscount || 0,
+				phoneDiscount: productDetails.data.phoneDiscount || 0,
+			});
+		}
+	}, [productDetails]);
 
 	const handleDiscountChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
-
 		setDiscount((prevState) => ({
 			...prevState,
 			[name]: parseFloat(value),
@@ -71,17 +83,10 @@ const ManageFeeBox = ({ productId }: Props) => {
 	});
 
 	const handleUpdateFee = (data: FeeData) => {
-		updateFeeMutation.mutate({ productId: productId as number, data });
-	};
-
-	useEffect(() => {
-		if (productDetails) {
-			setDiscount({
-				cardDiscount: productDetails.data.cardDiscount || 0,
-				phoneDiscount: productDetails.data.phoneDiscount || 0,
-			});
+		if (productId) {
+			updateFeeMutation.mutate({ productId, data });
 		}
-	}, [productDetails]);
+	};
 
 	return (
 		<div

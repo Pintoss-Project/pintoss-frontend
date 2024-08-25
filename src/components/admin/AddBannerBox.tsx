@@ -22,13 +22,13 @@ import { postBanner } from '@/app/api/site/postBanner';
 import { updateBanner } from '@/app/api/site/updateBanner';
 import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
 
-interface Props {
+interface AddBannerBoxProps {
 	editingBannerId: number | null;
 	initialBannerData: BannerInfoFormData | null;
 	onResetEdit: () => void;
 }
 
-const AddBannerBox = ({ editingBannerId, initialBannerData, onResetEdit }: Props) => {
+const AddBannerBox = ({ editingBannerId, initialBannerData, onResetEdit }: AddBannerBoxProps) => {
 	const { open, close } = useAlertContext();
 	const queryClient = useQueryClient();
 
@@ -87,7 +87,10 @@ const AddBannerBox = ({ editingBannerId, initialBannerData, onResetEdit }: Props
 		setResetTrigger((prev) => !prev);
 	};
 
-	const handleImageUpload = async (file: File, imageType: 'desktop' | 'mobile') => {
+	const handleImageUpload = async (
+		file: File,
+		imageType: 'desktop' | 'mobile',
+	): Promise<string> => {
 		setIsUploading(true);
 		try {
 			const result = await uploadImageToCloudinary(file);
@@ -104,17 +107,18 @@ const AddBannerBox = ({ editingBannerId, initialBannerData, onResetEdit }: Props
 			}
 
 			return imageUrl;
-		} catch (error: any) {
+		} catch (error: unknown) {
+			const errorMessage = error instanceof Error ? error.message : '이미지 업로드에 실패했습니다.';
 			open({
 				width: '300px',
 				height: '200px',
 				title: '이미지 업로드 실패',
-				main: <AlertMainTextBox text={error.message} />,
+				main: <AlertMainTextBox text={errorMessage} />,
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: close,
 			});
 
-			throw error;
+			throw new Error(errorMessage);
 		} finally {
 			setIsUploading(false);
 		}
@@ -133,13 +137,13 @@ const AddBannerBox = ({ editingBannerId, initialBannerData, onResetEdit }: Props
 				setImageUrls((prev) => ({ ...prev, mobileImageUrl: null }));
 				setIsImageAdded2(false);
 			}
-		} catch (error: any) {
-			console.error('Image delete failed:', error);
+		} catch (error: unknown) {
+			const errorMessage = error instanceof Error ? error.message : '이미지 삭제에 실패했습니다.';
 			open({
 				width: '300px',
 				height: '200px',
 				title: '이미지 삭제 실패',
-				main: <AlertMainTextBox text={error.message} />,
+				main: <AlertMainTextBox text={errorMessage} />,
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: close,
 			});
@@ -177,22 +181,25 @@ const AddBannerBox = ({ editingBannerId, initialBannerData, onResetEdit }: Props
 					await deleteImageFromCloudinary(imageUrls.mobileImageUrl);
 				}
 			} catch (deleteError) {
-				console.error('Failed to delete images from Cloudinary:', deleteError);
+				const deleteErrorMessage =
+					deleteError instanceof Error ? deleteError.message : '이미지 삭제 실패';
+				console.error('Failed to delete images from Cloudinary:', deleteErrorMessage);
 				open({
 					width: '300px',
 					height: '200px',
 					title: '이미지 삭제 실패',
-					main: <AlertMainTextBox text={'이미지 삭제에 실패했습니다. 다시 시도해주세요.'} />,
+					main: <AlertMainTextBox text={deleteErrorMessage} />,
 					rightButtonStyle: cs.lightBlueButton,
 					onRightButtonClick: close,
 				});
 			}
 
+			const errorMessage = error.errorMessage || '배너 생성/수정에 실패했습니다.';
 			open({
 				width: '300px',
 				height: '200px',
 				title: editingBannerId ? '배너 수정 실패' : '배너 생성 실패',
-				main: <AlertMainTextBox text={error.errorMessage} />,
+				main: <AlertMainTextBox text={errorMessage} />,
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: close,
 			});

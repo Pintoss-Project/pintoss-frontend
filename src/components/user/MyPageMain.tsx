@@ -1,24 +1,23 @@
 'use client';
 
-import * as s from './MyPageStyle.css';
 import * as cs from '@/shared/styles/common.css';
+import * as s from './MyPageStyle.css';
 
-import { Flex } from '@/shared/components/layout';
-import InfoBox from '../InfoBox';
-import Spacing from '@/shared/components/layout/Spacing';
-import MemberInfoBox from './MemberInfoBox';
-import SnsInfoBox from './SnsInfoBox';
-import AuthenticationInfoBox from './AuthenticationInfoBox';
-import { Button } from '@/shared/components/button';
-import { vars } from '@/shared/styles/theme.css';
-import { useMutation } from '@tanstack/react-query';
 import { postDeactivateUser } from '@/app/api/auth/postDeactivateUser';
 import useAlertContext from '@/hooks/useAlertContext';
-import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
-import useRedirect from '@/hooks/useRedirect';
-import { useRecoilValue } from 'recoil';
 import authState from '@/recoil/authAtom';
+import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
+import { Button } from '@/shared/components/button';
+import { Flex } from '@/shared/components/layout';
+import Spacing from '@/shared/components/layout/Spacing';
+import { vars } from '@/shared/styles/theme.css';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { useRecoilValue } from 'recoil';
+import InfoBox from '../InfoBox';
+import AuthenticationInfoBox from './AuthenticationInfoBox';
+import MemberInfoBox from './MemberInfoBox';
+import SnsInfoBox from './SnsInfoBox';
 
 const MyPageMain = () => {
 	const authStateValue = useRecoilValue(authState);

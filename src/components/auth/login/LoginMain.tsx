@@ -1,25 +1,28 @@
 'use client';
 
-import * as s from './LoginStyle.css';
-import * as cs from '@/shared/styles/common.css';
+import { postLogin } from '@/app/api/auth/postLogin';
 import * as as from '@/components/auth/AuthStyle.css';
-import { Input } from '@/shared/components/input';
+import useAlertContext from '@/hooks/useAlertContext';
+import useRedirect from '@/hooks/useRedirect';
+import authState from '@/recoil/authAtom';
+import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
-import Link from 'next/link';
-import LoginButtons from './LoginButtons';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import * as cs from '@/shared/styles/common.css';
+import { setLocalToken } from '@/utils/localToken';
 import { LogInFormData, loginSchema } from '@/utils/validation/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
-import useAlertContext from '@/hooks/useAlertContext';
 import { useMutation } from '@tanstack/react-query';
-import { postLogin } from '@/app/api/auth/postLogin';
-import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
-import LoginInputBox from './LoginInputBox';
-import useRedirect from '@/hooks/useRedirect';
-import { setLocalToken } from '@/utils/localToken';
+import Link from 'next/link';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useSetRecoilState } from 'recoil';
-import authState from '@/recoil/authAtom';
+import LoginButtons from './LoginButtons';
+import LoginInputBox from './LoginInputBox';
+import * as s from './LoginStyle.css';
+
+interface ApiError {
+	message: string;
+}
 
 const LoginMain = () => {
 	const { open, close } = useAlertContext();
@@ -41,23 +44,34 @@ const LoginMain = () => {
 	const loginMutation = useMutation({
 		mutationFn: (data: LogInFormData) => postLogin(data),
 		onSuccess: (data) => {
-			const { accessToken } = data?.data;
+			if (data && data.data) {
+				const { accessToken } = data.data;
 
-			open({
-				width: '300px',
-				height: '200px',
-				title: '로그인',
-				main: <AlertMainTextBox text="로그인이 완료되었습니다." />,
-				rightButtonStyle: cs.lightBlueButton,
-				onRightButtonClick: () => {
-					setLocalToken(accessToken);
-					setAuthStateValue({ isLoggedIn: true });
-					setRedirectPath('/');
-					close();
-				},
-			});
+				open({
+					width: '300px',
+					height: '200px',
+					title: '로그인',
+					main: <AlertMainTextBox text="로그인이 완료되었습니다." />,
+					rightButtonStyle: cs.lightBlueButton,
+					onRightButtonClick: () => {
+						setLocalToken(accessToken);
+						setAuthStateValue({ isLoggedIn: true });
+						setRedirectPath('/');
+						close();
+					},
+				});
+			} else {
+				open({
+					width: '300px',
+					height: '200px',
+					title: '로그인 실패',
+					main: <AlertMainTextBox text="로그인에 실패했습니다. 다시 시도해주세요." />,
+					rightButtonStyle: cs.lightBlueButton,
+					onRightButtonClick: close,
+				});
+			}
 		},
-		onError: async (error) => {
+		onError: (error: ApiError) => {
 			open({
 				width: '300px',
 				height: '200px',

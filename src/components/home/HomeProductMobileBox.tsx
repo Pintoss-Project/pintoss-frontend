@@ -1,22 +1,12 @@
 'use client';
 
+import { SimpleProductInfo } from '@/models/product';
 import { Flex, GridItem } from '@/shared/components/layout';
 import { vars } from '@/shared/styles/theme.css';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
+import Image from 'next/image';
 import Link from 'next/link';
 import * as s from './HomeStyle.css';
-import Image from 'next/image';
-import { SimpleProductInfo } from '@/models/product';
-import { CultureLandLogo, NexonLogo } from '../../../out/svgs';
-
-type ProductType = {
-	id: number;
-	code: string;
-	name: string;
-	card: number;
-	phone: number;
-	icon: string;
-};
 
 interface Props {
 	headerColor?: string;
