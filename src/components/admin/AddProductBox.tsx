@@ -31,6 +31,8 @@ import AdminProductSelect from './AdminProductSelect';
 import AdminProductTextArea from './AdminProductTextArea';
 import * as s from './AdminStyle.css';
 import PriceCategoryInputGroup from './PriceCategoryInputGroup';
+import { uploadImageToCloudinary } from '@/app/api/image/uploadImageToCloudinary';
+import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
 
 interface FileWithPreview extends File {
 	preview: string;
@@ -47,6 +49,8 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 	const [files, setFiles] = useState<FileWithPreview[]>([]);
 	const [isImageAdded, setIsImageAdded] = useState(false);
 	const [priceCategories, setPriceCategories] = useState<PriceCategoryInfo[]>([]);
+	const [isUploading, setIsUploading] = useState(false);
+	const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(null);
 
 	const { open, close } = useAlertContext();
 
@@ -74,6 +78,7 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 			description: '',
 			publisher: '',
 			category: '',
+			logoImageUrl: '',
 		},
 	});
 
@@ -88,7 +93,9 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 				description: product.description,
 				publisher: product.publisher,
 				category: product.category,
+				logoImageUrl: product.logoImageUrl,
 			});
+			setCurrentImageUrl(product.logoImageUrl as string);
 			setPriceCategories(product.priceCategories || []);
 		}
 	}, [isSuccess, productDetails, methods]);
@@ -102,7 +109,36 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 			),
 		);
 		setIsImageAdded(true);
+		handleImageUpload(acceptedFiles[0]);
 	}, []);
+
+	const handleImageUpload = async (file: File) => {
+		setIsUploading(true);
+		try {
+			if (currentImageUrl) {
+				const publicId = currentImageUrl.split('/').pop()?.split('.')[0];
+				if (publicId) {
+					await deleteImageFromCloudinary(publicId);
+				}
+			}
+
+			const result = await uploadImageToCloudinary(file);
+			const imageUrl = result.secure_url;
+			methods.setValue('logoImageUrl', imageUrl);
+			setCurrentImageUrl(imageUrl);
+		} catch (error: any) {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '이미지 업로드 실패',
+				main: <AlertMainTextBox text={error.message} />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		} finally {
+			setIsUploading(false);
+		}
+	};
 
 	const { getRootProps, getInputProps } = useDropzone({
 		accept: { 'image/*': [] } as Accept,
@@ -180,6 +216,9 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 			queryClient.invalidateQueries({
 				queryKey: ['productDetails', productId],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ['productList'],
+			});
 		},
 		onError: () => {
 			open({
@@ -208,6 +247,10 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 	const onSubmit: SubmitHandler<ProductInfoFormData> = (data, event) => {
 		event?.preventDefault();
 
+		if (isUploading) {
+			return;
+		}
+
 		if (!!productId) {
 			updateProductMutation.mutate(
 				{ ...data, priceCategories },
@@ -220,10 +263,13 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 							description: '',
 							publisher: '',
 							category: '',
+							logoImageUrl: '',
 						});
 						setPriceCategories([]);
+						setCurrentImageUrl(null);
+						setFiles([]);
+						setIsImageAdded(false);
 						setIsEditing?.(false);
-
 						setSelectedProductId?.(undefined);
 					},
 				},
@@ -235,12 +281,21 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 					onSuccess: () => {
 						reset();
 						setPriceCategories([]);
+						setCurrentImageUrl(null);
+						setFiles([]);
+						setIsImageAdded(false);
 					},
 				},
 			);
 		}
 	};
-	const handleDeleteCategory = (index: number, categoryId: number) => {
+
+	const handleDeleteCategory = (
+		index: number,
+		categoryId: number,
+		event: React.MouseEvent<HTMLButtonElement>,
+	) => {
+		event.preventDefault();
 		open({
 			width: '300px',
 			height: '200px',
@@ -291,7 +346,7 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 						<AdminProductInput name="name" label="상품권명" flex="3" />
 						<Spacing margin="25px" />
 						<AdminProductInput
-							name="logoImages"
+							name="logoImageUrls"
 							label="로고"
 							type="file"
 							flex="3"
@@ -300,8 +355,8 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 								{...getRootProps({ className: s.dropzone })}
 								style={{ position: 'relative', flex: '3', height: '100px', marginLeft: '1.5%' }}>
 								<input {...getInputProps()} />
-								{!isImageAdded && (
-									<Image src={DropImageBox} alt="이미지 등록 하기" className={s.dropImageBox} />
+								{currentImageUrl && !isImageAdded && (
+									<Image src={currentImageUrl} alt="현재 로고 이미지" width={100} height={100} />
 								)}
 								{thumbs}
 							</div>
@@ -364,7 +419,7 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 											<Flex justify="center" align="center">
 												<Button
 													style={{ backgroundColor: 'transparent', cursor: 'pointer' }}
-													onClick={() => handleDeleteCategory(index, category.id)}>
+													onClick={(event) => handleDeleteCategory(index, category.id, event)}>
 													<IoIosRemoveCircle style={{ backgroundColor: 'transparent' }} />
 												</Button>
 											</Flex>
@@ -390,7 +445,8 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 									minWidth: '100px',
 									padding: '4px',
 								}}
-								type="submit">
+								type="submit"
+								disabled={isUploading}>
 								{isEditing ? '수정' : '추가'}
 							</Button>
 						</Flex>

@@ -18,7 +18,7 @@ export const getProductData = async (id: string): Promise<ProductInfo> => {
 		category: 'cbm',
 		createdAt: '2024-07-10',
 		updatedAt: '2024-07-18',
-		logo: 'xxx.jpg',
+		logoImageUrl: 'xxx.jpg',
 		priceCategories: [
 			{
 				id: 1,

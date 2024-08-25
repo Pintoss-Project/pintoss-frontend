@@ -12,17 +12,20 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getProductList } from '@/app/api/product/getProductList';
 import { ProductInfo } from '@/models/product';
 import { deleteProduct } from '@/app/api/product/deleteProduct';
+import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { updateStock, UpdateStockParams } from '@/app/api/product/updateStock';
 
 interface Props {
 	onSelectProduct: (productId: number) => void;
+	onResetEdit: () => void;
 }
 
-const AdminProductList = ({ onSelectProduct }: Props) => {
+const AdminProductList = ({ onSelectProduct, onResetEdit }: Props) => {
 	const [selectedKind, setSelectedKind] = useState<{ [key: string]: string }>({});
 	const [quantity, setQuantity] = useState<{ [key: string]: number }>({});
+	const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
 	const { open, close } = useAlertContext();
 
@@ -44,7 +47,11 @@ const AdminProductList = ({ onSelectProduct }: Props) => {
 			}, {} as { [key: string]: string });
 
 			const initialQuantity = products.data.reduce((acc, product) => {
-				acc[product.id] = product.priceCategories?.[0]?.stock || 0;
+				const selectedCategoryId = initialSelected[product.id];
+				const selectedCategory = product.priceCategories?.find(
+					(category) => category.id === +selectedCategoryId,
+				);
+				acc[product.id] = selectedCategory?.stock || 0;
 				return acc;
 			}, {} as { [key: string]: number });
 
@@ -69,14 +76,25 @@ const AdminProductList = ({ onSelectProduct }: Props) => {
 	};
 
 	const handleQuantityChange = (event: ChangeEvent<HTMLInputElement>, product: ProductInfo) => {
+		const value = Math.max(0, Number(event.target.value));
 		setQuantity((prevState) => ({
 			...prevState,
-			[product.id]: Number(event.target.value),
+			[product.id]: value,
 		}));
 	};
 
 	const deleteProductMutation = useMutation({
-		mutationFn: (productId: number) => deleteProduct(productId),
+		mutationFn: async (productId: number) => {
+			setIsDeleting(true);
+			const product = products?.data.find((p) => p.id === productId);
+			if (product?.logoImageUrl) {
+				const publicId = product.logoImageUrl.split('/').pop()?.split('.')[0];
+				if (publicId) {
+					await deleteImageFromCloudinary(publicId);
+				}
+			}
+			return deleteProduct(productId);
+		},
 		onMutate: async (productId: number) => {
 			await queryClient.invalidateQueries({
 				queryKey: ['productList'],
@@ -104,8 +122,9 @@ const AdminProductList = ({ onSelectProduct }: Props) => {
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: close,
 			});
+			setIsDeleting(false);
 		},
-		onSettled: () => {
+		onSuccess: () => {
 			queryClient.invalidateQueries({
 				queryKey: ['productList'],
 			});
@@ -117,6 +136,8 @@ const AdminProductList = ({ onSelectProduct }: Props) => {
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: close,
 			});
+			setIsDeleting(false);
+			onResetEdit();
 		},
 	});
 
@@ -162,6 +183,11 @@ const AdminProductList = ({ onSelectProduct }: Props) => {
 					),
 				};
 			});
+
+			setQuantity((prevQuantity) => ({
+				...prevQuantity,
+				[updatedStock.productId]: updatedStock.data,
+			}));
 
 			return { previousProductList };
 		},
@@ -255,17 +281,24 @@ const AdminProductList = ({ onSelectProduct }: Props) => {
 						{product.name}
 					</div>
 					<div className={s.darkGraySmallText} style={{ flex: '2' }}>
-						<Flex
-							justify="center"
-							align="center"
-							style={{
-								width: '50px',
-								height: '50px',
-								backgroundColor: '#959595',
-								color: vars.color.white,
-							}}>
-							{product.logo}
-						</Flex>
+						{!product.logoImageUrl && (
+							<Flex
+								justify="center"
+								align="center"
+								style={{
+									width: '50px',
+									height: '50px',
+									backgroundColor: '#959595',
+									color: vars.color.white,
+								}}></Flex>
+						)}
+						{product.logoImageUrl && (
+							<img
+								src={product.logoImageUrl}
+								alt="상품권 로고 이미지"
+								style={{ width: '50px', height: '50px' }}
+							/>
+						)}
 					</div>
 					<div className={s.darkGraySmallText} style={{ flex: '2' }}>
 						<select
@@ -337,7 +370,8 @@ const AdminProductList = ({ onSelectProduct }: Props) => {
 									border: `1px solid ${vars.color.lighterGray}`,
 									borderRadius: '5px',
 								}}
-								onClick={() => handleDeleteProduct(product.id)}>
+								onClick={() => handleDeleteProduct(product.id)}
+								disabled={isDeleting}>
 								삭제
 							</Button>
 						</Flex>

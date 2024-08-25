@@ -23,6 +23,11 @@ const AdminProductMain = () => {
 		});
 	};
 
+	const handleResetEdit = () => {
+		setIsEditing(false);
+		setSelectedProductId(undefined);
+	};
+
 	return (
 		<div>
 			<Flex>
@@ -35,7 +40,7 @@ const AdminProductMain = () => {
 				/>
 			</Flex>
 			<Spacing margin="50px" />
-			<AdminProductList onSelectProduct={handleSelectProduct} />
+			<AdminProductList onSelectProduct={handleSelectProduct} onResetEdit={handleResetEdit} />
 		</div>
 	);
 };

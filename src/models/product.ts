@@ -17,7 +17,7 @@ export interface ProductInfo {
 	description: string;
 	publisher: string;
 	category: string;
-	logo?: string;
+	logoImageUrl?: string;
 	createdAt: string;
 	updatedAt: string;
 	priceCategories?: PriceCategoryInfo[];

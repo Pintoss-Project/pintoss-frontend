@@ -13,6 +13,7 @@ export const productInfoSchema = z.object({
 	publisher: z.string().min(1, '발행업체를 입력해주세요').optional(),
 	category: z.string().min(1, '카테고리를 선택해주세요').optional(),
 	priceCategories: z.array(priceCategoryInfoSchema).optional(),
+	logoImageUrl: z.string().optional(),
 });
 
 export type ProductInfoFormData = z.infer<typeof productInfoSchema>;
