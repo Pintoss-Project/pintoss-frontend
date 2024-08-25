@@ -13,6 +13,8 @@ export interface SiteInfo {
 	logoImages?: string[];
 	createdAt?: string;
 	updatedAt?: string;
+	topImageUrl: string;
+	bottomImageUrl: string;
 }
 
 export interface BannerInfo {
@@ -21,4 +23,6 @@ export interface BannerInfo {
 	bannerLink: string;
 	createdAt?: string;
 	updatedAt?: string;
+	desktopImageUrl: string;
+	mobileImageUrl: string;
 }

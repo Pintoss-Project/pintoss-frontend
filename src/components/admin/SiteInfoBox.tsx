@@ -1,29 +1,45 @@
-import { Flex } from '@/shared/components/layout';
-import * as s from './AdminStyle.css';
+'use client';
+
+import Spacing from '@/shared/components/layout/Spacing';
 import * as cs from '@/shared/styles/common.css';
+import * as s from './AdminStyle.css';
 import { vars } from '@/shared/styles/theme.css';
 import AdminInputField from './AdminInputField';
-import Spacing from '@/shared/components/layout/Spacing';
+import { Flex } from '@/shared/components/layout';
+import { Button } from '@/shared/components/button';
 import AdminImageField from './AdminImageField';
 import BannerImageBox from './BannerImageBox';
-import { Button } from '@/shared/components/button';
-import useAlertContext from '@/hooks/useAlertContext';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { SiteInfoFormData, siteInfoSchema } from '@/utils/validation/site';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { updateSiteInfo } from '@/app/api/site/updateSiteInfo';
-import { useEffect } from 'react';
-import { getSiteInfo } from '@/app/api/site/getSiteInfo';
+import { useEffect, useState } from 'react';
+import { getAllSiteInfo, getSiteInfo } from '@/app/api/site/getSiteInfo';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import SiteError from '@/utils/error/SiteError';
+import useAlertContext from '@/hooks/useAlertContext';
+import { uploadImageToCloudinary } from '@/app/api/image/uploadImageToCloudinary';
+import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 const SiteInfoBox = () => {
 	const { open, close } = useAlertContext();
+	const queryClient = useQueryClient();
+
+	const { data: allSiteInfo } = useQuery({
+		queryKey: ['allSiteInfo'],
+		queryFn: () => getAllSiteInfo(),
+	});
+
+	const firstSiteInfoId =
+		allSiteInfo && allSiteInfo?.data?.length > 0 ? allSiteInfo?.data[0].id : null;
+
+	console.log(allSiteInfo?.data, firstSiteInfoId);
 
 	const { data: siteInfo } = useQuery({
-		queryKey: ['siteInfo', 1],
-		queryFn: () => getSiteInfo(1),
+		queryKey: ['siteInfo', firstSiteInfoId],
+		queryFn: () => (firstSiteInfoId ? getSiteInfo(firstSiteInfoId) : Promise.resolve(null)),
+		enabled: !!firstSiteInfoId,
 	});
 
 	const methods = useForm<SiteInfoFormData>({
@@ -40,10 +56,25 @@ const SiteInfoBox = () => {
 			kakao: '',
 			openChat: '',
 			businessHour: '',
+			topImageUrl: '',
+			bottomImageUrl: '',
 		},
 	});
 
-	const { handleSubmit, reset } = methods;
+	const { handleSubmit, reset, setValue, getValues } = methods;
+
+	const [imageUrls, setImageUrls] = useState<{
+		topImageUrl: string | null | undefined;
+		bottomImageUrl: string | null | undefined;
+	}>({
+		topImageUrl: null,
+		bottomImageUrl: null,
+	});
+
+	const [isImageAddedTop, setIsImageAddedTop] = useState(false);
+	const [isImageAddedBottom, setIsImageAddedBottom] = useState(false);
+	const [resetTrigger, setResetTrigger] = useState(false);
+	const [isUploading, setIsUploading] = useState(false);
 
 	useEffect(() => {
 		if (siteInfo) {
@@ -58,12 +89,88 @@ const SiteInfoBox = () => {
 				kakao: siteInfo.data.kakao,
 				openChat: siteInfo.data.openChat,
 				businessHour: siteInfo.data.businessHour,
+				topImageUrl: siteInfo.data.topImageUrl,
+				bottomImageUrl: siteInfo.data.bottomImageUrl,
 			});
+
+			setImageUrls({
+				topImageUrl: siteInfo.data.topImageUrl,
+				bottomImageUrl: siteInfo.data.bottomImageUrl,
+			});
+
+			setIsImageAddedTop(!!siteInfo.data.topImageUrl);
+			setIsImageAddedBottom(!!siteInfo.data.bottomImageUrl);
 		}
 	}, [siteInfo, reset]);
 
+	const handleImageUpload = async (file: File, imageType: 'top' | 'bottom'): Promise<string> => {
+		setIsUploading(true);
+		try {
+			const result = await uploadImageToCloudinary(file);
+			const imageUrl = result.secure_url;
+
+			if (imageType === 'top') {
+				setValue('topImageUrl', imageUrl);
+				setImageUrls((prev) => ({ ...prev, topImageUrl: imageUrl }));
+				setIsImageAddedTop(true);
+			} else {
+				setValue('bottomImageUrl', imageUrl);
+				setImageUrls((prev) => ({ ...prev, bottomImageUrl: imageUrl }));
+				setIsImageAddedBottom(true);
+			}
+
+			return imageUrl;
+		} catch (error: any) {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '이미지 업로드 실패',
+				main: <AlertMainTextBox text={error.message} />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+
+			throw error;
+		} finally {
+			setIsUploading(false);
+		}
+	};
+
+	const handleImageDelete = async (imageType: 'top' | 'bottom') => {
+		const imageUrl = getValues(imageType === 'top' ? 'topImageUrl' : 'bottomImageUrl');
+		if (!imageUrl) return;
+
+		try {
+			const publicId = extractPublicIdFromUrl(imageUrl);
+			await deleteImageFromCloudinary(publicId);
+			setValue(imageType === 'top' ? 'topImageUrl' : 'bottomImageUrl', '');
+			if (imageType === 'top') {
+				setIsImageAddedTop(false);
+				setImageUrls((prev) => ({ ...prev, topImageUrl: null }));
+			} else {
+				setIsImageAddedBottom(false);
+				setImageUrls((prev) => ({ ...prev, bottomImageUrl: null }));
+			}
+		} catch (error: any) {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '이미지 삭제 실패',
+				main: <AlertMainTextBox text={error.message} />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		}
+	};
+
+	const extractPublicIdFromUrl = (url: string): string => {
+		const parts = url.split('/');
+		const publicIdWithExtension = parts[parts.length - 1];
+		return publicIdWithExtension.split('.')[0];
+	};
+
 	const mutation = useMutation({
-		mutationFn: (data: SiteInfoFormData) => updateSiteInfo(1, data),
+		mutationFn: (data: SiteInfoFormData) => updateSiteInfo(firstSiteInfoId as number, data),
 		onSuccess: () => {
 			open({
 				width: '300px',
@@ -73,6 +180,8 @@ const SiteInfoBox = () => {
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: close,
 			});
+			setResetTrigger((prev) => !prev);
+			queryClient.invalidateQueries({ queryKey: ['siteInfo', firstSiteInfoId] });
 		},
 		onError: (error: SiteError) => {
 			open({
@@ -87,6 +196,9 @@ const SiteInfoBox = () => {
 	});
 
 	const onSubmit: SubmitHandler<SiteInfoFormData> = (data) => {
+		if (isUploading) {
+			return;
+		}
 		mutation.mutate(data);
 	};
 
@@ -112,7 +224,27 @@ const SiteInfoBox = () => {
 						<AdminImageField
 							label="로고"
 							image={
-								<BannerImageBox label1="상단" label2="하단" imageWidth={185} imageHeight={74} />
+								<BannerImageBox<SiteInfoFormData>
+									label1="상단"
+									label2="하단"
+									imageWidth={185}
+									imageHeight={74}
+									name1="topImageUrl"
+									name2="bottomImageUrl"
+									setValue={setValue}
+									onImageUpload={(file, imageType) =>
+										handleImageUpload(file, imageType === 'desktop' ? 'top' : 'bottom')
+									}
+									onImageDelete={(imageType) =>
+										handleImageDelete(imageType === 'desktop' ? 'top' : 'bottom')
+									}
+									isImageAdded1={isImageAddedTop}
+									isImageAdded2={isImageAddedBottom}
+									setIsImageAdded1={setIsImageAddedTop}
+									setIsImageAdded2={setIsImageAddedBottom}
+									initialImageUrls={imageUrls}
+									resetTrigger={resetTrigger}
+								/>
 							}
 						/>
 						<Spacing margin="25px" />
@@ -148,7 +280,8 @@ const SiteInfoBox = () => {
 							border: `1px solid ${vars.color.lightGray}`,
 							borderRadius: '5px',
 						}}
-						type="submit">
+						type="submit"
+						disabled={isUploading}>
 						수정
 					</Button>
 				</Flex>

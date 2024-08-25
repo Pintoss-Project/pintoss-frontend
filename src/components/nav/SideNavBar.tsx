@@ -9,7 +9,7 @@ import Spacing from '@/shared/components/layout/Spacing';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
 import { getSimpleProductList } from '@/app/api/product/getProductList';
-import { getSiteInfo } from '@/app/api/site/getSiteInfo';
+import { getAllSiteInfo, getSiteInfo } from '@/app/api/site/getSiteInfo';
 
 const EXCLUDE_PATH = ['/login', '/register'];
 
@@ -21,9 +21,18 @@ const SideNavBar = () => {
 		queryFn: () => getSimpleProductList(''),
 	});
 
+	const { data: allSiteInfo } = useQuery({
+		queryKey: ['allSiteInfo'],
+		queryFn: () => getAllSiteInfo(),
+	});
+
+	const firstSiteInfoId =
+		allSiteInfo && allSiteInfo?.data?.length > 0 ? allSiteInfo?.data[0].id : null;
+
 	const { data: siteInfo } = useQuery({
-		queryKey: ['siteInfo', 1],
-		queryFn: () => getSiteInfo(1),
+		queryKey: ['siteInfo', firstSiteInfoId],
+		queryFn: () => (firstSiteInfoId ? getSiteInfo(firstSiteInfoId) : Promise.resolve(null)),
+		enabled: !!firstSiteInfoId,
 	});
 
 	if (EXCLUDE_PATH.includes(path) || path.includes('admin')) return null;

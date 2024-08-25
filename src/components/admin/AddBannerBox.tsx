@@ -1,3 +1,5 @@
+'use client';
+
 import Spacing from '@/shared/components/layout/Spacing';
 import * as cs from '@/shared/styles/common.css';
 import * as s from './AdminStyle.css';
@@ -5,29 +7,30 @@ import { vars } from '@/shared/styles/theme.css';
 import AdminInputField from './AdminInputField';
 import { Flex } from '@/shared/components/layout';
 import { Button } from '@/shared/components/button';
-import BannerImageBox from './BannerImageBox';
 import AdminImageField from './AdminImageField';
+import BannerImageBox from './BannerImageBox';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { BannerInfoFormData, bannerInfoSchema } from '@/utils/validation/site';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { postBanner } from '@/app/api/site/postBanner';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
+import { useEffect, useState } from 'react';
+import { uploadImageToCloudinary } from '@/app/api/image/uploadImageToCloudinary';
 import SiteError from '@/utils/error/SiteError';
-import { useEffect } from 'react';
+import { postBanner } from '@/app/api/site/postBanner';
 import { updateBanner } from '@/app/api/site/updateBanner';
-import { getBannerById } from '@/app/api/site/getBannerById';
+import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
 
-const AddBannerBox = ({ editingBannerId, initialBannerData, onResetEdit }: any) => {
+interface Props {
+	editingBannerId: number | null;
+	initialBannerData: BannerInfoFormData | null;
+	onResetEdit: () => void;
+}
+
+const AddBannerBox = ({ editingBannerId, initialBannerData, onResetEdit }: Props) => {
 	const { open, close } = useAlertContext();
 	const queryClient = useQueryClient();
-
-	const { data: bannerInfo } = useQuery({
-		queryKey: ['banner', editingBannerId],
-		queryFn: () => getBannerById(editingBannerId),
-		enabled: Boolean(editingBannerId),
-	});
 
 	const methods = useForm<BannerInfoFormData>({
 		resolver: zodResolver(bannerInfoSchema),
@@ -35,21 +38,113 @@ const AddBannerBox = ({ editingBannerId, initialBannerData, onResetEdit }: any) 
 		defaultValues: {
 			bannerTitle: '',
 			bannerLink: '',
+			desktopImageUrl: '',
+			mobileImageUrl: '',
 		},
 	});
 
-	const { handleSubmit, reset } = methods;
+	const { handleSubmit, reset, setValue } = methods;
+
+	const [imageUrls, setImageUrls] = useState<{
+		desktopImageUrl: string | null | undefined;
+		mobileImageUrl: string | null | undefined;
+	}>({
+		desktopImageUrl: null,
+		mobileImageUrl: null,
+	});
+
+	const [isImageAdded1, setIsImageAdded1] = useState(false);
+	const [isImageAdded2, setIsImageAdded2] = useState(false);
+	const [resetTrigger, setResetTrigger] = useState(false);
+	const [isUploading, setIsUploading] = useState(false);
 
 	useEffect(() => {
-		if (editingBannerId && bannerInfo) {
+		if (editingBannerId && initialBannerData) {
 			reset({
-				bannerTitle: bannerInfo.data.bannerTitle,
-				bannerLink: bannerInfo.data.bannerLink,
+				bannerTitle: initialBannerData.bannerTitle,
+				bannerLink: initialBannerData.bannerLink,
+				desktopImageUrl: initialBannerData.desktopImageUrl,
+				mobileImageUrl: initialBannerData.mobileImageUrl,
 			});
-		} else if (!editingBannerId) {
-			reset(initialBannerData);
+
+			setImageUrls({
+				desktopImageUrl: initialBannerData.desktopImageUrl,
+				mobileImageUrl: initialBannerData.mobileImageUrl,
+			});
+
+			setIsImageAdded1(!!initialBannerData.desktopImageUrl);
+			setIsImageAdded2(!!initialBannerData.mobileImageUrl);
+		} else {
+			resetForm();
 		}
-	}, [editingBannerId, bannerInfo, initialBannerData, reset]);
+	}, [editingBannerId, initialBannerData, reset]);
+
+	const resetForm = () => {
+		reset({ bannerTitle: '', bannerLink: '', desktopImageUrl: '', mobileImageUrl: '' });
+		setImageUrls({ desktopImageUrl: null, mobileImageUrl: null });
+		setIsImageAdded1(false);
+		setIsImageAdded2(false);
+		setResetTrigger((prev) => !prev);
+	};
+
+	const handleImageUpload = async (file: File, imageType: 'desktop' | 'mobile') => {
+		setIsUploading(true);
+		try {
+			const result = await uploadImageToCloudinary(file);
+			const imageUrl = result.secure_url;
+
+			if (imageType === 'desktop') {
+				setValue('desktopImageUrl', imageUrl);
+				setImageUrls((prev) => ({ ...prev, desktopImageUrl: imageUrl }));
+				setIsImageAdded1(true);
+			} else {
+				setValue('mobileImageUrl', imageUrl);
+				setImageUrls((prev) => ({ ...prev, mobileImageUrl: imageUrl }));
+				setIsImageAdded2(true);
+			}
+
+			return imageUrl;
+		} catch (error: any) {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '이미지 업로드 실패',
+				main: <AlertMainTextBox text={error.message} />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+
+			throw error;
+		} finally {
+			setIsUploading(false);
+		}
+	};
+
+	const handleImageDelete = async (imageType: 'desktop' | 'mobile') => {
+		try {
+			if (imageType === 'desktop' && imageUrls.desktopImageUrl) {
+				await deleteImageFromCloudinary(imageUrls.desktopImageUrl);
+				setValue('desktopImageUrl', '');
+				setImageUrls((prev) => ({ ...prev, desktopImageUrl: null }));
+				setIsImageAdded1(false);
+			} else if (imageType === 'mobile' && imageUrls.mobileImageUrl) {
+				await deleteImageFromCloudinary(imageUrls.mobileImageUrl);
+				setValue('mobileImageUrl', '');
+				setImageUrls((prev) => ({ ...prev, mobileImageUrl: null }));
+				setIsImageAdded2(false);
+			}
+		} catch (error: any) {
+			console.error('Image delete failed:', error);
+			open({
+				width: '300px',
+				height: '200px',
+				title: '이미지 삭제 실패',
+				main: <AlertMainTextBox text={error.message} />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		}
+	};
 
 	const mutation = useMutation({
 		mutationFn: (data: BannerInfoFormData) =>
@@ -68,10 +163,31 @@ const AddBannerBox = ({ editingBannerId, initialBannerData, onResetEdit }: any) 
 				onRightButtonClick: close,
 			});
 			queryClient.invalidateQueries({ queryKey: ['bannerList'] });
-			reset(initialBannerData);
+
+			resetForm();
+
 			onResetEdit();
 		},
-		onError: (error: SiteError) => {
+		onError: async (error: SiteError) => {
+			try {
+				if (imageUrls.desktopImageUrl) {
+					await deleteImageFromCloudinary(imageUrls.desktopImageUrl);
+				}
+				if (imageUrls.mobileImageUrl) {
+					await deleteImageFromCloudinary(imageUrls.mobileImageUrl);
+				}
+			} catch (deleteError) {
+				console.error('Failed to delete images from Cloudinary:', deleteError);
+				open({
+					width: '300px',
+					height: '200px',
+					title: '이미지 삭제 실패',
+					main: <AlertMainTextBox text={'이미지 삭제에 실패했습니다. 다시 시도해주세요.'} />,
+					rightButtonStyle: cs.lightBlueButton,
+					onRightButtonClick: close,
+				});
+			}
+
 			open({
 				width: '300px',
 				height: '200px',
@@ -85,6 +201,9 @@ const AddBannerBox = ({ editingBannerId, initialBannerData, onResetEdit }: any) 
 
 	const onSubmit: SubmitHandler<BannerInfoFormData> = (data, event) => {
 		event?.preventDefault();
+		if (isUploading) {
+			return;
+		}
 		mutation.mutate(data);
 	};
 
@@ -111,11 +230,22 @@ const AddBannerBox = ({ editingBannerId, initialBannerData, onResetEdit }: any) 
 				<AdminImageField
 					label="이미지"
 					image={
-						<BannerImageBox
+						<BannerImageBox<BannerInfoFormData>
 							label1="데스크톱 (1400 * 467)"
 							label2="모바일 (1000 * 500)"
 							imageWidth={200}
 							imageHeight={100}
+							name1="desktopImageUrl"
+							name2="mobileImageUrl"
+							setValue={setValue}
+							onImageUpload={(file, imageType) => handleImageUpload(file, imageType)}
+							onImageDelete={(imageType) => handleImageDelete(imageType)}
+							isImageAdded1={isImageAdded1}
+							isImageAdded2={isImageAdded2}
+							setIsImageAdded1={setIsImageAdded1}
+							setIsImageAdded2={setIsImageAdded2}
+							initialImageUrls={imageUrls}
+							resetTrigger={resetTrigger}
 						/>
 					}
 				/>
@@ -146,7 +276,8 @@ const AddBannerBox = ({ editingBannerId, initialBannerData, onResetEdit }: any) 
 							border: `1px solid ${vars.color.lightGray}`,
 							borderRadius: '5px',
 						}}
-						type="submit">
+						type="submit"
+						disabled={isUploading}>
 						{editingBannerId ? '수정' : '추가'}
 					</Button>
 				</Flex>

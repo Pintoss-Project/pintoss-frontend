@@ -11,14 +11,23 @@ import { vars } from '@/shared/styles/theme.css';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
-import { getSiteInfo } from '@/app/api/site/getSiteInfo';
+import { getAllSiteInfo, getSiteInfo } from '@/app/api/site/getSiteInfo';
 
 const Footer = () => {
 	const path = usePathname();
 
+	const { data: allSiteInfo } = useQuery({
+		queryKey: ['allSiteInfo'],
+		queryFn: () => getAllSiteInfo(),
+	});
+
+	const firstSiteInfoId =
+		allSiteInfo && allSiteInfo?.data?.length > 0 ? allSiteInfo?.data[0].id : null;
+
 	const { data: siteInfo } = useQuery({
-		queryKey: ['siteInfo', 1],
-		queryFn: () => getSiteInfo(1),
+		queryKey: ['siteInfo', firstSiteInfoId],
+		queryFn: () => (firstSiteInfoId ? getSiteInfo(firstSiteInfoId) : Promise.resolve(null)),
+		enabled: !!firstSiteInfoId,
 	});
 
 	if (path.includes('admin')) return null;

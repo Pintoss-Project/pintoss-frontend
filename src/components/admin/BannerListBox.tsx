@@ -5,21 +5,21 @@ import * as s from './AdminStyle.css';
 import * as cs from '@/shared/styles/common.css';
 import { Flex } from '@/shared/components/layout';
 import { vars } from '@/shared/styles/theme.css';
-import Spacing from '@/shared/components/layout/Spacing';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getBannerList } from '@/app/api/site/getBannerList';
 import SiteError from '@/utils/error/SiteError';
 import { deleteBanner } from '@/app/api/site/deleteBanner';
+import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 
 interface Props {
-	onEdit: (id: number) => void;
+	onEdit: (id: number, bannerData: any) => void;
+	onDelete: () => void;
 }
 
-const BannerListBox = ({ onEdit }: Props) => {
+const BannerListBox = ({ onEdit, onDelete }: Props) => {
 	const { open, close } = useAlertContext();
-
 	const queryClient = useQueryClient();
 	const { data: bannerList } = useQuery({
 		queryKey: ['bannerList'],
@@ -27,7 +27,22 @@ const BannerListBox = ({ onEdit }: Props) => {
 	});
 
 	const mutation = useMutation({
-		mutationFn: (id: number) => deleteBanner(id),
+		mutationFn: async (id: number) => {
+			const banner = bannerList?.data.find((banner) => banner.id === id);
+			if (banner?.desktopImageUrl) {
+				const publicId = banner.desktopImageUrl.split('/').pop()?.split('.')[0];
+				if (publicId) {
+					await deleteImageFromCloudinary(publicId);
+				}
+			}
+			if (banner?.mobileImageUrl) {
+				const publicId = banner.mobileImageUrl.split('/').pop()?.split('.')[0];
+				if (publicId) {
+					await deleteImageFromCloudinary(publicId);
+				}
+			}
+			return deleteBanner(id);
+		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['bannerList'] });
 			open({
@@ -38,6 +53,7 @@ const BannerListBox = ({ onEdit }: Props) => {
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: close,
 			});
+			onDelete();
 		},
 		onError: (error: SiteError) => {
 			open({
@@ -64,6 +80,7 @@ const BannerListBox = ({ onEdit }: Props) => {
 			onRightButtonClick: () => {
 				mutation.mutate(id);
 				close();
+				onDelete();
 			},
 			onLeftButtonClick: close,
 		});
@@ -112,7 +129,15 @@ const BannerListBox = ({ onEdit }: Props) => {
 							align="center"
 							className={s.imageGrayBox}
 							style={{ width: '300px', height: '100px' }}>
-							'이미지(데스크톱) 3:1'
+							{banner.desktopImageUrl ? (
+								<img
+									src={banner.desktopImageUrl}
+									alt="데스크톱 배너 이미지"
+									style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+								/>
+							) : (
+								'이미지(데스크톱) 3:1'
+							)}
 						</Flex>
 					</div>
 					<div className={s.darkGraySmallText} style={{ flex: '3' }}>
@@ -121,7 +146,15 @@ const BannerListBox = ({ onEdit }: Props) => {
 							align="center"
 							className={s.imageGrayBox}
 							style={{ width: '200px', height: '100px' }}>
-							'이미지(모바일) 2:1'
+							{banner.mobileImageUrl ? (
+								<img
+									src={banner.mobileImageUrl}
+									alt="모바일 배너 이미지"
+									style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+								/>
+							) : (
+								'이미지(모바일) 2:1'
+							)}
 						</Flex>
 					</div>
 					<div className={s.darkGraySmallText} style={{ flex: '1' }}>
@@ -134,13 +167,13 @@ const BannerListBox = ({ onEdit }: Props) => {
 									backgroundColor: vars.color.white,
 									border: `1px solid ${vars.color.lighterGray}`,
 									borderRadius: '5px',
+									marginBottom: '8px',
 								}}
 								onClick={() => {
-									onEdit(banner.id);
+									onEdit(banner.id, banner);
 								}}>
 								수정
 							</Button>
-							<Spacing margin="7px" />
 							<Button
 								color={vars.color.darkGray}
 								style={{

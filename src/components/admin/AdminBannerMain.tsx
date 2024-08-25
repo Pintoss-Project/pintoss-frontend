@@ -14,13 +14,22 @@ const AdminBannerMain = () => {
 
 	const handleEdit = async (id: number) => {
 		const banner = await getBannerById(id);
-		setInitialBannerData(banner);
+		setInitialBannerData(banner.data);
 		setEditingBannerId(id);
 	};
 
 	const handleResetEdit = () => {
 		setEditingBannerId(null);
-		setInitialBannerData(null);
+		setInitialBannerData({
+			bannerTitle: '',
+			bannerLink: '',
+			desktopImageUrl: '',
+			mobileImageUrl: '',
+		});
+	};
+
+	const handleDelete = () => {
+		handleResetEdit();
 	};
 
 	return (
@@ -34,7 +43,7 @@ const AdminBannerMain = () => {
 				/>
 			</Flex>
 			<Spacing margin="50px" />
-			<BannerListBox onEdit={handleEdit} />
+			<BannerListBox onEdit={handleEdit} onDelete={handleDelete} />
 		</div>
 	);
 };
