@@ -52,6 +52,7 @@ const RAW_RUNTIME_STATE =
           ["next", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:13.5.6"],\
           ["next-cloudinary", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:6.10.1"],\
           ["query-string", "npm:9.0.0"],\
+          ["quill", "npm:2.0.2"],\
           ["react", "npm:18.3.1"],\
           ["react-beautiful-dnd", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:13.1.1"],\
           ["react-dom", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:18.3.1"],\
@@ -3590,6 +3591,13 @@ const RAW_RUNTIME_STATE =
           ["eventemitter3", "npm:2.0.3"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:5.0.1", {\
+        "packageLocation": "./.yarn/cache/eventemitter3-npm-5.0.1-5e423b7df3-ac6423ec31.zip/node_modules/eventemitter3/",\
+        "packageDependencies": [\
+          ["eventemitter3", "npm:5.0.1"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["exponential-backoff", [\
@@ -4803,6 +4811,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["lodash-es", [\
+      ["npm:4.17.21", {\
+        "packageLocation": "./.yarn/cache/lodash-es-npm-4.17.21-b45832dfce-03f39878ea.zip/node_modules/lodash-es/",\
+        "packageDependencies": [\
+          ["lodash-es", "npm:4.17.21"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["lodash.clonedeep", [\
       ["npm:4.5.0", {\
         "packageLocation": "./.yarn/cache/lodash.clonedeep-npm-4.5.0-fbc3cda4e5-957ed243f8.zip/node_modules/lodash.clonedeep/",\
@@ -5424,6 +5441,13 @@ const RAW_RUNTIME_STATE =
           ["parchment", "npm:1.1.4"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:3.0.0", {\
+        "packageLocation": "./.yarn/cache/parchment-npm-3.0.0-8af750d9d9-67b91be827.zip/node_modules/parchment/",\
+        "packageDependencies": [\
+          ["parchment", "npm:3.0.0"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["parent-module", [\
@@ -5549,6 +5573,7 @@ const RAW_RUNTIME_STATE =
           ["next", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:13.5.6"],\
           ["next-cloudinary", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:6.10.1"],\
           ["query-string", "npm:9.0.0"],\
+          ["quill", "npm:2.0.2"],\
           ["react", "npm:18.3.1"],\
           ["react-beautiful-dnd", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:13.1.1"],\
           ["react-dom", "virtual:89931b5985bf79be3fb4825c2007197923dd912ecd716a90f4a09d0a1d844e1d6cef9cdf4e872562cc59e97dcf17c09c80f43f6bfaba6ecc4e1a63dfb74c5038#npm:18.3.1"],\
@@ -5695,6 +5720,17 @@ const RAW_RUNTIME_STATE =
           ["extend", "npm:3.0.2"],\
           ["parchment", "npm:1.1.4"],\
           ["quill-delta", "npm:3.6.3"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:2.0.2", {\
+        "packageLocation": "./.yarn/cache/quill-npm-2.0.2-135b4c32cb-f5e67a050a.zip/node_modules/quill/",\
+        "packageDependencies": [\
+          ["quill", "npm:2.0.2"],\
+          ["eventemitter3", "npm:5.0.1"],\
+          ["lodash-es", "npm:4.17.21"],\
+          ["parchment", "npm:3.0.0"],\
+          ["quill-delta", "npm:5.1.0"]\
         ],\
         "linkType": "HARD"\
       }]\

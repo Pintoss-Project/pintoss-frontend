@@ -6,7 +6,7 @@ import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import { vars } from '@/shared/styles/theme.css';
 import { ChangeEvent, FormEvent, useEffect, useMemo, useRef, useState } from 'react';
-import ReactQuill from 'react-quill';
+import ReactQuill, { ReactQuillProps } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import * as s from './AdminStyle.css';
 import * as cs from '@/shared/styles/common.css';
@@ -21,6 +21,11 @@ import { uploadImageToCloudinary } from '@/app/api/image/uploadImageToCloudinary
 import { updateBoard } from '@/app/api/board/updateBoard';
 import { deleteImageFromBackend } from '@/app/api/board/deleteBoard';
 import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
+import dynamic from 'next/dynamic';
+
+interface ForwardedQuillComponent extends ReactQuillProps {
+	forwardedRef: React.Ref<ReactQuill>;
+}
 
 interface UploadedImage {
 	id: string;
@@ -34,6 +39,17 @@ interface Props {
 	editBoard?: { id: number; title: string; content: string; images?: string[] } | null;
 	resetEditBoard: () => void;
 }
+
+const QuillNoSSRWrapper = dynamic(
+	async () => {
+		const { default: QuillComponent } = await import('react-quill');
+		const Quill = ({ forwardedRef, ...props }: ForwardedQuillComponent) => (
+			<QuillComponent ref={forwardedRef} {...props} />
+		);
+		return Quill;
+	},
+	{ loading: () => <div>...loading</div>, ssr: false },
+);
 
 const BoardWriter = ({ title, formId, editBoard, resetEditBoard }: Props) => {
 	const [boardTitle, setBoardTitle] = useState<string>('');
@@ -66,16 +82,26 @@ const BoardWriter = ({ title, formId, editBoard, resetEditBoard }: Props) => {
 				const range = editor.getSelection(true);
 				editor.insertEmbed(range.index, 'image', newImage.url);
 			}
-		} catch (error: any) {
-			// @ts-ignore: Suppress any type error
-			open({
-				width: '300px',
-				height: '200px',
-				title: '이미지 업로드 실패',
-				main: <AlertMainTextBox text={error.message} />,
-				rightButtonStyle: cs.lightBlueButton,
-				onRightButtonClick: close,
-			});
+		} catch (error: unknown) {
+			if (error instanceof Error) {
+				open({
+					width: '300px',
+					height: '200px',
+					title: '이미지 업로드 실패',
+					main: <AlertMainTextBox text={error.message} />,
+					rightButtonStyle: cs.lightBlueButton,
+					onRightButtonClick: close,
+				});
+			} else {
+				open({
+					width: '300px',
+					height: '200px',
+					title: '이미지 업로드 실패',
+					main: <AlertMainTextBox text="An unknown error occurred." />,
+					rightButtonStyle: cs.lightBlueButton,
+					onRightButtonClick: close,
+				});
+			}
 		}
 	};
 
@@ -94,18 +120,28 @@ const BoardWriter = ({ title, formId, editBoard, resetEditBoard }: Props) => {
 				if (image.savedToBackend) {
 					await deleteImageFromBackend(+image.id);
 				}
-			} catch (error: any) {
-				// @ts-ignore: Suppress any type error
-				console.error('Image delete failed:', error);
-				// @ts-ignore: Suppress any type error
-				open({
-					width: '300px',
-					height: '200px',
-					title: '이미지 삭제 실패',
-					main: <AlertMainTextBox text={error.message} />,
-					rightButtonStyle: cs.lightBlueButton,
-					onRightButtonClick: close,
-				});
+			} catch (error: unknown) {
+				if (error instanceof Error) {
+					console.error('Image delete failed:', error);
+					open({
+						width: '300px',
+						height: '200px',
+						title: '이미지 삭제 실패',
+						main: <AlertMainTextBox text={error.message} />,
+						rightButtonStyle: cs.lightBlueButton,
+						onRightButtonClick: close,
+					});
+				} else {
+					console.error('Image delete failed with an unknown error');
+					open({
+						width: '300px',
+						height: '200px',
+						title: '이미지 삭제 실패',
+						main: <AlertMainTextBox text="An unknown error occurred while deleting the image." />,
+						rightButtonStyle: cs.lightBlueButton,
+						onRightButtonClick: close,
+					});
+				}
 			}
 		}
 	};
@@ -148,25 +184,19 @@ const BoardWriter = ({ title, formId, editBoard, resetEditBoard }: Props) => {
 
 	const handleEditorChange = (
 		content: string,
-		// @ts-ignore: Suppress any type error
-		delta: any,
-		// @ts-ignore: Suppress any type error
-		source: any,
-		// @ts-ignore: Suppress any type error
-		editor: any,
+		delta: unknown,
+		source: unknown,
+		editor: ReactQuill.UnprivilegedEditor,
 	) => {
 		setBoardContent(content);
 
-		// @ts-ignore: Suppress any type error
 		const currentContents = editor.getContents();
 		const insertedImages = currentContents.ops
-			// @ts-ignore: Suppress any type error
-			.filter((op: any) => op.insert && op.insert.image)
-			// @ts-ignore: Suppress any type error
-			.map((op: any) => op.insert.image);
+			?.filter((op) => op.insert && op.insert.image)
+			.map((op) => op.insert.image);
 
 		uploadedImages.forEach((img) => {
-			if (!insertedImages.includes(img.url) && !deletedImages.includes(img)) {
+			if (!insertedImages?.includes(img.url) && !deletedImages.includes(img)) {
 				handleImageDelete(img.url);
 			}
 		});
@@ -288,8 +318,8 @@ const BoardWriter = ({ title, formId, editBoard, resetEditBoard }: Props) => {
 					<div className={s.darkGraySmallText} style={{ marginRight: '4px' }}>
 						내용
 					</div>
-					<ReactQuill
-						ref={quillRef}
+					<QuillNoSSRWrapper
+						forwardedRef={quillRef}
 						value={boardContent}
 						onChange={handleEditorChange}
 						style={{ width: '95%', height: '170px' }}

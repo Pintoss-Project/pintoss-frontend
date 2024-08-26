@@ -2809,6 +2809,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eventemitter3@npm:^5.0.1":
+  version: 5.0.1
+  resolution: "eventemitter3@npm:5.0.1"
+  checksum: 10/ac6423ec31124629c84c7077eed1e6987f6d66c31cf43c6fcbf6c87791d56317ce808d9ead483652436df171b526fc7220eccdc9f3225df334e81582c3cf7dd5
+  languageName: node
+  linkType: hard
+
 "exponential-backoff@npm:^3.1.1":
   version: 3.1.1
   resolution: "exponential-backoff@npm:3.1.1"
@@ -3875,6 +3882,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash-es@npm:^4.17.21":
+  version: 4.17.21
+  resolution: "lodash-es@npm:4.17.21"
+  checksum: 10/03f39878ea1e42b3199bd3f478150ab723f93cc8730ad86fec1f2804f4a07c6e30deaac73cad53a88e9c3db33348bb8ceeb274552390e7a75d7849021c02df43
+  languageName: node
+  linkType: hard
+
 "lodash.clonedeep@npm:^4.5.0":
   version: 4.5.0
   resolution: "lodash.clonedeep@npm:4.5.0"
@@ -4444,6 +4458,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"parchment@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "parchment@npm:3.0.0"
+  checksum: 10/67b91be827794c146b36bf56aa958e7519c8c47ff5298d7008eee3083ac33fdafdec4bb0f4b308d25b20c0e74775a4a729e280154209acf0e4d759d8ffc939ae
+  languageName: node
+  linkType: hard
+
 "parent-module@npm:^1.0.0":
   version: 1.0.1
   resolution: "parent-module@npm:1.0.1"
@@ -4548,6 +4569,7 @@ __metadata:
     next: "npm:13.5.6"
     next-cloudinary: "npm:^6.10.1"
     query-string: "npm:^9.0.0"
+    quill: "npm:^2.0.2"
     react: "npm:^18"
     react-beautiful-dnd: "npm:^13.1.1"
     react-dom: "npm:^18"
@@ -4701,6 +4723,18 @@ __metadata:
     parchment: "npm:^1.1.4"
     quill-delta: "npm:^3.6.2"
   checksum: 10/17f5ac34d07a2b9a855867cc1d83b3d19732d7a7e5d14f7550b4e96eaaaab24ac055b306e59c3cc7ccff4b9c46d48b8f09d933f618d82a52aaf86264d224c6fc
+  languageName: node
+  linkType: hard
+
+"quill@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "quill@npm:2.0.2"
+  dependencies:
+    eventemitter3: "npm:^5.0.1"
+    lodash-es: "npm:^4.17.21"
+    parchment: "npm:^3.0.0"
+    quill-delta: "npm:^5.1.0"
+  checksum: 10/f5e67a050aade8a9100eab89c66be6b9438547c3d64c5d5d78f21fb4610415eb83708d819320033815d0fe797f9cd02cd65b7b0fa9cfbf92a2673675451c4f1b
   languageName: node
   linkType: hard
 
