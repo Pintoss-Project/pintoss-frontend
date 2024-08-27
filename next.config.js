@@ -2,6 +2,14 @@ const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+	async rewrites() {
+		return [
+			{
+				source: '/api/niceid/:path*',
+				destination: '/app/api/niceid/:path*',
+			},
+		];
+	},
 	reactStrictMode: true,
 	images: {
 		// loader: 'imgix',

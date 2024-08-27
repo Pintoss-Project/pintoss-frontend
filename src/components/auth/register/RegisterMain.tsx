@@ -32,12 +32,11 @@ import RegisterInfoBox from './RegisterInfoBox';
 import RegisterPersonalInfo from './RegisterPersonalInfo';
 
 interface Props {
-	oAuthName?: string;
-	oAUthEmail?: string;
+	oAuthEmail?: string;
 	accessToken?: string;
 }
 
-const RegisterMain = ({ oAuthName, oAUthEmail, accessToken }: Props) => {
+const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 	const { open, close } = useAlertContext();
 	const { setRedirectPath } = useRedirect();
 
@@ -48,15 +47,13 @@ const RegisterMain = ({ oAuthName, oAUthEmail, accessToken }: Props) => {
 
 	useEffect(() => {
 		const oauthParam = searchParam.get('oauth');
-		if (oauthParam === 'true') {
-			setIsOAuth(true);
-		} else {
-			setIsOAuth(false);
-		}
+		setIsOAuth(oauthParam === 'true');
 	}, [searchParam]);
 
 	useEffect(() => {
-		setLocalToken(accessToken as string);
+		if (accessToken) {
+			setLocalToken(accessToken);
+		}
 	}, [accessToken]);
 
 	const chosenSchema = isOAuth ? oAuthRegisterSchema : registerSchema;
@@ -67,7 +64,7 @@ const RegisterMain = ({ oAuthName, oAUthEmail, accessToken }: Props) => {
 		defaultValues: {
 			termsOfUse: false,
 			privacyPolicy: false,
-			email: '',
+			email: oAuthEmail || '',
 			password: '',
 			confirmPassword: '',
 			name: '',
@@ -76,9 +73,19 @@ const RegisterMain = ({ oAuthName, oAUthEmail, accessToken }: Props) => {
 		},
 	});
 
-	const { watch, handleSubmit } = methods;
+	const { watch, handleSubmit, setValue } = methods;
 	const email = watch('email');
 	const [isEmailChecked, setIsEmailChecked] = useState(false);
+
+	useEffect(() => {
+		setIsEmailChecked(false);
+	}, [email]);
+
+	useEffect(() => {
+		if (oAuthEmail) {
+			setValue('email', oAuthEmail as string);
+		}
+	}, [oAuthEmail, setValue]);
 
 	const registerMutation = useMutation({
 		mutationFn: (data: RegisterFormData) => postRegister(data),
@@ -154,7 +161,7 @@ const RegisterMain = ({ oAuthName, oAUthEmail, accessToken }: Props) => {
 
 	const handleOAuthRegisterSubmit: SubmitHandler<OAuthRegisterFormData> = (data, event) => {
 		event?.preventDefault();
-		if (data?.email === oAUthEmail) {
+		if (data?.email === oAuthEmail) {
 			oAuthRegisterMutation.mutate(data);
 		}
 	};
@@ -164,19 +171,6 @@ const RegisterMain = ({ oAuthName, oAUthEmail, accessToken }: Props) => {
 				handleOAuthRegisterSubmit as SubmitHandler<RegisterFormData | OAuthRegisterFormData>,
 		  )
 		: handleSubmit(handleRegisterSubmit as SubmitHandler<RegisterFormData | OAuthRegisterFormData>);
-
-	useEffect(() => {
-		setIsEmailChecked(false);
-	}, [email]);
-
-	useEffect(() => {
-		if (oAUthEmail) {
-			methods.setValue('email', oAUthEmail as string);
-		}
-		if (oAuthName) {
-			methods.setValue('name', oAuthName as string);
-		}
-	}, [oAUthEmail, oAuthName]);
 
 	return (
 		<FormProvider {...methods}>

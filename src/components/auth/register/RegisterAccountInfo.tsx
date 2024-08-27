@@ -6,15 +6,21 @@ import { useSearchParams } from 'next/navigation';
 
 const RegisterAccountInfo = () => {
 	const searchParam = useSearchParams();
-	const isOAuth = searchParam.get('oauth');
+	const isOAuth = searchParam.get('oauth') === 'true';
 
 	return (
 		<div style={{ marginLeft: '10px' }}>
-			<RegisterInputBox name="email" label="아이디(이메일)" star placeholder="abc@site.com" />
+			<RegisterInputBox
+				name="email"
+				label="아이디(이메일)"
+				star
+				placeholder="abc@site.com"
+				disabled={isOAuth}
+			/>
 			<Spacing margin="5px" />
 			<p className={s.pText}>비밀번호찾기, 주문내역 발송 등에 쓰이므로 정확히 입력해 주세요.</p>
 			<Spacing margin="20px" />
-			{isOAuth !== 'true' && (
+			{!isOAuth && (
 				<>
 					<RegisterInputBox
 						name="password"
@@ -33,7 +39,7 @@ const RegisterAccountInfo = () => {
 					/>
 				</>
 			)}
-			{isOAuth === 'true' && (
+			{isOAuth && (
 				<RegisterInputBox
 					name="inflow"
 					label="유입경로"

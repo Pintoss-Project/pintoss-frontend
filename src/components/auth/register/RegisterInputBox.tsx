@@ -11,9 +11,10 @@ interface Props {
 	star?: boolean;
 	type?: string;
 	placeholder?: string;
+	disabled?: boolean;
 }
 
-const RegisterInputBox = ({ name, label, star, type, placeholder }: Props) => {
+const RegisterInputBox = ({ name, label, star, type, placeholder, disabled = false }: Props) => {
 	const {
 		control,
 		formState: { errors },
@@ -40,6 +41,7 @@ const RegisterInputBox = ({ name, label, star, type, placeholder }: Props) => {
 								className={s.inputStyle}
 								placeholder={placeholder}
 								onChange={field.onChange}
+								disabled={disabled}
 							/>
 							<Flex justify="start" align="center">
 								{errors[name] && (

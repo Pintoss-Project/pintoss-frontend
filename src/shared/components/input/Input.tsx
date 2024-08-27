@@ -23,6 +23,7 @@ const Input = (props: InputProps, ref: Ref<HTMLInputElement>) => {
 		onChange,
 		onBlur,
 		value,
+		disabled,
 	} = props;
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,6 +38,7 @@ const Input = (props: InputProps, ref: Ref<HTMLInputElement>) => {
 			type={type}
 			checked={checked}
 			placeholder={placeholder}
+			disabled={disabled}
 			step={step}
 			onChange={handleChange}
 			onBlur={onBlur}
