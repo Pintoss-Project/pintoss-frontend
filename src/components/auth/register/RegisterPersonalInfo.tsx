@@ -1,12 +1,12 @@
-import * as cs from '@/shared/styles/common.css';
-import * as s from './RegisterStyle.css';
-import Spacing from '@/shared/components/layout/Spacing';
-import RegisterInputBox from './RegisterInputBox';
 import { Button } from '@/shared/components/button';
+import Spacing from '@/shared/components/layout/Spacing';
+import * as cs from '@/shared/styles/common.css';
 import { vars } from '@/shared/styles/theme.css';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
 import { fetchApi } from '@/utils/fetchApi';
+import { useEffect, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import RegisterInputBox from './RegisterInputBox';
+import * as s from './RegisterStyle.css';
 
 interface Props {
 	authData: {
@@ -35,7 +35,7 @@ const RegisterPersonalInfo = ({ authData }: Props) => {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
-					returnurl: 'http://localhost:3000/register',
+					returnurl: 'http://localhost:3000/register/nice',
 				}),
 			});
 
@@ -47,7 +47,7 @@ const RegisterPersonalInfo = ({ authData }: Props) => {
 
 			console.log('Request Data:', requestData);
 
-			const formWindow = window.open('', '_self', 'width=500,height=600');
+			const formWindow = window.open('', '_blank', 'width=500,height=600');
 			if (formWindow) {
 				const formDocument = formWindow.document;
 				const form = formDocument.createElement('form');

@@ -21,7 +21,7 @@ import {
 } from '@/utils/validation/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useSetRecoilState } from 'recoil';
@@ -41,6 +41,7 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 	const { open, close } = useAlertContext();
 	const { setRedirectPath } = useRedirect();
 	const setAuthState = useSetRecoilState(authState);
+	const router = useRouter();
 
 	const searchParam = useSearchParams();
 	const [isOAuth, setIsOAuth] = useState(false);
@@ -124,7 +125,7 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: close,
 			});
-			setRedirectPath('/');
+			router.push('/');
 			setAuthState((prev) => ({ ...prev, isLoggedIn: true }));
 		},
 		onError: () => {
@@ -140,7 +141,6 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 	});
 
 	const handleRegisterSubmit: SubmitHandler<RegisterFormData> = async (data, event) => {
-		console.log(1);
 		event?.preventDefault();
 
 		if (!isEmailChecked) {
@@ -179,14 +179,21 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 		: handleSubmit(handleRegisterSubmit as SubmitHandler<RegisterFormData | OAuthRegisterFormData>);
 
 	useEffect(() => {
-		const params = new URLSearchParams(window.location.search);
-		const tokenVersionId = params.get('token_version_id');
-		const encData = params.get('enc_data');
-		const integrityValue = params.get('integrity_value');
+		const messageHandler = (event: MessageEvent) => {
+			if (event.origin !== window.location.origin) return;
 
-		if (tokenVersionId && encData && integrityValue) {
-			handleDecryption(tokenVersionId, encData, integrityValue);
-		}
+			const { token_version_id, enc_data, integrity_value } = event.data;
+
+			if (token_version_id && enc_data && integrity_value) {
+				handleDecryption(token_version_id, enc_data, integrity_value);
+			}
+		};
+
+		window.addEventListener('message', messageHandler);
+
+		return () => {
+			window.removeEventListener('message', messageHandler);
+		};
 	}, []);
 
 	const handleDecryption = async (
@@ -221,6 +228,9 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: close,
 			});
+
+			// 인증 완료 후 리다이렉트
+			router.push('/register'); // 원하는 경로로 리다이렉트
 		} catch (error) {
 			console.error('Decryption error:', error);
 
