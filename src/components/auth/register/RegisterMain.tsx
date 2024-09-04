@@ -30,6 +30,7 @@ import RegisterAccountInfo from './RegisterAccountInfo';
 import RegisterButton from './RegisterButton';
 import RegisterInfoBox from './RegisterInfoBox';
 import RegisterPersonalInfo from './RegisterPersonalInfo';
+import { fetchApi } from '@/utils/fetchApi';
 
 interface Props {
 	oAuthEmail?: string;
@@ -39,11 +40,12 @@ interface Props {
 const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 	const { open, close } = useAlertContext();
 	const { setRedirectPath } = useRedirect();
-
 	const setAuthState = useSetRecoilState(authState);
 
 	const searchParam = useSearchParams();
 	const [isOAuth, setIsOAuth] = useState(false);
+
+	const [authData, setAuthData] = useState<{ name?: string; phone?: string }>({});
 
 	useEffect(() => {
 		const oauthParam = searchParam.get('oauth');
@@ -67,13 +69,13 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 			email: oAuthEmail || '',
 			password: '',
 			confirmPassword: '',
-			name: '',
-			phone: '',
+			name: authData.name || '',
+			phone: authData.phone || '',
 			inflow: '',
 		},
 	});
 
-	const { watch, handleSubmit, setValue } = methods;
+	const { watch, handleSubmit, setValue, trigger } = methods;
 	const email = watch('email');
 	const [isEmailChecked, setIsEmailChecked] = useState(false);
 
@@ -138,6 +140,7 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 	});
 
 	const handleRegisterSubmit: SubmitHandler<RegisterFormData> = async (data, event) => {
+		console.log(1);
 		event?.preventDefault();
 
 		if (!isEmailChecked) {
@@ -156,6 +159,9 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 			}
 		}
 
+		const isValid = await trigger(['name', 'phone']);
+		console.log('Validation after setValue:', isValid);
+
 		registerMutation.mutate(data);
 	};
 
@@ -172,6 +178,65 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 		  )
 		: handleSubmit(handleRegisterSubmit as SubmitHandler<RegisterFormData | OAuthRegisterFormData>);
 
+	useEffect(() => {
+		const params = new URLSearchParams(window.location.search);
+		const tokenVersionId = params.get('token_version_id');
+		const encData = params.get('enc_data');
+		const integrityValue = params.get('integrity_value');
+
+		if (tokenVersionId && encData && integrityValue) {
+			handleDecryption(tokenVersionId, encData, integrityValue);
+		}
+	}, []);
+
+	const handleDecryption = async (
+		tokenVersionId: string,
+		encData: string,
+		integrityValue: string,
+	) => {
+		try {
+			const decryptedData = await fetchApi('/api/niceid/decrypt', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					token_version_id: tokenVersionId,
+					enc_data: encData,
+					integrity_value: integrityValue,
+				}),
+			});
+
+			console.log('decryptedData', decryptedData);
+
+			setAuthData({ name: decryptedData.name, phone: decryptedData.mobileno });
+			setValue('name', decryptedData.name);
+			setValue('phone', decryptedData.mobileno);
+
+			open({
+				width: '300px',
+				height: '200px',
+				title: '휴대폰 인증 완료',
+				main: <AlertMainTextBox text="휴대폰 인증이 완료되었습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		} catch (error) {
+			console.error('Decryption error:', error);
+
+			open({
+				width: '300px',
+				height: '200px',
+				title: '휴대폰 인증 실패',
+				main: (
+					<AlertMainTextBox text="휴대폰 인증 처리 중 오류가 발생했습니다. 다시 시도해주세요." />
+				),
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		}
+	};
+
 	return (
 		<FormProvider {...methods}>
 			<form id="register-form" onSubmit={handleFormSubmit}>
@@ -182,7 +247,10 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 				<RegisterInfoBox subTitle="계정정보" info={<RegisterAccountInfo />} />
 				<Divider color={vars.color.lighterGray} size={1} />
 				<Spacing margin="40px" />
-				<RegisterInfoBox subTitle="회원 개인정보" info={<RegisterPersonalInfo />} />
+				<RegisterInfoBox
+					subTitle="회원 개인정보"
+					info={<RegisterPersonalInfo authData={authData} />}
+				/>
 				<Spacing margin="40px" />
 				<footer className={as.footerWrap}>
 					<RegisterButton />

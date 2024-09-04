@@ -1,25 +1,16 @@
-import * as cs from '@/shared/styles/common.css';
-import * as s from './MyPageStyle.css';
 import { Flex } from '@/shared/components/layout';
+import * as cs from '@/shared/styles/common.css';
 import { vars } from '@/shared/styles/theme.css';
+import * as s from './MyPageStyle.css';
 
-import Image from 'next/image';
-import { KakaoLogo, NaverLogo } from '../../../public/svgs';
 import { Button } from '@/shared/components/button';
 import Spacing from '@/shared/components/layout/Spacing';
-import { useMutation } from '@tanstack/react-query';
-import { getOAuthConnectUrl } from '@/app/api/auth/getOAuthConnectUrl';
+import Image from 'next/image';
+import { KakaoLogo, NaverLogo } from '../../../public/svgs';
 
 const SnsInfoBox = () => {
-	const naverConnectMutation = useMutation({
-		mutationFn: () => getOAuthConnectUrl('naver'),
-		onSuccess: (data) => {
-			window.location.href = data.url;
-		},
-	});
-
 	const handleNaverConnect = () => {
-		naverConnectMutation.mutate();
+		window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/oauth/naver/connect`;
 	};
 
 	return (

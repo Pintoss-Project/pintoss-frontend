@@ -12,12 +12,14 @@ import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import { vars } from '@/shared/styles/theme.css';
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useRecoilValue } from 'recoil';
 import InfoBox from '../InfoBox';
 import AuthenticationInfoBox from './AuthenticationInfoBox';
 import MemberInfoBox from './MemberInfoBox';
 import SnsInfoBox from './SnsInfoBox';
+import { postConnectNaver } from '@/app/api/auth/postConnectNaver';
+import { useEffect } from 'react';
 
 const MyPageMain = () => {
 	const authStateValue = useRecoilValue(authState);
@@ -25,6 +27,9 @@ const MyPageMain = () => {
 
 	const { open, close } = useAlertContext();
 	const router = useRouter();
+	const searchParams = useSearchParams();
+	const code = searchParams.get('code');
+	const state = searchParams.get('state');
 
 	const deactivateUserMutation = useMutation({
 		mutationFn: () => postDeactivateUser(),
@@ -72,10 +77,6 @@ const MyPageMain = () => {
 			onLeftButtonClick: close,
 		});
 	};
-
-	if (!isLoggedIn) {
-		router.push('/');
-	}
 
 	return (
 		<div>
