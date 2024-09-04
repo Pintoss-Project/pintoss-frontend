@@ -45,8 +45,6 @@ const RegisterPersonalInfo = ({ authData }: Props) => {
 				throw new Error('필수 데이터가 누락되었습니다.');
 			}
 
-			console.log('Request Data:', requestData);
-
 			const formWindow = window.open('', '_blank', 'width=500,height=600');
 			if (formWindow) {
 				const formDocument = formWindow.document;
@@ -92,9 +90,7 @@ const RegisterPersonalInfo = ({ authData }: Props) => {
 				<div className={s.phoneInfoBox}>
 					<p className={s.redText}>* 상품권 구매는 휴대폰인증을 필수로 하셔야합니다.</p>
 					<Spacing margin="5px" />
-					<p className={s.smallText}>
-						* 본인명의 휴대폰이 아닐 경우 추가인증을 요구 할 수 있습니다.
-					</p>
+					<p className={s.smallText}>* 본인명의 휴대폰으로 인증하셔야 합니다.</p>
 					<Spacing margin="30px" />
 					{errorMessage && <p className={s.redText}>{errorMessage}</p>}
 					<Button

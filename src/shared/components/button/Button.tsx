@@ -14,6 +14,7 @@ const Button = (props: ButtonProps, ref: Ref<HTMLButtonElement>) => {
 		hoverColor,
 		activeColor,
 		onClick,
+		disabled,
 	} = props;
 
 	return (
@@ -29,7 +30,8 @@ const Button = (props: ButtonProps, ref: Ref<HTMLButtonElement>) => {
 				color,
 				...style,
 			}}
-			onClick={onClick}>
+			onClick={onClick}
+			disabled={disabled}>
 			<span>{children}</span>
 		</button>
 	);

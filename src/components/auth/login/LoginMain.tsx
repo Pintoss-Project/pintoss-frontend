@@ -104,7 +104,7 @@ const LoginMain = () => {
 					<Spacing margin="18px" />
 				</Flex>
 				<Flex justify="flex-end" align="center">
-					<Link href="" className={s.grayText}>
+					<Link href="/reset-password" className={s.grayText}>
 						비밀번호 재설정
 					</Link>
 					<Link href="/register" className={s.blueText}>

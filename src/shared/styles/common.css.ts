@@ -73,6 +73,7 @@ export const whiteAndBlueButton = style([
 		backgroundColor: vars.color.white,
 		borderRadius: '5px',
 		border: `1px solid ${vars.color.lightBlue}`,
+		cursor: 'pointer',
 	},
 ]);
 
