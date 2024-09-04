@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const JAVA_SERVER_BASE_URL = 'http://localhost:8080/api/nice/decrypt';
+const JAVA_SERVER_BASE_URL = 'http://pintossmall2.cafe24.com/api/nice/decrypt';
 
 export async function POST(req: NextRequest) {
 	try {

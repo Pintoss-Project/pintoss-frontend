@@ -5,7 +5,6 @@ import { postRegister } from '@/app/api/auth/postRegister';
 import { updateUserInfo } from '@/app/api/user/updateUserInfo';
 import * as as from '@/components/auth/AuthStyle.css';
 import useAlertContext from '@/hooks/useAlertContext';
-import useRedirect from '@/hooks/useRedirect';
 import authState from '@/recoil/authAtom';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Divider } from '@/shared/components/layout';
@@ -31,6 +30,7 @@ import RegisterButton from './RegisterButton';
 import RegisterInfoBox from './RegisterInfoBox';
 import RegisterPersonalInfo from './RegisterPersonalInfo';
 import { fetchApi } from '@/utils/fetchApi';
+import { getCheckPhoneResult } from '@/app/api/auth/getCheckPhoneResult';
 
 interface Props {
 	oAuthEmail?: string;
@@ -39,7 +39,6 @@ interface Props {
 
 const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 	const { open, close } = useAlertContext();
-	const { setRedirectPath } = useRedirect();
 	const setAuthState = useSetRecoilState(authState);
 	const router = useRouter();
 
@@ -47,6 +46,7 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 	const [isOAuth, setIsOAuth] = useState(false);
 
 	const [authData, setAuthData] = useState<{ name?: string; phone?: string }>({});
+	const [isPhoneDuplicate, setIsPhoneDuplicate] = useState(false);
 
 	useEffect(() => {
 		const oauthParam = searchParam.get('oauth');
@@ -101,6 +101,7 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: close,
 			});
+			router.push('/login');
 		},
 		onError: () => {
 			open({
@@ -125,7 +126,7 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: close,
 			});
-			router.push('/');
+			router.push('/login');
 			setAuthState((prev) => ({ ...prev, isLoggedIn: true }));
 		},
 		onError: () => {
@@ -158,9 +159,6 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 				return;
 			}
 		}
-
-		const isValid = await trigger(['name', 'phone']);
-		console.log('Validation after setValue:', isValid);
 
 		registerMutation.mutate(data);
 	};
@@ -214,23 +212,38 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 				}),
 			});
 
-			console.log('decryptedData', decryptedData);
-
 			setAuthData({ name: decryptedData.name, phone: decryptedData.mobileno });
 			setValue('name', decryptedData.name);
 			setValue('phone', decryptedData.mobileno);
 
-			open({
-				width: '300px',
-				height: '200px',
-				title: '휴대폰 인증 완료',
-				main: <AlertMainTextBox text="휴대폰 인증이 완료되었습니다." />,
-				rightButtonStyle: cs.lightBlueButton,
-				onRightButtonClick: close,
-			});
+			const phoneCheckResult = await getCheckPhoneResult(decryptedData.mobileno);
+			console.log('phoneCheckResult', phoneCheckResult.data);
 
-			// 인증 완료 후 리다이렉트
-			router.push('/register'); // 원하는 경로로 리다이렉트
+			if (phoneCheckResult.data) {
+				setIsPhoneDuplicate(true);
+				open({
+					width: '300px',
+					height: '200px',
+					title: '휴대폰 중복 오류',
+					main: (
+						<AlertMainTextBox text="이미 등록된 휴대폰 번호입니다. 다른 번호를 사용해 주세요." />
+					),
+					rightButtonStyle: cs.lightBlueButton,
+					onRightButtonClick: close,
+				});
+			} else {
+				setIsPhoneDuplicate(false);
+				open({
+					width: '300px',
+					height: '200px',
+					title: '휴대폰 인증 완료',
+					main: <AlertMainTextBox text="휴대폰 인증이 완료되었습니다." />,
+					rightButtonStyle: cs.lightBlueButton,
+					onRightButtonClick: close,
+				});
+			}
+
+			router.push('/register');
 		} catch (error) {
 			console.error('Decryption error:', error);
 
@@ -263,7 +276,7 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 				/>
 				<Spacing margin="40px" />
 				<footer className={as.footerWrap}>
-					<RegisterButton />
+					<RegisterButton disabled={isPhoneDuplicate} />
 				</footer>
 			</form>
 			<Spacing margin="165px" />

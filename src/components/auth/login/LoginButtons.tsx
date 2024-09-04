@@ -13,12 +13,12 @@ import { KakaoLogo, NaverLogo } from '../../../../public/svgs';
 const LoginButtons = () => {
 	const handleNaverLogin = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
-		window.location.href = 'http://localhost:8080/oauth2/authorization/naver';
+		window.location.href = 'http://pintossmall2.cafe24.com/oauth2/authorization/naver';
 	};
 
 	const handleKakaoLogin = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
-		window.location.href = 'http://localhost:8080/oauth2/authorization/kakao';
+		window.location.href = 'http://pintossmall2.cafe24.com/oauth2/authorization/kakao';
 	};
 
 	return (
