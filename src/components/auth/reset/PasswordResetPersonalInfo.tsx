@@ -44,7 +44,7 @@ const PasswordResetPersonalInfo = () => {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
-					returnurl: 'http://pin-toss.com/reset-password/nice',
+					returnurl: 'https://pin-toss.com/reset-password/nice',
 				}),
 			});
 

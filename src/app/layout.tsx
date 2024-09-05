@@ -3,13 +3,12 @@ import NavBarTop from '@/components/nav/NavBarTop';
 import SideNavBar from '@/components/nav/SideNavBar';
 import { AlertContextProvider } from '@/contexts/AlertContext';
 import { Flex } from '@/shared/components/layout';
-import 'react-quill/dist/quill.snow.css';
 import '@/shared/styles';
+import 'react-quill/dist/quill.snow.css';
 
-import type { Metadata } from 'next';
 import Providers from '@/react-query/Providers';
 import RecoilRootProvider from '@/recoil/RecoilRootProvider';
-import ProtectedRoute from '@/components/protect/ProtectedRoute';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
 	title: '핀토스',
