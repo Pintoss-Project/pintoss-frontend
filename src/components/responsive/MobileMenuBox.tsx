@@ -41,7 +41,7 @@ const MobileMenuBox = ({ setIsMenuOpen }: Props) => {
 	};
 
 	const handleLogout = () => {
-		setAuthStateValue((prev) => ({ ...prev, isLoggedIn: false }));
+		setAuthStateValue({ isLoggedIn: false });
 		removeLocalToken();
 		setRedirectPath('/');
 		setIsMenuOpen(false);
