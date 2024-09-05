@@ -18,10 +18,7 @@ import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 const PasswordResetPersonalInfo = () => {
 	const { open, close } = useAlertContext();
 	const router = useRouter();
-	const [authData, setAuthData] = useState<{ name: string; phone: string }>({
-		name: '이종현',
-		phone: '01048998811',
-	});
+	const [authData, setAuthData] = useState<{ name?: string; phone?: string }>({});
 	const [errorMessage, setErrorMessage] = useState('');
 	const [isVerified, setIsVerified] = useState(true);
 
@@ -47,7 +44,7 @@ const PasswordResetPersonalInfo = () => {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
-					returnurl: 'http://pintoss2.cafe24.com//reset-password/nice',
+					returnurl: 'http://pin-toss.com/reset-password/nice',
 				}),
 			});
 

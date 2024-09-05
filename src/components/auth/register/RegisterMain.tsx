@@ -76,7 +76,7 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 		},
 	});
 
-	const { watch, handleSubmit, setValue, trigger } = methods;
+	const { watch, handleSubmit, setValue } = methods;
 	const email = watch('email');
 	const [isEmailChecked, setIsEmailChecked] = useState(false);
 

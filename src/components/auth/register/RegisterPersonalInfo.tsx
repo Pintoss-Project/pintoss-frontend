@@ -35,7 +35,7 @@ const RegisterPersonalInfo = ({ authData }: Props) => {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
-					returnurl: 'http://pintoss2.cafe24.com/register/nice',
+					returnurl: 'http://pin-toss.com/register/nice',
 				}),
 			});
 

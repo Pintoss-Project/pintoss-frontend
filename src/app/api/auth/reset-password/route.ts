@@ -32,11 +32,21 @@ export async function PATCH(req: NextRequest) {
 		}
 
 		return NextResponse.json({ message: 'Password has been successfully reset' }, { status: 200 });
-	} catch (error: any) {
+	} catch (error: unknown) {
 		console.error('Password reset error:', error);
-		return NextResponse.json(
-			{ message: 'An error occurred while resetting the password', error: error.message },
-			{ status: 500 },
-		);
+		if (error instanceof Error) {
+			return NextResponse.json(
+				{ message: 'An error occurred while resetting the password', error: error.message },
+				{ status: 500 },
+			);
+		} else {
+			return NextResponse.json(
+				{
+					message: 'An error occurred while resetting the password',
+					error: 'Unknown error occurred',
+				},
+				{ status: 500 },
+			);
+		}
 	}
 }

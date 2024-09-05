@@ -5,31 +5,21 @@ import * as s from './MyPageStyle.css';
 
 import { postDeactivateUser } from '@/app/api/auth/postDeactivateUser';
 import useAlertContext from '@/hooks/useAlertContext';
-import authState from '@/recoil/authAtom';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Button } from '@/shared/components/button';
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import { vars } from '@/shared/styles/theme.css';
 import { useMutation } from '@tanstack/react-query';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useRecoilValue } from 'recoil';
+import { useRouter } from 'next/navigation';
 import InfoBox from '../InfoBox';
 import AuthenticationInfoBox from './AuthenticationInfoBox';
 import MemberInfoBox from './MemberInfoBox';
 import SnsInfoBox from './SnsInfoBox';
-import { postConnectNaver } from '@/app/api/auth/postConnectNaver';
-import { useEffect } from 'react';
 
 const MyPageMain = () => {
-	const authStateValue = useRecoilValue(authState);
-	const { isLoggedIn } = authStateValue;
-
 	const { open, close } = useAlertContext();
 	const router = useRouter();
-	const searchParams = useSearchParams();
-	const code = searchParams.get('code');
-	const state = searchParams.get('state');
 
 	const deactivateUserMutation = useMutation({
 		mutationFn: () => postDeactivateUser(),

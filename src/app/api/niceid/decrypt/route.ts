@@ -32,11 +32,18 @@ export async function POST(req: NextRequest) {
 
 		const decryptedData = await response.json();
 		return NextResponse.json(decryptedData, { status: 200 });
-	} catch (error: any) {
+	} catch (error: unknown) {
 		console.error('Request to Java API failed:', error);
-		return NextResponse.json(
-			{ message: 'Internal server error', error: error.message },
-			{ status: 500 },
-		);
+		if (error instanceof Error) {
+			return NextResponse.json(
+				{ message: 'Internal server error', error: error.message },
+				{ status: 500 },
+			);
+		} else {
+			return NextResponse.json(
+				{ message: 'Internal server error', error: 'Unknown error occurred' },
+				{ status: 500 },
+			);
+		}
 	}
 }
