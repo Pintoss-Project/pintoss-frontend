@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { getAllSiteInfo, getSiteInfo } from '@/app/api/site/getSiteInfo';
+import ProtectedRoute from '../protect/ProtectedRoute';
 
 const Footer = () => {
 	const path = usePathname();
@@ -33,7 +34,7 @@ const Footer = () => {
 	if (path.includes('admin')) return null;
 
 	return (
-		<>
+		<ProtectedRoute>
 			<div className={s.footerBox}>
 				<Spacing margin="44px" />
 				<Flex justify="space-between" className={s.footerFlexBox}>
@@ -94,7 +95,7 @@ const Footer = () => {
 				</Flex>
 			</div>
 			<Spacing margin="34px" />
-		</>
+		</ProtectedRoute>
 	);
 };
 

@@ -12,6 +12,7 @@ import { useState } from 'react';
 import MobileMenuBox from '../responsive/MobileMenuBox';
 import { useRecoilValue } from 'recoil';
 import authState from '@/recoil/authAtom';
+import ProtectedRoute from '../protect/ProtectedRoute';
 
 const NavBarTop = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,24 +26,26 @@ const NavBarTop = () => {
 	};
 
 	return (
-		<Flex justify="space-between" align="center" className={s.navbarTopBox}>
-			{authStateValue.isLoggedIn === true && (
-				<Link href="/order/cart">
-					<img src="/images/cart-icon.png" alt="장바구니 아이콘" className={s.cartIcon} />
+		<ProtectedRoute>
+			<Flex justify="space-between" align="center" className={s.navbarTopBox}>
+				{authStateValue.isLoggedIn === true && (
+					<Link href="/order/cart">
+						<img src="/images/cart-icon.png" alt="장바구니 아이콘" className={s.cartIcon} />
+					</Link>
+				)}
+				<Link href="/" className={s.logoBox}>
+					<div>
+						<Image src={PintossColorLogo} alt="로고 이미지" fill style={{ objectFit: 'contain' }} />
+					</div>
 				</Link>
-			)}
-			<Link href="/" className={s.logoBox}>
-				<div>
-					<Image src={PintossColorLogo} alt="로고 이미지" fill style={{ objectFit: 'contain' }} />
-				</div>
-			</Link>
 
-			<NavBarTopMenuBox />
-			<div onClick={handleMenuClick} className={s.gradientMenuIconWrap}>
-				<GradientFiMenu className={s.gradientMenuIcon} />
-			</div>
-			{isMenuOpen && <MobileMenuBox setIsMenuOpen={setIsMenuOpen} />}
-		</Flex>
+				<NavBarTopMenuBox />
+				<div onClick={handleMenuClick} className={s.gradientMenuIconWrap}>
+					<GradientFiMenu className={s.gradientMenuIcon} />
+				</div>
+				{isMenuOpen && <MobileMenuBox setIsMenuOpen={setIsMenuOpen} />}
+			</Flex>
+		</ProtectedRoute>
 	);
 };
 

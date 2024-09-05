@@ -9,6 +9,7 @@ import '@/shared/styles';
 import type { Metadata } from 'next';
 import Providers from '@/react-query/Providers';
 import RecoilRootProvider from '@/recoil/RecoilRootProvider';
+import ProtectedRoute from '@/components/protect/ProtectedRoute';
 
 export const metadata: Metadata = {
 	title: '핀토스',
