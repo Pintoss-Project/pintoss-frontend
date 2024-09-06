@@ -1,18 +1,22 @@
 'use client';
 
-import { Flex } from '@/shared/components/layout';
-import * as s from './AdminStyle.css';
-import * as cs from '@/shared/styles/common.css';
-import { vars } from '@/shared/styles/theme.css';
-import { Input } from '@/shared/components/input';
-import { Button } from '@/shared/components/button';
-import Spacing from '@/shared/components/layout/Spacing';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { FeeData, updateFee, UpdateFeeParams } from '@/app/api/product/updateFee';
+import { fetchProductInfo } from '@/app/api/product/fetchProductInfo';
+import {
+	FeeData,
+	fetchUpdateProductFee,
+	UpdateFeeParams,
+} from '@/app/api/product/fetchUpdateProductFee';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
+import { Button } from '@/shared/components/button';
+import { Input } from '@/shared/components/input';
+import { Flex } from '@/shared/components/layout';
+import Spacing from '@/shared/components/layout/Spacing';
+import * as cs from '@/shared/styles/common.css';
+import { vars } from '@/shared/styles/theme.css';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { getProduct } from '@/app/api/product/getProduct';
+import * as s from './AdminStyle.css';
 
 interface Props {
 	productId?: number;
@@ -26,7 +30,7 @@ const ManageFeeBox = ({ productId }: Props) => {
 		queryKey: ['productDetails', productId],
 		queryFn: () => {
 			if (productId) {
-				return getProduct(productId);
+				return fetchProductInfo(productId);
 			}
 			return Promise.resolve(undefined);
 		},
@@ -56,7 +60,7 @@ const ManageFeeBox = ({ productId }: Props) => {
 	};
 
 	const updateFeeMutation = useMutation({
-		mutationFn: (params: UpdateFeeParams) => updateFee(params),
+		mutationFn: (params: UpdateFeeParams) => fetchUpdateProductFee(params),
 		onSuccess: () => {
 			open({
 				width: '300px',

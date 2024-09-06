@@ -1,6 +1,6 @@
 'use client';
 
-import { getUserInfo } from '@/app/api/user/getUserInfo';
+import { fetchUserInfo } from '@/app/api/user/fetchUserInfo';
 import { UserInfo } from '@/models/user';
 import authState from '@/recoil/authAtom';
 import Spacing from '@/shared/components/layout/Spacing';
@@ -20,7 +20,7 @@ const CartMain = () => {
 
 	const { data: userInfo } = useQuery({
 		queryKey: ['userInfo'],
-		queryFn: getUserInfo,
+		queryFn: fetchUserInfo,
 	});
 
 	const authStateValue = useRecoilValue(authState);

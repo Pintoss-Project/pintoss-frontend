@@ -3,7 +3,7 @@
 import * as cs from '@/shared/styles/common.css';
 import * as s from './MyPageStyle.css';
 
-import { postDeactivateUser } from '@/app/api/auth/postDeactivateUser';
+import { fetchDeactivate } from '@/app/api/auth/fetchDeactivate';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Button } from '@/shared/components/button';
@@ -22,7 +22,7 @@ const MyPageMain = () => {
 	const router = useRouter();
 
 	const deactivateUserMutation = useMutation({
-		mutationFn: () => postDeactivateUser(),
+		mutationFn: () => fetchDeactivate(),
 		onSuccess: () => {
 			open({
 				width: '300px',

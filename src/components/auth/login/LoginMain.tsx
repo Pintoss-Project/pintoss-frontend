@@ -1,6 +1,6 @@
 'use client';
 
-import { postLogin } from '@/app/api/auth/postLogin';
+import { fetchLogin } from '@/app/api/auth/fetchLogin';
 import * as as from '@/components/auth/AuthStyle.css';
 import useAlertContext from '@/hooks/useAlertContext';
 import useRedirect from '@/hooks/useRedirect';
@@ -42,7 +42,7 @@ const LoginMain = () => {
 	const { handleSubmit } = methods;
 
 	const loginMutation = useMutation({
-		mutationFn: (data: LogInFormData) => postLogin(data),
+		mutationFn: (data: LogInFormData) => fetchLogin(data),
 		onSuccess: (data) => {
 			if (data && data.data) {
 				const { accessToken } = data.data;

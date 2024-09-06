@@ -1,11 +1,11 @@
 'use client';
 
-import * as s from './ProductDetailStyle.css';
-import Spacing from '@/shared/components/layout/Spacing';
-import ProductDetailMain from './ProductDetailMain';
-import { useQuery } from '@tanstack/react-query';
-import { getProduct } from '@/app/api/product/getProduct';
+import { fetchProductInfo } from '@/app/api/product/fetchProductInfo';
 import { ProductInfo } from '@/models/product';
+import Spacing from '@/shared/components/layout/Spacing';
+import { useQuery } from '@tanstack/react-query';
+import ProductDetailMain from './ProductDetailMain';
+import * as s from './ProductDetailStyle.css';
 
 interface Props {
 	id: number;
@@ -14,7 +14,7 @@ interface Props {
 const ProductSection = ({ id }: Props) => {
 	const { data: productDetail } = useQuery({
 		queryKey: ['productDetails', id],
-		queryFn: () => getProduct(id),
+		queryFn: () => fetchProductInfo(id),
 	});
 
 	return (

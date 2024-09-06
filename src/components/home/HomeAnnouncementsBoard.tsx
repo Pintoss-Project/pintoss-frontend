@@ -1,17 +1,17 @@
 'use client';
 
-import { IoIosArrowDown } from 'react-icons/io';
-import { Flex } from '@/shared/components/layout';
-import * as s from './HomeStyle.css';
-import { useState } from 'react';
-import Spacing from '@/shared/components/layout/Spacing';
+import { fetchBoardList } from '@/app/api/board/fetchBoardList';
 import { Button } from '@/shared/components/button';
+import { Flex } from '@/shared/components/layout';
+import Spacing from '@/shared/components/layout/Spacing';
 import { vars } from '@/shared/styles/theme.css';
-import Link from 'next/link';
-import { useQuery } from '@tanstack/react-query';
-import { getBoardList } from '@/app/api/board/getBoardList';
 import { formatDate } from '@/utils/formatDate';
+import { useQuery } from '@tanstack/react-query';
 import parse from 'html-react-parser';
+import Link from 'next/link';
+import { useState } from 'react';
+import { IoIosArrowDown } from 'react-icons/io';
+import * as s from './HomeStyle.css';
 
 const ANNOUNCEMENTS_MENU = [
 	{ id: 'NOTICE', name: '공지사항' },
@@ -24,7 +24,7 @@ const HomeAnnouncementsBoard = () => {
 
 	const { data: boardList } = useQuery({
 		queryKey: ['boardList', selectedMenu],
-		queryFn: () => getBoardList(selectedMenu),
+		queryFn: () => fetchBoardList(selectedMenu),
 	});
 
 	const handleMenuClick = (id: string) => {

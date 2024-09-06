@@ -1,26 +1,26 @@
 'use client';
 
+import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
+import { uploadImageToCloudinary } from '@/app/api/image/uploadImageToCloudinary';
+import { fetchRegisterBanner } from '@/app/api/site/fetchRegisterBanner';
+import { fetchUpdateBanner } from '@/app/api/site/fetchUpdateBanner';
+import useAlertContext from '@/hooks/useAlertContext';
+import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
+import { Button } from '@/shared/components/button';
+import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import * as cs from '@/shared/styles/common.css';
-import * as s from './AdminStyle.css';
 import { vars } from '@/shared/styles/theme.css';
-import AdminInputField from './AdminInputField';
-import { Flex } from '@/shared/components/layout';
-import { Button } from '@/shared/components/button';
-import AdminImageField from './AdminImageField';
-import BannerImageBox from './BannerImageBox';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import SiteError from '@/utils/error/SiteError';
 import { BannerInfoFormData, bannerInfoSchema } from '@/utils/validation/site';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import useAlertContext from '@/hooks/useAlertContext';
-import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { useEffect, useState } from 'react';
-import { uploadImageToCloudinary } from '@/app/api/image/uploadImageToCloudinary';
-import SiteError from '@/utils/error/SiteError';
-import { postBanner } from '@/app/api/site/postBanner';
-import { updateBanner } from '@/app/api/site/updateBanner';
-import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import AdminImageField from './AdminImageField';
+import AdminInputField from './AdminInputField';
+import * as s from './AdminStyle.css';
+import BannerImageBox from './BannerImageBox';
 
 interface AddBannerBoxProps {
 	editingBannerId: number | null;
@@ -152,7 +152,7 @@ const AddBannerBox = ({ editingBannerId, initialBannerData, onResetEdit }: AddBa
 
 	const mutation = useMutation({
 		mutationFn: (data: BannerInfoFormData) =>
-			editingBannerId ? updateBanner(editingBannerId, data) : postBanner(data),
+			editingBannerId ? fetchUpdateBanner(editingBannerId, data) : fetchRegisterBanner(data),
 		onSuccess: () => {
 			open({
 				width: '300px',

@@ -1,9 +1,13 @@
 'use client';
 
+import { fetchBoardList } from '@/app/api/board/fetchBoardList';
 import * as hs from '@/components/home/HomeStyle.css';
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
+import { formatDate } from '@/utils/formatDate';
+import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
+import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { IoIosArrowDown } from 'react-icons/io';
 import {
@@ -13,10 +17,6 @@ import {
 	MdKeyboardDoubleArrowRight,
 } from 'react-icons/md';
 import * as s from './CustomerStyle.css';
-import { useQuery } from '@tanstack/react-query';
-import { getBoardList } from '@/app/api/board/getBoardList';
-import { useSearchParams } from 'next/navigation';
-import { formatDate } from '@/utils/formatDate';
 
 const ANNOUNCEMENTS_MENU = [
 	{ id: 'NOTICE', name: '공지사항' },
@@ -32,7 +32,7 @@ const CustomerMain = () => {
 
 	const { data: boards, isLoading } = useQuery({
 		queryKey: ['boardList', selectedMenu],
-		queryFn: () => getBoardList(selectedMenu),
+		queryFn: () => fetchBoardList(selectedMenu),
 	});
 
 	const handleMenuClick = (id: string) => {

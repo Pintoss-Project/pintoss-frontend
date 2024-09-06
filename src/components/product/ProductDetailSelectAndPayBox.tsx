@@ -1,7 +1,8 @@
 'use client';
 
-import { postCartItem } from '@/app/api/cart/postCartItem';
-import { getUserInfo } from '@/app/api/user/getUserInfo';
+import { fetchRegisterCartItem } from '@/app/api/cart/fetchRegisterCartItem';
+import { fetchPriceCategory } from '@/app/api/product/fetchPriceCategory';
+import { fetchUserInfo } from '@/app/api/user/fetchUserInfo';
 import useAlertContext from '@/hooks/useAlertContext';
 import useRedirect from '@/hooks/useRedirect';
 import { CartItem } from '@/models/cart';
@@ -21,7 +22,6 @@ import PaymentMethodSelectBox from '../order/PaymentMethodSelectBox';
 import * as s from './ProductDetailStyle.css';
 import ProductSelectBox from './ProductSelectBox';
 import QuantitySelectBox from './QuantitySelectBox';
-import { getPriceCategory } from '@/app/api/product/getPriceCategoryList';
 
 interface Props {
 	product: ProductInfo;
@@ -43,7 +43,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 
 	const { data: userInfo } = useQuery({
 		queryKey: ['userInfo'],
-		queryFn: getUserInfo,
+		queryFn: fetchUserInfo,
 	});
 
 	useEffect(() => {
@@ -68,8 +68,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 	}, [cartItems, priceCategories, saleRate, selectedType]);
 
 	const postCartItemMutation = useMutation({
-		mutationFn: (data: CartItem) =>
-			postCartItem(data.productId, userInfo?.data?.id as number, data),
+		mutationFn: (data: CartItem) => fetchRegisterCartItem(userInfo?.data?.id as number, data),
 		onSuccess: () => {
 			open({
 				width: '300px',
@@ -122,7 +121,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 
 	const handleSelectCategory = async (category: PriceCategoryInfo) => {
 		try {
-			const categoryPriceInfo = await getPriceCategory(product.id, category.id);
+			const categoryPriceInfo = await fetchPriceCategory(product.id, category.id);
 
 			setPriceCategories((prev) => {
 				const updatedCategories = prev ? [...prev] : [];

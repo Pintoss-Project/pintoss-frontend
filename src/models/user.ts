@@ -36,3 +36,28 @@ export interface OAuthUserRequest {
 	phone: string;
 	inflow?: string;
 }
+
+export interface LoginResponse {
+	code: number;
+	status: string;
+	message: string;
+	data: {
+		grantType: string;
+		accessToken: string;
+		refreshToken: string;
+	};
+}
+
+export interface CheckPhoneResponse {
+	code: number;
+	status: string;
+	message: string;
+	data: boolean;
+}
+
+export interface CheckIdResponse {
+	code: number;
+	status: string;
+	message: string;
+	data: boolean;
+}

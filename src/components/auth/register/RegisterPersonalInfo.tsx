@@ -1,8 +1,8 @@
+import { fetchRequestData } from '@/app/api/niceid/fetchRequestData';
 import { Button } from '@/shared/components/button';
 import Spacing from '@/shared/components/layout/Spacing';
 import * as cs from '@/shared/styles/common.css';
 import { vars } from '@/shared/styles/theme.css';
-import { fetchApi } from '@/utils/fetchApi';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import RegisterInputBox from './RegisterInputBox';
@@ -29,15 +29,7 @@ const RegisterPersonalInfo = ({ authData }: Props) => {
 		event.preventDefault();
 
 		try {
-			const requestData = await fetchApi('/api/niceid/request', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					returnurl: 'https://pin-toss.com/register/nice',
-				}),
-			});
+			const requestData = await fetchRequestData('https://pin-toss.com/register/nice');
 
 			const { token_version_id, enc_data, integrity_value } = requestData;
 

@@ -4,7 +4,7 @@ import authState from '@/recoil/authAtom';
 import * as cs from '@/shared/styles/common.css';
 import * as s from './NavBarStyle.css';
 
-import { postLogout } from '@/app/api/auth/postLogout';
+import { fetchLogout } from '@/app/api/auth/fetchLogout';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Flex, List } from '@/shared/components/layout';
@@ -34,7 +34,7 @@ const NavBarTopMenuBox = () => {
 	const { open, close } = useAlertContext();
 
 	const logoutMutation = useMutation({
-		mutationFn: () => postLogout(),
+		mutationFn: () => fetchLogout(),
 		onSuccess: () => {
 			setAuthStateValue({ isLoggedIn: false });
 			open({

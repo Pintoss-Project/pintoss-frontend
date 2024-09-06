@@ -1,17 +1,17 @@
 'use client';
 
-import { Button } from '@/shared/components/button';
-import * as s from './AdminStyle.css';
-import * as cs from '@/shared/styles/common.css';
-import { Flex } from '@/shared/components/layout';
-import { vars } from '@/shared/styles/theme.css';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getBannerList } from '@/app/api/site/getBannerList';
-import SiteError from '@/utils/error/SiteError';
-import { deleteBanner } from '@/app/api/site/deleteBanner';
 import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
+import { fetchBannerList } from '@/app/api/site/fetchBannerList';
+import { fetchDeleteBanner } from '@/app/api/site/fetchDeleteBanner';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
+import { Button } from '@/shared/components/button';
+import { Flex } from '@/shared/components/layout';
+import * as cs from '@/shared/styles/common.css';
+import { vars } from '@/shared/styles/theme.css';
+import SiteError from '@/utils/error/SiteError';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import * as s from './AdminStyle.css';
 
 interface Banner {
 	id: number;
@@ -30,7 +30,7 @@ const BannerListBox = ({ onEdit, onDelete }: Props) => {
 	const queryClient = useQueryClient();
 	const { data: bannerList } = useQuery({
 		queryKey: ['bannerList'],
-		queryFn: getBannerList,
+		queryFn: fetchBannerList,
 	});
 
 	const mutation = useMutation({
@@ -48,7 +48,7 @@ const BannerListBox = ({ onEdit, onDelete }: Props) => {
 					await deleteImageFromCloudinary(publicId);
 				}
 			}
-			return deleteBanner(id);
+			return fetchDeleteBanner(id);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['bannerList'] });

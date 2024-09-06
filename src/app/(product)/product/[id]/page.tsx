@@ -1,4 +1,4 @@
-import { getAllProductIds } from '@/app/api/mockData';
+import { fetchProductList } from '@/app/api/product/fetchProductList';
 import ProductSection from '@/components/product/ProductSection';
 
 interface Props {
@@ -8,10 +8,17 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-	const ids = await getAllProductIds();
-	return ids.map((product: { id: string }) => ({
-		id: product.id,
-	}));
+	try {
+		const productList = await fetchProductList();
+		return (
+			productList?.data.map((product: { id: number }) => ({
+				id: product.id.toString(),
+			})) || []
+		);
+	} catch (error) {
+		console.error('Error fetching product list:', error);
+		return [];
+	}
 }
 
 const ProductDetail = ({ params }: Props) => {

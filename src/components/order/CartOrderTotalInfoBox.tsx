@@ -1,13 +1,13 @@
+import { fetchDeleteCartItemList } from '@/app/api/cart/fetchDeleteCartItemList';
+import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
-import * as s from './CartStyle.css';
-import * as cs from '@/shared/styles/common.css';
 import { Button } from '@/shared/components/button';
 import { Flex } from '@/shared/components/layout';
+import * as cs from '@/shared/styles/common.css';
 import { vars } from '@/shared/styles/theme.css';
 import CartError from '@/utils/error/CartError';
-import useAlertContext from '@/hooks/useAlertContext';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteCartItemList } from '@/app/api/cart/deleteCart';
+import * as s from './CartStyle.css';
 
 interface Props {
 	finalTotalPrice: number;
@@ -19,7 +19,7 @@ const CartOrderTotalInfoBox = ({ finalTotalPrice, userId }: Props) => {
 	const queryClient = useQueryClient();
 
 	const deleteCartItemListMutation = useMutation({
-		mutationFn: (userId: number) => deleteCartItemList(userId),
+		mutationFn: (userId: number) => fetchDeleteCartItemList(userId),
 		onSuccess: () => {
 			open({
 				width: '300px',

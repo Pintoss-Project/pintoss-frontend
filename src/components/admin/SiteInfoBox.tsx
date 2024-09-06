@@ -1,26 +1,27 @@
 'use client';
 
+import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
+import { uploadImageToCloudinary } from '@/app/api/image/uploadImageToCloudinary';
+import { fetchSiteInfo } from '@/app/api/site/fetchSiteInfo';
+import { fetchSiteList } from '@/app/api/site/fetchSiteList';
+import { fetchUpdateSiteInfo } from '@/app/api/site/fetchUpdateSiteInfo';
+import useAlertContext from '@/hooks/useAlertContext';
+import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
+import { Button } from '@/shared/components/button';
+import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import * as cs from '@/shared/styles/common.css';
-import * as s from './AdminStyle.css';
 import { vars } from '@/shared/styles/theme.css';
-import AdminInputField from './AdminInputField';
-import { Flex } from '@/shared/components/layout';
-import { Button } from '@/shared/components/button';
-import AdminImageField from './AdminImageField';
-import BannerImageBox from './BannerImageBox';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { SiteInfoFormData, siteInfoSchema } from '@/utils/validation/site';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { updateSiteInfo } from '@/app/api/site/updateSiteInfo';
-import { useEffect, useState } from 'react';
-import { getAllSiteInfo, getSiteInfo } from '@/app/api/site/getSiteInfo';
-import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import SiteError from '@/utils/error/SiteError';
-import useAlertContext from '@/hooks/useAlertContext';
-import { uploadImageToCloudinary } from '@/app/api/image/uploadImageToCloudinary';
-import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
+import { SiteInfoFormData, siteInfoSchema } from '@/utils/validation/site';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import AdminImageField from './AdminImageField';
+import AdminInputField from './AdminInputField';
+import * as s from './AdminStyle.css';
+import BannerImageBox from './BannerImageBox';
 
 interface ImageUploadResponse {
 	public_id: string;
@@ -38,7 +39,7 @@ const SiteInfoBox = () => {
 
 	const { data: allSiteInfo } = useQuery({
 		queryKey: ['allSiteInfo'],
-		queryFn: () => getAllSiteInfo(),
+		queryFn: () => fetchSiteList(),
 	});
 
 	const firstSiteInfoId = allSiteInfo?.data?.length ? allSiteInfo.data[0].id : null;
@@ -47,7 +48,7 @@ const SiteInfoBox = () => {
 
 	const { data: siteInfo } = useQuery({
 		queryKey: ['siteInfo', firstSiteInfoId],
-		queryFn: () => (firstSiteInfoId ? getSiteInfo(firstSiteInfoId) : Promise.resolve(null)),
+		queryFn: () => (firstSiteInfoId ? fetchSiteInfo(firstSiteInfoId) : Promise.resolve(null)),
 		enabled: !!firstSiteInfoId,
 	});
 
@@ -176,7 +177,7 @@ const SiteInfoBox = () => {
 	};
 
 	const mutation = useMutation({
-		mutationFn: (data: SiteInfoFormData) => updateSiteInfo(firstSiteInfoId as number, data),
+		mutationFn: (data: SiteInfoFormData) => fetchUpdateSiteInfo(firstSiteInfoId as number, data),
 		onSuccess: () => {
 			open({
 				width: '300px',

@@ -1,16 +1,17 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
-import * as s from './NavBarStyle.css';
-import { CultureLandLogo, KakaoDetailLogo } from '../../../public/svgs';
+import { fetchSimpleProductList } from '@/app/api/product/fetchSimpleProductList';
+import { fetchSiteInfo } from '@/app/api/site/fetchSiteInfo';
+import { fetchSiteList } from '@/app/api/site/fetchSiteList';
 import { Flex, List } from '@/shared/components/layout';
-import SideNavBarProductsForSale from './SideNavBarProductsForSale';
 import Spacing from '@/shared/components/layout/Spacing';
-import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import { getSimpleProductList } from '@/app/api/product/getProductList';
-import { getAllSiteInfo, getSiteInfo } from '@/app/api/site/getSiteInfo';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import { CultureLandLogo, KakaoDetailLogo } from '../../../public/svgs';
 import ProtectedRoute from '../protect/ProtectedRoute';
+import * as s from './NavBarStyle.css';
+import SideNavBarProductsForSale from './SideNavBarProductsForSale';
 
 const EXCLUDE_PATH = ['/login', '/register'];
 
@@ -19,12 +20,12 @@ const SideNavBar = () => {
 
 	const { data: products } = useQuery({
 		queryKey: ['simpleProductList'],
-		queryFn: () => getSimpleProductList(''),
+		queryFn: () => fetchSimpleProductList(''),
 	});
 
 	const { data: allSiteInfo } = useQuery({
 		queryKey: ['allSiteInfo'],
-		queryFn: () => getAllSiteInfo(),
+		queryFn: () => fetchSiteList(),
 	});
 
 	const firstSiteInfoId =
@@ -32,7 +33,7 @@ const SideNavBar = () => {
 
 	const { data: siteInfo } = useQuery({
 		queryKey: ['siteInfo', firstSiteInfoId],
-		queryFn: () => (firstSiteInfoId ? getSiteInfo(firstSiteInfoId) : Promise.resolve(null)),
+		queryFn: () => (firstSiteInfoId ? fetchSiteInfo(firstSiteInfoId) : Promise.resolve(null)),
 		enabled: !!firstSiteInfoId,
 	});
 

@@ -1,11 +1,11 @@
 'use client';
 
-import { postPriceCategory } from '@/app/api/product/postPriceCategory';
-import { postProduct } from '@/app/api/product/postProduct';
+import { fetchRegisterPriceCategory } from '@/app/api/product/fetchRegisterPriceCategory';
 import * as cs from '@/shared/styles/common.css';
 import { ProductInfoFormData } from '@/utils/validation/product';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useAlertContext from './useAlertContext';
+import { fetchRegisterProduct } from '@/app/api/product/fetchRegisterProduct';
 
 interface UseProductWithPriceCategoryMutationProps {
 	onSuccess?: () => void;
@@ -18,13 +18,13 @@ export const useProductWithPriceCategoryMutation = ({
 	const queryClient = useQueryClient();
 
 	const postProductMutation = useMutation({
-		mutationFn: (data: ProductInfoFormData) => postProduct(data),
+		mutationFn: (data: ProductInfoFormData) => fetchRegisterProduct(data),
 		onSuccess: async (productData, variables) => {
 			const productId = productData.data;
 
 			if (productId && variables.priceCategories && variables.priceCategories.length > 0) {
 				try {
-					postPriceCategory(productId, variables.priceCategories),
+					fetchRegisterPriceCategory(productId, variables.priceCategories),
 						open({
 							width: '300px',
 							height: '200px',

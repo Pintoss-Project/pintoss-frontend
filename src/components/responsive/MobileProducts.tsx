@@ -1,4 +1,4 @@
-import { getSimpleProductList } from '@/app/api/product/getProductList';
+import { fetchSimpleProductList } from '@/app/api/product/fetchSimpleProductList';
 import { Grid } from '@/shared/components/layout';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
@@ -12,7 +12,7 @@ interface Props {
 const MobileProducts = ({ setIsMenuOpen }: Props) => {
 	const { data: products } = useQuery({
 		queryKey: ['simpleProductList'],
-		queryFn: () => getSimpleProductList(),
+		queryFn: () => fetchSimpleProductList(),
 	});
 
 	return (

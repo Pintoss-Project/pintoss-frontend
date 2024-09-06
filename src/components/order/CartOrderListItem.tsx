@@ -1,18 +1,18 @@
 'use client';
 
+import { fetchDeleteCartItem } from '@/app/api/cart/fetchDeleteCartItem';
+import useAlertContext from '@/hooks/useAlertContext';
+import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Button } from '@/shared/components/button';
 import { Flex } from '@/shared/components/layout';
+import * as cs from '@/shared/styles/common.css';
 import { vars } from '@/shared/styles/theme.css';
+import CartError from '@/utils/error/CartError';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import * as s from './CartStyle.css';
-import * as cs from '@/shared/styles/common.css';
-import useAlertContext from '@/hooks/useAlertContext';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteCartItem } from '@/app/api/cart/deleteCart';
-import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
-import CartError from '@/utils/error/CartError';
 
 interface Props {
 	id: number;
@@ -29,7 +29,7 @@ const CartOrderListItem = ({ id, icon, name, price, quantity, onQuantityChange }
 	const queryClient = useQueryClient();
 
 	const deleteCartItemMutation = useMutation({
-		mutationFn: (cartItemId: number) => deleteCartItem(cartItemId),
+		mutationFn: (cartItemId: number) => fetchDeleteCartItem(cartItemId),
 		onSuccess: () => {
 			open({
 				width: '300px',

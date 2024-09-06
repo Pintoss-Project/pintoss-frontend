@@ -1,8 +1,10 @@
 'use client';
 
-import { getCheckIdResult } from '@/app/api/auth/checkDuplicateEmail';
-import { postRegister } from '@/app/api/auth/postRegister';
-import { updateUserInfo } from '@/app/api/user/updateUserInfo';
+import { fetchCheckId } from '@/app/api/auth/fetchCheckId';
+import { fetchCheckPhone } from '@/app/api/auth/fetchCheckPhone';
+import { fetchRegister } from '@/app/api/auth/fetchRegister';
+import { fetchDecryptedData } from '@/app/api/niceid/fetchDecryptedData';
+import { fetchUpdateUserInfo } from '@/app/api/user/fetchUpdateUserInfo';
 import * as as from '@/components/auth/AuthStyle.css';
 import useAlertContext from '@/hooks/useAlertContext';
 import authState from '@/recoil/authAtom';
@@ -20,7 +22,7 @@ import {
 } from '@/utils/validation/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useSetRecoilState } from 'recoil';
@@ -29,8 +31,6 @@ import RegisterAccountInfo from './RegisterAccountInfo';
 import RegisterButton from './RegisterButton';
 import RegisterInfoBox from './RegisterInfoBox';
 import RegisterPersonalInfo from './RegisterPersonalInfo';
-import { fetchApi } from '@/utils/fetchApi';
-import { getCheckPhoneResult } from '@/app/api/auth/getCheckPhoneResult';
 
 interface Props {
 	oAuthEmail?: string;
@@ -91,7 +91,7 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 	}, [oAuthEmail, setValue]);
 
 	const registerMutation = useMutation({
-		mutationFn: (data: RegisterFormData) => postRegister(data),
+		mutationFn: (data: RegisterFormData) => fetchRegister(data),
 		onSuccess: () => {
 			open({
 				width: '300px',
@@ -116,7 +116,7 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 	});
 
 	const oAuthRegisterMutation = useMutation({
-		mutationFn: (data: OAuthRegisterFormData) => updateUserInfo(data),
+		mutationFn: (data: OAuthRegisterFormData) => fetchUpdateUserInfo(data),
 		onSuccess: () => {
 			open({
 				width: '300px',
@@ -145,7 +145,7 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 		event?.preventDefault();
 
 		if (!isEmailChecked) {
-			const { data: checkData } = await getCheckIdResult(email);
+			const { data: checkData } = await fetchCheckId(email);
 			if (checkData) {
 				open({
 					width: '300px',
@@ -200,23 +200,13 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 		integrityValue: string,
 	) => {
 		try {
-			const decryptedData = await fetchApi('/api/niceid/decrypt', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					token_version_id: tokenVersionId,
-					enc_data: encData,
-					integrity_value: integrityValue,
-				}),
-			});
+			const decryptedData = await fetchDecryptedData(tokenVersionId, encData, integrityValue);
 
 			setAuthData({ name: decryptedData.name, phone: decryptedData.mobileno });
 			setValue('name', decryptedData.name);
 			setValue('phone', decryptedData.mobileno);
 
-			const phoneCheckResult = await getCheckPhoneResult(decryptedData.mobileno);
+			const phoneCheckResult = await fetchCheckPhone(decryptedData.mobileno);
 			console.log('phoneCheckResult', phoneCheckResult.data);
 
 			if (phoneCheckResult.data) {

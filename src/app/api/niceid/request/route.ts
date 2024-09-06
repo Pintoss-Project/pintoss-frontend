@@ -30,13 +30,11 @@ export async function POST(req: NextRequest) {
 
 		const result = await response.json();
 
-		// 필요한 데이터가 누락되었는지 확인합니다.
 		const { token_version_id, enc_data, integrity_value } = result;
 		if (!token_version_id || !enc_data || !integrity_value) {
 			throw new Error('필수 데이터가 누락되었습니다.');
 		}
 
-		// 성공적인 응답을 반환합니다.
 		return NextResponse.json({
 			token_version_id,
 			enc_data,

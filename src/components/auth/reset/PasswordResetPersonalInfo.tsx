@@ -1,19 +1,21 @@
 'use client';
 
+import { fetchResetPassword } from '@/app/api/auth/fetchResetPassword';
+import { fetchDecryptedData } from '@/app/api/niceid/fetchDecryptedData';
+import { fetchRequestData } from '@/app/api/niceid/fetchRequestData';
+import * as s from '@/components/auth/register/RegisterStyle.css';
+import useAlertContext from '@/hooks/useAlertContext';
+import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Button } from '@/shared/components/button';
 import Spacing from '@/shared/components/layout/Spacing';
 import * as cs from '@/shared/styles/common.css';
 import { vars } from '@/shared/styles/theme.css';
-import { fetchApi } from '@/utils/fetchApi';
+import { ResetPasswordFormData, resetPasswordSchema } from '@/utils/validation/auth';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import RegisterInputBox from '../register/RegisterInputBox';
-import * as s from '@/components/auth/register/RegisterStyle.css';
-import { ResetPasswordFormData, resetPasswordSchema } from '@/utils/validation/auth';
-import { zodResolver } from '@hookform/resolvers/zod';
-import useAlertContext from '@/hooks/useAlertContext';
-import { useRouter } from 'next/navigation';
-import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 
 const PasswordResetPersonalInfo = () => {
 	const { open, close } = useAlertContext();
@@ -38,15 +40,7 @@ const PasswordResetPersonalInfo = () => {
 		event.preventDefault();
 
 		try {
-			const requestData = await fetchApi('/api/niceid/request', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					returnurl: 'https://pin-toss.com/reset-password/nice',
-				}),
-			});
+			const requestData = await fetchRequestData('https://pin-toss.com/reset-password/nice');
 
 			const { token_version_id, enc_data, integrity_value } = requestData;
 
@@ -112,17 +106,7 @@ const PasswordResetPersonalInfo = () => {
 		integrityValue: string,
 	) => {
 		try {
-			const decryptedData = await fetchApi('/api/niceid/decrypt', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					token_version_id: tokenVersionId,
-					enc_data: encData,
-					integrity_value: integrityValue,
-				}),
-			});
+			const decryptedData = await fetchDecryptedData(tokenVersionId, encData, integrityValue);
 
 			console.log('decryptedData', decryptedData);
 
@@ -157,17 +141,7 @@ const PasswordResetPersonalInfo = () => {
 
 	const handlePasswordReset = async (data: ResetPasswordFormData) => {
 		try {
-			await fetchApi('/api/auth/reset-password', {
-				method: 'PATCH',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					name: authData.name,
-					phone: authData.phone,
-					newPassword: data.newPassword,
-				}),
-			});
+			await fetchResetPassword(authData.name as string, authData.phone as string, data.newPassword);
 
 			open({
 				width: '300px',

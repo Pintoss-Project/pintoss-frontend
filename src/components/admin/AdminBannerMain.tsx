@@ -1,20 +1,20 @@
 'use client';
 
+import { fetchBannerInfo } from '@/app/api/site/fetchBannerInfo';
 import { Flex } from '@/shared/components/layout';
-import SiteInfoBox from './SiteInfoBox';
+import Spacing from '@/shared/components/layout/Spacing';
+import { BannerInfoFormData } from '@/utils/validation/site';
+import { useState } from 'react';
 import AddBannerBox from './AddBannerBox';
 import BannerListBox from './BannerListBox';
-import Spacing from '@/shared/components/layout/Spacing';
-import { useState } from 'react';
-import { getBannerById } from '@/app/api/site/getBannerById';
-import { BannerInfoFormData } from '@/utils/validation/site';
+import SiteInfoBox from './SiteInfoBox';
 
 const AdminBannerMain = () => {
 	const [editingBannerId, setEditingBannerId] = useState<number | null>(null);
 	const [initialBannerData, setInitialBannerData] = useState<BannerInfoFormData | null>(null);
 
 	const handleEdit = async (id: number) => {
-		const banner = await getBannerById(id);
+		const banner = await fetchBannerInfo(id);
 		setInitialBannerData(banner.data);
 		setEditingBannerId(id);
 	};

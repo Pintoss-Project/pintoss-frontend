@@ -1,14 +1,15 @@
+import { fetchCartItemList } from '@/app/api/cart/fetchCartItemList';
+import { fetchUpdateCartItem } from '@/app/api/cart/fetchUpdateCartItem';
+import { fetchUpdateCartPayMethod } from '@/app/api/cart/fetchUpdateCartPayMethod';
+import useAlertContext from '@/hooks/useAlertContext';
 import { CartItemResponse } from '@/models/cart';
-import { Dispatch, SetStateAction, useEffect, useCallback, useState } from 'react';
+import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
+import * as cs from '@/shared/styles/common.css';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 import CartOrderListItem from './CartOrderListItem';
 import CartOrderTotalInfoBox from './CartOrderTotalInfoBox';
 import * as s from './CartStyle.css';
-import * as cs from '@/shared/styles/common.css';
-import useAlertContext from '@/hooks/useAlertContext';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { updateCart, updateCartPayMethodAndPrice } from '@/app/api/cart/updateCart';
-import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
-import { getCartItems } from '@/app/api/cart/getCartItems';
 
 interface Props {
 	setTotalAmount: Dispatch<SetStateAction<number>>;
@@ -22,7 +23,7 @@ const CartOrderListInfoBox = ({ setTotalAmount, userId, selectedType }: Props) =
 
 	const { data: cartItemsData } = useQuery({
 		queryKey: ['cartItems', userId],
-		queryFn: () => getCartItems(userId as number),
+		queryFn: () => fetchCartItemList(userId as number),
 		enabled: !!userId,
 	});
 
@@ -37,7 +38,7 @@ const CartOrderListInfoBox = ({ setTotalAmount, userId, selectedType }: Props) =
 
 	useEffect(() => {
 		if (cartItems.length > 0 && userId) {
-			updateCartPayMethodAndPrice(userId, selectedType.toUpperCase()).then(() => {
+			fetchUpdateCartPayMethod(userId, selectedType.toUpperCase()).then(() => {
 				queryClient.invalidateQueries({ queryKey: ['cartItems', userId] });
 			});
 		}
@@ -64,7 +65,8 @@ const CartOrderListInfoBox = ({ setTotalAmount, userId, selectedType }: Props) =
 	);
 
 	const updateCartMutation = useMutation({
-		mutationFn: ({ id, quantity }: { id: number; quantity: number }) => updateCart(id, quantity),
+		mutationFn: ({ id, quantity }: { id: number; quantity: number }) =>
+			fetchUpdateCartItem(id, quantity),
 		onError: () => {
 			open({
 				width: '300px',

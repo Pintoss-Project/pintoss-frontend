@@ -1,15 +1,15 @@
 'use client';
 
-import { Flex } from '@/shared/components/layout';
-import * as s from './AdminStyle.css';
-import Spacing from '@/shared/components/layout/Spacing';
+import { fetchUserList } from '@/app/api/user/fetchUserList';
 import { Button } from '@/shared/components/button';
-import { vars } from '@/shared/styles/theme.css';
 import { Input } from '@/shared/components/input';
-import AdminUserList from './AdminUserList';
-import { useState } from 'react';
+import { Flex } from '@/shared/components/layout';
+import Spacing from '@/shared/components/layout/Spacing';
+import { vars } from '@/shared/styles/theme.css';
 import { useQuery } from '@tanstack/react-query';
-import { getUserList } from '@/app/api/user/getUserList';
+import { useState } from 'react';
+import * as s from './AdminStyle.css';
+import AdminUserList from './AdminUserList';
 
 const AdminUserMain = () => {
 	const [startDate, setStartDate] = useState('');
@@ -20,7 +20,7 @@ const AdminUserMain = () => {
 
 	const { data: paginatedUsers, refetch: refetchFilteredUsers } = useQuery({
 		queryKey: ['userList', { startDate, endDate, search, page, pageSize }],
-		queryFn: () => getUserList({ startDate, endDate, search, page, pageSize }),
+		queryFn: () => fetchUserList({ startDate, endDate, search, page, pageSize }),
 	});
 
 	const handleSearch = () => {

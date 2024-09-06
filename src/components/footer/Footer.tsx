@@ -3,15 +3,16 @@
 import * as cs from '@/shared/styles/common.css';
 import * as s from './FooterStyle.css';
 
-import { PintossLogo, SecureTransaction } from '../../../public/svgs';
-import Image from 'next/image';
-import Spacing from '@/shared/components/layout/Spacing';
+import { fetchSiteInfo } from '@/app/api/site/fetchSiteInfo';
+import { fetchSiteList } from '@/app/api/site/fetchSiteList';
 import { Flex } from '@/shared/components/layout';
+import Spacing from '@/shared/components/layout/Spacing';
 import { vars } from '@/shared/styles/theme.css';
+import { useQuery } from '@tanstack/react-query';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
-import { getAllSiteInfo, getSiteInfo } from '@/app/api/site/getSiteInfo';
+import { PintossLogo, SecureTransaction } from '../../../public/svgs';
 import ProtectedRoute from '../protect/ProtectedRoute';
 
 const Footer = () => {
@@ -19,7 +20,7 @@ const Footer = () => {
 
 	const { data: allSiteInfo } = useQuery({
 		queryKey: ['allSiteInfo'],
-		queryFn: () => getAllSiteInfo(),
+		queryFn: () => fetchSiteList(),
 	});
 
 	const firstSiteInfoId =
@@ -27,7 +28,7 @@ const Footer = () => {
 
 	const { data: siteInfo } = useQuery({
 		queryKey: ['siteInfo', firstSiteInfoId],
-		queryFn: () => (firstSiteInfoId ? getSiteInfo(firstSiteInfoId) : Promise.resolve(null)),
+		queryFn: () => (firstSiteInfoId ? fetchSiteInfo(firstSiteInfoId) : Promise.resolve(null)),
 		enabled: !!firstSiteInfoId,
 	});
 

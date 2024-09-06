@@ -1,27 +1,27 @@
 'use client';
 
+import { fetchDeleteBoardImage } from '@/app/api/board/fetchDeleteBoardImage';
+import { fetchRegisterBoard } from '@/app/api/board/fetchRegisterBoard';
+import { fetchUpdateBoard } from '@/app/api/board/fetchUpdateBoard';
+import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
+import { uploadImageToCloudinary } from '@/app/api/image/uploadImageToCloudinary';
+import useAlertContext from '@/hooks/useAlertContext';
+import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Button } from '@/shared/components/button';
 import { Input } from '@/shared/components/input';
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
+import * as cs from '@/shared/styles/common.css';
 import { vars } from '@/shared/styles/theme.css';
+import BoardError from '@/utils/error/BoardError';
+import { BoardInfoFormData } from '@/utils/validation/board';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import dynamic from 'next/dynamic';
+import { useSearchParams } from 'next/navigation';
 import { ChangeEvent, FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import ReactQuill, { ReactQuillProps } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import * as s from './AdminStyle.css';
-import * as cs from '@/shared/styles/common.css';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { BoardInfoFormData } from '@/utils/validation/board';
-import { postBoard } from '@/app/api/board/postBoard';
-import { useSearchParams } from 'next/navigation';
-import useAlertContext from '@/hooks/useAlertContext';
-import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
-import BoardError from '@/utils/error/BoardError';
-import { uploadImageToCloudinary } from '@/app/api/image/uploadImageToCloudinary';
-import { updateBoard } from '@/app/api/board/updateBoard';
-import { deleteImageFromBackend } from '@/app/api/board/deleteBoard';
-import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
-import dynamic from 'next/dynamic';
 
 interface ForwardedQuillComponent extends ReactQuillProps {
 	forwardedRef: React.Ref<ReactQuill>;
@@ -118,7 +118,7 @@ const BoardWriter = ({ title, formId, editBoard, resetEditBoard }: Props) => {
 			try {
 				await deleteImageFromCloudinary(image.id);
 				if (image.savedToBackend) {
-					await deleteImageFromBackend(+image.id);
+					await fetchDeleteBoardImage(+image.id);
 				}
 			} catch (error: unknown) {
 				if (error instanceof Error) {
@@ -203,7 +203,7 @@ const BoardWriter = ({ title, formId, editBoard, resetEditBoard }: Props) => {
 	};
 
 	const mutation = useMutation({
-		mutationFn: (data: BoardInfoFormData) => postBoard(type, data),
+		mutationFn: (data: BoardInfoFormData) => fetchRegisterBoard(type, data),
 		onSuccess: async () => {
 			await finalImageDeletion();
 			open({
@@ -232,7 +232,7 @@ const BoardWriter = ({ title, formId, editBoard, resetEditBoard }: Props) => {
 	});
 
 	const updateMutation = useMutation({
-		mutationFn: (data: BoardInfoFormData) => updateBoard(type, editBoard?.id as number, data),
+		mutationFn: (data: BoardInfoFormData) => fetchUpdateBoard(type, editBoard?.id as number, data),
 		onSuccess: async () => {
 			await finalImageDeletion();
 			open({

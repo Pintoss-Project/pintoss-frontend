@@ -1,9 +1,12 @@
 'use client';
 
 import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
-import { deleteProduct } from '@/app/api/product/deleteProduct';
-import { getProductList } from '@/app/api/product/getProductList';
-import { updateStock, UpdateStockParams } from '@/app/api/product/updateStock';
+import { fetchDeleteProduct } from '@/app/api/product/fetchDeleteProduct';
+import { fetchProductList } from '@/app/api/product/fetchProductList';
+import {
+	fetchUpdateProductStock,
+	UpdateStockParams,
+} from '@/app/api/product/fetchUpdateProductStock';
 import useAlertContext from '@/hooks/useAlertContext';
 import { ProductInfo } from '@/models/product';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
@@ -33,7 +36,7 @@ const AdminProductList = ({ onSelectProduct, onResetEdit }: Props) => {
 
 	const { data: products, isSuccess } = useQuery({
 		queryKey: ['productList'],
-		queryFn: () => getProductList(),
+		queryFn: () => fetchProductList(),
 	});
 
 	useEffect(() => {
@@ -93,7 +96,7 @@ const AdminProductList = ({ onSelectProduct, onResetEdit }: Props) => {
 					await deleteImageFromCloudinary(publicId);
 				}
 			}
-			return deleteProduct(productId);
+			return fetchDeleteProduct(productId);
 		},
 		onMutate: async (productId: number) => {
 			await queryClient.invalidateQueries({
@@ -160,7 +163,7 @@ const AdminProductList = ({ onSelectProduct, onResetEdit }: Props) => {
 	};
 
 	const updateStockMutation = useMutation({
-		mutationFn: (params: UpdateStockParams) => updateStock(params),
+		mutationFn: (params: UpdateStockParams) => fetchUpdateProductStock(params),
 		onMutate: async (updatedStock) => {
 			const previousProductList = queryClient.getQueryData<ProductInfo[]>(['productList']);
 

@@ -1,18 +1,18 @@
 'use client';
 
+import { fetchPriceCategoryList } from '@/app/api/product/fetchPriceCategoryList';
+import { fetchRegisterPriceCategory } from '@/app/api/product/fetchRegisterPriceCategory';
+import useAlertContext from '@/hooks/useAlertContext';
+import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Button } from '@/shared/components/button';
 import { Input } from '@/shared/components/input';
 import { Flex } from '@/shared/components/layout';
+import * as cs from '@/shared/styles/common.css';
 import { vars } from '@/shared/styles/theme.css';
 import { PriceCategoryInfoFormData } from '@/utils/validation/product';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import * as s from './AdminStyle.css';
-import * as cs from '@/shared/styles/common.css';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getPriceCategoryList } from '@/app/api/product/getPriceCategoryList';
-import { postPriceCategory } from '@/app/api/product/postPriceCategory';
-import useAlertContext from '@/hooks/useAlertContext';
-import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 
 interface Props {
 	productId?: number;
@@ -29,12 +29,13 @@ const PriceCategoryInputGroup = ({ productId, onAddCategory }: Props) => {
 
 	const { data: categories, isSuccess } = useQuery({
 		queryKey: ['priceCategoryList', productId],
-		queryFn: () => getPriceCategoryList(productId as number),
+		queryFn: () => fetchPriceCategoryList(productId as number),
 		enabled: !!productId, // Only run the query if productId is defined
 	});
 
 	const postPriceCategoryMutation = useMutation({
-		mutationFn: (data: PriceCategoryInfoFormData[]) => postPriceCategory(productId as number, data),
+		mutationFn: (data: PriceCategoryInfoFormData[]) =>
+			fetchRegisterPriceCategory(productId as number, data),
 		onSuccess: () => {
 			open({
 				width: '300px',

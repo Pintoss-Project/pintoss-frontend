@@ -3,14 +3,14 @@
 import { vars } from '@/shared/styles/theme.css';
 import * as s from './MyPageStyle.css';
 
+import { fetchUserInfo } from '@/app/api/user/fetchUserInfo';
 import { Divider, Flex } from '@/shared/components/layout';
 import { useQuery } from '@tanstack/react-query';
-import { getUserInfo } from '@/app/api/user/getUserInfo';
 
 const MemberInfoBox = () => {
 	const { data: userInfo } = useQuery({
 		queryKey: ['userInfo'],
-		queryFn: getUserInfo,
+		queryFn: fetchUserInfo,
 	});
 
 	return (

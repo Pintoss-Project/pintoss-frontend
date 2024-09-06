@@ -1,26 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { fetchBoardList } from '@/app/api/board/fetchBoardList';
+import { fetchDeleteBoard } from '@/app/api/board/fetchDeleteBoard';
+import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
+import useAlertContext from '@/hooks/useAlertContext';
+import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Button } from '@/shared/components/button';
-import * as s from './AdminStyle.css';
-import * as cs from '@/shared/styles/common.css';
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
+import * as cs from '@/shared/styles/common.css';
 import { vars } from '@/shared/styles/theme.css';
+import { formatDate } from '@/utils/formatDate';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
+import { useState } from 'react';
 import {
 	MdKeyboardArrowLeft,
 	MdKeyboardArrowRight,
 	MdKeyboardDoubleArrowLeft,
 	MdKeyboardDoubleArrowRight,
 } from 'react-icons/md';
-import { getBoardList } from '@/app/api/board/getBoardList';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { formatDate } from '@/utils/formatDate';
-import { deleteBoard } from '@/app/api/board/deleteBoard';
-import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
-import useAlertContext from '@/hooks/useAlertContext';
-import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
+import * as s from './AdminStyle.css';
 
 interface Props {
 	type: string;
@@ -38,7 +38,7 @@ const AdminBoardList = ({ type, onEdit, onDelete }: Props) => {
 
 	const { data: boards } = useQuery({
 		queryKey: ['boardList', type],
-		queryFn: () => getBoardList(type.toUpperCase()),
+		queryFn: () => fetchBoardList(type.toUpperCase()),
 	});
 
 	const handleClickPage = (pageNumber: number) => {
@@ -94,7 +94,7 @@ const AdminBoardList = ({ type, onEdit, onDelete }: Props) => {
 				}
 			}
 
-			await deleteBoard(id);
+			await fetchDeleteBoard(id);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['boardList', type] });

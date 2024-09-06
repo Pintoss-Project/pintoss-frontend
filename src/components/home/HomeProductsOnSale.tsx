@@ -1,12 +1,12 @@
 'use client';
 
-import * as s from './HomeStyle.css';
+import { fetchSimpleProductList } from '@/app/api/product/fetchSimpleProductList';
 import { Grid } from '@/shared/components/layout';
-import HomeProductBox from './HomeProductBox';
 import { vars } from '@/shared/styles/theme.css';
-import HomeProductMobileBox from './HomeProductMobileBox';
 import { useQuery } from '@tanstack/react-query';
-import { getSimpleProductList } from '@/app/api/product/getProductList';
+import HomeProductBox from './HomeProductBox';
+import HomeProductMobileBox from './HomeProductMobileBox';
+import * as s from './HomeStyle.css';
 
 interface Props {
 	category: string;
@@ -19,7 +19,7 @@ const HomeProductsOnSale = ({ category }: Props) => {
 
 	const { data: products } = useQuery({
 		queryKey: ['simpleProductList', productCategory],
-		queryFn: () => getSimpleProductList(productCategory),
+		queryFn: () => fetchSimpleProductList(productCategory),
 	});
 
 	return (
