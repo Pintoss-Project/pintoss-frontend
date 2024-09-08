@@ -38,6 +38,9 @@ export const useProductWithPriceCategoryMutation = ({
 						});
 
 					queryClient.invalidateQueries({ queryKey: ['productList'] });
+					queryClient.invalidateQueries({
+						queryKey: ['priceCategoryList', productId],
+					});
 				} catch (error) {
 					open({
 						width: '300px',

@@ -8,7 +8,7 @@ import Spacing from '@/shared/components/layout/Spacing';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { CultureLandLogo, KakaoDetailLogo } from '../../../public/svgs';
+import { KakaoDetailLogo } from '../../../public/svgs';
 import ProtectedRoute from '../protect/ProtectedRoute';
 import * as s from './NavBarStyle.css';
 import SideNavBarProductsForSale from './SideNavBarProductsForSale';
@@ -48,7 +48,7 @@ const SideNavBar = () => {
 					{products?.data.map((item) => (
 						<SideNavBarProductsForSale
 							key={item.id}
-							svg={CultureLandLogo}
+							svg={item.logoImageUrl as string}
 							name={item.name}
 							productId={item.id}
 						/>

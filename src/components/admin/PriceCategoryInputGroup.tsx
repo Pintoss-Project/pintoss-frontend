@@ -30,7 +30,7 @@ const PriceCategoryInputGroup = ({ productId, onAddCategory }: Props) => {
 	const { data: categories, isSuccess } = useQuery({
 		queryKey: ['priceCategoryList', productId],
 		queryFn: () => fetchPriceCategoryList(productId as number),
-		enabled: !!productId, // Only run the query if productId is defined
+		enabled: !!productId,
 	});
 
 	const postPriceCategoryMutation = useMutation({

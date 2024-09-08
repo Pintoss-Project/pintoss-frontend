@@ -37,14 +37,12 @@ const SiteInfoBox = () => {
 	const { open, close } = useAlertContext();
 	const queryClient = useQueryClient();
 
-	const { data: allSiteInfo } = useQuery({
-		queryKey: ['allSiteInfo'],
+	const { data: siteInfoList } = useQuery({
+		queryKey: ['siteInfoList'],
 		queryFn: () => fetchSiteList(),
 	});
 
-	const firstSiteInfoId = allSiteInfo?.data?.length ? allSiteInfo.data[0].id : null;
-
-	console.log(allSiteInfo?.data, firstSiteInfoId);
+	const firstSiteInfoId = siteInfoList?.data?.length ? siteInfoList.data[0].id : null;
 
 	const { data: siteInfo } = useQuery({
 		queryKey: ['siteInfo', firstSiteInfoId],

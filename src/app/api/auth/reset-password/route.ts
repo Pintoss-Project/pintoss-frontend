@@ -5,7 +5,6 @@ const JAVA_SERVER_BASE_URL = 'http://pintossmall2.cafe24.com/api/user/reset-pass
 export async function PATCH(req: NextRequest) {
 	try {
 		const { name, phone, newPassword } = await req.json();
-		console.log(name, phone, newPassword);
 
 		if (!name || !phone || !newPassword) {
 			return NextResponse.json(

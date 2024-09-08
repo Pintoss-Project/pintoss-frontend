@@ -6,6 +6,13 @@ export interface PriceCategoryInfo {
 	createdAt: string;
 }
 
+export interface ProductInfoListResponse {
+	code: number;
+	status: string;
+	message: string;
+	data: ProductInfo[];
+}
+
 export interface ProductInfo {
 	id: number;
 	name: string;
@@ -26,7 +33,7 @@ export interface ProductInfo {
 export interface SimpleProductInfo {
 	id: number;
 	name: string;
-	logo?: string;
+	logoImageUrl?: string;
 	cardDiscount?: number;
 	phoneDiscount?: number;
 }

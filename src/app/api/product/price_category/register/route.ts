@@ -3,7 +3,14 @@ import { NextRequest } from 'next/server';
 
 export async function POST(req: NextRequest) {
 	try {
-		const { productId, stock, ...categories } = await req.json();
+		const requestBody = await req.json();
+
+		const [firstItem] = requestBody;
+		if (!firstItem) {
+			throw new Error('Request body is empty');
+		}
+
+		const { productId } = firstItem;
 
 		const response = await fetch(
 			`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/product/${productId}/category`,
@@ -12,11 +19,7 @@ export async function POST(req: NextRequest) {
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({
-					productId,
-					stock,
-					...categories,
-				}),
+				body: JSON.stringify(requestBody),
 			},
 		);
 

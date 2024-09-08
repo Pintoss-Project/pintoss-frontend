@@ -108,8 +108,6 @@ const PasswordResetPersonalInfo = () => {
 		try {
 			const decryptedData = await fetchDecryptedData(tokenVersionId, encData, integrityValue);
 
-			console.log('decryptedData', decryptedData);
-
 			setAuthData({ name: decryptedData.name, phone: decryptedData.mobileno });
 			setValue('name', decryptedData.name);
 			setValue('phone', decryptedData.mobileno);

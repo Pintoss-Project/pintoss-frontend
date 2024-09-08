@@ -8,7 +8,7 @@ import {
 	UpdateStockParams,
 } from '@/app/api/product/fetchUpdateProductStock';
 import useAlertContext from '@/hooks/useAlertContext';
-import { ProductInfo } from '@/models/product';
+import { ProductInfo, ProductInfoListResponse } from '@/models/product';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Button } from '@/shared/components/button';
 import { Input } from '@/shared/components/input';
@@ -98,36 +98,12 @@ const AdminProductList = ({ onSelectProduct, onResetEdit }: Props) => {
 			}
 			return fetchDeleteProduct(productId);
 		},
-		onMutate: async (productId: number) => {
-			await queryClient.invalidateQueries({
-				queryKey: ['productList'],
-			});
-
-			const previousProductList = queryClient.getQueryData<ProductInfo[]>(['productList']);
-
-			queryClient.setQueryData<ProductInfo[]>(['productList'], (oldData) => {
-				if (!oldData) return [];
-				return oldData.filter((product) => product.id !== productId);
-			});
-
-			return { previousProductList };
-		},
-		onError: (err, productId, context) => {
-			queryClient.setQueryData(['productList'], context?.previousProductList);
-
-			open({
-				width: '300px',
-				height: '200px',
-				title: '상품권 삭제 실패',
-				main: <AlertMainTextBox text="상품권 삭제가 실패되었습니다." />,
-				rightButtonStyle: cs.lightBlueButton,
-				onRightButtonClick: close,
-			});
-			setIsDeleting(false);
-		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({
-				queryKey: ['productList'],
+		onSuccess: (data, productId) => {
+			queryClient.setQueryData(['productList'], (oldData: ProductInfoListResponse) => {
+				return {
+					...oldData,
+					data: oldData.data.filter((product: ProductInfo) => product.id !== productId),
+				};
 			});
 			open({
 				width: '300px',
@@ -139,6 +115,20 @@ const AdminProductList = ({ onSelectProduct, onResetEdit }: Props) => {
 			});
 			setIsDeleting(false);
 			onResetEdit();
+		},
+		onError: () => {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '상품권 삭제 실패',
+				main: <AlertMainTextBox text="상품권 삭제가 실패되었습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+			setIsDeleting(false);
+		},
+		onSettled: () => {
+			queryClient.invalidateQueries({ queryKey: ['productList'] });
 		},
 	});
 
@@ -164,19 +154,18 @@ const AdminProductList = ({ onSelectProduct, onResetEdit }: Props) => {
 
 	const updateStockMutation = useMutation({
 		mutationFn: (params: UpdateStockParams) => fetchUpdateProductStock(params),
-		onMutate: async (updatedStock) => {
+		onSuccess: async (data, variables) => {
+			const { productId, data: stock } = variables;
 			const previousProductList = queryClient.getQueryData<ProductInfo[]>(['productList']);
 
 			queryClient.setQueryData<ProductInfo[]>(['productList'], (oldData) => {
 				if (!oldData) return [];
 				return oldData.map((product) =>
-					product.id === updatedStock.productId
+					product.id === productId
 						? {
 								...product,
 								priceCategories: product.priceCategories?.map((category) =>
-									category.id === updatedStock.categoryId
-										? { ...category, stock: updatedStock.data }
-										: category,
+									category.id === data.data ? { ...category, stock } : category,
 								),
 						  }
 						: product,
@@ -185,13 +174,12 @@ const AdminProductList = ({ onSelectProduct, onResetEdit }: Props) => {
 
 			setQuantity((prevQuantity) => ({
 				...prevQuantity,
-				[updatedStock.productId]: updatedStock.data,
+				[productId]: stock,
 			}));
 
 			return { previousProductList };
 		},
-		onError: (err, newStock, context) => {
-			queryClient.setQueryData(['productList'], context?.previousProductList);
+		onError: () => {
 			open({
 				width: '300px',
 				height: '200px',

@@ -24,8 +24,8 @@ export async function PATCH(req: NextRequest) {
 			);
 		}
 
-		const { data: updatedPriceCategoryId } = await response.json();
-		return NextResponse.json({ priceCategoryId: updatedPriceCategoryId });
+		const data = await response.json();
+		return NextResponse.json(data);
 	} catch (error) {
 		console.error('Error updating stock:', error);
 		return NextResponse.json(

@@ -1,23 +1,22 @@
 'use client';
 
-import * as s from './AdminStyle.css';
-import * as cs from '@/shared/styles/common.css';
+import { fetchAdminLogin } from '@/app/api/auth/fetchAdminLogin';
+import useAlertContext from '@/hooks/useAlertContext';
+import useRedirect from '@/hooks/useRedirect';
+import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
+import { Button } from '@/shared/components/button';
+import LoginInput from '@/shared/components/input/LoginInput';
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
-import { Button } from '@/shared/components/button';
+import * as cs from '@/shared/styles/common.css';
 import { vars } from '@/shared/styles/theme.css';
-import useAlertContext from '@/hooks/useAlertContext';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { LogInFormData, loginSchema } from '@/utils/validation/auth';
-import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
-import LoginInput from '@/shared/components/input/LoginInput';
-import { setLocalToken } from '@/utils/localToken';
-import useRedirect from '@/hooks/useRedirect';
-import { useEffect } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { fetchAdminLogin } from '@/app/api/auth/fetchAdminLogin';
 import LoginError from '@/utils/error/LoginError';
+import { setLocalToken } from '@/utils/localToken';
+import { LogInFormData, loginSchema } from '@/utils/validation/auth';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import * as s from './AdminStyle.css';
 
 const AdminLoginSection = () => {
 	const { open, close } = useAlertContext();
@@ -32,12 +31,7 @@ const AdminLoginSection = () => {
 		},
 	});
 
-	const {
-		handleSubmit,
-		formState: { errors },
-	} = methods;
-
-	const emailErrorMessage = errors.email?.message as string;
+	const { handleSubmit } = methods;
 
 	const mutation = useMutation({
 		mutationFn: fetchAdminLogin,
@@ -79,24 +73,6 @@ const AdminLoginSection = () => {
 		event?.preventDefault();
 		mutation.mutate(data);
 	};
-
-	useEffect(() => {
-		if (errors.email) {
-			open({
-				width: '300px',
-				height: '200px',
-				title: '유효성 검사 오류',
-				main: <AlertMainTextBox text={emailErrorMessage} />,
-				rightButtonStyle: cs.lightBlueButton,
-				onRightButtonClick: () => {
-					close();
-				},
-				onBackDropClick: () => {
-					close();
-				},
-			});
-		}
-	}, [errors]);
 
 	return (
 		<Flex direction="column" justify="center" align="center" className={s.adminLoginContainer}>

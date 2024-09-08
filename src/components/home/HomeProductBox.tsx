@@ -50,11 +50,7 @@ const HomeProductBox = ({ headerColor, product }: Props) => {
 					</Button>
 				</div>
 				<div className={s.productIconBox}>
-					<img
-						src={'/images/olive-logo.png'}
-						alt="상품권 로고 이미지"
-						className={s.productIconImage}
-					/>
+					<img src={product.logoImageUrl} alt="상품권 로고 이미지" className={s.productIconImage} />
 				</div>
 			</Link>
 		</GridItem>

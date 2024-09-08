@@ -1,5 +1,7 @@
 'use client';
 
+import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
+import { uploadImageToCloudinary } from '@/app/api/image/uploadImageToCloudinary';
 import { fetchDeletePriceCategory } from '@/app/api/product/fetchDeletePriceCategory';
 import { fetchPriceCategoryList } from '@/app/api/product/fetchPriceCategoryList';
 import { fetchProductInfo } from '@/app/api/product/fetchProductInfo';
@@ -47,6 +49,8 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 	const [files, setFiles] = useState<FileWithPreview[]>([]);
 	const [isImageAdded, setIsImageAdded] = useState(false);
 	const [priceCategories, setPriceCategories] = useState<PriceCategoryInfo[]>([]);
+	const [isUploading, setIsUploading] = useState(false);
+	const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(null);
 
 	const { open, close } = useAlertContext();
 
@@ -54,15 +58,13 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 
 	const { data: productDetails, isSuccess } = useQuery({
 		queryKey: ['productDetails', productId],
-		queryFn: () =>
-			productId ? fetchProductInfo(productId) : Promise.reject('No product ID provided'),
+		queryFn: () => fetchProductInfo(productId as number),
 		enabled: !!productId,
 	});
 
 	const { data: priceCategoryList } = useQuery({
 		queryKey: ['priceCategoryList', productId],
-		queryFn: () =>
-			productId ? fetchPriceCategoryList(productId) : Promise.reject('No product ID provided'),
+		queryFn: () => fetchPriceCategoryList(productId as number),
 		enabled: !!productId,
 	});
 
@@ -76,6 +78,7 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 			description: '',
 			publisher: '',
 			category: '',
+			logoImageUrl: '',
 		},
 	});
 
@@ -90,7 +93,9 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 				description: product.description,
 				publisher: product.publisher,
 				category: product.category,
+				logoImageUrl: product.logoImageUrl,
 			});
+			setCurrentImageUrl(product.logoImageUrl as string);
 			setPriceCategories(product.priceCategories || []);
 		}
 	}, [isSuccess, productDetails, methods]);
@@ -104,7 +109,38 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 			),
 		);
 		setIsImageAdded(true);
+		handleImageUpload(acceptedFiles[0]);
 	}, []);
+
+	const handleImageUpload = async (file: File) => {
+		setIsUploading(true);
+		try {
+			if (currentImageUrl) {
+				const publicId = currentImageUrl.split('/').pop()?.split('.')[0];
+				if (publicId) {
+					await deleteImageFromCloudinary(publicId);
+				}
+			}
+
+			const result = await uploadImageToCloudinary(file);
+			const imageUrl = result.secure_url;
+			methods.setValue('logoImageUrl', imageUrl);
+			setCurrentImageUrl(imageUrl);
+		} catch (error: unknown) {
+			if (error instanceof Error) {
+				open({
+					width: '300px',
+					height: '200px',
+					title: '이미지 업로드 실패',
+					main: <AlertMainTextBox text={error.message} />,
+					rightButtonStyle: cs.lightBlueButton,
+					onRightButtonClick: close,
+				});
+			}
+		} finally {
+			setIsUploading(false);
+		}
+	};
 
 	const { getRootProps, getInputProps } = useDropzone({
 		accept: { 'image/*': [] } as Accept,
@@ -142,8 +178,7 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 	});
 
 	const deletePriceCategoryMutation = useMutation({
-		mutationFn: (categoryId: number) =>
-			productId ? fetchDeletePriceCategory(productId, categoryId) : Promise.reject('No product ID'),
+		mutationFn: (categoryId: number) => fetchDeletePriceCategory(productId as number, categoryId),
 		onSuccess: () => {
 			open({
 				width: '300px',
@@ -170,8 +205,7 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 	});
 
 	const updateProductMutation = useMutation({
-		mutationFn: (data: ProductInfoFormData) =>
-			productId ? fetchUpdateProduct(productId, data) : Promise.reject('No product ID'),
+		mutationFn: (data: ProductInfoFormData) => fetchUpdateProduct(productId as number, data),
 		onSuccess: () => {
 			open({
 				width: '300px',
@@ -183,6 +217,9 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 			});
 			queryClient.invalidateQueries({
 				queryKey: ['productDetails', productId],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ['productList'],
 			});
 		},
 		onError: () => {
@@ -212,6 +249,10 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 	const onSubmit: SubmitHandler<ProductInfoFormData> = (data, event) => {
 		event?.preventDefault();
 
+		if (isUploading) {
+			return;
+		}
+
 		if (productId) {
 			updateProductMutation.mutate(
 				{ ...data, priceCategories },
@@ -224,8 +265,12 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 							description: '',
 							publisher: '',
 							category: '',
+							logoImageUrl: '',
 						});
 						setPriceCategories([]);
+						setCurrentImageUrl(null);
+						setFiles([]);
+						setIsImageAdded(false);
 						setIsEditing?.(false);
 						setSelectedProductId?.(undefined);
 					},
@@ -238,13 +283,21 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 					onSuccess: () => {
 						reset();
 						setPriceCategories([]);
+						setCurrentImageUrl(null);
+						setFiles([]);
+						setIsImageAdded(false);
 					},
 				},
 			);
 		}
 	};
 
-	const handleDeleteCategory = (index: number, categoryId: number) => {
+	const handleDeleteCategory = (
+		index: number,
+		categoryId: number,
+		event: React.MouseEvent<HTMLButtonElement>,
+	) => {
+		event.preventDefault();
 		open({
 			width: '300px',
 			height: '200px',
@@ -302,7 +355,15 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 								{...getRootProps({ className: s.dropzone })}
 								style={{ position: 'relative', flex: '3', height: '100px', marginLeft: '1.5%' }}>
 								<input {...getInputProps()} />
-								{!isImageAdded && (
+								{!isImageAdded && currentImageUrl ? (
+									<Image
+										src={currentImageUrl}
+										alt="현재 로고 이미지"
+										width={100}
+										height={100}
+										style={{ objectFit: 'cover' }}
+									/>
+								) : (
 									<Image
 										src={DropImageBox}
 										alt="이미지 등록 하기"
@@ -372,7 +433,7 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 											<Flex justify="center" align="center">
 												<Button
 													style={{ backgroundColor: 'transparent', cursor: 'pointer' }}
-													onClick={() => handleDeleteCategory(index, category.id)}>
+													onClick={(e) => handleDeleteCategory(index, category.id, e)}>
 													<IoIosRemoveCircle style={{ backgroundColor: 'transparent' }} />
 												</Button>
 											</Flex>

@@ -207,7 +207,6 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 			setValue('phone', decryptedData.mobileno);
 
 			const phoneCheckResult = await fetchCheckPhone(decryptedData.mobileno);
-			console.log('phoneCheckResult', phoneCheckResult.data);
 
 			if (phoneCheckResult.data) {
 				setIsPhoneDuplicate(true);
