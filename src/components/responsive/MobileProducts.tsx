@@ -4,16 +4,19 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import MobileProductBox from './MobileProductBox';
 import * as s from './ResponsiveStyle.css';
+import Spinner from '@/shared/components/spinner/Spinner';
 
 interface Props {
 	setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const MobileProducts = ({ setIsMenuOpen }: Props) => {
-	const { data: products } = useQuery({
+	const { data: products, isLoading } = useQuery({
 		queryKey: ['simpleProductList'],
 		queryFn: () => fetchSimpleProductList(),
 	});
+
+	if (isLoading) return <Spinner />;
 
 	return (
 		<div className={s.gridWrap}>
@@ -24,7 +27,7 @@ const MobileProducts = ({ setIsMenuOpen }: Props) => {
 						href={`/product/${product.id}`}
 						style={{ color: 'black', textDecoration: 'none' }}
 						onClick={() => setIsMenuOpen(false)}>
-						<MobileProductBox name={product.name} image={'/images/book-logo.png'} />
+						<MobileProductBox name={product.name} image={product?.logoImageUrl as string} />
 					</Link>
 				))}
 			</Grid>

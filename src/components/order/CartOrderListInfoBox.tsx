@@ -10,6 +10,7 @@ import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'reac
 import CartOrderListItem from './CartOrderListItem';
 import CartOrderTotalInfoBox from './CartOrderTotalInfoBox';
 import * as s from './CartStyle.css';
+import Spinner from '@/shared/components/spinner/Spinner';
 
 interface Props {
 	setTotalAmount: Dispatch<SetStateAction<number>>;
@@ -21,7 +22,7 @@ const CartOrderListInfoBox = ({ setTotalAmount, userId, selectedType }: Props) =
 	const { open, close } = useAlertContext();
 	const queryClient = useQueryClient();
 
-	const { data: cartItemsData } = useQuery({
+	const { data: cartItemsData, isLoading } = useQuery({
 		queryKey: ['cartItems', userId],
 		queryFn: () => fetchCartItemList(userId as number),
 		enabled: !!userId,
@@ -81,6 +82,8 @@ const CartOrderListInfoBox = ({ setTotalAmount, userId, selectedType }: Props) =
 
 	const sortedCartItems = cartItems.slice().sort((a, b) => a.id - b.id);
 
+	if (isLoading) return <Spinner />;
+
 	return (
 		<div className={s.cartOrderListInfoBox}>
 			<div className={s.menuBarTitle}>
@@ -99,10 +102,10 @@ const CartOrderListInfoBox = ({ setTotalAmount, userId, selectedType }: Props) =
 						<CartOrderListItem
 							key={item.id}
 							id={item.id}
-							icon={'/images/book-logo.png'}
-							name={item.name}
+							icon={item?.logoImageUrl}
+							name={item?.name}
 							price={discountedPrice}
-							quantity={item.quantity}
+							quantity={item?.quantity}
 							onQuantityChange={handleItemQuantityChange}
 						/>
 					);

@@ -20,4 +20,5 @@ export interface CartItemResponse {
 	price: number;
 	cardDiscount: number;
 	phoneDiscount: number;
+	logoImageUrl: string;
 }

@@ -6,12 +6,15 @@ import * as s from './MyPageStyle.css';
 import { fetchUserInfo } from '@/app/api/user/fetchUserInfo';
 import { Divider, Flex } from '@/shared/components/layout';
 import { useQuery } from '@tanstack/react-query';
+import Spinner from '@/shared/components/spinner/Spinner';
 
 const MemberInfoBox = () => {
-	const { data: userInfo } = useQuery({
+	const { data: userInfo, isLoading } = useQuery({
 		queryKey: ['userInfo'],
 		queryFn: fetchUserInfo,
 	});
+
+	if (isLoading) return <Spinner />;
 
 	return (
 		<Flex direction="column" justify="space-around" className={s.memberInfoInnerBox}>

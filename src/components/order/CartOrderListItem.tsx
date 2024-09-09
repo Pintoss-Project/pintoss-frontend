@@ -10,7 +10,6 @@ import { vars } from '@/shared/styles/theme.css';
 import CartError from '@/utils/error/CartError';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import * as s from './CartStyle.css';
 
@@ -95,13 +94,9 @@ const CartOrderListItem = ({ id, icon, name, price, quantity, onQuantityChange }
 		<div className={s.cartOrderListItemBox}>
 			<div className={s.cartOrderListItemLeftBox}>
 				<div className={s.cartOrderListItemLeftInnerBox}>
-					<Image
-						src={icon}
-						alt={`${name} 로고 이미지`}
-						width={40}
-						height={40}
-						className={s.logoFlexItem}
-					/>
+					<Flex justify="center" style={{ width: '60px' }} className={s.logoFlexItem}>
+						<img src={icon} alt={`${name} 로고 이미지`} style={{ height: '50px' }} />
+					</Flex>
 					<div className={s.cartOrderListItemLeftSecondInnerBox}>
 						<span className={clsx(s.flexItem2, s.cartOrderProductName)}>{name}</span>
 						<span className={clsx(s.flexItem3, s.cartOrderProductPrice)}>

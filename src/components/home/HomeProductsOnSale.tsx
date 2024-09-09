@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import HomeProductBox from './HomeProductBox';
 import HomeProductMobileBox from './HomeProductMobileBox';
 import * as s from './HomeStyle.css';
+import Spinner from '@/shared/components/spinner/Spinner';
 
 interface Props {
 	category: string;
@@ -17,10 +18,12 @@ const COLORS = [vars.color.lightRed, vars.color.blue, vars.color.green, vars.col
 const HomeProductsOnSale = ({ category }: Props) => {
 	const productCategory = category === 'ALL' ? undefined : category;
 
-	const { data: products } = useQuery({
+	const { data: products, isLoading } = useQuery({
 		queryKey: ['simpleProductList', productCategory],
 		queryFn: () => fetchSimpleProductList(productCategory),
 	});
+
+	if (isLoading) return <Spinner />;
 
 	return (
 		<>

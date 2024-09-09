@@ -12,17 +12,13 @@ interface CartItemResponse {
 
 export const fetchRegisterCartItem = async (
 	userId: number,
-	data: CartItem,
+	data: CartItem[],
 ): Promise<CartItemResponse> => {
-	const { productId, ...restData } = data;
-
+	const requestBody = { userId, cartItems: data };
 	try {
-		return await fetchApi<CartItemResponse>(`/api/cart/register?userId=${userId}`, {
+		return await fetchApi<CartItemResponse>(`/api/cart/register`, {
 			method: 'POST',
-			body: {
-				productId,
-				...restData,
-			},
+			body: requestBody,
 			token: true,
 		});
 	} catch (error) {

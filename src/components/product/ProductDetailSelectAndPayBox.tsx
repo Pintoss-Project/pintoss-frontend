@@ -4,7 +4,6 @@ import { fetchRegisterCartItem } from '@/app/api/cart/fetchRegisterCartItem';
 import { fetchPriceCategory } from '@/app/api/product/fetchPriceCategory';
 import { fetchUserInfo } from '@/app/api/user/fetchUserInfo';
 import useAlertContext from '@/hooks/useAlertContext';
-import useRedirect from '@/hooks/useRedirect';
 import { CartItem } from '@/models/cart';
 import { PriceCategoryInfo, ProductInfo } from '@/models/product';
 import authState from '@/recoil/authAtom';
@@ -15,6 +14,7 @@ import Spacing from '@/shared/components/layout/Spacing';
 import * as cs from '@/shared/styles/common.css';
 import { vars } from '@/shared/styles/theme.css';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import ConfirmAndPayTheAmountBox from '../order/ConfirmAndPayTheAmountBox';
@@ -36,7 +36,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 	const [finalAmount, setFinalAmount] = useState(0);
 
 	const authStateValue = useRecoilValue(authState);
-	const { setRedirectPath } = useRedirect();
+	const router = useRouter();
 
 	const { open, close } = useAlertContext();
 	const queryClient = useQueryClient();
@@ -68,7 +68,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 	}, [cartItems, priceCategories, saleRate, selectedType]);
 
 	const postCartItemMutation = useMutation({
-		mutationFn: (data: CartItem) => fetchRegisterCartItem(userInfo?.data?.id as number, data),
+		mutationFn: (data: CartItem[]) => fetchRegisterCartItem(userInfo?.data?.id as number, data),
 		onSuccess: () => {
 			open({
 				width: '300px',
@@ -77,6 +77,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 				main: <AlertMainTextBox text="장바구니에 상품이 추가되었습니다." />,
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: () => {
+					router.push('/order/cart');
 					close();
 				},
 			});
@@ -108,15 +109,16 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 				leftButtonLabel: '취소',
 				leftButtonStyle: cs.whiteAndBlackButton,
 				onRightButtonClick: () => {
-					setRedirectPath('/login');
+					router.push('/login');
 					close();
 				},
 				onLeftButtonClick: close,
 			});
 		}
-		cartItems.forEach((item) => {
-			postCartItemMutation.mutate(item);
-		});
+		// cartItems.forEach((item) => {
+		// 	postCartItemMutation.mutate(item);
+		// });
+		postCartItemMutation.mutate(cartItems);
 	};
 
 	const handleSelectCategory = async (category: PriceCategoryInfo) => {

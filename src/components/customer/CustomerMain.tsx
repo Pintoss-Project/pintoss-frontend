@@ -17,6 +17,7 @@ import {
 	MdKeyboardDoubleArrowRight,
 } from 'react-icons/md';
 import * as s from './CustomerStyle.css';
+import Spinner from '@/shared/components/spinner/Spinner';
 
 const ANNOUNCEMENTS_MENU = [
 	{ id: 'NOTICE', name: '공지사항' },
@@ -48,8 +49,8 @@ const CustomerMain = () => {
 	};
 
 	const renderContent = () => {
-		if (isLoading) return <div>Loading...</div>;
-		if (!boards?.data || boards?.data.length === 0) return <div>No content available</div>;
+		if (isLoading) return <Spinner />;
+		if (!boards?.data || boards?.data.length === 0) return <div></div>;
 
 		const startIndex = (currentPage - 1) * itemsPerPage;
 		const endIndex = startIndex + itemsPerPage;

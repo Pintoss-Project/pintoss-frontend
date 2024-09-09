@@ -3,7 +3,6 @@
 import { fetchLogin } from '@/app/api/auth/fetchLogin';
 import * as as from '@/components/auth/AuthStyle.css';
 import useAlertContext from '@/hooks/useAlertContext';
-import useRedirect from '@/hooks/useRedirect';
 import authState from '@/recoil/authAtom';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Flex } from '@/shared/components/layout';
@@ -14,6 +13,7 @@ import { LogInFormData, loginSchema } from '@/utils/validation/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useSetRecoilState } from 'recoil';
 import LoginButtons from './LoginButtons';
@@ -26,7 +26,7 @@ interface ApiError {
 
 const LoginMain = () => {
 	const { open, close } = useAlertContext();
-	const { setRedirectPath } = useRedirect();
+	const router = useRouter();
 
 	const setAuthStateValue = useSetRecoilState(authState);
 
@@ -56,7 +56,7 @@ const LoginMain = () => {
 					onRightButtonClick: () => {
 						setLocalToken(accessToken);
 						setAuthStateValue({ isLoggedIn: true });
-						setRedirectPath('/');
+						router.push('/');
 						close();
 					},
 				});

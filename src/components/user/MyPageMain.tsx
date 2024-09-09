@@ -15,7 +15,6 @@ import { useRouter } from 'next/navigation';
 import InfoBox from '../InfoBox';
 import AuthenticationInfoBox from './AuthenticationInfoBox';
 import MemberInfoBox from './MemberInfoBox';
-import SnsInfoBox from './SnsInfoBox';
 
 const MyPageMain = () => {
 	const { open, close } = useAlertContext();
@@ -73,7 +72,8 @@ const MyPageMain = () => {
 			<Spacing margin="42px" />
 			<Flex justify="center" align="center" className={s.memberInfoFlexBox}>
 				<InfoBox title="회원정보" info={<MemberInfoBox />} className={s.memberInfoBox} />
-				<InfoBox title="SNS 계정 연동" info={<SnsInfoBox />} className={s.snsInfoBox} />
+				<div style={{ width: '100%' }}></div>
+				{/* <InfoBox title="SNS 계정 연동" info={<SnsInfoBox />} className={s.snsInfoBox} /> */}
 			</Flex>
 			<Spacing margin="30px" />
 			<div>

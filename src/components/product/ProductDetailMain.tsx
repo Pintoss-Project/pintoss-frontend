@@ -1,12 +1,10 @@
-import * as s from './ProductDetailStyle.css';
+import { ProductInfo } from '@/models/product';
 import { Flex } from '@/shared/components/layout';
-import Image from 'next/image';
-import { BookAndLifeLogo } from '../../../public/svgs';
 import Spacing from '@/shared/components/layout/Spacing';
-import ProductInstructionItem from './ProductInstructionItem';
 import ProductDetailInfoBox from './ProductDetailInfoBox';
 import ProductDetailSelectAndPayBox from './ProductDetailSelectAndPayBox';
-import { ProductInfo } from '@/models/product';
+import * as s from './ProductDetailStyle.css';
+import ProductInstructionItem from './ProductInstructionItem';
 
 interface Props {
 	product: ProductInfo;
@@ -18,8 +16,8 @@ const ProductDetailMain = ({ product }: Props) => {
 			<div className={s.productDetailLeftBox}>
 				<div className={s.productDetailLogoImageBox}>
 					<Flex justify="center" align="center" className={s.productDetailImageInnerBox}>
-						<Image
-							src={BookAndLifeLogo}
+						<img
+							src={product?.logoImageUrl as string}
 							alt="상품권 로고 이미지"
 							className={s.productDetailLogoImage}
 						/>

@@ -12,13 +12,14 @@ import CartOrderEtcInfoBox from './CartOrderEtcInfoBox';
 import CartOrderListInfoBox from './CartOrderListInfoBox';
 import CartPaymentInfoBox from './CartPaymentInfoBox';
 import * as s from './CartStyle.css';
+import Spinner from '@/shared/components/spinner/Spinner';
 
 const CartMain = () => {
 	const [totalAmount, setTotalAmount] = useState(0);
 	const [selectedType, setSelectedType] = useState<string>('card');
 	const router = useRouter();
 
-	const { data: userInfo } = useQuery({
+	const { data: userInfo, isLoading } = useQuery({
 		queryKey: ['userInfo'],
 		queryFn: fetchUserInfo,
 	});
@@ -29,6 +30,8 @@ const CartMain = () => {
 	if (!isLoggedIn) {
 		router.push('/');
 	}
+
+	if (isLoading) return <Spinner />;
 
 	return (
 		<div>
