@@ -14,7 +14,7 @@ import { ResetPasswordFormData, resetPasswordSchema } from '@/utils/validation/a
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import RegisterInputBox from '../register/RegisterInputBox';
 
 const PasswordResetPersonalInfo = () => {
@@ -22,7 +22,7 @@ const PasswordResetPersonalInfo = () => {
 	const router = useRouter();
 	const [authData, setAuthData] = useState<{ name?: string; phone?: string }>({});
 	const [errorMessage, setErrorMessage] = useState('');
-	const [isVerified, setIsVerified] = useState(true);
+	const [isVerified, setIsVerified] = useState(false);
 
 	const methods = useForm<ResetPasswordFormData>({
 		resolver: zodResolver(resetPasswordSchema),
@@ -137,7 +137,7 @@ const PasswordResetPersonalInfo = () => {
 		}
 	};
 
-	const handlePasswordReset = async (data: ResetPasswordFormData) => {
+	const handlePasswordReset: SubmitHandler<ResetPasswordFormData> = async (data) => {
 		try {
 			await fetchResetPassword(authData.name as string, authData.phone as string, data.newPassword);
 
@@ -161,70 +161,73 @@ const PasswordResetPersonalInfo = () => {
 	return (
 		<div style={{ marginBottom: '100px' }}>
 			<FormProvider {...methods}>
-				<div style={{ marginLeft: '10px' }}>
-					<div style={{ width: '100%', textAlign: 'left' }}>
-						<span className={s.baseText}>휴대폰인증</span>
-						<span className={s.skyBlueText}>[필수]</span>
-					</div>
-					<Spacing margin="8px" />
-					<div className={s.phoneInfoBox}>
-						<p className={s.redText}>* 비밀번호 재설정을 위해 휴대폰 인증이 필요합니다.</p>
-						<Spacing margin="5px" />
-						<p className={s.smallText}>
-							* 본인명의 휴대폰이 아닐 경우 비밀번호 재설정이 불가능합니다.
-						</p>
-						<Spacing margin="30px" />
-						{errorMessage && <p className={s.redText}>{errorMessage}</p>}
-						<Button
-							color={vars.color.lightBlue}
-							className={cs.whiteAndBlueButton}
-							onClick={handleAuthClick}
-							disabled={isVerified}>
-							휴대폰 본인 인증하기
-						</Button>
-					</div>
-					<Spacing margin="30px" />
-					<RegisterInputBox
-						name="name"
-						label="이름"
-						star
-						placeholder="본인인증 후 자동입력됩니다."
-					/>
-					<Spacing margin="20px" />
-					<RegisterInputBox
-						name="phone"
-						label="휴대폰"
-						star
-						placeholder="본인인증 후 자동입력됩니다."
-					/>
-					<Spacing margin="15px" />
-					{isVerified && (
-						<>
-							<RegisterInputBox
-								name="newPassword"
-								label="새 비밀번호"
-								star
-								placeholder="새 비밀번호를 입력하세요."
-								type="password"
-							/>
-							<Spacing margin="20px" />
-							<RegisterInputBox
-								name="confirmPassword"
-								label="비밀번호 확인"
-								star
-								placeholder="비밀번호를 다시 입력하세요."
-								type="password"
-							/>
-							<Spacing margin="40px" />
+				<form id="reset-password-form" onSubmit={handleSubmit(handlePasswordReset)}>
+					<div style={{ marginLeft: '10px' }}>
+						<div style={{ width: '100%', textAlign: 'left' }}>
+							<span className={s.baseText}>휴대폰인증</span>
+							<span className={s.skyBlueText}>[필수]</span>
+						</div>
+						<Spacing margin="8px" />
+						<div className={s.phoneInfoBox}>
+							<p className={s.redText}>* 비밀번호 재설정을 위해 휴대폰 인증이 필요합니다.</p>
+							<Spacing margin="5px" />
+							<p className={s.smallText}>
+								* 본인명의 휴대폰이 아닐 경우 비밀번호 재설정이 불가능합니다.
+							</p>
+							<Spacing margin="30px" />
+							{errorMessage && <p className={s.redText}>{errorMessage}</p>}
 							<Button
 								color={vars.color.lightBlue}
 								className={cs.whiteAndBlueButton}
-								onClick={handleSubmit(handlePasswordReset)}>
-								비밀번호 재설정
+								onClick={handleAuthClick}
+								disabled={isVerified}>
+								휴대폰 본인 인증하기
 							</Button>
-						</>
-					)}
-				</div>
+						</div>
+						<Spacing margin="30px" />
+						<RegisterInputBox
+							name="name"
+							label="이름"
+							star
+							placeholder="본인인증 후 자동입력됩니다."
+						/>
+						<Spacing margin="20px" />
+						<RegisterInputBox
+							name="phone"
+							label="휴대폰"
+							star
+							placeholder="본인인증 후 자동입력됩니다."
+						/>
+						<Spacing margin="15px" />
+						{isVerified && (
+							<>
+								<RegisterInputBox
+									name="newPassword"
+									label="새 비밀번호"
+									star
+									placeholder="새 비밀번호를 입력하세요."
+									type="password"
+								/>
+								<Spacing margin="20px" />
+								<RegisterInputBox
+									name="confirmPassword"
+									label="비밀번호 확인"
+									star
+									placeholder="비밀번호를 다시 입력하세요."
+									type="password"
+								/>
+								<Spacing margin="40px" />
+								<Button
+									form="reset-password-form"
+									color={vars.color.lightBlue}
+									className={cs.whiteAndBlueButton}
+									onClick={handleSubmit(handlePasswordReset)}>
+									비밀번호 재설정
+								</Button>
+							</>
+						)}
+					</div>
+				</form>
 			</FormProvider>
 		</div>
 	);

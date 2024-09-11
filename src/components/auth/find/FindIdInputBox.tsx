@@ -13,18 +13,9 @@ interface Props {
 	type?: string;
 	placeholder?: string;
 	disabled?: boolean;
-	value?: string;
 }
 
-const FindIdInputBox = ({
-	value,
-	name,
-	label,
-	star,
-	type,
-	placeholder,
-	disabled = false,
-}: Props) => {
+const FindIdInputBox = ({ name, label, star, type, placeholder, disabled = false }: Props) => {
 	const {
 		control,
 		formState: { errors },

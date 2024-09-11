@@ -1,6 +1,6 @@
 import NiceRedirectHandler from '@/components/auth/register/NiceRedirectHandler';
 
-const RegisterNicePage = () => {
+const ResetPasswordNicePage = () => {
 	return (
 		<div>
 			<NiceRedirectHandler />
@@ -8,4 +8,4 @@ const RegisterNicePage = () => {
 	);
 };
 
-export default RegisterNicePage;
+export default ResetPasswordNicePage;

@@ -8,8 +8,6 @@ export async function GET(req: NextRequest) {
 		const name = searchParams.get('name');
 		const phone = searchParams.get('phone');
 
-		console.log(name, phone);
-
 		const response = await fetch(
 			`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user/find-id?name=${name}&phone=${phone}`,
 		);
