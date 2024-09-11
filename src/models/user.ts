@@ -61,3 +61,10 @@ export interface CheckIdResponse {
 	message: string;
 	data: boolean;
 }
+
+export interface FindIdResponse {
+	code: number;
+	status: string;
+	message: string;
+	data: string;
+}

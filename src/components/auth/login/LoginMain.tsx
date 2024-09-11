@@ -19,6 +19,7 @@ import { useSetRecoilState } from 'recoil';
 import LoginButtons from './LoginButtons';
 import LoginInputBox from './LoginInputBox';
 import * as s from './LoginStyle.css';
+import { vars } from '@/shared/styles/theme.css';
 
 interface ApiError {
 	message: string;
@@ -105,6 +106,10 @@ const LoginMain = () => {
 					<Spacing margin="18px" />
 				</Flex>
 				<Flex justify="flex-end" align="center">
+					<Link href="/find-id" className={s.grayText}>
+						아이디 찾기
+					</Link>
+					<div style={{ width: '20px', color: vars.color.lightGray }}>|</div>
 					<Link href="/reset-password" className={s.grayText}>
 						비밀번호 재설정
 					</Link>
