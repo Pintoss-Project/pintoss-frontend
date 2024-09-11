@@ -16,7 +16,6 @@ export default function Home() {
 		<main className={s.homeSection}>
 			<TokenHandler accessToken={accessTokenCookie} />
 			<HomeBanner />
-			<Spacing margin="42px" />
 			<HomePopularSection title="인기 상품" />
 			<Spacing margin="74px" />
 			<HomeOnSaleSection title="판매 상품" />

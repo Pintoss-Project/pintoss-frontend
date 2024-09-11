@@ -1,13 +1,13 @@
 'use client';
 
+import authState from '@/recoil/authAtom';
 import { Flex } from '@/shared/components/layout';
 import { checkExpiration } from '@/utils/checkTokenExpiration';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 import AdminSideBarLeft from './AdminSideBarLeft';
 import AdminSideBarRight from './AdminSideBarRight';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import authState from '@/recoil/authAtom';
 
 const SIDEBAR_TITLE_MAP: Record<string, string> = {
 	'/admin/manage/users': '회원관리',

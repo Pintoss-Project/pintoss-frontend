@@ -23,23 +23,42 @@ export const homeSection = style({
 	},
 });
 
+export const homePopularSection = style({
+	'@media': {
+		[responsive.desktop]: {
+			marginTop: '20px',
+		},
+	},
+});
+
 export const homeBanner = style([
 	f.pRelative,
 	f.wFull,
 	{
-		'height': '0',
-		'paddingTop': '29%',
-		'backgroundColor': vars.color.lightBlue,
+		'height': '300px',
+		'maxWidth': '1150px',
+		'maxHeight': '300px',
+		'marginBottom': '160px',
 		'borderRadius': '0 15px 15px 15px',
 		'@media': {
 			[responsive.tablet]: {
-				paddingTop: '40%',
+				height: '280px',
+				marginBottom: '90px',
 			},
 			[responsive.tabletSmall]: {
-				paddingTop: '44%',
+				height: '200px',
+				marginBottom: '40px',
 			},
 			[responsive.mobile]: {
-				paddingTop: '50%',
+				height: '160px',
+				marginBottom: '0',
+			},
+			'(min-width: 1025px) and (max-width: 1350px)': {
+				height: '270px',
+				marginBottom: '80px',
+			},
+			'(min-width: 630px) and (max-width: 800px)': {
+				height: '270px',
 			},
 		},
 	},

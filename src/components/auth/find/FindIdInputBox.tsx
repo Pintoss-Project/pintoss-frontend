@@ -3,8 +3,8 @@
 import { Input } from '@/shared/components/input';
 import { Flex } from '@/shared/components/layout';
 import { Controller, useFormContext } from 'react-hook-form';
-import ValidationMessages from '../register/ValidationMessages';
 import * as s from '../register/RegisterStyle.css';
+import ValidationMessages from '../register/ValidationMessages';
 
 interface Props {
 	name: string;

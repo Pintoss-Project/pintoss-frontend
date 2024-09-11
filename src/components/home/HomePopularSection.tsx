@@ -11,7 +11,7 @@ interface Props {
 
 const HomePopularSection = ({ title }: Props) => {
 	return (
-		<section>
+		<section className={s.homePopularSection}>
 			<h3 className={s.categoryTitle}>{title}</h3>
 			<Spacing margin="25px" />
 			<HomePopularProducts />

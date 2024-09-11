@@ -4709,6 +4709,7 @@ __metadata:
     react-icons: "npm:^5.2.0"
     react-quill: "npm:^2.0.0"
     recoil: "npm:^0.7.7"
+    swiper: "npm:^11.0.7"
     typescript: "npm:^5"
     zod: "npm:^3.23.4"
   languageName: unknown
@@ -5604,6 +5605,13 @@ __metadata:
   version: 1.0.0
   resolution: "supports-preserve-symlinks-flag@npm:1.0.0"
   checksum: 10/a9dc19ae2220c952bd2231d08ddeecb1b0328b61e72071ff4000c8384e145cc07c1c0bdb3b5a1cb06e186a7b2790f1dee793418b332f6ddf320de25d9125be7e
+  languageName: node
+  linkType: hard
+
+"swiper@npm:^11.0.7":
+  version: 11.1.12
+  resolution: "swiper@npm:11.1.12"
+  checksum: 10/fa591f20db211b62ac6c29d8c1c70c9f2fa5043f94195bfa5ad140c04bdb67b5b88f32bf3682e317faeacf7352fcd4a630f8b2d87a54a2be25b328712be283d9
   languageName: node
   linkType: hard
 
