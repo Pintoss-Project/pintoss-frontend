@@ -37,7 +37,7 @@ const ProductDetailInfoBox: React.FC<ProductDetailInfoBoxProps> = ({ description
 				</Flex>
 			</Flex>
 			<div className={s.productInfoListBox}>
-				{selectedTab === 'description' ? description : caution}
+				<p className={s.descriptionText}>{selectedTab === 'description' ? description : caution}</p>
 			</div>
 		</div>
 	);

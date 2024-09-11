@@ -37,7 +37,7 @@ const HomeBanner = () => {
 						<img
 							src={currentBannerUrlList[0]}
 							alt="배너 이미지"
-							style={{ width: '100%', height: '100%' }}
+							style={{ width: '100%', height: '100%', borderRadius: '0 15px 15px 15px' }}
 						/>
 					</a>
 				)}

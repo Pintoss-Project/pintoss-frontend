@@ -31,7 +31,7 @@ const HomeProductMobileBox = ({ headerColor, product }: Props) => {
 				</div>
 				<div className={s.productIconBox}>
 					<Image
-						src={'/images/olive-logo.png'}
+						src={product?.logoImageUrl as string}
 						alt="상품권 로고 이미지"
 						className={s.productIconImage}
 						width={70}

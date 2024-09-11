@@ -1,9 +1,13 @@
 'use client';
 
 import { Flex } from '@/shared/components/layout';
-import { usePathname } from 'next/navigation';
+import { checkExpiration } from '@/utils/checkTokenExpiration';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import AdminSideBarLeft from './AdminSideBarLeft';
 import AdminSideBarRight from './AdminSideBarRight';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import authState from '@/recoil/authAtom';
 
 const SIDEBAR_TITLE_MAP: Record<string, string> = {
 	'/admin/manage/users': '회원관리',
@@ -25,6 +29,27 @@ const SIDEBAR_MENU_MAP: Record<string, { name: string; type: string }[]> = {
 
 const AdminSideBar = () => {
 	const path = usePathname();
+	const [authStateValue, setAuthStateValue] = useRecoilState(authState);
+	const router = useRouter();
+
+	const { isAdminLoggedIn } = authStateValue;
+
+	useEffect(() => {
+		const token = checkExpiration();
+
+		if (!token) {
+			setAuthStateValue((prev) => ({ ...prev, isAdminLoggedIn: false }));
+			if (!isAdminLoggedIn) {
+				router.push('/admin/login');
+			}
+		}
+
+		const interval = setInterval(() => {
+			checkExpiration();
+		}, 1000 * 60);
+
+		return () => clearInterval(interval);
+	}, []);
 
 	if (path.includes('login')) return null;
 

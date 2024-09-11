@@ -8,7 +8,7 @@ import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import * as cs from '@/shared/styles/common.css';
-import { setLocalToken } from '@/utils/localToken';
+import { setLocalToken, tokenExpiration } from '@/utils/localToken';
 import { LogInFormData, loginSchema } from '@/utils/validation/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -55,7 +55,8 @@ const LoginMain = () => {
 					rightButtonStyle: cs.lightBlueButton,
 					onRightButtonClick: () => {
 						setLocalToken(accessToken);
-						setAuthStateValue({ isLoggedIn: true });
+						tokenExpiration();
+						setAuthStateValue((prev) => ({ ...prev, isLoggedIn: true }));
 						router.push('/');
 						close();
 					},

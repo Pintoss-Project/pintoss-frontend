@@ -28,9 +28,9 @@ export const homeBanner = style([
 	f.wFull,
 	{
 		'height': '0',
-		'paddingTop': '33.33%',
+		'paddingTop': '29%',
 		'backgroundColor': vars.color.lightBlue,
-		'borderRadius': '0 10px 10px 10px',
+		'borderRadius': '0 15px 15px 15px',
 		'@media': {
 			[responsive.tablet]: {
 				paddingTop: '40%',
@@ -52,13 +52,14 @@ export const homeBannerContent = style([
 	{
 		top: 0,
 		left: 0,
+		borderRadius: '0 15px 15px 15px',
 	},
 ]);
 
 export const categoryTitle = style({
 	'padding': '0px 10px',
 	'fontSize': '30px',
-	'fontWeight': '400',
+	'fontFamily': 'Pretendard-Regular sans-serif',
 	'@media': {
 		[responsive.tablet]: {
 			fontSize: '24px',
@@ -80,7 +81,8 @@ export const selected = style({
 export const filterMenu = style({
 	'padding': '0px 10px',
 	'marginRight': '20px',
-	'color': vars.color.mediumGray,
+	'color': vars.color.lightGray,
+	'fontFamily': 'Pretendard-Regular sans-serif',
 	'fontSize': '25px',
 	'cursor': 'pointer',
 	'selectors': {
@@ -114,6 +116,10 @@ export const homeServiceInfoBox = style([
 ]);
 
 export const homeServiceInfoBoxContent = style([homeBannerContent]);
+
+export const homeServiceInfoText = style({
+	fontFamily: 'Jalnan2',
+});
 
 export const homeRecruitingBanner = style([
 	homeServiceInfoBox,

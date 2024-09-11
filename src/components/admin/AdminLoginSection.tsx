@@ -3,6 +3,7 @@
 import { fetchAdminLogin } from '@/app/api/auth/fetchAdminLogin';
 import useAlertContext from '@/hooks/useAlertContext';
 import useRedirect from '@/hooks/useRedirect';
+import authState from '@/recoil/authAtom';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Button } from '@/shared/components/button';
 import LoginInput from '@/shared/components/input/LoginInput';
@@ -11,16 +12,18 @@ import Spacing from '@/shared/components/layout/Spacing';
 import * as cs from '@/shared/styles/common.css';
 import { vars } from '@/shared/styles/theme.css';
 import LoginError from '@/utils/error/LoginError';
-import { setLocalToken } from '@/utils/localToken';
+import { setLocalToken, tokenExpiration } from '@/utils/localToken';
 import { LogInFormData, loginSchema } from '@/utils/validation/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { useSetRecoilState } from 'recoil';
 import * as s from './AdminStyle.css';
 
 const AdminLoginSection = () => {
 	const { open, close } = useAlertContext();
 	const { setRedirectPath } = useRedirect();
+	const setAuthStateValue = useSetRecoilState(authState);
 
 	const methods = useForm<LogInFormData>({
 		resolver: zodResolver(loginSchema),
@@ -36,7 +39,7 @@ const AdminLoginSection = () => {
 	const mutation = useMutation({
 		mutationFn: fetchAdminLogin,
 		onSuccess: (data) => {
-			setLocalToken(data.accessToken);
+			setLocalToken(data.data.accessToken);
 
 			open({
 				width: '300px',
@@ -46,6 +49,8 @@ const AdminLoginSection = () => {
 				rightButtonStyle: cs.lightBlueButton,
 				onRightButtonClick: () => {
 					setRedirectPath('/admin/manage/users');
+					tokenExpiration();
+					setAuthStateValue((prev) => ({ ...prev, isAdminLoggedIn: true }));
 					close();
 				},
 			});

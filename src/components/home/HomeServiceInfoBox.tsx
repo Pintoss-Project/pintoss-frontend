@@ -10,7 +10,7 @@ const HomeServiceInfoBox = () => {
 					align="center"
 					className={s.homeServiceInfoBoxContent}
 					style={{ fontSize: '30px' }}>
-					서비스 안내
+					<span className={s.homeServiceInfoText}>서비스 안내</span>
 				</Flex>
 			</div>
 		</div>

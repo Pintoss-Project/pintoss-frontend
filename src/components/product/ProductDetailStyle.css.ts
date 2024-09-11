@@ -172,6 +172,10 @@ export const productInfoListBox = style({
 	borderRadius: '0 0 18px 18px',
 });
 
+export const descriptionText = style({
+	lineHeight: '1.5',
+});
+
 export const productDetailSelectAndPayBox = style({
 	'padding': '0 0 0 7%',
 	'@media': {

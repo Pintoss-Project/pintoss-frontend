@@ -9,7 +9,7 @@ export const customerSection = style({
 
 export const customerHeader = style({
 	'padding': '60px 0 0 50px',
-	'fontSize': '35px',
+	'fontSize': '30px',
 	'fontWeight': '500',
 	'textAlign': 'left',
 	'@media': {

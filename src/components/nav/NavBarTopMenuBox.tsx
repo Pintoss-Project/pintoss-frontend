@@ -36,7 +36,7 @@ const NavBarTopMenuBox = () => {
 	const logoutMutation = useMutation({
 		mutationFn: () => fetchLogout(),
 		onSuccess: () => {
-			setAuthStateValue({ isLoggedIn: false });
+			setAuthStateValue((prev) => ({ ...prev, isLoggedIn: false }));
 			open({
 				width: '300px',
 				height: '200px',
@@ -70,9 +70,9 @@ const NavBarTopMenuBox = () => {
 		const token = getLocalToken();
 
 		if (!token) {
-			setAuthStateValue({ isLoggedIn: false });
+			setAuthStateValue((prev) => ({ ...prev, isLoggedIn: false }));
 		} else {
-			setAuthStateValue({ isLoggedIn: true });
+			setAuthStateValue((prev) => ({ ...prev, isLoggedIn: true }));
 		}
 	}, []);
 
