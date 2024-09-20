@@ -2,6 +2,7 @@ import { responsive, vars } from '@/shared/styles/theme.css';
 import { style } from '@vanilla-extract/css';
 
 export const customerSection = style({
+	padding: '16px',
 	margin: '108px 2% 100px 0px',
 	minHeight: '1400px',
 	backgroundColor: vars.color.white,

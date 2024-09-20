@@ -5,7 +5,7 @@ import { createVar, style } from '@vanilla-extract/css';
 export const headerColor = createVar();
 
 export const homeSection = style({
-	'padding': '0px 60px 172px 45px',
+	'padding': '0px 60px 40px 45px',
 	'marginTop': '108px',
 	'@media': {
 		[responsive.tablet]: {
@@ -282,18 +282,113 @@ export const homeRecruitingBanner = style([
 export const homeRecruitingBannerContent = style([homeServiceInfoBoxContent]);
 
 export const homeAnnouncementsBoard = style({
-	'padding': '50px',
+	'padding': '20px 8px',
 	'backgroundColor': vars.color.white,
 	'borderRadius': '0 10px 10px 10px',
 	'@media': {
 		[responsive.tablet]: {
-			padding: '40px 30px',
+			padding: '20px 12px',
 		},
 		[responsive.tabletSmall]: {
-			padding: '30px 15px',
+			flexDirection: 'column',
+			padding: '16px 8px',
 		},
 		[responsive.mobile]: {
-			padding: '20px 10px',
+			flexDirection: 'column',
+			padding: '10px 4px',
+		},
+	},
+});
+
+export const homeAnnounceBox = style({
+	'width': '50%',
+	'padding': '16px',
+	'margin': '10px',
+	'backgroundColor': vars.color.lightestGray,
+	'borderRadius': '0 10px 10px 10px',
+	'@media': {
+		[responsive.tabletSmall]: {
+			width: '100%',
+		},
+		[responsive.mobile]: {
+			width: '100%',
+		},
+	},
+});
+
+export const homeAnnounceTitleBox = style([
+	f.wFull,
+	{
+		padding: '20px',
+	},
+]);
+
+export const announceText = style({
+	'fontSize': '16px',
+	'color': vars.color.blue,
+	'@media': {
+		[responsive.tablet]: {
+			fontSize: '14px',
+		},
+		[responsive.tabletSmall]: {
+			fontSize: '14px',
+		},
+		[responsive.mobile]: {
+			fontSize: '12px',
+		},
+	},
+});
+
+export const homeAnnounceInfoBox = style([
+	f.wFull,
+	{
+		'height': '55px',
+		'padding': '16px 8px',
+		'marginBottom': '10px',
+		'backgroundColor': vars.color.white,
+		'borderRadius': '5px',
+		'selectors': {
+			'&:hover': {
+				border: `1px solid ${vars.color.lightBlue}`,
+			},
+		},
+		'@media': {
+			[responsive.tablet]: {
+				fontSize: '12px',
+			},
+			[responsive.tabletSmall]: {
+				fontSize: '14px',
+			},
+			[responsive.mobile]: {
+				fontSize: '12px',
+			},
+			'only screen and (min-width: 1025px) and (max-width: 1253px)': {
+				fontSize: '12px',
+			},
+			'only screen and (min-width: 1254px) and (max-width: 1331px)': {
+				fontSize: '14px',
+			},
+		},
+	},
+]);
+
+export const homeAnnounceInfoTitle = style({
+	'fontSize': '26px',
+	'@media': {
+		[responsive.tablet]: {
+			fontSize: '20px',
+		},
+		[responsive.tabletSmall]: {
+			fontSize: '24px',
+		},
+		[responsive.mobile]: {
+			fontSize: '20px',
+		},
+		'only screen and (min-width: 1025px) and (max-width: 1253px)': {
+			fontSize: '20px',
+		},
+		'only screen and (min-width: 1254px) and (max-width: 1331px)': {
+			fontSize: '24px',
 		},
 	},
 });
@@ -379,11 +474,29 @@ export const announceArrowIcon = style([
 ]);
 
 export const moreButton = style({
-	width: '96px',
-	height: '35px',
-	backgroundColor: vars.color.white,
-	border: `1px solid ${vars.color.silver}`,
-	borderRadius: '5px',
+	'width': '100%',
+	'maxWidth': '370px',
+	'height': '55px',
+	'marginBottom': '16px',
+	'fontSize': '18px',
+	'backgroundColor': vars.color.skyBlue,
+	'borderRadius': '5px',
+	'@media': {
+		[responsive.tablet]: {
+			width: '100%',
+			height: '50px',
+			fontSize: '16px',
+		},
+		[responsive.tabletSmall]: {
+			width: '100%',
+			height: '45px',
+			fontSize: '16px',
+		},
+		[responsive.mobile]: {
+			height: '40px',
+			fontSize: '14px',
+		},
+	},
 });
 
 export const homeProductBox = style([
