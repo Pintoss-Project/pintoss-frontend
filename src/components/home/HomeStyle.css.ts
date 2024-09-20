@@ -26,7 +26,13 @@ export const homeSection = style({
 export const homePopularSection = style({
 	'@media': {
 		[responsive.desktop]: {
-			marginTop: '20px',
+			marginTop: '80px',
+		},
+		[responsive.tabletSmall]: {
+			marginTop: '0px',
+		},
+		[responsive.mobile]: {
+			marginTop: '10px',
 		},
 	},
 });
@@ -36,7 +42,6 @@ export const homeBanner = style([
 	f.wFull,
 	{
 		'height': '300px',
-		'maxWidth': '1150px',
 		'maxHeight': '300px',
 		'marginBottom': '160px',
 		'borderRadius': '0 15px 15px 15px',
@@ -47,7 +52,7 @@ export const homeBanner = style([
 			},
 			[responsive.tabletSmall]: {
 				height: '200px',
-				marginBottom: '40px',
+				marginBottom: '0',
 			},
 			[responsive.mobile]: {
 				height: '160px',
@@ -60,6 +65,9 @@ export const homeBanner = style([
 			'(min-width: 630px) and (max-width: 800px)': {
 				height: '270px',
 			},
+			'(min-width: 530px) and (max-width: 768px)': {
+				marginBottom: '40px',
+			},
 		},
 	},
 ]);
@@ -71,6 +79,7 @@ export const homeBannerContent = style([
 	{
 		top: 0,
 		left: 0,
+		maxHeight: '150px',
 		borderRadius: '0 15px 15px 15px',
 	},
 ]);
@@ -127,17 +136,140 @@ export const filterMenu = style({
 	},
 });
 
-export const homeServiceInfoBox = style([
-	homeBanner,
+export const homeServiceInfoContainer = style([
+	f.wFull,
 	{
+		padding: '16px',
 		backgroundColor: vars.color.white,
+		borderRadius: '0 10px 10px 10px',
+		boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
 	},
 ]);
 
-export const homeServiceInfoBoxContent = style([homeBannerContent]);
+export const homeServiceInfoTitleBox = style([
+	f.wFull,
+	{
+		padding: '20px',
+	},
+]);
+
+export const homeServiceInfoH3Text = style({
+	'marginBottom': '12px',
+	'fontSize': '20px',
+	'@media': {
+		[responsive.tablet]: {
+			fontSize: '16px',
+		},
+		[responsive.tabletSmall]: {
+			fontSize: '17px',
+		},
+		[responsive.mobile]: {
+			fontSize: '16px',
+		},
+		'only screen and (min-width: 1025px) and (max-width: 1331px)': {
+			fontSize: '16px',
+		},
+		'only screen and (min-width: 1254px) and (max-width: 1331px)': {
+			fontSize: '17px',
+		},
+	},
+});
 
 export const homeServiceInfoText = style({
-	fontFamily: 'Jalnan2',
+	'fontSize': '16px',
+	'lineHeight': '1.5',
+	'@media': {
+		[responsive.tablet]: {
+			fontSize: '12px',
+		},
+		[responsive.tabletSmall]: {
+			fontSize: '14px',
+		},
+		[responsive.mobile]: {
+			fontSize: '12px',
+		},
+		'only screen and (min-width: 1025px) and (max-width: 1331px)': {
+			fontSize: '12px',
+		},
+		'only screen and (min-width: 1254px) and (max-width: 1331px)': {
+			fontSize: '13px',
+		},
+	},
+});
+
+export const serviceText = style({
+	'fontSize': '16px',
+	'color': vars.color.blue,
+	'@media': {
+		[responsive.tablet]: {
+			fontSize: '14px',
+		},
+		[responsive.tabletSmall]: {
+			fontSize: '14px',
+		},
+		[responsive.mobile]: {
+			fontSize: '12px',
+		},
+	},
+});
+
+export const homeServiceInfoTitle = style({
+	'fontSize': '26px',
+	'@media': {
+		[responsive.tablet]: {
+			fontSize: '24px',
+		},
+		[responsive.tabletSmall]: {
+			fontSize: '24px',
+		},
+		[responsive.mobile]: {
+			fontSize: '20px',
+		},
+	},
+});
+
+export const homeServiceInfoBox = style([
+	f.wFull,
+	{
+		'display': 'grid',
+		'gridTemplateColumns': 'repeat(2, 1fr)',
+		'gap': '16px',
+		'@media': {
+			'screen and (min-width: 768px)': {
+				gridTemplateColumns: 'repeat(4, 1fr)',
+			},
+		},
+	},
+]);
+
+export const homeServiceInfoBoxContent = style([
+	f.wFull,
+	{
+		'color': vars.color.white,
+		'textAlign': 'center',
+		'padding': '16px',
+		'borderRadius': '8px',
+		'boxShadow': '0 4px 8px rgba(0, 0, 0, 0.1)',
+		'@media': {
+			[responsive.tablet]: {
+				padding: '12px',
+			},
+			[responsive.tabletSmall]: {
+				padding: '10px',
+			},
+			[responsive.mobile]: {
+				padding: '6px',
+			},
+		},
+	},
+]);
+
+export const homeServiceInfoIcon = style({
+	width: '50%',
+	height: '50%',
+	maxHeight: '100px',
+	color: vars.color.white,
+	margin: '8px',
 });
 
 export const homeRecruitingBanner = style([

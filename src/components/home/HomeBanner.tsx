@@ -60,8 +60,9 @@ const HomeBanner = () => {
 											style={{
 												width: '100%',
 												height: '100%',
+												maxHeight: '480px',
 												borderRadius: '0 15px 15px 15px',
-												objectFit: 'contain',
+												objectFit: 'cover',
 											}}
 										/>
 									</a>
