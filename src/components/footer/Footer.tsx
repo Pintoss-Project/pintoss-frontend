@@ -40,9 +40,11 @@ const Footer = () => {
 				<Spacing margin="44px" />
 				<Flex justify="space-between" className={s.footerFlexBox}>
 					<div className={s.footerLeftBox}>
-						<Link href="/">
-							<Image src={PintossLogo} alt="로고 이미지" width={165} height={45} />
-						</Link>
+						<div className={s.responsiveBox}>
+							<Link href="/">
+								<Image src={PintossLogo} alt="로고 이미지" width={165} height={45} />
+							</Link>
+						</div>
 						<Spacing margin="25px" />
 						<p className={s.pText}>(47190) {siteInfo?.data.address}</p>
 						<Spacing margin="8px" />
@@ -57,15 +59,19 @@ const Footer = () => {
 						<Spacing margin="8px" />
 						<p className={s.pText}>Copyright 핀토스 Information Service.All rights reserved</p>
 						<Spacing margin="25px" />
-						<Flex justify="center" align="center" className={cs.darkBlueButton}>
-							<a href="mailto:c0818@naver.com" style={{ color: vars.color.white }}>
-								대량구매/제휴문의 : {siteInfo?.data.email}
-							</a>
-						</Flex>
+						<div className={s.responsiveBox}>
+							<Flex justify="center" align="center" className={cs.darkBlueButton}>
+								<a href="mailto:c0818@naver.com" style={{ color: vars.color.white }}>
+									대량구매/제휴문의 : {siteInfo?.data.email}
+								</a>
+							</Flex>
+						</div>
 						<Spacing margin="20px" />
-						<p className={s.pText} style={{ color: vars.color.lightGray }}>
-							ⓒ 핀토스. All rights reserved.
-						</p>
+						<div className={s.responsiveBox}>
+							<p className={s.pText} style={{ color: vars.color.lightGray }}>
+								ⓒ 핀토스. All rights reserved.
+							</p>
+						</div>
 					</div>
 					<Flex direction="column" className={s.footerRightBox}>
 						<div style={{ color: vars.color.darkerGray, fontSize: '18px', fontWeight: '600' }}>
@@ -91,7 +97,11 @@ const Footer = () => {
 							</Link>
 						</div>
 						<Spacing margin="40px" />
-						<Image src={SecureTransaction} alt="안전 거래 가맹점 이미지" width={330} height={60} />
+						<img
+							src="/images/secure-transaction.gif"
+							alt="안전 거래 가맹점 이미지"
+							className={s.secureTransactionImage}
+						/>
 					</Flex>
 				</Flex>
 			</div>

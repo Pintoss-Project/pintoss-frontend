@@ -25,6 +25,7 @@ export const footerBox = style([
 export const pText = style({
 	'fontSize': '14px',
 	'color': vars.color.mediumGray,
+	'lineHeight': '1.3',
 	'@media': {
 		[responsive.mobile]: {
 			fontSize: '12px',
@@ -60,6 +61,10 @@ export const footerRightBox = style({
 			display: 'flex',
 			alignItems: 'flex-end',
 		},
+		[responsive.tablet]: {
+			display: 'flex',
+			alignItems: 'flex-end',
+		},
 		[responsive.tabletSmall]: {
 			display: 'flex',
 			flexDirection: 'column',
@@ -71,7 +76,25 @@ export const footerRightBox = style({
 	},
 });
 
-export const secureTransactionImage = style({
-	width: '420px',
-	height: '46px',
+export const secureTransactionImage = style([
+	f.wFull,
+	{
+		minWidth: '360px',
+		maxWidth: '420px',
+		minHeight: '45px',
+		aspectRatio: '6 / 1',
+	},
+]);
+
+export const responsiveBox = style({
+	'@media': {
+		[responsive.tabletSmall]: {
+			display: 'flex',
+			justifyContent: 'center',
+		},
+		[responsive.mobile]: {
+			display: 'flex',
+			justifyContent: 'center',
+		},
+	},
 });

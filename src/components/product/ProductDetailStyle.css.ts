@@ -3,15 +3,15 @@ import { style } from '@vanilla-extract/css';
 
 export const productDetailSection = style({
 	'margin': '108px 2% 100px 0px',
-	'padding': '65px 60px 70px 40px',
+	'padding': '65px 60px 30px 40px',
 	'minHeight': '1400px',
 	'backgroundColor': vars.color.white,
 	'@media': {
 		[responsive.tabletSmall]: {
-			padding: '60px 15px',
+			padding: '0 15px',
 		},
 		[responsive.mobile]: {
-			padding: '60px 10px',
+			padding: '0 10px',
 		},
 	},
 });

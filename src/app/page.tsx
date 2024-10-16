@@ -23,7 +23,7 @@ export default function Home() {
 			<HomeServiceInfoBox />
 			<Spacing margin="60px" />
 			<HomeAnnouncementsBoard />
-			<Spacing margin="60px" />
+			<Spacing margin="20px" />
 		</main>
 	);
 }

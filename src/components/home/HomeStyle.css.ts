@@ -13,11 +13,11 @@ export const homeSection = style({
 			marginTop: '88px',
 		},
 		[responsive.tabletSmall]: {
-			padding: '40px 20px',
+			padding: '0 20px',
 			marginTop: '68px',
 		},
 		[responsive.mobile]: {
-			padding: '40px 10px',
+			padding: '0 10px',
 			marginTop: '48px',
 		},
 	},
