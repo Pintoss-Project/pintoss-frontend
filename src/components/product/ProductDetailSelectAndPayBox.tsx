@@ -35,7 +35,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 	const [totalAmount, setTotalAmount] = useState(0);
 	const [finalAmount, setFinalAmount] = useState(0);
 
-	const authStateValue = useRecoilValue(authState);
+	const { isLoggedIn } = useRecoilValue(authState);
 	const router = useRouter();
 
 	const { open, close } = useAlertContext();
@@ -84,28 +84,30 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 			queryClient.invalidateQueries({ queryKey: ['cartItems', userInfo?.data.id] });
 		},
 		onError: () => {
-			open({
-				width: '300px',
-				height: '200px',
-				title: '장바구니 추가',
-				main: <AlertMainTextBox text="장바구니 추가가 실패되었습니다." />,
-				rightButtonStyle: cs.lightBlueButton,
-				onRightButtonClick: close,
-			});
+			if (isLoggedIn) {
+				open({
+					width: '300px',
+					height: '200px',
+					title: '장바구니 추가',
+					main: <AlertMainTextBox text="장바구니 추가가 실패되었습니다." />,
+					rightButtonStyle: cs.lightBlueButton,
+					onRightButtonClick: close,
+				});
+			}
 		},
 	});
 
-	const handleAddToCart = () => {
-		if (!authStateValue.isLoggedIn) {
+	const handleCheckoutNow = () => {
+		if (!isLoggedIn) {
 			open({
-				width: '300px',
-				height: '200px',
+				width: '360px',
+				height: '250px',
 				title: '로그인 확인',
 				main: (
-					<AlertMainTextBox text="장바구니 담기는 로그인 후에 이용가능합니다. 로그인 페이지로 이동하시겠습니까?" />
+					<AlertMainTextBox text="바로 구매하기는 로그인 후에 이용가능합니다. 로그인 페이지로 이동하시겠습니까?" />
 				),
 				rightButtonLabel: '확인',
-				rightButtonStyle: cs.lightBlueButton,
+				rightButtonStyle: cs.lightBlueMediumButton,
 				leftButtonLabel: '취소',
 				leftButtonStyle: cs.whiteAndBlackButton,
 				onRightButtonClick: () => {
@@ -115,9 +117,29 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 				onLeftButtonClick: close,
 			});
 		}
-		// cartItems.forEach((item) => {
-		// 	postCartItemMutation.mutate(item);
-		// });
+	};
+
+	const handleAddToCart = () => {
+		if (!isLoggedIn) {
+			open({
+				width: '340px',
+				height: '250px',
+				title: '로그인 확인',
+				main: (
+					<AlertMainTextBox text="장바구니 담기는 로그인 후에 이용가능합니다. 로그인 페이지로 이동하시겠습니까?" />
+				),
+				rightButtonLabel: '확인',
+				rightButtonStyle: cs.lightBlueMediumButton,
+				leftButtonLabel: '취소',
+				leftButtonStyle: cs.whiteAndBlackButton,
+				onRightButtonClick: () => {
+					router.push('/login');
+					close();
+				},
+				onLeftButtonClick: close,
+			});
+		}
+
 		postCartItemMutation.mutate(cartItems);
 	};
 
@@ -218,7 +240,8 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 				<Button
 					color={vars.color.white}
 					className={cs.lightGrayButton}
-					style={{ maxWidth: '900px', fontSize: '18px', height: '60px' }}>
+					style={{ maxWidth: '900px', fontSize: '18px', height: '60px' }}
+					onClick={handleCheckoutNow}>
 					바로 구매
 				</Button>
 				<Button

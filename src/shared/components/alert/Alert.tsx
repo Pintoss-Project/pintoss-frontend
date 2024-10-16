@@ -53,6 +53,7 @@ const Alert = ({
 			<section className={s.alertWrap} style={alertBoxStyle(width, height)}>
 				<Flex direction="column" justify="center" align="center" className={s.alertFlexWrap}>
 					{title ? <h3 className={s.alertTitle}>{title}</h3> : null}
+					<Spacing margin="8px" />
 					<Flex align="center" className={s.alertSubFlexWrap}>
 						{main}
 					</Flex>
