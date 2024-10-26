@@ -8,16 +8,27 @@ export const navbarTopBox = style([
 	{
 		'height': '100px',
 		'padding': '0px 80px',
+		'backgroundColor': vars.color.background,
+		'boxShadow': '0 0.1px rgba(0,0,0,0.1)',
 		'zIndex': 10,
 		'@media': {
 			[responsive.tablet]: {
-				padding: '0px 50px',
+				height: '70px',
+				padding: '0px 20px',
+				backgroundColor: vars.color.background,
+				boxShadow: '0 0.1px rgba(0,0,0,0.1)',
 			},
 			[responsive.tabletSmall]: {
-				padding: '0px 25px',
+				height: '60px',
+				padding: '0px 15px',
+				backgroundColor: vars.color.background,
+				boxShadow: '0 0.1px rgba(0,0,0,0.1)',
 			},
 			[responsive.mobile]: {
-				padding: '0px 15px',
+				height: '50px',
+				padding: '0px 10px',
+				backgroundColor: vars.color.background,
+				boxShadow: '0 0.1px rgba(0,0,0,0.1)',
 			},
 		},
 	},

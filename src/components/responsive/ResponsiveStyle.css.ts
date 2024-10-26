@@ -12,13 +12,16 @@ export const tableMenuNavBox = style([
 		'padding': '30px 80px',
 		'@media': {
 			[responsive.tablet]: {
-				padding: '30px 50px',
+				height: '70px',
+				padding: '0px 20px',
 			},
 			[responsive.tabletSmall]: {
-				padding: '30px 25px',
+				height: '60px',
+				padding: '0px 15px',
 			},
 			[responsive.mobile]: {
-				padding: '30px 15px',
+				height: '50px',
+				padding: '0px 10px',
 			},
 		},
 	},

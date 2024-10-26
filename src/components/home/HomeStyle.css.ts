@@ -10,7 +10,7 @@ export const homeSection = style({
 	'@media': {
 		[responsive.tablet]: {
 			padding: '40px 30px',
-			marginTop: '88px',
+			marginTop: '48px',
 		},
 		[responsive.tabletSmall]: {
 			padding: '0 20px',
@@ -18,7 +18,7 @@ export const homeSection = style({
 		},
 		[responsive.mobile]: {
 			padding: '0 10px',
-			marginTop: '48px',
+			marginTop: '58px',
 		},
 	},
 });
