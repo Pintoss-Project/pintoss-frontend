@@ -76,6 +76,7 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 			homePage: '',
 			csCenter: '',
 			description: '',
+			caution: '',
 			publisher: '',
 			category: '',
 			logoImageUrl: '',
@@ -91,6 +92,7 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 				homePage: product.homePage,
 				csCenter: product.csCenter,
 				description: product.description,
+				caution: product.caution,
 				publisher: product.publisher,
 				category: product.category,
 				logoImageUrl: product.logoImageUrl,
@@ -263,6 +265,7 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 							homePage: '',
 							csCenter: '',
 							description: '',
+							caution: '',
 							publisher: '',
 							category: '',
 							logoImageUrl: '',
@@ -376,14 +379,16 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 							</div>
 						</AdminProductInput>
 						<Spacing margin="25px" />
+						<AdminProductTextArea name="description" label="상세설명" />
+						<Spacing margin="25px" />
+						<AdminProductTextArea name="caution" label="유의사항" />
+						<Spacing margin="25px" />
+					</div>
+					<div style={{ flex: 1 }}>
 						<AdminProductInput name="homePage" label="홈페이지" flex="3" />
 						<Spacing margin="25px" />
 						<AdminProductInput name="csCenter" label="고객센터" flex="3" />
 						<Spacing margin="25px" />
-						<AdminProductTextArea name="description" label="상세설명" />
-						<Spacing margin="25px" />
-					</div>
-					<div style={{ flex: 1 }}>
 						<AdminProductInput name="publisher" label="발행업체" flex="3" />
 						<Spacing margin="25px" />
 						<AdminProductSelect label="카테고리" name="category" />
