@@ -14,7 +14,7 @@ const AlertMainTextBox = ({ text }: Props) => {
 		.filter((sentence) => sentence !== '.');
 
 	return (
-		<Flex direction="column" align="center">
+		<Flex direction="column" align="center" style={{ width: '100%' }}>
 			<Divider size={1} color={vars.color.lightestGray} />
 			<div className={s.AlertMainTextWrap}>
 				{sentences?.map((sentence, index) => (

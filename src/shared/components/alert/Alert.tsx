@@ -54,7 +54,7 @@ const Alert = ({
 				<Flex direction="column" justify="center" align="center" className={s.alertFlexWrap}>
 					{title ? <h3 className={s.alertTitle}>{title}</h3> : null}
 					<Spacing margin="8px" />
-					<Flex align="center" className={s.alertSubFlexWrap}>
+					<Flex direction="column" justify="center" align="center" className={s.alertSubFlexWrap}>
 						{main}
 					</Flex>
 					<Flex justify="center" align="center" className={s.alertSubSecondFlexWrap}>
