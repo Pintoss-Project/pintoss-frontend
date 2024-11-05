@@ -29,7 +29,7 @@ const RegisterPersonalInfo = ({ authData }: Props) => {
 		event.preventDefault();
 
 		try {
-			const requestData = await fetchRequestData('https://pin-toss.com/register/nice');
+			const requestData = await fetchRequestData('http://localhost:3000/register/nice');
 
 			const { token_version_id, enc_data, integrity_value } = requestData;
 

@@ -76,7 +76,7 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 			homePage: '',
 			csCenter: '',
 			description: '',
-			caution: '',
+			note: '',
 			publisher: '',
 			category: '',
 			logoImageUrl: '',
@@ -92,7 +92,7 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 				homePage: product.homePage,
 				csCenter: product.csCenter,
 				description: product.description,
-				caution: product.caution,
+				note: product.note,
 				publisher: product.publisher,
 				category: product.category,
 				logoImageUrl: product.logoImageUrl,
@@ -265,7 +265,7 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 							homePage: '',
 							csCenter: '',
 							description: '',
-							caution: '',
+							note: '',
 							publisher: '',
 							category: '',
 							logoImageUrl: '',
@@ -381,7 +381,7 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 						<Spacing margin="25px" />
 						<AdminProductTextArea name="description" label="상세설명" />
 						<Spacing margin="25px" />
-						<AdminProductTextArea name="caution" label="유의사항" />
+						<AdminProductTextArea name="note" label="유의사항" />
 						<Spacing margin="25px" />
 					</div>
 					<div style={{ flex: 1 }}>

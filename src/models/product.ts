@@ -22,7 +22,7 @@ export interface ProductInfo {
 	homePage: string;
 	csCenter: string;
 	description: string;
-	caution: string;
+	note: string;
 	publisher: string;
 	category: string;
 	logoImageUrl?: string;

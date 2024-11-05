@@ -1,3 +1,5 @@
+import { f } from '@/shared/styles/functions';
+import { wFull } from './../../../shared/styles/functions/f.css';
 import { responsive, vars } from '@/shared/styles/theme.css';
 import { globalStyle, style } from '@vanilla-extract/css';
 
@@ -12,6 +14,18 @@ export const starStyle = style({
 	fontSize: '14px',
 	color: vars.color.skyBlue,
 });
+
+export const inputWrap = style([
+	f.wFull,
+	{
+		'alignItems': 'center',
+		'@media': {
+			[responsive.mobile]: {
+				flexDirection: 'column',
+			},
+		},
+	},
+]);
 
 export const labelText = style({
 	'width': '110px',
@@ -33,19 +47,25 @@ export const label = style({
 	textAlign: 'left',
 });
 
-export const inputStyle = style({
-	'width': '316px',
-	'height': '40px',
-	'padding': '10px',
-	'fontSize': '12px',
-	'border': `1px solid ${vars.color.lighterGray}`,
-	'borderRadius': '5px',
-	'@media': {
-		[responsive.mobile]: {
-			width: '100%',
+export const inputStyle = style([
+	f.wFull,
+	{
+		'minWidth': '320px',
+		'maxWidth': '420px',
+		'height': '40px',
+		'padding': '10px',
+		'fontSize': '12px',
+		'border': `1px solid ${vars.color.lighterGray}`,
+		'borderRadius': '5px',
+		'@media': {
+			[responsive.mobile]: {
+				width: '100%',
+				minWidth: '300px',
+				maxWidth: '316px',
+			},
 		},
 	},
-});
+]);
 
 export const pText = style({
 	width: '100%',
@@ -183,16 +203,19 @@ globalStyle(`${hiddenCheckbox}:checked + div::after`, {
 	transform: 'translate(-50%, -50%) scale(1)',
 });
 
-export const personalInfoInputBox = style({
-	'@media': {
-		[responsive.mobile]: {
-			display: 'flex',
-			flexDirection: 'column',
-			alignItems: 'flex-start',
-			padding: '0 10px',
+export const personalInfoInputBox = style([
+	f.wFull,
+	{
+		'@media': {
+			[responsive.mobile]: {
+				display: 'flex',
+				flexDirection: 'column',
+				alignItems: 'flex-start',
+				padding: '0 2px',
+			},
 		},
 	},
-});
+]);
 
 export const ValidationMessageStyle = style({
 	margin: '6px 0px 8px 4px',

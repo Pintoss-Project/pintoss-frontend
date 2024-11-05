@@ -46,11 +46,11 @@ const AddBannerBox = ({ editingBannerId, initialBannerData, onResetEdit }: AddBa
 	const { handleSubmit, reset, setValue } = methods;
 
 	const [imageUrls, setImageUrls] = useState<{
-		desktopImageUrl: string | null | undefined;
-		mobileImageUrl: string | null | undefined;
+		desktopImageUrl: string;
+		mobileImageUrl: string;
 	}>({
-		desktopImageUrl: null,
-		mobileImageUrl: null,
+		desktopImageUrl: '',
+		mobileImageUrl: '',
 	});
 
 	const [isImageAdded1, setIsImageAdded1] = useState(false);
@@ -63,13 +63,13 @@ const AddBannerBox = ({ editingBannerId, initialBannerData, onResetEdit }: AddBa
 			reset({
 				bannerTitle: initialBannerData.bannerTitle,
 				bannerLink: initialBannerData.bannerLink,
-				desktopImageUrl: initialBannerData.desktopImageUrl,
-				mobileImageUrl: initialBannerData.mobileImageUrl,
+				desktopImageUrl: initialBannerData.desktopImageUrl || '',
+				mobileImageUrl: initialBannerData.mobileImageUrl || '',
 			});
 
 			setImageUrls({
-				desktopImageUrl: initialBannerData.desktopImageUrl,
-				mobileImageUrl: initialBannerData.mobileImageUrl,
+				desktopImageUrl: initialBannerData.desktopImageUrl || '',
+				mobileImageUrl: initialBannerData.mobileImageUrl || '',
 			});
 
 			setIsImageAdded1(!!initialBannerData.desktopImageUrl);
@@ -81,7 +81,7 @@ const AddBannerBox = ({ editingBannerId, initialBannerData, onResetEdit }: AddBa
 
 	const resetForm = () => {
 		reset({ bannerTitle: '', bannerLink: '', desktopImageUrl: '', mobileImageUrl: '' });
-		setImageUrls({ desktopImageUrl: null, mobileImageUrl: null });
+		setImageUrls({ desktopImageUrl: '', mobileImageUrl: '' });
 		setIsImageAdded1(false);
 		setIsImageAdded2(false);
 		setResetTrigger((prev) => !prev);
@@ -129,12 +129,12 @@ const AddBannerBox = ({ editingBannerId, initialBannerData, onResetEdit }: AddBa
 			if (imageType === 'desktop' && imageUrls.desktopImageUrl) {
 				await deleteImageFromCloudinary(imageUrls.desktopImageUrl);
 				setValue('desktopImageUrl', '');
-				setImageUrls((prev) => ({ ...prev, desktopImageUrl: null }));
+				setImageUrls((prev) => ({ ...prev, desktopImageUrl: '' }));
 				setIsImageAdded1(false);
 			} else if (imageType === 'mobile' && imageUrls.mobileImageUrl) {
 				await deleteImageFromCloudinary(imageUrls.mobileImageUrl);
 				setValue('mobileImageUrl', '');
-				setImageUrls((prev) => ({ ...prev, mobileImageUrl: null }));
+				setImageUrls((prev) => ({ ...prev, mobileImageUrl: '' }));
 				setIsImageAdded2(false);
 			}
 		} catch (error: unknown) {
@@ -211,7 +211,19 @@ const AddBannerBox = ({ editingBannerId, initialBannerData, onResetEdit }: AddBa
 		if (isUploading) {
 			return;
 		}
-		mutation.mutate(data);
+
+		if (imageUrls.desktopImageUrl === '' || imageUrls.mobileImageUrl === '') {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '이미지 정보 등록',
+				main: <AlertMainTextBox text="데스크탑 이미지와 모바일 이미지를 모두 등록해주세요." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		} else {
+			mutation.mutate(data);
+		}
 	};
 
 	return (

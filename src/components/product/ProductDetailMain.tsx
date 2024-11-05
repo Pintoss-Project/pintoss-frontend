@@ -50,7 +50,7 @@ const ProductDetailMain = ({ product }: Props) => {
 						<div className={s.darkGrayText}>{product?.csCenter}</div>
 					</Flex>
 					<Spacing margin="25px" />
-					<ProductDetailInfoBox description={product?.description} caution={product?.caution} />
+					<ProductDetailInfoBox description={product?.description} caution={product?.note} />
 				</div>
 			</div>
 			<div className={s.productDetailRightBox}>

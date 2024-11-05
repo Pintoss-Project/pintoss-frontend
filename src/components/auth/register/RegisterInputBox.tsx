@@ -4,6 +4,7 @@ import { Input } from '@/shared/components/input';
 import { Flex } from '@/shared/components/layout';
 import { Controller, useFormContext } from 'react-hook-form';
 import ValidationMessages from './ValidationMessages';
+import Spacing from '@/shared/components/layout/Spacing';
 
 interface Props {
 	name: string;
@@ -26,12 +27,12 @@ const RegisterInputBox = ({ name, label, star, type, placeholder, disabled = fal
 				name={name}
 				control={control}
 				render={({ field }) => (
-					<>
+					<Flex className={s.inputWrap}>
 						<label className={s.labelText}>
 							{label}
 							{star && <span className={s.starStyle}>*</span>}
 						</label>
-						<Flex direction="column">
+						<Flex align="center" direction="column">
 							<Input
 								{...field}
 								id={name}
@@ -51,7 +52,7 @@ const RegisterInputBox = ({ name, label, star, type, placeholder, disabled = fal
 								)}
 							</Flex>
 						</Flex>
-					</>
+					</Flex>
 				)}
 			/>
 		</Flex>

@@ -175,7 +175,7 @@ const SiteInfoBox = () => {
 	};
 
 	const mutation = useMutation({
-		mutationFn: (data: SiteInfoFormData) => fetchUpdateSiteInfo(firstSiteInfoId as number, data),
+		mutationFn: (data: SiteInfoFormData) => fetchUpdateSiteInfo(1, data),
 		onSuccess: () => {
 			open({
 				width: '300px',

@@ -10,6 +10,8 @@ const Register = () => {
 	const emailFromCookie = cookieStore.get('email');
 	const accessTokenCookie = cookieStore.get('accessToken');
 
+	console.log(emailFromCookie, accessTokenCookie);
+
 	return (
 		<Flex justify="center" className={s.container}>
 			<AuthSection

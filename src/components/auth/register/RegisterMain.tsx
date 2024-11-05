@@ -238,7 +238,7 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 
 			open({
 				width: '300px',
-				height: '200px',
+				height: '220px',
 				title: '휴대폰 인증 실패',
 				main: (
 					<AlertMainTextBox text="휴대폰 인증 처리 중 오류가 발생했습니다. 다시 시도해주세요." />
