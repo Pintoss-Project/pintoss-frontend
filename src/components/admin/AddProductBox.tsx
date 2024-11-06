@@ -176,6 +176,7 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 			queryClient.invalidateQueries({
 				queryKey: ['productList'],
 			});
+			setPriceCategories([]);
 		},
 	});
 
@@ -358,7 +359,7 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 								{...getRootProps({ className: s.dropzone })}
 								style={{ position: 'relative', flex: '3', height: '100px', marginLeft: '1.5%' }}>
 								<input {...getInputProps()} />
-								{!isImageAdded && currentImageUrl ? (
+								{currentImageUrl ? (
 									<Image
 										src={currentImageUrl}
 										alt="현재 로고 이미지"
@@ -375,7 +376,6 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 										height={50}
 									/>
 								)}
-								{thumbs}
 							</div>
 						</AdminProductInput>
 						<Spacing margin="25px" />

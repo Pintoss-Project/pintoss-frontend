@@ -261,7 +261,14 @@ const AdminProductList = ({ onSelectProduct, onResetEdit }: Props) => {
 					</div>
 					<div className={s.darkGraySmallText} style={{ flex: '1' }}>
 						<Flex justify="center" align="center">
-							<FiMenu style={{ width: '20px', height: '20px', color: vars.color.lightGray }} />
+							<FiMenu
+								style={{
+									width: '20px',
+									height: '20px',
+									color: vars.color.lightGray,
+									cursor: 'pointer',
+								}}
+							/>
 						</Flex>
 					</div>
 					<div className={s.darkGraySmallText} style={{ flex: '2' }}>

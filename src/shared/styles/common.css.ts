@@ -58,7 +58,7 @@ export const lightBlueButton = style([
 	f.wFull,
 	{
 		'maxWidth': '420px',
-		'height': '56px',
+		'height': '50px',
 		'backgroundColor': vars.color.lightBlue,
 		'borderRadius': '5px',
 		'@media': {
