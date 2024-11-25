@@ -15,6 +15,7 @@ export const productInfoSchema = z.object({
 	category: z.string().min(1, '카테고리를 선택해주세요').optional(),
 	priceCategories: z.array(priceCategoryInfoSchema).optional(),
 	logoImageUrl: z.string().optional(),
+	isPopular: z.boolean().optional(),
 });
 
 export type ProductInfoFormData = z.infer<typeof productInfoSchema>;

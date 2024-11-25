@@ -17,6 +17,7 @@ import * as cs from '@/shared/styles/common.css';
 import { vars } from '@/shared/styles/theme.css';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ChangeEvent, useEffect, useState } from 'react';
+import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { FiMenu } from 'react-icons/fi';
 import * as s from './AdminStyle.css';
 
@@ -29,6 +30,7 @@ const AdminProductList = ({ onSelectProduct, onResetEdit }: Props) => {
 	const [selectedKind, setSelectedKind] = useState<{ [key: string]: string }>({});
 	const [quantity, setQuantity] = useState<{ [key: string]: number }>({});
 	const [isDeleting, setIsDeleting] = useState<boolean>(false);
+	const [productOrder, setProductOrder] = useState<ProductInfo[]>([]);
 
 	const { open, close } = useAlertContext();
 
@@ -60,8 +62,21 @@ const AdminProductList = ({ onSelectProduct, onResetEdit }: Props) => {
 
 			setSelectedKind(initialSelected);
 			setQuantity(initialQuantity);
+			setProductOrder(products.data);
 		}
 	}, [isSuccess, products]);
+
+	const handleDragEnd = (result: DropResult) => {
+		const { source, destination } = result;
+
+		if (!destination) return;
+
+		const reorderedProducts = Array.from(productOrder);
+		const [removed] = reorderedProducts.splice(source.index, 1);
+		reorderedProducts.splice(destination.index, 0, removed);
+
+		setProductOrder(reorderedProducts);
+	};
 
 	const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>, product: ProductInfo) => {
 		const kind = product.priceCategories?.find((k) => k.id === +event.target.value);
@@ -156,8 +171,6 @@ const AdminProductList = ({ onSelectProduct, onResetEdit }: Props) => {
 		mutationFn: (params: UpdateStockParams) => fetchUpdateProductStock(params),
 		onSuccess: async (data, variables) => {
 			const { productId, data: stock } = variables;
-			const previousProductList = queryClient.getQueryData<ProductInfo[]>(['productList']);
-
 			queryClient.setQueryData<ProductInfo[]>(['productList'], (oldData) => {
 				if (!oldData) return [];
 				return oldData.map((product) =>
@@ -176,8 +189,6 @@ const AdminProductList = ({ onSelectProduct, onResetEdit }: Props) => {
 				...prevQuantity,
 				[productId]: stock,
 			}));
-
-			return { previousProductList };
 		},
 		onError: () => {
 			open({
@@ -226,153 +237,171 @@ const AdminProductList = ({ onSelectProduct, onResetEdit }: Props) => {
 	};
 
 	return (
-		<div style={{ border: `1px solid ${vars.color.lighterGray}` }}>
-			<Flex
-				justify="center"
-				align="center"
-				style={{ padding: '12px 18px', borderBottom: `1px solid ${vars.color.lightGray}` }}>
-				<div className={s.darkGraySmallText} style={{ flex: '1' }}>
-					순번
-				</div>
-				<div className={s.darkGraySmallText} style={{ flex: '1' }}></div>
-				<div className={s.darkGraySmallText} style={{ flex: '2' }}>
-					상품권명
-				</div>
-				<div className={s.darkGraySmallText} style={{ flex: '2' }}>
-					로고
-				</div>
-				<div className={s.darkGraySmallText} style={{ flex: '2' }}>
-					판매금액
-				</div>
-				<div className={s.darkGraySmallText} style={{ flex: '2.5' }}>
-					수량관리
-				</div>
-				<div className={s.darkGraySmallText} style={{ flex: '3' }}>
-					상품권관리
-				</div>
-			</Flex>
-			{products?.data.map((product, index) => (
-				<Flex
-					key={product.id}
-					align="center"
-					style={{ padding: '12px 18px', borderBottom: `1px solid ${vars.color.lighterGray}` }}>
-					<div className={s.darkGraySmallText} style={{ flex: '1' }}>
-						{index + 1}
-					</div>
-					<div className={s.darkGraySmallText} style={{ flex: '1' }}>
-						<Flex justify="center" align="center">
-							<FiMenu
-								style={{
-									width: '20px',
-									height: '20px',
-									color: vars.color.lightGray,
-									cursor: 'pointer',
-								}}
-							/>
+		<DragDropContext onDragEnd={handleDragEnd}>
+			<Droppable droppableId="productList">
+				{(provided) => (
+					<div
+						{...provided.droppableProps}
+						ref={provided.innerRef}
+						style={{ border: `1px solid ${vars.color.lighterGray}` }}>
+						<Flex
+							justify="center"
+							align="center"
+							style={{ padding: '12px 18px', borderBottom: `1px solid ${vars.color.lightGray}` }}>
+							<div className={s.darkGraySmallText} style={{ flex: '1' }}>
+								순번
+							</div>
+							<div className={s.darkGraySmallText} style={{ flex: '1' }}></div>
+							<div className={s.darkGraySmallText} style={{ flex: '2' }}>
+								상품권명
+							</div>
+							<div className={s.darkGraySmallText} style={{ flex: '2' }}>
+								로고
+							</div>
+							<div className={s.darkGraySmallText} style={{ flex: '2' }}>
+								판매금액
+							</div>
+							<div className={s.darkGraySmallText} style={{ flex: '2.5' }}>
+								수량관리
+							</div>
+							<div className={s.darkGraySmallText} style={{ flex: '3' }}>
+								상품권관리
+							</div>
 						</Flex>
+						{productOrder.map((product, index) => (
+							<Draggable key={product.id} draggableId={product.id.toString()} index={index}>
+								{(provided) => (
+									<Flex
+										ref={provided.innerRef}
+										{...provided.draggableProps}
+										{...provided.dragHandleProps}
+										align="center"
+										style={{
+											padding: '12px 18px',
+											borderBottom: `1px solid ${vars.color.lighterGray}`,
+										}}>
+										<div className={s.darkGraySmallText} style={{ flex: '1' }}>
+											{index + 1}
+										</div>
+										<div className={s.darkGraySmallText} style={{ flex: '1' }}>
+											<Flex justify="center" align="center">
+												<FiMenu
+													style={{
+														width: '20px',
+														height: '20px',
+														color: vars.color.lightGray,
+														cursor: 'pointer',
+													}}
+												/>
+											</Flex>
+										</div>
+										<div className={s.darkGraySmallText} style={{ flex: '2' }}>
+											{product.name}
+										</div>
+										<div className={s.darkGraySmallText} style={{ flex: '2' }}>
+											{product.logoImageUrl ? (
+												<img
+													src={product.logoImageUrl}
+													alt="상품권 로고 이미지"
+													style={{ width: '50px', height: '50px' }}
+												/>
+											) : (
+												<Flex
+													justify="center"
+													align="center"
+													style={{
+														width: '50px',
+														height: '50px',
+														backgroundColor: '#959595',
+														color: vars.color.white,
+													}}></Flex>
+											)}
+										</div>
+										<div className={s.darkGraySmallText} style={{ flex: '2' }}>
+											<select
+												name=""
+												className={s.customSelect}
+												onChange={(e) => handleSelectChange(e, product)}
+												value={selectedKind?.[product.id]}>
+												{product.priceCategories &&
+													[...product.priceCategories]
+														.sort((a, b) => a.price - b.price)
+														.map((kind) => (
+															<option key={kind.id} value={kind.id}>
+																{kind.name}
+															</option>
+														))}
+											</select>
+										</div>
+										<div className={s.darkGraySmallText} style={{ flex: '2.5' }}>
+											<Flex justify="center" align="center">
+												<Input
+													type="number"
+													value={quantity?.[product.id] || 0}
+													onChange={(e) => handleQuantityChange(e, product)}
+													style={{
+														width: '50px',
+														marginRight: '4px',
+														padding: '4px',
+														border: `1px solid ${vars.color.lighterGray}`,
+														borderRadius: '5px',
+														textAlign: 'center',
+													}}
+												/>
+												<Button
+													className={s.darkGraySmallText}
+													style={{
+														minWidth: '55px',
+														padding: '4px',
+														marginRight: '8px',
+														color: vars.color.white,
+														backgroundColor: vars.color.lighterGray,
+														borderRadius: '5px',
+													}}
+													onClick={() => handleUpdateStock(product.id)}>
+													수정
+												</Button>
+											</Flex>
+										</div>
+										<div className={s.darkGraySmallText} style={{ flex: '3' }}>
+											<Flex justify="center" align="center">
+												<Button
+													className={s.darkGraySmallText}
+													style={{
+														minWidth: '55px',
+														padding: '4px',
+														marginRight: '8px',
+														backgroundColor: vars.color.white,
+														border: `1px solid ${vars.color.lighterGray}`,
+														borderRadius: '5px',
+													}}
+													onClick={() => onSelectProduct(product.id)}>
+													수정
+												</Button>
+												<Button
+													className={s.darkGraySmallText}
+													style={{
+														minWidth: '55px',
+														padding: '4px',
+														backgroundColor: vars.color.white,
+														border: `1px solid ${vars.color.lighterGray}`,
+														borderRadius: '5px',
+													}}
+													onClick={() => handleDeleteProduct(product.id)}
+													disabled={isDeleting}>
+													삭제
+												</Button>
+											</Flex>
+										</div>
+									</Flex>
+								)}
+							</Draggable>
+						))}
+						{provided.placeholder}
 					</div>
-					<div className={s.darkGraySmallText} style={{ flex: '2' }}>
-						{product.name}
-					</div>
-					<div className={s.darkGraySmallText} style={{ flex: '2' }}>
-						{!product.logoImageUrl && (
-							<Flex
-								justify="center"
-								align="center"
-								style={{
-									width: '50px',
-									height: '50px',
-									backgroundColor: '#959595',
-									color: vars.color.white,
-								}}></Flex>
-						)}
-						{product.logoImageUrl && (
-							<img
-								src={product.logoImageUrl}
-								alt="상품권 로고 이미지"
-								style={{ width: '50px', height: '50px' }}
-							/>
-						)}
-					</div>
-					<div className={s.darkGraySmallText} style={{ flex: '2' }}>
-						<select
-							name=""
-							className={s.customSelect}
-							onChange={(e) => handleSelectChange(e, product)}
-							value={selectedKind?.[product.id]}>
-							{product.priceCategories &&
-								[...product.priceCategories]
-									.sort((a, b) => a.price - b.price)
-									.map((kind) => (
-										<option key={kind.id} value={kind.id}>
-											{kind.name}
-										</option>
-									))}
-						</select>
-					</div>
-					<div className={s.darkGraySmallText} style={{ flex: '2.5' }}>
-						<Flex justify="center" align="center">
-							<Input
-								type="number"
-								value={quantity?.[product.id] || 0}
-								onChange={(e) => handleQuantityChange(e, product)}
-								style={{
-									width: '50px',
-									marginRight: '4px',
-									padding: '4px',
-									border: `1px solid ${vars.color.lighterGray}`,
-									borderRadius: '5px',
-									textAlign: 'center',
-								}}
-							/>
-							<Button
-								className={s.darkGraySmallText}
-								style={{
-									minWidth: '55px',
-									padding: '4px',
-									marginRight: '8px',
-									color: vars.color.white,
-									backgroundColor: vars.color.lighterGray,
-									borderRadius: '5px',
-								}}
-								onClick={() => handleUpdateStock(product.id)}>
-								수정
-							</Button>
-						</Flex>
-					</div>
-					<div className={s.darkGraySmallText} style={{ flex: '3' }}>
-						<Flex justify="center" align="center">
-							<Button
-								className={s.darkGraySmallText}
-								style={{
-									minWidth: '55px',
-									padding: '4px',
-									marginRight: '8px',
-									backgroundColor: vars.color.white,
-									border: `1px solid ${vars.color.lighterGray}`,
-									borderRadius: '5px',
-								}}
-								onClick={() => onSelectProduct(product.id)}>
-								수정
-							</Button>
-							<Button
-								className={s.darkGraySmallText}
-								style={{
-									minWidth: '55px',
-									padding: '4px',
-									backgroundColor: vars.color.white,
-									border: `1px solid ${vars.color.lighterGray}`,
-									borderRadius: '5px',
-								}}
-								onClick={() => handleDeleteProduct(product.id)}
-								disabled={isDeleting}>
-								삭제
-							</Button>
-						</Flex>
-					</div>
-				</Flex>
-			))}
-		</div>
+				)}
+			</Droppable>
+		</DragDropContext>
 	);
 };
 

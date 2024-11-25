@@ -9,6 +9,7 @@ import 'react-quill/dist/quill.snow.css';
 import Providers from '@/react-query/Providers';
 import RecoilRootProvider from '@/recoil/RecoilRootProvider';
 import type { Metadata } from 'next';
+import CheckTokenProvider from '@/components/protect/CheckTokenProvider';
 
 export const metadata: Metadata = {
 	title: '핀토스',
@@ -21,16 +22,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			<body>
 				<Providers>
 					<RecoilRootProvider>
-						<AlertContextProvider>
-							<NavBarTop />
-							<Flex justify="center">
-								<SideNavBar />
-								<div style={{ width: '100%' }}>
-									{children}
-									<Footer />
-								</div>
-							</Flex>
-						</AlertContextProvider>
+						<CheckTokenProvider>
+							<AlertContextProvider>
+								<NavBarTop />
+								<Flex justify="center">
+									<SideNavBar />
+									<div style={{ width: '100%' }}>
+										{children}
+										<Footer />
+									</div>
+								</Flex>
+							</AlertContextProvider>
+						</CheckTokenProvider>
 					</RecoilRootProvider>
 				</Providers>
 			</body>

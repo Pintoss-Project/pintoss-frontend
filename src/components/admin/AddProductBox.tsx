@@ -80,6 +80,7 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 			publisher: '',
 			category: '',
 			logoImageUrl: '',
+			isPopular: false,
 		},
 	});
 
@@ -96,6 +97,7 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 				publisher: product.publisher,
 				category: product.category,
 				logoImageUrl: product.logoImageUrl,
+				isPopular: product.isPopular,
 			});
 			setCurrentImageUrl(product.logoImageUrl as string);
 			setPriceCategories(product.priceCategories || []);
@@ -252,6 +254,8 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 	const onSubmit: SubmitHandler<ProductInfoFormData> = (data, event) => {
 		event?.preventDefault();
 
+		console.log('data', data);
+
 		if (isUploading) {
 			return;
 		}
@@ -270,6 +274,7 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 							publisher: '',
 							category: '',
 							logoImageUrl: '',
+							isPopular: false,
 						});
 						setPriceCategories([]);
 						setCurrentImageUrl(null);
@@ -337,7 +342,7 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 				style={{
 					position: 'relative',
 					width: '65%',
-					height: '500px',
+					height: '600px',
 					padding: '18px 2.5%',
 					backgroundColor: vars.color.white,
 					border: `1px solid ${vars.color.lighterGray}`,
@@ -392,6 +397,8 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 						<AdminProductInput name="publisher" label="발행업체" flex="3" />
 						<Spacing margin="25px" />
 						<AdminProductSelect label="카테고리" name="category" />
+						<Spacing margin="25px" />
+						<AdminProductInput name="isPopular" label="인기상품여부" flex="2.1" type="checkbox" />
 						<Spacing margin="25px" />
 						<PriceCategoryInputGroup productId={productId} onAddCategory={handleAddCategory} />
 						<Spacing margin="25px" />

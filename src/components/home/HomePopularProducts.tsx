@@ -15,6 +15,8 @@ const HomePopularProducts = () => {
 		queryFn: fetchPopularProductList,
 	});
 
+	console.log('popularProductList', popularProductList);
+
 	return (
 		<Grid style={{ width: '100%' }} className={s.responsiveGrid}>
 			{popularProductList?.data.map((product, index) => (

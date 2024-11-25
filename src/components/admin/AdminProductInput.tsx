@@ -1,5 +1,3 @@
-'use client';
-
 import { Flex } from '@/shared/components/layout';
 import { Input } from '@/shared/components/input';
 import { vars } from '@/shared/styles/theme.css';
@@ -17,6 +15,7 @@ interface Props<T extends FieldValues> {
 	className?: string;
 	style?: React.CSSProperties | undefined;
 	flex: string;
+	checked?: boolean;
 }
 
 const AdminProductInput = <T extends FieldValues>({
@@ -28,6 +27,7 @@ const AdminProductInput = <T extends FieldValues>({
 	className,
 	style,
 	flex,
+	checked,
 }: Props<T>) => {
 	const { control } = useFormContext<T>();
 
@@ -48,18 +48,30 @@ const AdminProductInput = <T extends FieldValues>({
 							marginLeft: '1.5%',
 							padding: type === 'textarea' ? '0' : '0 10px',
 							borderBottom:
-								type === 'file' || type === 'textarea' || type === 'select'
+								type === 'file' || type === 'textarea' || type === 'select' || type === 'checkbox'
 									? 'none'
 									: `1px solid ${vars.color.lighterGray}`,
 						}}>
 						{children ? (
 							children
+						) : type === 'checkbox' ? (
+							<Input
+								{...field}
+								id={name}
+								className={className || s.baseInputStyle}
+								placeholder={placeholder}
+								type={type}
+								checked={field.value || false}
+								onChange={(e) => field.onChange(e.target.checked)}
+								style={style}
+							/>
 						) : (
 							<Input
 								{...field}
 								id={name}
 								className={className || s.baseInputStyle}
 								placeholder={placeholder}
+								type={type}
 								value={field.value}
 								onChange={field.onChange}
 								style={style}

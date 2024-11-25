@@ -24,26 +24,30 @@ interface AdminUserListProps {
 }
 
 const AdminUserList = ({
-	users,
+	users: initialUsers = [],
 	totalPages = 1,
 	currentPage,
 	onPageChange,
 }: AdminUserListProps) => {
+	const [users, setUsers] = useState<ManageUserInfo[]>(initialUsers);
 	const [selectedCount, setSelectedCount] = useState<number>(0);
 
 	useEffect(() => {
-		setSelectedCount(users?.filter((user) => user.selected).length || 0);
-	}, [users]);
+		setUsers(initialUsers);
+		setSelectedCount(initialUsers.filter((user) => user.selected).length || 0);
+	}, [initialUsers]);
 
 	const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const checked = e.target.checked;
-		const updatedUsers = users?.map((user) => ({ ...user, selected: checked }));
-		setSelectedCount(checked ? updatedUsers?.length || 0 : 0);
+		const updatedUsers = users.map((user) => ({ ...user, selected: checked }));
+		setUsers(updatedUsers);
+		setSelectedCount(checked ? updatedUsers.length : 0);
 	};
 
 	const handleSelectUser = (index: number) => {
-		const updatedUsers = [...(users || [])];
+		const updatedUsers = [...users];
 		updatedUsers[index].selected = !updatedUsers[index].selected;
+		setUsers(updatedUsers);
 		setSelectedCount(updatedUsers.filter((user) => user.selected).length);
 	};
 

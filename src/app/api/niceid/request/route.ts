@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
 	try {
 		const { returnurl } = (await req.json()) as RequestBody;
 
-		const response = await fetch('http://pintossmall2.cafe24.com/api/nice/request', {
+		const response = await fetch('http://localhost:8080/api/nice/request', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

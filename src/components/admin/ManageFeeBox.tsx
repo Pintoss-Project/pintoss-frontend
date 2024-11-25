@@ -96,7 +96,7 @@ const ManageFeeBox = ({ productId }: Props) => {
 		<div
 			style={{
 				width: '35%',
-				height: '500px',
+				height: '600px',
 				padding: '18px 30px',
 				marginRight: '16px',
 				backgroundColor: vars.color.white,

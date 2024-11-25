@@ -29,27 +29,27 @@ const SIDEBAR_MENU_MAP: Record<string, { name: string; type: string }[]> = {
 
 const AdminSideBar = () => {
 	const path = usePathname();
-	const [authStateValue, setAuthStateValue] = useRecoilState(authState);
-	const router = useRouter();
+	// const [authStateValue, setAuthStateValue] = useRecoilState(authState);
+	// const router = useRouter();
 
-	const { isAdminLoggedIn } = authStateValue;
+	// const { isAdminLoggedIn } = authStateValue;
 
-	useEffect(() => {
-		const token = checkExpiration();
+	// useEffect(() => {
+	// 	const token = checkExpiration();
 
-		if (!token) {
-			setAuthStateValue((prev) => ({ ...prev, isAdminLoggedIn: false }));
-			if (!isAdminLoggedIn) {
-				router.push('/admin/login');
-			}
-		}
+	// 	if (!token) {
+	// 		setAuthStateValue((prev) => ({ ...prev, isAdminLoggedIn: false }));
+	// 		if (!isAdminLoggedIn) {
+	// 			router.push('/admin/login');
+	// 		}
+	// 	}
 
-		const interval = setInterval(() => {
-			checkExpiration();
-		}, 1000 * 60);
+	// 	const interval = setInterval(() => {
+	// 		checkExpiration();
+	// 	}, 1000 * 60);
 
-		return () => clearInterval(interval);
-	}, []);
+	// 	return () => clearInterval(interval);
+	// }, []);
 
 	if (path.includes('login')) return null;
 
