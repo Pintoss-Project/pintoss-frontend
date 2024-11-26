@@ -27,7 +27,7 @@ const HomeBanner = () => {
 	const updateBannerImages = () => {
 		const isMobile = window.innerWidth <= 768;
 		const bannerUrls = bannerList?.data.map((banner) =>
-			isMobile ? banner.mobileImageUrl : banner.desktopImageUrl,
+			isMobile && banner.mobileImageUrl ? banner.mobileImageUrl : banner.desktopImageUrl,
 		);
 		setCurrentBannerUrlList(bannerUrls as string[]);
 	};

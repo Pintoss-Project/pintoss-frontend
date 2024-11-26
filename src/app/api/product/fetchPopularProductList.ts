@@ -11,7 +11,7 @@ interface SimpleProductInfoResponse {
 }
 
 export const fetchPopularProductList = async (): Promise<SimpleProductInfoResponse> => {
-	return fetchApi<SimpleProductInfoResponse>(`/api/product/popular`, {
+	return fetchApi<SimpleProductInfoResponse>('/api/product/popular', {
 		method: 'GET',
 		token: false,
 	}).catch((errorResponse: ErrorResponse) => {

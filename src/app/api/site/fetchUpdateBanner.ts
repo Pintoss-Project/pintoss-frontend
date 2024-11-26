@@ -4,7 +4,6 @@ import { ErrorResponse } from '@/models/error';
 import SiteError from '@/utils/error/SiteError';
 
 export const fetchUpdateBanner = async (id: number, data: BannerInfoFormData): Promise<void> => {
-	console.log('update banner?');
 	return fetchApi<void>(`/api/site/banner/update?id=${id}`, {
 		method: 'PATCH',
 		body: data,

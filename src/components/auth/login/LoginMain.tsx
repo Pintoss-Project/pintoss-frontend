@@ -89,7 +89,6 @@ const LoginMain = () => {
 		event?.preventDefault();
 
 		try {
-			console.log(1);
 			loginMutation.mutate(data);
 		} catch (error) {
 			console.log(error);

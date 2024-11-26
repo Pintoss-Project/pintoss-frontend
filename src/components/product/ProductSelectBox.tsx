@@ -12,8 +12,6 @@ const ProductSelectBox = ({ product, onSelectCategory }: Props) => {
 		(a, b) => a.price - b.price,
 	);
 
-	console.log('sortedPriceCategories', sortedPriceCategories);
-
 	const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
 		const selectedCategory = sortedPriceCategories?.find(
 			(category) => category.id === parseInt(event.target.value),
@@ -22,8 +20,6 @@ const ProductSelectBox = ({ product, onSelectCategory }: Props) => {
 			onSelectCategory(selectedCategory);
 		}
 	};
-
-	console.log('product', product);
 
 	return (
 		<div className={s.selectContainer}>

@@ -9,6 +9,8 @@ export async function POST(req: NextRequest) {
 	try {
 		const { returnurl } = (await req.json()) as RequestBody;
 
+		console.log('returnUrl', returnurl);
+
 		const response = await fetch('http://localhost:8080/api/nice/request', {
 			method: 'POST',
 			headers: {

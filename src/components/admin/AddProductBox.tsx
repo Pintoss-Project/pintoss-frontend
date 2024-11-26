@@ -93,7 +93,7 @@ const AddProductBox = ({ productId, setSelectedProductId, setIsEditing, isEditin
 				homePage: product.homePage,
 				csCenter: product.csCenter,
 				description: product.description,
-				note: product.note,
+				note: product.note || '',
 				publisher: product.publisher,
 				category: product.category,
 				logoImageUrl: product.logoImageUrl,

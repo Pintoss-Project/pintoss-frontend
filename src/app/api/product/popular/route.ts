@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
 	try {
 		const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product/popular`, {
@@ -20,6 +22,7 @@ export async function GET() {
 		}
 
 		const data = await response.json();
+		console.log('data', data);
 		return NextResponse.json(data);
 	} catch (error) {
 		return NextResponse.json(

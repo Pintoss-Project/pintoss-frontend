@@ -32,7 +32,6 @@ export const fetchApi = async <TResponse, TBody = unknown>(
 
 	if (!response.ok) {
 		const errorData: unknown = await response.json();
-		console.log('errorData', errorData);
 		if (typeof errorData === 'object' && errorData !== null && 'message' in errorData) {
 			throw new Error(
 				(errorData as { message: string }).message || '요청 처리 중 오류가 발생했습니다.',

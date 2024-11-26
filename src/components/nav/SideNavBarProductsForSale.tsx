@@ -13,8 +13,6 @@ interface Props {
 }
 
 const SideNavBarProductsForSale = ({ svg, name, productId }: Props) => {
-	console.log('simple product image', name, svg);
-
 	return (
 		<Link href={`/product/${productId}`} style={{ cursor: 'pointer' }}>
 			<Flex align="center">

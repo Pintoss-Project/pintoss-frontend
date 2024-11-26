@@ -14,7 +14,6 @@ interface Props {
 }
 
 const HomeProductMobileBox = ({ headerColor, product }: Props) => {
-	console.log('mobile_product', product);
 	return (
 		<Link href={`/product/${product.id}`}>
 			<GridItem className={s.homeProductMobileBox}>
