@@ -1,11 +1,7 @@
 'use client';
 
-import authState from '@/recoil/authAtom';
 import { Flex } from '@/shared/components/layout';
-import { checkExpiration } from '@/utils/checkTokenExpiration';
-import { usePathname, useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import { usePathname } from 'next/navigation';
 import AdminSideBarLeft from './AdminSideBarLeft';
 import AdminSideBarRight from './AdminSideBarRight';
 
@@ -29,27 +25,6 @@ const SIDEBAR_MENU_MAP: Record<string, { name: string; type: string }[]> = {
 
 const AdminSideBar = () => {
 	const path = usePathname();
-	// const [authStateValue, setAuthStateValue] = useRecoilState(authState);
-	// const router = useRouter();
-
-	// const { isAdminLoggedIn } = authStateValue;
-
-	// useEffect(() => {
-	// 	const token = checkExpiration();
-
-	// 	if (!token) {
-	// 		setAuthStateValue((prev) => ({ ...prev, isAdminLoggedIn: false }));
-	// 		if (!isAdminLoggedIn) {
-	// 			router.push('/admin/login');
-	// 		}
-	// 	}
-
-	// 	const interval = setInterval(() => {
-	// 		checkExpiration();
-	// 	}, 1000 * 60);
-
-	// 	return () => clearInterval(interval);
-	// }, []);
 
 	if (path.includes('login')) return null;
 

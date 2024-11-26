@@ -1,3 +1,5 @@
+'use client';
+
 import * as s from './NavBarStyle.css';
 
 import { Flex } from '@/shared/components/layout';
@@ -11,6 +13,8 @@ interface Props {
 }
 
 const SideNavBarProductsForSale = ({ svg, name, productId }: Props) => {
+	console.log('simple product image', name, svg);
+
 	return (
 		<Link href={`/product/${productId}`} style={{ cursor: 'pointer' }}>
 			<Flex align="center">

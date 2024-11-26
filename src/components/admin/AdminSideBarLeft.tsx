@@ -2,7 +2,7 @@
 
 import * as s from './AdminStyle.css';
 import { Flex } from '@/shared/components/layout';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import ManageUserIcon from '../icons/ManageUserIcon';
 import { vars } from '@/shared/styles/theme.css';
 import ManageProductIcon from '../icons/ManageProductIcon';
@@ -13,13 +13,15 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 const AdminSideBarLeft = () => {
-	const path = usePathname();
-	const replacePath = path.replace('/admin/manage', '');
+	const path = usePathname() || '';
+	const replacePath = useMemo(() => path.split('?')[0].replace('/admin/manage', ''), [path]);
 	const [selectedIcon, setSelectedIcon] = useState(replacePath);
 
 	useEffect(() => {
-		setSelectedIcon(replacePath);
-	}, [path, replacePath]);
+		if (selectedIcon !== replacePath) {
+			setSelectedIcon(replacePath);
+		}
+	}, [replacePath, selectedIcon]);
 
 	const handleIconClick = (iconPath: string) => {
 		setSelectedIcon(iconPath);
