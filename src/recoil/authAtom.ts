@@ -1,44 +1,43 @@
+import { fetchUserInfo } from '@/app/api/user/fetchUserInfo';
+import { UserInfo } from '@/models/user';
 import { atom, DefaultValue } from 'recoil';
 
+// User Info API 호출 함수
+interface UserInfoResponse {
+	code: number;
+	status: string;
+	message: string;
+	data: UserInfo;
+}
+// 인증 상태 관리
 interface AuthState {
 	isLoggedIn: boolean;
-	isAdminLoggedIn: boolean;
+	userInfo: UserInfo | null;
 }
-
-const persistAuthState =
-	(
-		key: string,
-	): (({
-		setSelf,
-		onSet,
-	}: {
-		setSelf: (newValue: AuthState | DefaultValue) => void;
-		onSet: (
-			callback: (newValue: AuthState | DefaultValue, oldValue: AuthState | DefaultValue) => void,
-		) => void;
-	}) => void) =>
-	({ setSelf, onSet }) => {
-		if (typeof window !== 'undefined') {
-			const savedValue = localStorage.getItem(key);
-			if (savedValue != null) {
-				setSelf(JSON.parse(savedValue));
-			}
-
-			onSet((newValue) => {
-				if (!(newValue instanceof DefaultValue)) {
-					localStorage.setItem(key, JSON.stringify(newValue));
-				}
-			});
-		}
-	};
-
 const authState = atom<AuthState>({
 	key: 'authState',
 	default: {
 		isLoggedIn: false,
-		isAdminLoggedIn: false,
+		userInfo: null,
 	},
-	effects_UNSTABLE: [persistAuthState('authState')],
+	effects_UNSTABLE: [
+		({ setSelf }) => {
+			(async () => {
+				const userInfoResponse = await fetchUserInfo();
+				if (userInfoResponse && userInfoResponse.data) {
+					setSelf({
+						isLoggedIn: true,
+						userInfo: userInfoResponse.data,
+					});
+				} else {
+					setSelf({
+						isLoggedIn: false,
+						userInfo: null,
+					});
+				}
+			})();
+		},
+	],
 });
 
 export default authState;

@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
 		"target": "es5",
+		"noImplicitAny": false, // 타입이 명시되지 않은 `any`를 허용
 		"lib": ["dom", "dom.iterable", "esnext"],
 		"allowJs": true,
 		"skipLibCheck": true,

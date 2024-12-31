@@ -15,13 +15,14 @@ import * as cs from '@/shared/styles/common.css';
 import { vars } from '@/shared/styles/theme.css';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import ConfirmAndPayTheAmountBox from '../order/ConfirmAndPayTheAmountBox';
 import PaymentMethodSelectBox from '../order/PaymentMethodSelectBox';
 import * as s from './ProductDetailStyle.css';
 import ProductSelectBox from './ProductSelectBox';
 import QuantitySelectBox from './QuantitySelectBox';
+import Script from 'next/script';
 
 interface Props {
 	product: ProductInfo;
@@ -34,6 +35,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 	const [saleRate, setSaleRate] = useState(product?.cardDiscount || 0);
 	const [totalAmount, setTotalAmount] = useState(0);
 	const [finalAmount, setFinalAmount] = useState(0);
+	const formRef = useRef(null);
 
 	const { isLoggedIn } = useRecoilValue(authState);
 	const router = useRouter();
@@ -97,7 +99,8 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 		},
 	});
 
-	const handleCheckoutNow = () => {
+	const handleCheckoutNow = (event) => {
+		event.preventDefault(); // 기본 form 제출 방지
 		if (!isLoggedIn) {
 			open({
 				width: '360px',
@@ -117,7 +120,35 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 				onLeftButtonClick: close,
 			});
 		}
+		console.log('안녕');
+		if (window.GX_pay) {
+			window.GX_pay('paymentForm', 'popup', 'https_tpay');
+		} else {
+			console.error('Payment script is not loaded.');
+		}
 	};
+	useEffect(() => {
+		// 스크립트 동적으로 추가
+		const script = document.createElement('script');
+		script.src = 'https://pay.billgate.net/paygate/plugin/gx_web_client.js';
+		script.type = 'text/javascript';
+		script.async = true;
+
+		script.onload = () => {
+			console.log('Payment script loaded successfully.');
+		};
+
+		script.onerror = () => {
+			console.error('Failed to load the payment script.');
+		};
+
+		document.head.appendChild(script);
+
+		// Cleanup script when the component unmounts
+		return () => {
+			document.head.removeChild(script);
+		};
+	}, []);
 
 	const handleAddToCart = () => {
 		if (!isLoggedIn) {
@@ -197,62 +228,82 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 	};
 
 	return (
-		<div className={s.productDetailSelectAndPayBox}>
-			<div>
-				<div className={s.darkerGrayText} style={{ fontSize: '16px' }}>
-					상품 선택
-				</div>
-				<Spacing margin="9px" />
-				<ProductSelectBox product={product} onSelectCategory={handleSelectCategory} />
-			</div>
-			<Spacing margin="30px" />
-			<div>
-				<div className={s.darkerGrayText} style={{ fontSize: '16px' }}>
-					수량 선택
-				</div>
-				<QuantitySelectBox
-					cartItems={cartItems}
-					priceCategories={priceCategories as PriceCategoryInfo[]}
-					onQuantityChange={handleQuantityChange}
-					onRemoveItem={handleRemoveItem}
+		<form
+			name="paymentForm"
+			ref={formRef}
+			method="post"
+			action="http://localhost:3000/order/cart" // 서버 엔드포인트
+			encType="application/x-www-form-urlencoded">
+			<div className={s.productDetailSelectAndPayBox}>
+				<input type="hidden" name="SERVICE_ID" value="M2103135" />
+				<input type="hidden" name="SERVICE_CODE" value="1100" /> {/* 예: 카드 */}
+				<input type="hidden" name="SERVICE_TYPE" value="0000" />
+				<input type="hidden" name="ORDER_ID" value="123456789" />
+				<input
+					type="hidden"
+					name="ORDER_DATE"
+					value={new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14)}
 				/>
+				<input type="hidden" name="AMOUNT" value="10000" />
+				<input type="hidden" name="RETURN_URL" value="http://localhost:3000/order/cart" />
+				<input type="hidden" name="ITEM_CODE" value="ITEM123" />
+				<input type="hidden" name="ITEM_NAME" value="Test Item" />
+				<input type="hidden" name="USER_ID" value="USER12345" />
+				{/* 선택 파라미터 */}
+				<input type="hidden" name="USER_NAME" value="홍길동" />
+				<input type="hidden" name="USER_EMAIL" value="test@example.com" />
+				<input type="hidden" name="LOGO" value="https://your-logo-url.com/logo.png" />s
+				<div>
+					<div className={s.darkerGrayText} style={{ fontSize: '16px' }}>
+						상품 선택
+					</div>
+					<Spacing margin="9px" />
+					<ProductSelectBox product={product} onSelectCategory={handleSelectCategory} />
+				</div>
+				<Spacing margin="30px" />
+				<div>
+					<div className={s.darkerGrayText} style={{ fontSize: '16px' }}>
+						수량 선택
+					</div>
+					<QuantitySelectBox
+						cartItems={cartItems}
+						priceCategories={priceCategories as PriceCategoryInfo[]}
+						onQuantityChange={handleQuantityChange}
+						onRemoveItem={handleRemoveItem}
+					/>
+				</div>
+				<Spacing margin="30px" />
+				<PaymentMethodSelectBox
+					selectedType={selectedType}
+					setSelectedType={setSelectedType}
+					cardDiscount={product?.cardDiscount}
+					phoneDiscount={product?.phoneDiscount}
+				/>
+				<Spacing margin="30px" />
+				<ConfirmAndPayTheAmountBox selectedType={selectedType} totalAmount={totalAmount} />
+				<Spacing margin="15px" />
+				<Flex justify="space-between" className={s.totalPayInfoBox}>
+					<span className={s.whiteBoldText} style={{ fontWeight: '400' }}>
+						최종 결제 금액
+					</span>
+					<span className={s.whiteBoldText} style={{ fontWeight: '600' }}>
+						{finalAmount.toLocaleString()} 원
+					</span>
+				</Flex>
+				<Spacing margin="15px" />
+				<Flex style={{ width: '100%' }}>
+					<button onClick={handleCheckoutNow}>바로 구매</button>
+
+					<Button
+						color={vars.color.white}
+						className={cs.lightBlueButton}
+						style={{ maxWidth: '900px', fontSize: '18px', height: '60px' }}
+						onClick={handleAddToCart}>
+						장바구니 담기
+					</Button>
+				</Flex>
 			</div>
-			<Spacing margin="30px" />
-			<PaymentMethodSelectBox
-				selectedType={selectedType}
-				setSelectedType={setSelectedType}
-				cardDiscount={product?.cardDiscount}
-				phoneDiscount={product?.phoneDiscount}
-			/>
-			<Spacing margin="30px" />
-			<ConfirmAndPayTheAmountBox selectedType={selectedType} totalAmount={totalAmount} />
-			<Spacing margin="15px" />
-			<Flex justify="space-between" className={s.totalPayInfoBox}>
-				<span className={s.whiteBoldText} style={{ fontWeight: '400' }}>
-					최종 결제 금액
-				</span>
-				<span className={s.whiteBoldText} style={{ fontWeight: '600' }}>
-					{finalAmount.toLocaleString()} 원
-				</span>
-			</Flex>
-			<Spacing margin="15px" />
-			<Flex style={{ width: '100%' }}>
-				<Button
-					color={vars.color.white}
-					className={cs.lightGrayButton}
-					style={{ maxWidth: '900px', fontSize: '18px', height: '60px' }}
-					onClick={handleCheckoutNow}>
-					바로 구매
-				</Button>
-				<Button
-					color={vars.color.white}
-					className={cs.lightBlueButton}
-					style={{ maxWidth: '900px', fontSize: '18px', height: '60px' }}
-					onClick={handleAddToCart}>
-					장바구니 담기
-				</Button>
-			</Flex>
-		</div>
+		</form>
 	);
 };
 

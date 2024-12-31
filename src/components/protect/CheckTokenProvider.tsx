@@ -1,11 +1,9 @@
 'use client';
 
 import authState from '@/recoil/authAtom';
-import { checkExpiration } from '@/utils/checkTokenExpiration';
-import { usePathname } from 'next/navigation';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { ReactNode, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 interface Props {
 	children: ReactNode;
@@ -13,35 +11,19 @@ interface Props {
 
 const CheckTokenProvider = ({ children }: Props) => {
 	const path = usePathname();
-	const [authStateValue, setAuthStateValue] = useRecoilState(authState);
+	const isLoggedIn = useRecoilValue(authState).isLoggedIn;
 	const router = useRouter();
 
-	const { isAdminLoggedIn, isLoggedIn } = authStateValue;
-
 	useEffect(() => {
-		const token = checkExpiration();
-
-		if (!token) {
-			setAuthStateValue({ isLoggedIn: false, isAdminLoggedIn: false });
-			if (!isAdminLoggedIn) {
-				if (path.includes('admin')) {
-					router.push('/admin/login');
-				}
-			}
-
-			if (!isLoggedIn) {
-				if (!path.includes('admin')) {
-					router.push('/login');
-				}
+		if (!isLoggedIn) {
+			// 사용자가 로그아웃 상태일 때 리다이렉션 처리
+			if (path.includes('admin')) {
+				router.push('/admin/login');
+			} else {
+				router.push('/login');
 			}
 		}
-
-		const interval = setInterval(() => {
-			checkExpiration();
-		}, 1000 * 60);
-
-		return () => clearInterval(interval);
-	}, []);
+	}, [isLoggedIn, path, router]);
 
 	return <div>{children}</div>;
 };

@@ -2,7 +2,7 @@ import { ProductInfo } from '@/models/product';
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import ProductDetailInfoBox from './ProductDetailInfoBox';
-import ProductDetailSelectAndPayBox from './ProductDetailSelectAndPayBox';
+import ProductDetailSelectAndPayBox from '@/app/(product)/product/[id]/components/ProductDetailSelectAndPayBox';
 import * as s from './ProductDetailStyle.css';
 import ProductInstructionItem from './ProductInstructionItem';
 

@@ -1,8 +1,6 @@
-import { getLocalToken } from './localToken';
-
 export interface FetchApiOptions<TBody = unknown> {
 	method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
-	token?: boolean;
+	token?: boolean; // 쿠키 방식에서도 옵션으로 유지
 	body?: TBody;
 	headers?: HeadersInit;
 }
@@ -13,21 +11,18 @@ export const fetchApi = async <TResponse, TBody = unknown>(
 ): Promise<TResponse> => {
 	const { method = 'GET', token, body, headers = {} } = options;
 
-	const authToken = getLocalToken();
-
 	const combinedHeaders: Record<string, string> = {
+		'Access-Control-Allow-Origin': '*', // 모든 Origin 허용
 		'Content-Type': 'application/json',
 		...(headers as Record<string, string>),
 	};
 
-	if (token && authToken) {
-		combinedHeaders['Authorization'] = `bearer ${authToken}`;
-	}
-
+	// 쿠키를 포함하도록 credentials 설정
 	const response = await fetch(url, {
 		method,
 		headers: combinedHeaders,
 		body: body ? JSON.stringify(body) : undefined,
+		credentials: 'include', // 쿠키를 요청에 포함
 	});
 
 	if (!response.ok) {

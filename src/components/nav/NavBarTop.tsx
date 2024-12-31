@@ -17,6 +17,7 @@ import ProtectedRoute from '../protect/ProtectedRoute';
 const NavBarTop = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const authStateValue = useRecoilValue(authState);
+
 	const path = usePathname();
 
 	if (path.includes('admin')) return null;
@@ -30,7 +31,14 @@ const NavBarTop = () => {
 			<Flex justify="space-between" align="center" className={s.navbarTopBox}>
 				{authStateValue.isLoggedIn === true && (
 					<Link href="/order/cart">
-						<img src="/images/cart-icon.png" alt="장바구니 아이콘" className={s.cartIcon} />
+						<Image
+							src="/images/cart-icon.png"
+							alt="장바구니 아이콘"
+							width={40} // Default width for larger screens
+							height={40} // Default height for larger screens
+							sizes="(max-width: 768px) 35px, (max-width: 480px) 30px, 40px" // Responsive sizes
+							className={s.cartIcon}
+						/>
 					</Link>
 				)}
 				<Link href="/" className={s.logoBox}>

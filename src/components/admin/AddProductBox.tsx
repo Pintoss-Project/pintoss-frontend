@@ -27,7 +27,7 @@ import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'reac
 import { Accept, useDropzone } from 'react-dropzone';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { IoIosRemoveCircle } from 'react-icons/io';
-import { DropImageBox } from '../../../out/svgs';
+import { DropImageBox } from '../../../public/svgs';
 import AdminProductInput from './AdminProductInput';
 import AdminProductSelect from './AdminProductSelect';
 import AdminProductTextArea from './AdminProductTextArea';
