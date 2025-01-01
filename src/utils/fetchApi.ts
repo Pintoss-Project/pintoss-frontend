@@ -4,12 +4,12 @@ export interface FetchApiOptions<TBody = unknown> {
 	body?: TBody;
 	headers?: HeadersInit;
 }
-
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000';
 export const fetchApi = async <TResponse, TBody = unknown>(
 	url: string,
 	options: FetchApiOptions<TBody> = {},
 ): Promise<TResponse> => {
-	const { method = 'GET', token, body, headers = {} } = options;
+	const { method = 'GET', body, headers = {} } = options;
 
 	const combinedHeaders: Record<string, string> = {
 		'Access-Control-Allow-Origin': '*', // 모든 Origin 허용
@@ -18,7 +18,7 @@ export const fetchApi = async <TResponse, TBody = unknown>(
 	};
 
 	// 쿠키를 포함하도록 credentials 설정
-	const response = await fetch(url, {
+	const response = await fetch(`${url}`, {
 		method,
 		headers: combinedHeaders,
 		body: body ? JSON.stringify(body) : undefined,

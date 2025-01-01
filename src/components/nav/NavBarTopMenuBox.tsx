@@ -1,5 +1,3 @@
-'use client';
-
 import authState from '@/recoil/authAtom';
 import * as cs from '@/shared/styles/common.css';
 import * as s from './NavBarStyle.css';
@@ -14,7 +12,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import ProtectedRoute from '../protect/ProtectedRoute';
+import ProtectedRoute from '@/components/protect/ProtectedRoute';
 
 const NAV_BAR_TOP_MENU = [
 	{ name: '고객센터', url: '/customer-service' },

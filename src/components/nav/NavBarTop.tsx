@@ -1,22 +1,19 @@
 'use client';
-
 import * as s from './NavBarStyle.css';
 import { Flex } from '@/shared/components/layout';
-import { PintossColorLogo } from '../../../public/svgs';
 import Image from 'next/image';
 import Link from 'next/link';
 import NavBarTopMenuBox from './NavBarTopMenuBox';
 import { usePathname } from 'next/navigation';
-import GradientFiMenu from '../icons/GradientFiMenu';
+import GradientFiMenu from '@/components/icons/GradientFiMenu';
 import { useState } from 'react';
-import MobileMenuBox from '../responsive/MobileMenuBox';
-import { useRecoilValue } from 'recoil';
-import authState from '@/recoil/authAtom';
-import ProtectedRoute from '../protect/ProtectedRoute';
+import MobileMenuBox from '@/components/responsive/MobileMenuBox';
+import ProtectedRoute from '@/components/protect/ProtectedRoute';
+import { PintossColorLogo } from '../../../public/svgs';
+import { UserInfo } from '@/models/user';
 
-const NavBarTop = () => {
+const NavBarTop = ({ data }: { data: UserInfo | null }) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const authStateValue = useRecoilValue(authState);
 
 	const path = usePathname();
 
@@ -29,7 +26,7 @@ const NavBarTop = () => {
 	return (
 		<ProtectedRoute>
 			<Flex justify="space-between" align="center" className={s.navbarTopBox}>
-				{authStateValue.isLoggedIn === true && (
+				{data?.id && (
 					<Link href="/order/cart">
 						<Image
 							src="/images/cart-icon.png"
