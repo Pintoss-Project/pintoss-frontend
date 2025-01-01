@@ -20,24 +20,7 @@ const authState = atom<AuthState>({
 		isLoggedIn: false,
 		userInfo: null,
 	},
-	effects_UNSTABLE: [
-		({ setSelf }) => {
-			(async () => {
-				const userInfoResponse = await fetchUserInfo();
-				if (userInfoResponse && userInfoResponse.data) {
-					setSelf({
-						isLoggedIn: true,
-						userInfo: userInfoResponse.data,
-					});
-				} else {
-					setSelf({
-						isLoggedIn: false,
-						userInfo: null,
-					});
-				}
-			})();
-		},
-	],
+
 });
 
 export default authState;

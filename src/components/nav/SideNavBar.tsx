@@ -1,5 +1,4 @@
 'use client';
-
 import { fetchSimpleProductList } from '@/app/api/product/fetchSimpleProductList';
 import { fetchSiteInfo } from '@/app/api/site/fetchSiteInfo';
 import { fetchSiteList } from '@/app/api/site/fetchSiteList';
@@ -8,10 +7,10 @@ import Spacing from '@/shared/components/layout/Spacing';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { KakaoDetailLogo } from '../../../public/svgs';
-import ProtectedRoute from '../protect/ProtectedRoute';
+import ProtectedRoute from '@/components/protect/ProtectedRoute';
 import * as s from './NavBarStyle.css';
 import SideNavBarProductsForSale from './SideNavBarProductsForSale';
+import { KakaoDetailLogo } from '../../../public/svgs';
 
 const EXCLUDE_PATH = ['/login', '/register'];
 

@@ -1,5 +1,4 @@
 'use client';
-
 import * as s from './NavBarStyle.css';
 
 import { Flex } from '@/shared/components/layout';

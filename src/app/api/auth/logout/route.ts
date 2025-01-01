@@ -1,12 +1,25 @@
 import { ErrorResponse } from '@/models/error';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST() {
+export async function POST(req: NextRequest) {
 	try {
+		// 쿠키 읽기
+		const accessToken = req.cookies.get('accessToken')?.value;
+
+		if (!accessToken) {
+			console.warn('No access token found');
+			return NextResponse.json(
+				{ errorMessage: '로그아웃 요청에 유효한 토큰이 없습니다.' },
+				{ status: 400 },
+			);
+		}
+
+		// 외부 API 로그아웃 호출
 		const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user/logout`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${accessToken}`, // 토큰 포함
 			},
 			credentials: 'include',
 		});
@@ -19,7 +32,14 @@ export async function POST() {
 			);
 		}
 
-		return NextResponse.json({ message: '로그아웃 성공' });
+		// 쿠키 삭제
+		const res = NextResponse.json({ message: '로그아웃 성공' });
+		res.cookies.set('accessToken', '', {
+			path: '/',
+			maxAge: -1, // 즉시 만료
+		});
+
+		return res;
 	} catch (error) {
 		console.error('로그아웃 요청 중 오류 발생:', error);
 		return NextResponse.json(

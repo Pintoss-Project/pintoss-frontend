@@ -22,7 +22,6 @@ import PaymentMethodSelectBox from '../order/PaymentMethodSelectBox';
 import * as s from './ProductDetailStyle.css';
 import ProductSelectBox from './ProductSelectBox';
 import QuantitySelectBox from './QuantitySelectBox';
-import Script from 'next/script';
 
 interface Props {
 	product: ProductInfo;
