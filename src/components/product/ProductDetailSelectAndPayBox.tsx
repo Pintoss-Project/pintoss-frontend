@@ -69,7 +69,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 	}, [cartItems, priceCategories, saleRate, selectedType]);
 
 	const postCartItemMutation = useMutation({
-		mutationFn: (data: CartItem[]) => fetchRegisterCartItem(userInfo?.data?.id as number, data),
+		mutationFn: (data: CartItem[]) => fetchRegisterCartItem(userInfo?.id as number, data),
 		onSuccess: () => {
 			open({
 				width: '300px',
@@ -82,7 +82,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 					close();
 				},
 			});
-			queryClient.invalidateQueries({ queryKey: ['cartItems', userInfo?.data.id] });
+			queryClient.invalidateQueries({ queryKey: ['cartItems', userInfo?.id] });
 		},
 		onError: () => {
 			if (isLoggedIn) {
