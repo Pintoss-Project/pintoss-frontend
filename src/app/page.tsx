@@ -7,13 +7,10 @@ import * as s from '@/components/home/HomeStyle.css';
 import Spacing from '@/shared/components/layout/Spacing';
 import { cookies } from 'next/headers';
 import TokenHandler from '@/components/home/TokenHandler';
-import { UserInfo } from '@/models/user';
 
 export default async function Home() {
 	const cookieStore = cookies();
 	const accessTokenCookie = cookieStore.get('accessToken')?.value;
-
-
 
 	return (
 		<main className={s.homeSection}>

@@ -12,7 +12,7 @@ import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { PintossLogo, SecureTransaction } from '../../../public/svgs';
+import { PintossLogo } from '../../../public/svgs';
 import ProtectedRoute from '../protect/ProtectedRoute';
 
 const Footer = () => {
@@ -50,7 +50,7 @@ const Footer = () => {
 						<Spacing margin="8px" />
 						<p className={s.pText}>
 							대표 {siteInfo?.data.owner} l 사업자등록번호: {siteInfo?.data.businesses} l
-							통신판매업신고 {siteInfo?.data.reportNumber} l Email : {siteInfo?.data.email}
+							통신판매번호 2024-부산진-1016 l Email : {siteInfo?.data.email}
 						</p>
 						<Spacing margin="8px" />
 						<p className={s.pText}>
@@ -87,11 +87,11 @@ const Footer = () => {
 						</p>
 						<Spacing margin="20px" />
 						<div>
-							<Link href="/" style={{ color: vars.color.darkBlue, fontSize: '15px' }}>
+							<Link href="/privacy" style={{ color: vars.color.darkBlue, fontSize: '15px' }}>
 								개인정보 처리방침
 							</Link>
 							<Link
-								href="/"
+								href="/usepolicy"
 								style={{ color: vars.color.mediumGray, marginLeft: '14px', fontSize: '15px' }}>
 								이용약관
 							</Link>
