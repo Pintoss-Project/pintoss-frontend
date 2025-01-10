@@ -20,17 +20,17 @@ const MemberInfoBox = () => {
 		<Flex direction="column" justify="space-around" className={s.memberInfoInnerBox}>
 			<Flex justify="space-between" align="center">
 				<span className={s.darkGrayText}>이름</span>
-				<span className={s.darkerGrayText}>{userInfo?.data.name}</span>
+				<span className={s.darkerGrayText}>{userInfo?.name}</span>
 			</Flex>
 			<Divider color={vars.color.paleGray} />
 			<Flex justify="space-between" align="center">
 				<span className={s.darkGrayText}>휴대폰</span>
-				<span className={s.darkerGrayText}>{userInfo?.data.phone}</span>
+				<span className={s.darkerGrayText}>{userInfo?.phone}</span>
 			</Flex>
 			<Divider color={vars.color.paleGray} />
 			<Flex justify="space-between" align="center">
 				<span className={s.darkGrayText}>이메일</span>
-				<span className={s.darkerGrayText}>{userInfo?.data.email}</span>
+				<span className={s.darkerGrayText}>{userInfo?.email}</span>
 			</Flex>
 		</Flex>
 	);

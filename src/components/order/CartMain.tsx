@@ -38,15 +38,15 @@ const CartMain = () => {
 			<Spacing margin="30px" />
 			<CartOrderListInfoBox
 				setTotalAmount={setTotalAmount}
-				userId={userInfo?.data?.id as number}
+				userId={userInfo?.id as number}
 				selectedType={selectedType}
 			/>
 			<Spacing margin="54px" />
 			<div className={s.cartOrderInfoFlexWrap}>
-				<CartOrderEtcInfoBox userInfo={userInfo?.data as UserInfo} />
+				<CartOrderEtcInfoBox userInfo={userInfo as UserInfo} />
 				<CartPaymentInfoBox
 					totalAmount={totalAmount}
-					userId={userInfo?.data.id as number}
+					userId={userInfo?.id as number}
 					selectedType={selectedType}
 					setSelectedType={setSelectedType}
 				/>

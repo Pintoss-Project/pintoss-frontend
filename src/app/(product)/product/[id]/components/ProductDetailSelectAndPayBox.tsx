@@ -50,9 +50,9 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 	usePaymentScript();
 
 	const { data: userInfo } = useQuery({ queryKey: ['userInfo'], queryFn: fetchUserInfo });
-
+	console.log(userInfo, 'userInfo');
 	const postCartItemMutation = useMutation({
-		mutationFn: (data: CartItem[]) => fetchRegisterCartItem(userInfo?.data?.id as number, data),
+		mutationFn: (data: CartItem[]) => fetchRegisterCartItem(userInfo?.id as number, data),
 		onSuccess: () => {
 			open({
 				width: '300px',
@@ -65,7 +65,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 					close();
 				},
 			});
-			queryClient.invalidateQueries({ queryKey: ['cartItems', userInfo?.data.id] });
+			queryClient.invalidateQueries({ queryKey: ['cartItems', userInfo?.id] });
 		},
 		onError: () => {
 			if (isLoggedIn) {
@@ -114,7 +114,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 
 	const orderData = {
 		SERVICE_ID: 'M2103135',
-		SERVICE_CODE: '1100',
+		SERVICE_CODE: selectedType === 'card' ? '0900' : '1100',
 		SERVICE_TYPE: '0000',
 		ORDER_ID: 'ORD202312270001',
 		ORDER_DATE: new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14),
@@ -125,7 +125,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 		// USER_ID: 'sdas23@dsa.com',
 		// USER_NAME: '홍길동',
 		// USER_EMAIL: 'sdas23@dsa.com',
-		LOGO: 'https://your-logo-url.com/logo.png',
+		LOGO: 'https://www.billgate.net/billgate/resources/asset/image/common/h1_logo.png',
 	};
 	const handleSelectCategory = (category: PriceCategoryInfo): void => {
 		setPriceCategories((prev): PriceCategoryInfo[] => {
@@ -135,7 +135,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 			return prev;
 		});
 	};
-
+	//구매 결제로직
 	const handleCheckoutNow: React.MouseEventHandler<HTMLButtonElement> = (event) => {
 		event.preventDefault(); // 기본 form 제출 방지
 		if (!isLoggedIn) {
@@ -163,7 +163,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 			console.error('Payment script is not loaded.');
 		}
 	};
-
+	console.log(selectedType, 'selcect');
 	return (
 		<form
 			ref={formRef}
@@ -193,7 +193,12 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 				</Flex>
 				<Spacing margin="15px" />
 				<Flex style={{ width: '100%' }}>
-					<button onClick={handleCheckoutNow}>바로 구매</button>
+					<Button
+						color={vars.color.white}
+						className={cs.darkBlueButton}
+						onClick={handleCheckoutNow}>
+						바로 구매
+					</Button>
 					<Button color={vars.color.white} className={cs.lightBlueButton} onClick={handleAddToCart}>
 						장바구니 담기
 					</Button>
