@@ -231,7 +231,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 			name="paymentForm"
 			ref={formRef}
 			method="post"
-			action="http://localhost:3000/order/cart" // 서버 엔드포인트
+			action={`${process.env.NEXT_PUBLIC_API_URL}/order/cart`} // 서버 엔드포인트
 			encType="application/x-www-form-urlencoded">
 			<div className={s.productDetailSelectAndPayBox}>
 				<input type="hidden" name="SERVICE_ID" value="M2103135" />
@@ -244,7 +244,11 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 					value={new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14)}
 				/>
 				<input type="hidden" name="AMOUNT" value="10000" />
-				<input type="hidden" name="RETURN_URL" value="http://localhost:3000/order/cart" />
+				<input
+					type="hidden"
+					name="RETURN_URL"
+					value={`${process.env.NEXT_PUBLIC_API_URL}/order/cart`}
+				/>
 				<input type="hidden" name="ITEM_CODE" value="ITEM123" />
 				<input type="hidden" name="ITEM_NAME" value="Test Item" />
 				<input type="hidden" name="USER_ID" value="USER12345" />
