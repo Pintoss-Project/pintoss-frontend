@@ -113,7 +113,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 	};
 
 	const orderData = {
-		SERVICE_ID: 'M2103135',
+		SERVICE_ID: 'M2483583',
 		SERVICE_CODE: selectedType === 'card' ? '0900' : '1100',
 		SERVICE_TYPE: '0000',
 		ORDER_ID: 'ORD202312270001',
@@ -158,7 +158,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 			});
 		}
 		if (window.GX_pay) {
-			window.GX_pay('paymentForm', 'popup', 'https_tpay');
+			window.GX_pay('paymentForm', 'popup', 'https_pay');
 		} else {
 			console.error('Payment script is not loaded.');
 		}
