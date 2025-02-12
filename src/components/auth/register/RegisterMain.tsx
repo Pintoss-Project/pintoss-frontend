@@ -1,10 +1,10 @@
 'use client';
 
-import { fetchCheckId } from '@/app/api/auth/fetchCheckId';
-import { fetchCheckPhone } from '@/app/api/auth/fetchCheckPhone';
-import { fetchRegister } from '@/app/api/auth/fetchRegister';
-import { fetchDecryptedData } from '@/app/api/niceid/fetchDecryptedData';
-import { fetchUpdateUserInfo } from '@/app/api/user/fetchUpdateUserInfo';
+import { fetchCheckId } from '@/app/api_n/auth/fetchCheckId';
+import { fetchCheckPhone } from '@/app/api_n/auth/fetchCheckPhone';
+import { fetchRegister } from '@/app/api_n/auth/fetchRegister';
+import { fetchDecryptedData } from '@/app/api_n/niceid/fetchDecryptedData';
+import { fetchUpdateUserInfo } from '@/app/api_n/user/fetchUpdateUserInfo';
 import * as as from '@/components/auth/AuthStyle.css';
 import useAlertContext from '@/hooks/useAlertContext';
 import authState from '@/recoil/authAtom';

@@ -7,9 +7,8 @@ import '@/shared/styles';
 import 'react-quill/dist/quill.snow.css';
 import Providers from '@/react-query/Providers';
 import RecoilRootProvider from '@/recoil/RecoilRootProvider';
-import type { Metadata } from 'next';
-import Head from 'next/head';
-import { fetchUserInfo } from '@/app/api/user/fetchUserInfo';
+import type { Metadata } from "next";
+import { fetchUserInfo } from '@/app/api_n/user/fetchUserInfo';
 
 export const metadata: Metadata = {
 	title: '핀토스',
@@ -21,9 +20,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
 	return (
 		<html lang="ko">
-			<Head>
-				<meta charSet="EUC-KR" />
-			</Head>
 			<body>
 				<Providers>
 					<RecoilRootProvider>

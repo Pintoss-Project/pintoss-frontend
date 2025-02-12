@@ -1,6 +1,6 @@
 'use client';
 
-import { fetchProductInfo } from '@/app/api/product/fetchProductInfo';
+import { fetchProductInfo } from '@/app/api_n/product/fetchProductInfo';
 import { ProductInfo } from '@/models/product';
 import Spacing from '@/shared/components/layout/Spacing';
 import { useQuery } from '@tanstack/react-query';

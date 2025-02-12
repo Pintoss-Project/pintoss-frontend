@@ -1,4 +1,4 @@
-import { fetchSimpleProductList } from '@/app/api/product/fetchSimpleProductList';
+import { fetchSimpleProductList } from '@/app/api_n/product/fetchSimpleProductList';
 import { Grid } from '@/shared/components/layout';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
@@ -16,7 +16,7 @@ const MobileProducts = ({ setIsMenuOpen }: Props) => {
 		queryFn: () => fetchSimpleProductList(),
 	});
 
-	if (isLoading) return <Spinner />;
+	if (isLoading) return null;
 
 	return (
 		<div className={s.gridWrap}>

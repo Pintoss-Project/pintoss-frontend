@@ -1,11 +1,11 @@
 'use client';
 
-import { fetchRegisterPriceCategory } from '@/app/api/product/fetchRegisterPriceCategory';
+import { fetchRegisterPriceCategory } from '@/app/api_n/product/fetchRegisterPriceCategory';
 import * as cs from '@/shared/styles/common.css';
 import { ProductInfoFormData } from '@/utils/validation/product';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useAlertContext from './useAlertContext';
-import { fetchRegisterProduct } from '@/app/api/product/fetchRegisterProduct';
+import { fetchRegisterProduct } from '@/app/api_n/product/fetchRegisterProduct';
 
 interface UseProductWithPriceCategoryMutationProps {
 	onSuccess?: () => void;

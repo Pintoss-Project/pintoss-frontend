@@ -1,4 +1,4 @@
-import { fetchUserInfo } from '@/app/api/user/fetchUserInfo';
+import { fetchUserInfo } from '@/app/api_n/user/fetchUserInfo';
 import { UserInfo } from '@/models/user';
 import { atom, DefaultValue } from 'recoil';
 

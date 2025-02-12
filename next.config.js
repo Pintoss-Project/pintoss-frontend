@@ -6,11 +6,11 @@ const nextConfig = {
 		return [
 			{
 				source: '/api/niceid/:path*',
-				destination: '/app/api/niceid/:path*',
+				destination: '/app_n/niceid/:path*',
 			},
 			{
 				source: '/api/:path*',
-				destination: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/:path*`,
+				destination: `http://pintossmall2.com/api/:path*`,
 			},
 		];
 	},

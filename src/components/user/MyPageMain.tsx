@@ -3,7 +3,7 @@
 import * as cs from '@/shared/styles/common.css';
 import * as s from './MyPageStyle.css';
 
-import { fetchDeactivate } from '@/app/api/auth/fetchDeactivate';
+import { fetchDeactivate } from '@/app/api_n/auth/fetchDeactivate';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Button } from '@/shared/components/button';

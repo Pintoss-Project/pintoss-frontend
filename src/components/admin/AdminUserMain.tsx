@@ -1,6 +1,6 @@
 'use client';
 
-import { fetchUserList } from '@/app/api/user/fetchUserList';
+import { fetchUserList } from '@/app/api_n/user/fetchUserList';
 import { Button } from '@/shared/components/button';
 import { Input } from '@/shared/components/input';
 import { Flex } from '@/shared/components/layout';

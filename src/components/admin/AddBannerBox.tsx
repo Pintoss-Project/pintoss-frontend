@@ -1,9 +1,9 @@
 'use client';
 
-import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
-import { uploadImageToCloudinary } from '@/app/api/image/uploadImageToCloudinary';
-import { fetchRegisterBanner } from '@/app/api/site/fetchRegisterBanner';
-import { fetchUpdateBanner } from '@/app/api/site/fetchUpdateBanner';
+import { deleteImageFromCloudinary } from '@/app/api_n/image/deleteImageFromCloudinary';
+import { uploadImageToCloudinary } from '@/app/api_n/image/uploadImageToCloudinary';
+import { fetchRegisterBanner } from '@/app/api_n/site/fetchRegisterBanner';
+import { fetchUpdateBanner } from '@/app/api_n/site/fetchUpdateBanner';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Button } from '@/shared/components/button';

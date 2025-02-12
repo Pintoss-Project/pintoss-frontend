@@ -1,8 +1,8 @@
 'use client';
 
-import { fetchResetPassword } from '@/app/api/auth/fetchResetPassword';
-import { fetchDecryptedData } from '@/app/api/niceid/fetchDecryptedData';
-import { fetchRequestData } from '@/app/api/niceid/fetchRequestData';
+import { fetchResetPassword } from '@/app/api_n/auth/fetchResetPassword';
+import { fetchDecryptedData } from '@/app/api_n/niceid/fetchDecryptedData';
+import { fetchRequestData } from '@/app/api_n/niceid/fetchRequestData';
 import * as s from '@/components/auth/register/RegisterStyle.css';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';

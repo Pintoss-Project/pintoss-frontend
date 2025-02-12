@@ -3,8 +3,8 @@
 import * as cs from '@/shared/styles/common.css';
 import * as s from './FooterStyle.css';
 
-import { fetchSiteInfo } from '@/app/api/site/fetchSiteInfo';
-import { fetchSiteList } from '@/app/api/site/fetchSiteList';
+import { fetchSiteInfo } from '@/app/api_n/site/fetchSiteInfo';
+import { fetchSiteList } from '@/app/api_n/site/fetchSiteList';
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import { vars } from '@/shared/styles/theme.css';

@@ -4,11 +4,15 @@ import * as s from './Spinner.css';
 
 const Spinner = () => {
 	return (
-		<BackDrop>
+		// <BackDrop>
+		// 	<Flex justify="center" align="center" className={s.spinnerContainer}>
+		// 		<div className={s.spinner}></div>
+		// 	</Flex>
+		// </BackDrop>
+
 			<Flex justify="center" align="center" className={s.spinnerContainer}>
 				<div className={s.spinner}></div>
 			</Flex>
-		</BackDrop>
 	);
 };
 

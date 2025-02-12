@@ -2,7 +2,7 @@ import authState from '@/recoil/authAtom';
 import * as cs from '@/shared/styles/common.css';
 import * as s from './NavBarStyle.css';
 
-import { fetchLogout } from '@/app/api/auth/fetchLogout';
+import { fetchLogout } from '@/app/api_n/auth/fetchLogout';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Flex, List } from '@/shared/components/layout';

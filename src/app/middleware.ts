@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(request: NextRequest) {
-	if (request.headers.get('x-forwarded-proto') !== 'https') {
+	if (request.headers.get('x-forwarded-proto') !== 'https' && request.headers.get('host') !== 'localhost') {
 		return NextResponse.redirect(
 			`https://${request.headers.get('host')}${request.nextUrl.pathname}`,
 			301,

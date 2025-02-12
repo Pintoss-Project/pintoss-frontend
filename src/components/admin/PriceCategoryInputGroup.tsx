@@ -1,7 +1,7 @@
 'use client';
 
-import { fetchPriceCategoryList } from '@/app/api/product/fetchPriceCategoryList';
-import { fetchRegisterPriceCategory } from '@/app/api/product/fetchRegisterPriceCategory';
+import { fetchPriceCategoryList } from '@/app/api_n/product/fetchPriceCategoryList';
+import { fetchRegisterPriceCategory } from '@/app/api_n/product/fetchRegisterPriceCategory';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Button } from '@/shared/components/button';

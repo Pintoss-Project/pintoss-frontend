@@ -1,8 +1,8 @@
 'use client';
 
-import { fetchBoardList } from '@/app/api/board/fetchBoardList';
-import { fetchDeleteBoard } from '@/app/api/board/fetchDeleteBoard';
-import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
+import { fetchBoardList } from '@/app/api_n/board/fetchBoardList';
+import { fetchDeleteBoard } from '@/app/api_n/board/fetchDeleteBoard';
+import { deleteImageFromCloudinary } from '@/app/api_n/image/deleteImageFromCloudinary';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Button } from '@/shared/components/button';

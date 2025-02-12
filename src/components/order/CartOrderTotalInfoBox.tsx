@@ -1,4 +1,4 @@
-import { fetchDeleteCartItemList } from '@/app/api/cart/fetchDeleteCartItemList';
+import { fetchDeleteCartItemList } from '@/app/api_n/cart/fetchDeleteCartItemList';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Button } from '@/shared/components/button';

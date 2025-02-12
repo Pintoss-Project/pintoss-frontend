@@ -1,12 +1,12 @@
 'use client';
 
-import { deleteImageFromCloudinary } from '@/app/api/image/deleteImageFromCloudinary';
-import { fetchDeleteProduct } from '@/app/api/product/fetchDeleteProduct';
-import { fetchProductList } from '@/app/api/product/fetchProductList';
+import { deleteImageFromCloudinary } from '@/app/api_n/image/deleteImageFromCloudinary';
+import { fetchDeleteProduct } from '@/app/api_n/product/fetchDeleteProduct';
+import { fetchProductList } from '@/app/api_n/product/fetchProductList';
 import {
 	fetchUpdateProductStock,
 	UpdateStockParams,
-} from '@/app/api/product/fetchUpdateProductStock';
+} from '@/app/api_n/product/fetchUpdateProductStock';
 import useAlertContext from '@/hooks/useAlertContext';
 import { ProductInfo, ProductInfoListResponse } from '@/models/product';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';

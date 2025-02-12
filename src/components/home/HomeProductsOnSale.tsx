@@ -1,6 +1,6 @@
 'use client';
 
-import { fetchSimpleProductList } from '@/app/api/product/fetchSimpleProductList';
+import { fetchSimpleProductList } from '@/app/api_n/product/fetchSimpleProductList';
 import { Grid } from '@/shared/components/layout';
 import { vars } from '@/shared/styles/theme.css';
 import { useQuery } from '@tanstack/react-query';
