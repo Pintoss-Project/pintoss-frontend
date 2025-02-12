@@ -1,8 +1,15 @@
+"use client"
+
 import AdminMainSection from '@/components/admin/AdminMainSection';
-import AdminUserMain from '@/components/admin/AdminUserMain';
+import { AdminUserMainSuspense } from '@/components/admin/AdminUserMain';
+import { Suspense } from 'react';
 
 const ManageUsers = () => {
-	return <AdminMainSection title="회원관리" main={<AdminUserMain />} />;
+	return (
+		<Suspense fallback={null}>
+			<AdminMainSection title="회원관리" main={<AdminUserMainSuspense />} />
+		</Suspense>
+	);
 };
 
 export default ManageUsers;

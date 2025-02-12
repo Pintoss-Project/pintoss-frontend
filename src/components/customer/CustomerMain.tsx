@@ -8,7 +8,7 @@ import { formatDate } from '@/utils/formatDate';
 import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { IoIosArrowDown } from 'react-icons/io';
 import {
 	MdKeyboardArrowLeft,
@@ -164,4 +164,10 @@ const CustomerMain = () => {
 	);
 };
 
-export default CustomerMain;
+export function CustomerMainWithSuspense() {
+	return (
+		<Suspense fallback={<Spinner />}>
+			<CustomerMain />
+		</Suspense>
+	);
+}

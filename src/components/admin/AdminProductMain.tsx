@@ -3,10 +3,11 @@
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import { useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import AddProductBox from './AddProductBox';
 import AdminProductList from './AdminProductList';
 import ManageFeeBox from './ManageFeeBox';
+import Spinner from '@/shared/components/spinner/Spinner';
 
 const AdminProductMain = () => {
 	const [selectedProductId, setSelectedProductId] = useState<number | undefined>();
@@ -45,4 +46,10 @@ const AdminProductMain = () => {
 	);
 };
 
-export default AdminProductMain;
+export function AdminProductMainSuspense() {
+	return (
+		<Suspense fallback={<Spinner />}>
+			<AdminProductMain />
+		</Suspense>
+	);
+}

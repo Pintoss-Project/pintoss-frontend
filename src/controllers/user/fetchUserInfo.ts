@@ -18,7 +18,7 @@ export const fetchUserInfo = async (): Promise<UserInfo | null> => {
 		const data = await response.json();
 		return data.data; // data의 내부 data를 반환
 	} catch (error) {
-		console.error('Error fetching user info:', error);
+		console.warn('Error fetching user info:', error);
 		return null; // 실패 시 null 반환
 	}
 };

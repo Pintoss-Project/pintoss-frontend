@@ -25,6 +25,9 @@ const nextConfig = {
 	typescript: {
 		ignoreBuildErrors: true, //타입에러 무시하고 빌드하기. 나중에 삭제할것
 	},
+	experimental: {
+		missingSuspenseWithCSRBailout: false,
+	},
 };
 
 const withVanillaExtract = createVanillaExtractPlugin();

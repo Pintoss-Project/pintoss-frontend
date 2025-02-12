@@ -1,11 +1,13 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation'
 import AdminMainSection from './AdminMainSection';
 import AdminBannerMain from './AdminBannerMain';
 import AdminNoticeMain from './AdminNoticeMain';
 import AdminFAQsMain from './AdminFAQsMain';
 import { useEffect, useState } from 'react';
+import Spinner from '@/shared/components/spinner/Spinner';
+import { Suspense } from 'react';
 
 const TITLE_MAP: Record<string, string> = {
 	banner: '정보 및 배너관리',
@@ -69,4 +71,10 @@ const AdminBoardMain = () => {
 	);
 };
 
-export default AdminBoardMain;
+export function AdminBoardMainWithSuspense() {
+	return (
+		<Suspense fallback={<Spinner />}>
+			<AdminBoardMain />
+		</Suspense>
+	);
+}

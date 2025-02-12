@@ -7,9 +7,10 @@ import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import { vars } from '@/shared/styles/theme.css';
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import * as s from './AdminStyle.css';
 import AdminUserList from './AdminUserList';
+import Spinner from '@/shared/components/spinner/Spinner';
 
 const AdminUserMain = () => {
 	const [startDate, setStartDate] = useState('');
@@ -90,4 +91,10 @@ const AdminUserMain = () => {
 	);
 };
 
-export default AdminUserMain;
+export function AdminUserMainSuspense() {
+	return (
+		<Suspense fallback={<Spinner />}>
+			<AdminUserMain />
+		</Suspense>
+	)
+}

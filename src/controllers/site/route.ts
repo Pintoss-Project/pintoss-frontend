@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
 		const data = await response.json();
 		return NextResponse.json(data);
 	} catch (error) {
-		console.error('Error fetching site info:', error);
+		console.warn('Error fetching site info:', error);
 		return NextResponse.json(
 			{ errorMessage: '사이트 정보를 불러오는 중 오류가 발생했습니다.' },
 			{ status: 500 },

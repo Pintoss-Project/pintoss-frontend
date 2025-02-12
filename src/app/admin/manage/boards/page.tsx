@@ -1,7 +1,14 @@
-import AdminBoardMain from '@/components/admin/AdminBoardMain';
+"use client"
+
+import { AdminBoardMainWithSuspense } from '@/components/admin/AdminBoardMain';
+import { Suspense } from 'react';
 
 const ManageBoards = () => {
-	return <AdminBoardMain />;
+	return (
+		<Suspense fallback={null}>
+			<AdminBoardMainWithSuspense />
+		</Suspense>
+	);
 };
 
 export default ManageBoards;

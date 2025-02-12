@@ -7,22 +7,22 @@ interface Props {
 	};
 }
 
-export async function generateStaticParams() {
-	try {
-		const productList = await fetchProductList();
-		return (
-			productList?.data.map((product: { id: number }) => ({
-				id: product.id.toString(),
-			})) || []
-		);
-	} catch (error) {
-		console.error('Error fetching product list:', error);
-		return [];
-	}
-}
+// export async function generateStaticParams() {
+// 	try {
+// 		const productList = await fetchProductList();
+// 		return (
+// 			productList?.data.map((product: { id: number }) => ({
+// 				id: product.id.toString(),
+// 			})) || []
+// 		);
+// 	} catch (error) {
+// 		console.warn('Error fetching product list:', error);
+// 		return [];
+// 	}
+// }
 
 const ProductDetail = ({ params }: Props) => {
-	return <ProductSection id={+params.id} />;
+	return <ProductSection id={Number(params.id)} />;
 };
 
 export default ProductDetail;

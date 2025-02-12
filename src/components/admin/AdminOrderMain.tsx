@@ -4,7 +4,7 @@ import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import { vars } from '@/shared/styles/theme.css';
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import {
 	MdKeyboardArrowLeft,
 	MdKeyboardArrowRight,
@@ -13,6 +13,7 @@ import {
 } from 'react-icons/md';
 import * as s from './AdminStyle.css';
 import ChatIcon from '../icons/ChatIcon';
+import Spinner from '@/shared/components/spinner/Spinner';
 
 interface Order {
 	order_id: number;
@@ -192,4 +193,10 @@ const AdminOrderMain = () => {
 	);
 };
 
-export default AdminOrderMain;
+export function AdminOrderMainWithSuspense() {
+	return (
+		<Suspense fallback={<Spinner />}>
+			<AdminOrderMain />
+		</Suspense>
+	);
+}
