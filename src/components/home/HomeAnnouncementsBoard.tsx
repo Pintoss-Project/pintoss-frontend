@@ -1,6 +1,6 @@
 'use client';
 
-import { fetchBoardList } from '@/app/api_n/board/fetchBoardList';
+import { fetchBoardList } from '@/controllers/board/fetchBoardList';
 import { Button } from '@/shared/components/button';
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';

@@ -8,7 +8,7 @@ import 'react-quill/dist/quill.snow.css';
 import Providers from '@/react-query/Providers';
 import RecoilRootProvider from '@/recoil/RecoilRootProvider';
 import type { Metadata } from "next";
-import { fetchUserInfo } from '@/app/api_n/user/fetchUserInfo';
+import { fetchUserInfo } from '@/controllers/user/fetchUserInfo';
 
 export const metadata: Metadata = {
 	title: '핀토스',

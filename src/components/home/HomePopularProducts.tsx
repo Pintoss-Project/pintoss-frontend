@@ -1,6 +1,6 @@
 'use client';
 
-import { fetchPopularProductList } from '@/app/api_n/product/fetchPopularProductList';
+import { fetchPopularProductList } from '@/controllers/product/fetchPopularProductList';
 import { Grid } from '@/shared/components/layout';
 import { vars } from '@/shared/styles/theme.css';
 import { useQuery } from '@tanstack/react-query';

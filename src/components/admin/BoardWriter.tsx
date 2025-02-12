@@ -1,10 +1,10 @@
 'use client';
 
-import { fetchDeleteBoardImage } from '@/app/api_n/board/fetchDeleteBoardImage';
-import { fetchRegisterBoard } from '@/app/api_n/board/fetchRegisterBoard';
-import { fetchUpdateBoard } from '@/app/api_n/board/fetchUpdateBoard';
-import { deleteImageFromCloudinary } from '@/app/api_n/image/deleteImageFromCloudinary';
-import { uploadImageToCloudinary } from '@/app/api_n/image/uploadImageToCloudinary';
+import { fetchDeleteBoardImage } from '@/controllers/board/fetchDeleteBoardImage';
+import { fetchRegisterBoard } from '@/controllers/board/fetchRegisterBoard';
+import { fetchUpdateBoard } from '@/controllers/board/fetchUpdateBoard';
+import { deleteImageFromCloudinary } from '@/controllers/image/deleteImageFromCloudinary';
+import { uploadImageToCloudinary } from '@/controllers/image/uploadImageToCloudinary';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Button } from '@/shared/components/button';

@@ -1,8 +1,8 @@
 'use client';
 
-import { deleteImageFromCloudinary } from '@/app/api_n/image/deleteImageFromCloudinary';
-import { fetchBannerList } from '@/app/api_n/site/fetchBannerList';
-import { fetchDeleteBanner } from '@/app/api_n/site/fetchDeleteBanner';
+import { deleteImageFromCloudinary } from '@/controllers/image/deleteImageFromCloudinary';
+import { fetchBannerList } from '@/controllers/site/fetchBannerList';
+import { fetchDeleteBanner } from '@/controllers/site/fetchDeleteBanner';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Button } from '@/shared/components/button';

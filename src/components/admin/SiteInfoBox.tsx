@@ -1,10 +1,10 @@
 'use client';
 
-import { deleteImageFromCloudinary } from '@/app/api_n/image/deleteImageFromCloudinary';
-import { uploadImageToCloudinary } from '@/app/api_n/image/uploadImageToCloudinary';
-import { fetchSiteInfo } from '@/app/api_n/site/fetchSiteInfo';
-import { fetchSiteList } from '@/app/api_n/site/fetchSiteList';
-import { fetchUpdateSiteInfo } from '@/app/api_n/site/fetchUpdateSiteInfo';
+import { deleteImageFromCloudinary } from '@/controllers/image/deleteImageFromCloudinary';
+import { uploadImageToCloudinary } from '@/controllers/image/uploadImageToCloudinary';
+import { fetchSiteInfo } from '@/controllers/site/fetchSiteInfo';
+import { fetchSiteList } from '@/controllers/site/fetchSiteList';
+import { fetchUpdateSiteInfo } from '@/controllers/site/fetchUpdateSiteInfo';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Button } from '@/shared/components/button';

@@ -1,4 +1,4 @@
-import { fetchRequestData } from '@/app/api_n/niceid/fetchRequestData';
+import { fetchRequestData } from '@/controllers/niceid/fetchRequestData';
 import { Button } from '@/shared/components/button';
 import Spacing from '@/shared/components/layout/Spacing';
 import * as cs from '@/shared/styles/common.css';

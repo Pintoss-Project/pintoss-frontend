@@ -1,4 +1,4 @@
-import { fetchFindId } from '@/app/api_n/auth/fetchFindId';
+import { fetchFindId } from '@/controllers/auth/fetchFindId';
 import * as as from '@/components/auth/AuthStyle.css';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';

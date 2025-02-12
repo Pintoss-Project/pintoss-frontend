@@ -1,4 +1,4 @@
-import { fetchProductList } from '@/app/api_n/product/fetchProductList';
+import { fetchProductList } from '@/controllers/product/fetchProductList';
 import ProductSection from '@/components/product/ProductSection';
 
 interface Props {

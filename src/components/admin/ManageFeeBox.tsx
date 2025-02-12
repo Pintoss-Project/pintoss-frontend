@@ -1,11 +1,11 @@
 'use client';
 
-import { fetchProductInfo } from '@/app/api_n/product/fetchProductInfo';
+import { fetchProductInfo } from '@/controllers/product/fetchProductInfo';
 import {
 	FeeData,
 	fetchUpdateProductFee,
 	UpdateFeeParams,
-} from '@/app/api_n/product/fetchUpdateProductFee';
+} from '@/controllers/product/fetchUpdateProductFee';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Button } from '@/shared/components/button';

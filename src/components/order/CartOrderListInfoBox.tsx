@@ -1,6 +1,6 @@
-import { fetchCartItemList } from '@/app/api_n/cart/fetchCartItemList';
-import { fetchUpdateCartItem } from '@/app/api_n/cart/fetchUpdateCartItem';
-import { fetchUpdateCartPayMethod } from '@/app/api_n/cart/fetchUpdateCartPayMethod';
+import { fetchCartItemList } from '@/controllers/cart/fetchCartItemList';
+import { fetchUpdateCartItem } from '@/controllers/cart/fetchUpdateCartItem';
+import { fetchUpdateCartPayMethod } from '@/controllers/cart/fetchUpdateCartPayMethod';
 import useAlertContext from '@/hooks/useAlertContext';
 import { CartItemResponse } from '@/models/cart';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';

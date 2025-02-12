@@ -1,6 +1,6 @@
 'use client';
 
-import { fetchDeleteCartItem } from '@/app/api_n/cart/fetchDeleteCartItem';
+import { fetchDeleteCartItem } from '@/controllers/cart/fetchDeleteCartItem';
 import useAlertContext from '@/hooks/useAlertContext';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Button } from '@/shared/components/button';

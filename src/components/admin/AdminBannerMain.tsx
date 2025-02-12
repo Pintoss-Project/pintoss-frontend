@@ -1,6 +1,6 @@
 'use client';
 
-import { fetchBannerInfo } from '@/app/api_n/site/fetchBannerInfo';
+import { fetchBannerInfo } from '@/controllers/site/fetchBannerInfo';
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import { BannerInfoFormData } from '@/utils/validation/site';

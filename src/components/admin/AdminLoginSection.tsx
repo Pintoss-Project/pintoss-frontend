@@ -1,6 +1,6 @@
 'use client';
 
-import { fetchAdminLogin } from '@/app/api_n/auth/fetchAdminLogin';
+import { fetchAdminLogin } from '@/controllers/auth/fetchAdminLogin';
 import useAlertContext from '@/hooks/useAlertContext';
 import useRedirect from '@/hooks/useRedirect';
 import authState from '@/recoil/authAtom';

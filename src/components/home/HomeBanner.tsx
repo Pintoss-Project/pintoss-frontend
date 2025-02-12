@@ -11,7 +11,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { useQuery } from '@tanstack/react-query';
 import * as s from './HomeStyle.css';
-import { fetchBannerList } from '@/app/api_n/site/fetchBannerList';
+import { fetchBannerList } from '@/controllers/site/fetchBannerList';
 import { useEffect, useState } from 'react';
 import { Flex } from '@/shared/components/layout';
 

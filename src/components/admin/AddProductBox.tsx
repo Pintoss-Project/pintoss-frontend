@@ -1,11 +1,11 @@
 'use client';
 
-import { deleteImageFromCloudinary } from '@/app/api_n/image/deleteImageFromCloudinary';
-import { uploadImageToCloudinary } from '@/app/api_n/image/uploadImageToCloudinary';
-import { fetchDeletePriceCategory } from '@/app/api_n/product/fetchDeletePriceCategory';
-import { fetchPriceCategoryList } from '@/app/api_n/product/fetchPriceCategoryList';
-import { fetchProductInfo } from '@/app/api_n/product/fetchProductInfo';
-import { fetchUpdateProduct } from '@/app/api_n/product/fetchUpdateProduct';
+import { deleteImageFromCloudinary } from '@/controllers/image/deleteImageFromCloudinary';
+import { uploadImageToCloudinary } from '@/controllers/image/uploadImageToCloudinary';
+import { fetchDeletePriceCategory } from '@/controllers/product/fetchDeletePriceCategory';
+import { fetchPriceCategoryList } from '@/controllers/product/fetchPriceCategoryList';
+import { fetchProductInfo } from '@/controllers/product/fetchProductInfo';
+import { fetchUpdateProduct } from '@/controllers/product/fetchUpdateProduct';
 import useAlertContext from '@/hooks/useAlertContext';
 import { useProductWithPriceCategoryMutation } from '@/hooks/useProductWithPriceCategoryMutation';
 import { PriceCategoryInfo } from '@/models/product';

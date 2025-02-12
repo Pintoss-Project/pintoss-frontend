@@ -3,7 +3,7 @@
 import { vars } from '@/shared/styles/theme.css';
 import * as s from './MyPageStyle.css';
 
-import { fetchUserInfo } from '@/app/api_n/user/fetchUserInfo';
+import { fetchUserInfo } from '@/controllers/user/fetchUserInfo';
 import { Divider, Flex } from '@/shared/components/layout';
 import { useQuery } from '@tanstack/react-query';
 import Spinner from '@/shared/components/spinner/Spinner';

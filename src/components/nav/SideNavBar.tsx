@@ -1,7 +1,7 @@
 'use client';
-import { fetchSimpleProductList } from '@/app/api_n/product/fetchSimpleProductList';
-import { fetchSiteInfo } from '@/app/api_n/site/fetchSiteInfo';
-import { fetchSiteList } from '@/app/api_n/site/fetchSiteList';
+import { fetchSimpleProductList } from '@/controllers/product/fetchSimpleProductList';
+import { fetchSiteInfo } from '@/controllers/site/fetchSiteInfo';
+import { fetchSiteList } from '@/controllers/site/fetchSiteList';
 import { Flex, List } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import { useQuery } from '@tanstack/react-query';

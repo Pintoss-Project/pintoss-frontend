@@ -1,4 +1,4 @@
-import { fetchSimpleProductList } from '@/app/api_n/product/fetchSimpleProductList';
+import { fetchSimpleProductList } from '@/controllers/product/fetchSimpleProductList';
 import { Grid } from '@/shared/components/layout';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';

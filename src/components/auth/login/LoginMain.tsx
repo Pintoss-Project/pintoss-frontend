@@ -1,6 +1,6 @@
 'use client';
 
-import { fetchLogin } from '@/app/api_n/auth/fetchLogin';
+import { fetchLogin } from '@/controllers/auth/fetchLogin';
 import * as as from '@/components/auth/AuthStyle.css';
 import useAlertContext from '@/hooks/useAlertContext';
 import authState from '@/recoil/authAtom';
