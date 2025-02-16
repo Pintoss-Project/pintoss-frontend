@@ -178,7 +178,7 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 		const messageHandler = (event: MessageEvent) => {
 			if (event.origin !== window.location.origin) return;
 
-			const { token_version_id, enc_data, integrity_value } = event.data;
+			const { token_version_id, enc_data, integrity_value } = JSON.parse(event.data);
 
 			if (token_version_id && enc_data && integrity_value) {
 				handleDecryption(token_version_id, enc_data, integrity_value);

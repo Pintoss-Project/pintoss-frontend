@@ -12,14 +12,12 @@ const NiceRedirectHandler = () => {
 		if (tokenVersionId && encData && integrityValue) {
 			if (window.opener) {
 				window.opener.postMessage(
-					{
+					JSON.stringify({
 						token_version_id: tokenVersionId,
 						enc_data: encData,
 						integrity_value: integrityValue,
-					},
-					window.location.origin,
+					})
 				);
-
 				window.close();
 			}
 		}
