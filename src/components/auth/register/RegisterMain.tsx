@@ -178,10 +178,18 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 		const messageHandler = (event: MessageEvent) => {
 			if (event.origin !== window.location.origin) return;
 
-			const { token_version_id, enc_data, integrity_value } = JSON.parse(event.data);
+			// const { token_version_id, enc_data, integrity_value } = JSON.parse(event.data);
 
-			if (token_version_id && enc_data && integrity_value) {
-				handleDecryption(token_version_id, enc_data, integrity_value);
+			// if (token_version_id && enc_data && integrity_value) {
+			// 	handleDecryption(token_version_id, enc_data, integrity_value);
+			// }
+
+			const { name, tel } = JSON.parse(event.data);
+
+			if (name && tel) {
+				setAuthData({ name, phone: tel });
+				setValue('name', name);
+				setValue('phone', tel);
 			}
 		};
 
@@ -192,60 +200,61 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 		};
 	}, []);
 
-	const handleDecryption = async (
-		tokenVersionId: string,
-		encData: string,
-		integrityValue: string,
-	) => {
-		try {
-			const decryptedData = await fetchDecryptedData(tokenVersionId, encData, integrityValue);
+	// DONE by backend server
+	// const handleDecryption = async (
+	// 	tokenVersionId: string,
+	// 	encData: string,
+	// 	integrityValue: string,
+	// ) => {
+	// 	try {
+	// 		const decryptedData = await fetchDecryptedData(tokenVersionId, encData, integrityValue);
 
-			setAuthData({ name: decryptedData.name, phone: decryptedData.mobileno });
-			setValue('name', decryptedData.name);
-			setValue('phone', decryptedData.mobileno);
+	// 		setAuthData({ name: decryptedData.name, phone: decryptedData.mobileno });
+	// 		setValue('name', decryptedData.name);
+	// 		setValue('phone', decryptedData.mobileno);
 
-			const phoneCheckResult = await fetchCheckPhone(decryptedData.mobileno);
+	// 		const phoneCheckResult = await fetchCheckPhone(decryptedData.mobileno);
 
-			if (phoneCheckResult.data) {
-				setIsPhoneDuplicate(true);
-				open({
-					width: '300px',
-					height: '200px',
-					title: '휴대폰 중복 오류',
-					main: (
-						<AlertMainTextBox text="이미 등록된 휴대폰 번호입니다. 다른 번호를 사용해 주세요." />
-					),
-					rightButtonStyle: cs.lightBlueButton,
-					onRightButtonClick: close,
-				});
-			} else {
-				setIsPhoneDuplicate(false);
-				open({
-					width: '300px',
-					height: '200px',
-					title: '휴대폰 인증 완료',
-					main: <AlertMainTextBox text="휴대폰 인증이 완료되었습니다." />,
-					rightButtonStyle: cs.lightBlueButton,
-					onRightButtonClick: close,
-				});
-			}
+	// 		if (phoneCheckResult.data) {
+	// 			setIsPhoneDuplicate(true);
+	// 			open({
+	// 				width: '300px',
+	// 				height: '200px',
+	// 				title: '휴대폰 중복 오류',
+	// 				main: (
+	// 					<AlertMainTextBox text="이미 등록된 휴대폰 번호입니다. 다른 번호를 사용해 주세요." />
+	// 				),
+	// 				rightButtonStyle: cs.lightBlueButton,
+	// 				onRightButtonClick: close,
+	// 			});
+	// 		} else {
+	// 			setIsPhoneDuplicate(false);
+	// 			open({
+	// 				width: '300px',
+	// 				height: '200px',
+	// 				title: '휴대폰 인증 완료',
+	// 				main: <AlertMainTextBox text="휴대폰 인증이 완료되었습니다." />,
+	// 				rightButtonStyle: cs.lightBlueButton,
+	// 				onRightButtonClick: close,
+	// 			});
+	// 		}
 
-			router.push('/register');
-		} catch (error) {
-			console.error('Decryption error:', error);
+	// 		router.push('/register');
+	// 	} catch (error) {
+	// 		console.error('Decryption error:', error);
 
-			open({
-				width: '300px',
-				height: '220px',
-				title: '휴대폰 인증 실패',
-				main: (
-					<AlertMainTextBox text="휴대폰 인증 처리 중 오류가 발생했습니다. 다시 시도해주세요." />
-				),
-				rightButtonStyle: cs.lightBlueButton,
-				onRightButtonClick: close,
-			});
-		}
-	};
+	// 		open({
+	// 			width: '300px',
+	// 			height: '220px',
+	// 			title: '휴대폰 인증 실패',
+	// 			main: (
+	// 				<AlertMainTextBox text="휴대폰 인증 처리 중 오류가 발생했습니다. 다시 시도해주세요." />
+	// 			),
+	// 			rightButtonStyle: cs.lightBlueButton,
+	// 			onRightButtonClick: close,
+	// 		});
+	// 	}
+	// };
 
 	return (
 		<FormProvider {...methods}>

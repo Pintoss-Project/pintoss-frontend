@@ -30,8 +30,8 @@ const RegisterPersonalInfo = ({ authData }: Props) => {
 		event.preventDefault();
 
 		try {
-			// const requestData: any = await fetchApi("/api/nice/encrypted-data", {
-			const requestData: any = await fetchApi("/api/niceid/encrypt", {
+			const requestData: any = await fetchApi("/api/nice/encrypted-data", {
+			// const requestData: any = await fetchApi("/api/niceid/encrypt", {
 				method: 'GET',
 				headers: {
 					"Content-Type": "application/json",
@@ -54,8 +54,8 @@ const RegisterPersonalInfo = ({ authData }: Props) => {
 				throw new Error('인증 데이터를 가져오는데 실패했습니다.');
 			}
 
-			// const { token_version_id, enc_data, integrity_value } = requestData.data;
-			const { token_version_id, enc_data, integrity_value } = requestData;
+			const { token_version_id, enc_data, integrity_value } = requestData.data;
+			// const { token_version_id, enc_data, integrity_value } = requestData;
 
 			if (!token_version_id || !enc_data || !integrity_value) {
 				throw new Error('필수 데이터가 누락되었습니다.');
@@ -90,15 +90,6 @@ const RegisterPersonalInfo = ({ authData }: Props) => {
 				formDocument.body.appendChild(form);
 
 				form.submit();
-
-				// /api/nice/callback
-				// {"status":"OK","message":"OK","data":{"name":"이기환","tel":"01073032625","success":true},"code":200}
-
-				// /register/nice/
-
-				// get data from popup
-
-
 			} else {
 				throw new Error('팝업 차단으로 인해 새 창을 열 수 없습니다.');
 			}

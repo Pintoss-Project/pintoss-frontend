@@ -2,17 +2,17 @@
 
 ## 홈 메인에 뿌려주는 데이터 (백엔드 변경 전) 엔드포인트
 
-사이트 푸터 정보
-api/site/list
-
 중앙에 판매상품 섹션
 /api/product/simple
+
+중앙에 인기 상품 리스트
+/api/product/popular
 
 베너 캐로셀
 /api/site/banner/list
 
-중앙에 인기 상품 리스트
-/api/product/popular
+사이트 푸터 정보
+api/site/list
 
 공지사항, 자주묻는질문
 /api/board/list?type=NOTICE
@@ -36,3 +36,8 @@ curl -X GET \
   -c cookies.txt \
   -b cookies.txt \
   https://pintossmall2.com/api/users/info
+
+
+http://pintossmall2.cafe24.com/api/vouchers?providerId=1
+
+http://pintossmall2.cafe24.com/api/providers
