@@ -30,28 +30,47 @@ const RegisterPersonalInfo = ({ authData }: Props) => {
 		event.preventDefault();
 
 		try {
-			const requestData: any = await fetchApi("/api/nice/encrypted-data", {
+			// const requestData: any = await fetchApi("/api/nice/encrypted-data", {
+			const requestData: any = await fetchApi("/api/niceid/encrypt", {
+				method: 'GET',
 				headers: {
 					"Content-Type": "application/json",
-				},
+				}
 			})
-			if (!requestData.data) {
-				console.log("nice/encrypted-data", requestData)
+
+			// {
+			// 	"status": "OK",
+			// 	"message": "OK",
+			// 	"data": {
+			// 		"token_version_id": "",
+			// 		"enc_data": "",
+			// 		"integrity_value": ""
+			// 	},
+			// 	"code": 200
+			// }
+			console.log("nice/encrypted-data", requestData)
+
+			if (requestData.code !== 200) {
 				throw new Error('인증 데이터를 가져오는데 실패했습니다.');
 			}
 
-			const { token_version_id, enc_data, integrity_value } = requestData.data;
+			// const { token_version_id, enc_data, integrity_value } = requestData.data;
+			const { token_version_id, enc_data, integrity_value } = requestData;
 
 			if (!token_version_id || !enc_data || !integrity_value) {
 				throw new Error('필수 데이터가 누락되었습니다.');
 			}
 
-			const formWindow = window.open('', '_blank', 'width=500,height=600');
+			const left = screen.width / 2 - 500 / 2;
+			const top = screen.height / 2 - 800 / 2;
+			const option = `status=no, menubar=no, toolbar=no, resizable=no, width=500, height=600, left=${left}, top=${top}`;
+			const formWindow = window.open('', 'nicePopup', option);
 			if (formWindow) {
 				const formDocument = formWindow.document;
 				const form = formDocument.createElement('form');
 				form.method = 'POST';
 				form.action = 'https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb';
+				form.target = 'nicePopup';
 
 				const inputs = [
 					{ name: 'm', value: 'service' },
@@ -71,6 +90,15 @@ const RegisterPersonalInfo = ({ authData }: Props) => {
 				formDocument.body.appendChild(form);
 
 				form.submit();
+
+				// /api/nice/callback
+				// {"status":"OK","message":"OK","data":{"name":"이기환","tel":"01073032625","success":true},"code":200}
+
+				// /register/nice/
+
+				// get data from popup
+
+
 			} else {
 				throw new Error('팝업 차단으로 인해 새 창을 열 수 없습니다.');
 			}

@@ -39,7 +39,7 @@ interface Props {
 const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 	const { open, close } = useAlertContext();
 	const router = useRouter();
-	const { isAuthenticated, login } = useAuth();
+	// const { isAuthenticated, login } = useAuth();
 
 	const searchParam = useSearchParams();
 	const [isOAuth, setIsOAuth] = useState(false);

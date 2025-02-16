@@ -4,10 +4,10 @@ const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin');
 const nextConfig = {
 	async rewrites() {
 		return [
-			// {
-			// 	source: '/api/niceid/:path*',
-			// 	destination: '/api/niceid/:path*',
-			// },
+			{
+				source: '/api/niceid/:path*',
+				destination: '/api/niceid/:path*',
+			},
 			{
 				source: '/api/:path*',
 				destination: `http://pintossmall2.com/api/:path*`,
