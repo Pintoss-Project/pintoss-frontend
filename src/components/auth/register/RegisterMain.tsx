@@ -7,7 +7,6 @@ import { fetchDecryptedData } from '@/controllers/niceid/fetchDecryptedData';
 import { fetchUpdateUserInfo } from '@/controllers/user/fetchUpdateUserInfo';
 import * as as from '@/components/auth/AuthStyle.css';
 import useAlertContext from '@/hooks/useAlertContext';
-import authState from '@/recoil/authAtom';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Divider } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
@@ -25,12 +24,12 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { useSetRecoilState } from 'recoil';
 import RegisterAcceptTermsInfo from './RegisterAcceptTermsInfo';
 import RegisterAccountInfo from './RegisterAccountInfo';
 import RegisterButton from './RegisterButton';
 import RegisterInfoBox from './RegisterInfoBox';
 import RegisterPersonalInfo from './RegisterPersonalInfo';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface Props {
 	oAuthEmail?: string;
@@ -39,8 +38,8 @@ interface Props {
 
 const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 	const { open, close } = useAlertContext();
-	const setAuthState = useSetRecoilState(authState);
 	const router = useRouter();
+	const { isAuthenticated, login } = useAuth();
 
 	const searchParam = useSearchParams();
 	const [isOAuth, setIsOAuth] = useState(false);
@@ -127,7 +126,6 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 				onRightButtonClick: close,
 			});
 			router.push('/login');
-			setAuthState((prev) => ({ ...prev, isLoggedIn: true }));
 		},
 		onError: () => {
 			open({

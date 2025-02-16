@@ -2,10 +2,11 @@ import { UserInfo } from '@/models/user';
 
 export const fetchUserInfo = async (): Promise<UserInfo | null> => {
 	try {
-		const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user/user_info`, {
+		const response = await fetch(`/api/users/info`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
 			},
 			credentials: 'include', // 쿠키를 요청에 포함
 		});

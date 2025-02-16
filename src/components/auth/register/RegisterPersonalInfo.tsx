@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import RegisterInputBox from './RegisterInputBox';
 import * as s from './RegisterStyle.css';
+import { fetchApi } from '@/utils/fetchApi';
 
 interface Props {
 	authData: {
@@ -29,9 +30,17 @@ const RegisterPersonalInfo = ({ authData }: Props) => {
 		event.preventDefault();
 
 		try {
-			const requestData = await fetchRequestData('https://pin-toss.com/register/nice');
+			const requestData: any = await fetchApi("/api/nice/encrypted-data", {
+				headers: {
+					"Content-Type": "application/json",
+				},
+			})
+			if (!requestData.data) {
+				console.log("nice/encrypted-data", requestData)
+				throw new Error('인증 데이터를 가져오는데 실패했습니다.');
+			}
 
-			const { token_version_id, enc_data, integrity_value } = requestData;
+			const { token_version_id, enc_data, integrity_value } = requestData.data;
 
 			if (!token_version_id || !enc_data || !integrity_value) {
 				throw new Error('필수 데이터가 누락되었습니다.');

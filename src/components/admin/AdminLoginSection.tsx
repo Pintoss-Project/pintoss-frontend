@@ -3,7 +3,6 @@
 import { fetchAdminLogin } from '@/controllers/auth/fetchAdminLogin';
 import useAlertContext from '@/hooks/useAlertContext';
 import useRedirect from '@/hooks/useRedirect';
-import authState from '@/recoil/authAtom';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Button } from '@/shared/components/button';
 import LoginInput from '@/shared/components/input/LoginInput';
@@ -17,13 +16,13 @@ import { LogInFormData, loginSchema } from '@/utils/validation/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { useSetRecoilState } from 'recoil';
 import * as s from './AdminStyle.css';
+import { useAuth } from '@/contexts/AuthContext';
 
 const AdminLoginSection = () => {
 	const { open, close } = useAlertContext();
 	const { setRedirectPath } = useRedirect();
-	const setAuthStateValue = useSetRecoilState(authState);
+	const { isAuthenticated, login } = useAuth();
 
 	const methods = useForm<LogInFormData>({
 		resolver: zodResolver(loginSchema),
@@ -50,7 +49,7 @@ const AdminLoginSection = () => {
 				onRightButtonClick: () => {
 					setRedirectPath('/admin/manage/users');
 					tokenExpiration();
-					setAuthStateValue((prev) => ({ ...prev, isAdminLoggedIn: true }));
+					login(data.data.accessToken);
 					close();
 				},
 			});

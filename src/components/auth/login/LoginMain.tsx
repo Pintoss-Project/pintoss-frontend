@@ -1,21 +1,19 @@
 'use client';
 
+import { useAuth } from '@/contexts/AuthContext';
 import { fetchLogin } from '@/controllers/auth/fetchLogin';
 import * as as from '@/components/auth/AuthStyle.css';
 import useAlertContext from '@/hooks/useAlertContext';
-import authState from '@/recoil/authAtom';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import * as cs from '@/shared/styles/common.css';
-import { setLocalToken, tokenExpiration } from '@/utils/localToken';
 import { LogInFormData, loginSchema } from '@/utils/validation/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { useSetRecoilState } from 'recoil';
 import LoginButtons from './LoginButtons';
 import LoginInputBox from './LoginInputBox';
 import * as s from './LoginStyle.css';
@@ -26,10 +24,9 @@ interface ApiError {
 }
 
 const LoginMain = () => {
+	const { login } = useAuth();
 	const { open, close } = useAlertContext();
 	const router = useRouter();
-
-	const setAuthStateValue = useSetRecoilState(authState);
 
 	const methods = useForm<LogInFormData>({
 		resolver: zodResolver(loginSchema),
@@ -43,35 +40,12 @@ const LoginMain = () => {
 	const { handleSubmit } = methods;
 
 	const loginMutation = useMutation({
-		mutationFn: (data: LogInFormData) => fetchLogin(data),
-		onSuccess: (data) => {
-			if (data && data.data) {
-				const { accessToken } = data.data;
-
-				open({
-					width: '300px',
-					height: '200px',
-					title: '로그인',
-					main: <AlertMainTextBox text="로그인이 완료되었습니다." />,
-					rightButtonStyle: cs.lightBlueButton,
-					onRightButtonClick: () => {
-						setLocalToken(accessToken);
-						tokenExpiration();
-						setAuthStateValue((prev) => ({ ...prev, isLoggedIn: true }));
-						router.push('/');
-						close();
-					},
-				});
-			} else {
-				open({
-					width: '300px',
-					height: '200px',
-					title: '로그인 실패',
-					main: <AlertMainTextBox text="로그인에 실패했습니다. 다시 시도해주세요." />,
-					rightButtonStyle: cs.lightBlueButton,
-					onRightButtonClick: close,
-				});
-			}
+		mutationFn: fetchLogin,
+		onSuccess: async (response) => {
+			const { data: { accessToken }, code, message, status } = response;
+			console.log("fetchLogin", response);
+			await login(accessToken);
+			router.push('/');
 		},
 		onError: (error: ApiError) => {
 			open({

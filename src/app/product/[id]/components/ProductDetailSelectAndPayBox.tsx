@@ -11,19 +11,18 @@ import QuantitySelectBox from '@/components/product/QuantitySelectBox';
 import useAlertContext from '@/hooks/useAlertContext';
 import { CartItem } from '@/models/cart';
 import { PriceCategoryInfo, ProductInfo } from '@/models/product';
-import authState from '@/recoil/authAtom';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Button } from '@/shared/components/button';
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
-import { useRecoilValue } from 'recoil';
 import * as cs from '@/shared/styles/common.css';
 import * as styles from './ProductDetailSelectAndPayBox.css';
 
 import { vars } from '@/shared/styles/theme.css';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 interface Props {
 	product: ProductInfo;
 }
@@ -41,11 +40,11 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 		selectedType,
 	);
 
-	const { isLoggedIn } = useRecoilValue(authState);
 	const { open, close } = useAlertContext();
 	const queryClient = useQueryClient();
 	const router = useRouter();
 	const formRef = useRef(null);
+	const { isAuthenticated } = useAuth();
 
 	usePaymentScript();
 
@@ -68,7 +67,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 			queryClient.invalidateQueries({ queryKey: ['cartItems', userInfo?.id] });
 		},
 		onError: () => {
-			if (isLoggedIn) {
+			if (isAuthenticated) {
 				open({
 					width: '300px',
 					height: '200px',
@@ -83,7 +82,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 
 	const handleAddToCart = (event) => {
 		event.preventDefault(); // 기본 form 제출 방지
-		if (!isLoggedIn) {
+		if (!isAuthenticated) {
 			open({
 				width: '340px',
 				height: '250px',
@@ -138,7 +137,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 	//구매 결제로직
 	const handleCheckoutNow: React.MouseEventHandler<HTMLButtonElement> = (event) => {
 		event.preventDefault(); // 기본 form 제출 방지
-		if (!isLoggedIn) {
+		if (!isAuthenticated) {
 			open({
 				width: '360px',
 				height: '250px',

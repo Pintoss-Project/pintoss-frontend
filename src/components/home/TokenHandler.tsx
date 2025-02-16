@@ -1,22 +1,23 @@
 'use client';
 
-import authState from '@/recoil/authAtom';
+import { useAuth } from '@/contexts/AuthContext';
 import { setLocalToken } from '@/utils/localToken';
 import { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
 
 interface TokenHandlerProps {
 	accessToken?: string;
 }
 
 export default function TokenHandler({ accessToken }: TokenHandlerProps) {
-	const [user, setUser] = useRecoilState(authState);
+	const {isAuthenticated,  login, logout} = useAuth();
 
 	useEffect(() => {
 		if (accessToken) {
 			setLocalToken(accessToken as string);
+			if(!isAuthenticated) login(accessToken as string);
 		} else {
-			setUser((prev) => ({ ...prev, isLoggedIn: false }));
+			setLocalToken('');
+			if(isAuthenticated) logout();
 		}
 	}, [accessToken]);
 

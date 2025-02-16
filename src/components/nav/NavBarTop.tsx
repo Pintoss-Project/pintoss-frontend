@@ -11,9 +11,12 @@ import MobileMenuBox from '@/components/responsive/MobileMenuBox';
 import ProtectedRoute from '@/components/protect/ProtectedRoute';
 import { PintossColorLogo } from '../../../public/svgs';
 import { UserInfo } from '@/models/user';
+import { useAuth } from '@/contexts/AuthContext';
 
 const NavBarTop = ({ data }: { data: UserInfo | null }) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+	const {user, isAuthenticated} = useAuth();
 
 	const path = usePathname();
 
@@ -26,7 +29,7 @@ const NavBarTop = ({ data }: { data: UserInfo | null }) => {
 	return (
 		<ProtectedRoute>
 			<Flex justify="space-between" align="center" className={s.navbarTopBox}>
-				{data?.id && (
+				{isAuthenticated && (
 					<Link href="/order/cart">
 						<Image
 							src="/images/cart-icon.png"

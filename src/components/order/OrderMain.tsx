@@ -7,16 +7,14 @@ import LoginHistoryInfoBox from './LoginHistoryInfoBox';
 import OrderInstructionInfoBox from './OrderInstructionInfoBox';
 import OrderListInfoBox from './OrderListInfoBox';
 import * as s from './OrderStyle.css';
-import { useRecoilValue } from 'recoil';
-import authState from '@/recoil/authAtom';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 
 const OrderMain = () => {
-	const authStateValue = useRecoilValue(authState);
-	const { isLoggedIn } = authStateValue;
 	const router = useRouter();
+	const { isAuthenticated } = useAuth();
 
-	if (!isLoggedIn) {
+	if (!isAuthenticated) {
 		router.push('/');
 	}
 

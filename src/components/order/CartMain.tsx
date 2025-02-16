@@ -2,32 +2,29 @@
 
 import { fetchUserInfo } from '@/controllers/user/fetchUserInfo';
 import { UserInfo } from '@/models/user';
-import authState from '@/recoil/authAtom';
 import Spacing from '@/shared/components/layout/Spacing';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useRecoilValue } from 'recoil';
 import CartOrderEtcInfoBox from './CartOrderEtcInfoBox';
 import CartOrderListInfoBox from './CartOrderListInfoBox';
 import CartPaymentInfoBox from './CartPaymentInfoBox';
 import * as s from './CartStyle.css';
 import Spinner from '@/shared/components/spinner/Spinner';
+import { useAuth } from '@/contexts/AuthContext';
 
 const CartMain = () => {
 	const [totalAmount, setTotalAmount] = useState(0);
 	const [selectedType, setSelectedType] = useState<string>('card');
 	const router = useRouter();
+	const { isAuthenticated } = useAuth();
 
 	const { data: userInfo, isLoading } = useQuery({
 		queryKey: ['userInfo'],
 		queryFn: fetchUserInfo,
 	});
 
-	const authStateValue = useRecoilValue(authState);
-	const { isLoggedIn } = authStateValue;
-
-	if (!isLoggedIn) {
+	if (!isAuthenticated) {
 		router.push('/');
 	}
 

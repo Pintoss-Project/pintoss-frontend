@@ -1,5 +1,4 @@
 import useRedirect from '@/hooks/useRedirect';
-import authState from '@/recoil/authAtom';
 import { Button } from '@/shared/components/button';
 import { Flex } from '@/shared/components/layout';
 import { vars } from '@/shared/styles/theme.css';
@@ -9,10 +8,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { IoClose } from 'react-icons/io5';
-import { useRecoilState } from 'recoil';
 import { PintossColorLogo } from '../../../public/svgs';
 import MobileProducts from './MobileProducts';
 import * as s from './ResponsiveStyle.css';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface Props {
 	setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,16 +31,17 @@ const MENU_BUTTONS = {
 };
 
 const MobileMenuBox = ({ setIsMenuOpen }: Props) => {
-	const [authStateValue, setAuthStateValue] = useRecoilState(authState);
 	const { setRedirectPath } = useRedirect();
 	const router = useRouter();
+
+	const {isAuthenticated, logout } = useAuth();
 
 	const handleClose = () => {
 		setIsMenuOpen(false);
 	};
 
 	const handleLogout = () => {
-		setAuthStateValue((prev) => ({ ...prev, isLoggedIn: false }));
+		logout();
 		removeLocalToken();
 		setRedirectPath('/');
 		setIsMenuOpen(false);
@@ -52,7 +52,7 @@ const MobileMenuBox = ({ setIsMenuOpen }: Props) => {
 		router.push(url);
 	};
 
-	const menuButtons = authStateValue.isLoggedIn ? MENU_BUTTONS.login : MENU_BUTTONS.logout;
+	const menuButtons = isAuthenticated ? MENU_BUTTONS.login : MENU_BUTTONS.logout;
 
 	useEffect(() => {
 		document.body.style.overflow = 'hidden';
@@ -76,7 +76,7 @@ const MobileMenuBox = ({ setIsMenuOpen }: Props) => {
 			}}>
 			<div>
 				<Flex justify="space-between" align="center" className={s.tableMenuNavBox}>
-					{authStateValue.isLoggedIn && (
+					{isAuthenticated && (
 						<Link href="/order/cart">
 							<img src="/images/cart-icon.png" alt="장바구니 아이콘" className={s.cartIcon} />
 						</Link>
@@ -111,7 +111,7 @@ const MobileMenuBox = ({ setIsMenuOpen }: Props) => {
 							</Button>
 						</Flex>
 					))}
-					{authStateValue.isLoggedIn && (
+					{isAuthenticated && (
 						<Flex justify="center" align="center" className={s.menuButtonBox}>
 							<Button
 								onClick={handleLogout}

@@ -6,7 +6,6 @@ import { fetchUserInfo } from '@/controllers/user/fetchUserInfo';
 import useAlertContext from '@/hooks/useAlertContext';
 import { CartItem } from '@/models/cart';
 import { PriceCategoryInfo, ProductInfo } from '@/models/product';
-import authState from '@/recoil/authAtom';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Button } from '@/shared/components/button';
 import { Flex } from '@/shared/components/layout';
@@ -22,6 +21,7 @@ import PaymentMethodSelectBox from '../order/PaymentMethodSelectBox';
 import * as s from './ProductDetailStyle.css';
 import ProductSelectBox from './ProductSelectBox';
 import QuantitySelectBox from './QuantitySelectBox';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface Props {
 	product: ProductInfo;
@@ -36,8 +36,8 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 	const [finalAmount, setFinalAmount] = useState(0);
 	const formRef = useRef(null);
 
-	const { isLoggedIn } = useRecoilValue(authState);
 	const router = useRouter();
+	const { isAuthenticated } = useAuth();
 
 	const { open, close } = useAlertContext();
 	const queryClient = useQueryClient();
@@ -85,7 +85,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 			queryClient.invalidateQueries({ queryKey: ['cartItems', userInfo?.id] });
 		},
 		onError: () => {
-			if (isLoggedIn) {
+			if (isAuthenticated) {
 				open({
 					width: '300px',
 					height: '200px',
@@ -98,9 +98,9 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 		},
 	});
 
-	const handleCheckoutNow = (event) => {
+	const handleCheckoutNow = (event: any) => {
 		event.preventDefault(); // 기본 form 제출 방지
-		if (!isLoggedIn) {
+		if (!isAuthenticated) {
 			open({
 				width: '360px',
 				height: '250px',
@@ -150,7 +150,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 	}, []);
 
 	const handleAddToCart = () => {
-		if (!isLoggedIn) {
+		if (!isAuthenticated) {
 			open({
 				width: '340px',
 				height: '250px',
@@ -231,7 +231,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 			name="paymentForm"
 			ref={formRef}
 			method="post"
-			action={`${process.env.NEXT_PUBLIC_API_URL}/order/cart`} // 서버 엔드포인트
+			action={`${process.env.NEXT_PUBLIC_API_BASE_URL}/order/cart`} // 서버 엔드포인트
 			encType="application/x-www-form-urlencoded">
 			<div className={s.productDetailSelectAndPayBox}>
 				<input type="hidden" name="SERVICE_ID" value="M2103135" />
@@ -247,7 +247,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 				<input
 					type="hidden"
 					name="RETURN_URL"
-					value={`${process.env.NEXT_PUBLIC_API_URL}/order/cart`}
+					value={`${process.env.NEXT_PUBLIC_API_BASE_URL}/order/cart`}
 				/>
 				<input type="hidden" name="ITEM_CODE" value="ITEM123" />
 				<input type="hidden" name="ITEM_NAME" value="Test Item" />

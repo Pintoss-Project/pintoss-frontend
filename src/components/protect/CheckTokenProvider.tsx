@@ -1,6 +1,6 @@
 'use client';
 
-import authState from '@/recoil/authAtom';
+import { useAuth } from '@/contexts/AuthContext';
 import { usePathname, useRouter } from 'next/navigation';
 import { ReactNode, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -11,11 +11,11 @@ interface Props {
 
 const CheckTokenProvider = ({ children }: Props) => {
 	const path = usePathname();
-	const isLoggedIn = useRecoilValue(authState).isLoggedIn;
+	const { isAuthenticated } = useAuth();
 	const router = useRouter();
 
 	useEffect(() => {
-		if (!isLoggedIn) {
+		if (!isAuthenticated) {
 			// 사용자가 로그아웃 상태일 때 리다이렉션 처리
 			if (path.includes('admin')) {
 				router.push('/admin/login');
@@ -23,7 +23,7 @@ const CheckTokenProvider = ({ children }: Props) => {
 				router.push('/login');
 			}
 		}
-	}, [isLoggedIn, path, router]);
+	}, [isAuthenticated, path, router]);
 
 	return <div>{children}</div>;
 };
