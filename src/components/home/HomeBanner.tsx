@@ -21,7 +21,40 @@ const HomeBanner = () => {
 
 	const { data: bannerList } = useQuery({
 		queryKey: ['bannerList'],
-		queryFn: fetchBannerList,
+		// queryFn: fetchBannerList,
+		queryFn: () => {
+			return {
+				data: [
+					{
+						id: 1,
+						bannerTitle: "여름 세일",
+						bannerLink: "/summer-sale",
+						desktopImageUrl: "https://picsum.photos/1920/480",
+						mobileImageUrl: "https://picsum.photos/640/480",
+						createdAt: "2024-01-01",
+						updatedAt: "2024-01-01"
+					},
+					{
+						id: 2,
+						bannerTitle: "신상품 컬렉션",
+						bannerLink: "/new-collection",
+						desktopImageUrl: "https://picsum.photos/1920/480?random=2",
+						mobileImageUrl: "https://picsum.photos/640/480?random=2",
+						createdAt: "2024-01-02",
+						updatedAt: "2024-01-02"
+					},
+					{
+						id: 3,
+						bannerTitle: "특별 할인",
+						bannerLink: "/special-offers",
+						desktopImageUrl: "https://picsum.photos/1920/480?random=3",
+						mobileImageUrl: "https://picsum.photos/640/480?random=3",
+						createdAt: "2024-01-03",
+						updatedAt: "2024-01-03"
+					}
+				]
+			}
+		},
 	});
 
 	const updateBannerImages = () => {

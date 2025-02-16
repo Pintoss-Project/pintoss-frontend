@@ -13,10 +13,11 @@ interface SimpleProductInfoResponse {
 export const fetchSimpleProductList = async (
 	category?: string,
 ): Promise<SimpleProductInfoResponse> => {
-	let url = `/api/product/simple`;
+	// let url = `/api/product/simple`;
+	let url = `/api/vouchers?providerId=1`
 
 	if (category && category !== 'ALL') {
-		url += `?category=${encodeURIComponent(category)}`;
+		url += `&category=${encodeURIComponent(category)}`;
 	}
 
 	return fetchApi<SimpleProductInfoResponse>(url, {
