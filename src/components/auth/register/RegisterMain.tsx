@@ -22,7 +22,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import RegisterAcceptTermsInfo from './RegisterAcceptTermsInfo';
 import RegisterAccountInfo from './RegisterAccountInfo';
@@ -142,8 +142,11 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 	const handleRegisterSubmit: SubmitHandler<RegisterFormData> = async (data, event) => {
 		event?.preventDefault();
 
+		console.log('handleRegisterSubmit data', data);
+
 		if (!isEmailChecked) {
 			const { data: checkData } = await fetchCheckId(email);
+			console.log('checkData', checkData);
 			if (checkData) {
 				open({
 					width: '300px',
@@ -168,30 +171,49 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 		}
 	};
 
-	const handleFormSubmit = isOAuth
-		? handleSubmit(
-			handleOAuthRegisterSubmit as SubmitHandler<RegisterFormData | OAuthRegisterFormData>,
-		)
-		: handleSubmit(handleRegisterSubmit as SubmitHandler<RegisterFormData | OAuthRegisterFormData>);
+	const handleFormSubmit = useCallback((e: any) => {
+		e.preventDefault();
+		console.log('handleFormSubmit', "isOAuth", isOAuth);
+		if (isOAuth) {
+			handleSubmit(
+				handleOAuthRegisterSubmit as SubmitHandler<RegisterFormData | OAuthRegisterFormData>,
+			)(e);
+		} else {
+			handleSubmit(handleRegisterSubmit as SubmitHandler<RegisterFormData | OAuthRegisterFormData>, (e) => {
+				console.log('handleSubmit error', e);
+				if (e.phone) {
+					open({
+						width: '300px',
+						height: '200px',
+						title: '휴대폰 인증을 완료해 주세요',
+						main: <AlertMainTextBox text="휴대폰 인증을 완료해 주세요." />,
+						rightButtonStyle: cs.lightBlueButton,
+						onRightButtonClick: close,
+					});
+				}
+			})(e);
+		}
+	}, [isOAuth, methods]);
 
 	useEffect(() => {
 		const messageHandler = (event: MessageEvent) => {
 			if (event.origin !== window.location.origin) return;
+			try {
+				// const { tokenVersionId, encData, integrityValue } = JSON.parse(event.data);
+				// if (tokenVersionId && encData && integrityValue) {
+				// 	handleDecryption(tokenVersionId, encData, integrityValue);
+				// }
 
-			// const { tokenVersionId, encData, integrityValue } = JSON.parse(event.data);
+				const { name, tel } = JSON.parse(event.data);
+				if (name && tel) {
+					setAuthData({ name, phone: tel });
+					setValue('name', name);
+					setValue('phone', tel);
 
-			// if (tokenVersionId && encData && integrityValue) {
-			// 	handleDecryption(tokenVersionId, encData, integrityValue);
-			// }
-
-			const { name, tel } = JSON.parse(event.data);
-
-			if (name && tel) {
-				setAuthData({ name, phone: tel });
-				setValue('name', name);
-				setValue('phone', tel);
-
-				checkPhone(tel);
+					checkPhone(tel);
+				}
+			} catch (error) {
+				console.error('Decryption error:', error);
 			}
 		};
 
