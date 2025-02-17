@@ -1,8 +1,11 @@
 import { fetchApi } from '@/utils/fetchApi';
 
 interface DecryptedData {
-	name: string;
-	mobileno: string;
+	code: number;
+	data: {
+		name: string;
+		tel: string;
+	}
 }
 
 export const fetchDecryptedData = async (
@@ -10,7 +13,7 @@ export const fetchDecryptedData = async (
 	encData: string,
 	integrityValue: string,
 ): Promise<DecryptedData> => {
-	return fetchApi<DecryptedData>('/api/niceid/decrypt', {
+	return fetchApi<DecryptedData>('/api/nice/callback', {
 		method: 'POST',
 		token: false,
 		body: {
