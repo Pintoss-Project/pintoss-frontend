@@ -90,7 +90,15 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 	}, [oAuthEmail, setValue]);
 
 	const registerMutation = useMutation({
-		mutationFn: (data: RegisterFormData) => fetchRegister(data),
+		mutationFn: (data: RegisterFormData) => {
+			let _phone = data.phone;
+			// turn 01012345678 into 010-1234-5678
+			if (_phone.length === 11) _phone = _phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+			return fetchRegister({
+				...data,
+				phone: _phone,
+			});
+		},
 		onSuccess: () => {
 			open({
 				width: '300px',
