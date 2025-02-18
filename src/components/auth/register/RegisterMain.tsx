@@ -145,19 +145,31 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 		console.log('handleRegisterSubmit data', data);
 
 		if (!isEmailChecked) {
-			const { data: checkData } = await fetchCheckId(email);
-			console.log('checkData', checkData);
-			if (checkData) {
+			try {
+				const { data: checkData } = await fetchCheckId(email);
+				console.log('checkData', checkData);
+				if (checkData) {
+					open({
+						width: '300px',
+						height: '200px',
+						title: '회원가입 오류',
+						main: <AlertMainTextBox text="이미 등록된 이메일입니다." />,
+						rightButtonStyle: cs.lightBlueButton,
+						onRightButtonClick: close,
+					});
+					setIsEmailChecked(true);
+					return;
+				}
+			} catch (error) {
+				console.error('handleRegisterSubmit error', error);
 				open({
 					width: '300px',
 					height: '200px',
 					title: '회원가입 오류',
-					main: <AlertMainTextBox text="이미 등록된 이메일입니다." />,
+					main: <AlertMainTextBox text="가입 가능여부 확인을 실패했습니다." />,
 					rightButtonStyle: cs.lightBlueButton,
 					onRightButtonClick: close,
 				});
-				setIsEmailChecked(true);
-				return;
 			}
 		}
 

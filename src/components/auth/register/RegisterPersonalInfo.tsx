@@ -37,30 +37,13 @@ const RegisterPersonalInfo = ({ authData }: Props) => {
 					"Content-Type": "application/json",
 				}
 			})
-
-			// {
-			// 	"status": "OK",
-			// 	"message": "OK",
-			// 	"data": {
-			// 		"token_version_id": "",
-			// 		"enc_data": "",
-			// 		"integrity_value": ""
-			// 	},
-			// 	"code": 200
-			// }
-			console.log("nice/encrypted-data", requestData)
-
 			if (requestData.code !== 200) {
 				throw new Error('인증 데이터를 가져오는데 실패했습니다.');
 			}
-
 			const { token_version_id, enc_data, integrity_value } = requestData.data;
-			// const { token_version_id, enc_data, integrity_value } = requestData;
-
 			if (!token_version_id || !enc_data || !integrity_value) {
 				throw new Error('필수 데이터가 누락되었습니다.');
 			}
-
 			const left = screen.width / 2 - 500 / 2;
 			const top = screen.height / 2 - 800 / 2;
 			const option = `status=no, menubar=no, toolbar=no, resizable=no, width=500, height=600, left=${left}, top=${top}`;
