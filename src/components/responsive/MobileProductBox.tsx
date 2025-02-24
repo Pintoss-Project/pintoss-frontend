@@ -12,7 +12,7 @@ const MobileProductBox = ({ name, image }: Props) => {
 		<GridItem>
 			<Flex direction="column" justify="center" align="center" className={s.mobileProductBox}>
 				<div style={{ marginBottom: '17px' }}>
-					<Image src={image} alt="로고 이미지" width={94} height={94} />
+					<img src={image} alt="로고 이미지" width={94} height={94} />
 				</div>
 				<div>{name}</div>
 			</Flex>

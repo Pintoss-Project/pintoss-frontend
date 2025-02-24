@@ -6,19 +6,23 @@ export const headerColor = createVar();
 
 export const homeSection = style({
 	'padding': '0px 60px 40px 45px',
-	'marginTop': '108px',
+	'marginTop': '0',
 	'@media': {
+		[responsive.desktop]: {
+			padding: '0 20px',
+			marginTop: '120px',
+		},
 		[responsive.tablet]: {
-			padding: '40px 30px',
-			marginTop: '48px',
+			padding: '0 20px',
+			marginTop: '80px',
 		},
 		[responsive.tabletSmall]: {
 			padding: '0 20px',
-			marginTop: '68px',
+			marginTop: '64px',
 		},
 		[responsive.mobile]: {
 			padding: '0 10px',
-			marginTop: '58px',
+			marginTop: '64px',
 		},
 	},
 });
@@ -26,7 +30,7 @@ export const homeSection = style({
 export const homePopularSection = style({
 	'@media': {
 		[responsive.desktop]: {
-			marginTop: '80px',
+			// marginTop: '80px',
 		},
 		[responsive.tabletSmall]: {
 			marginTop: '0px',
@@ -38,17 +42,22 @@ export const homePopularSection = style({
 });
 
 export const homeBanner = style([
-	f.pRelative,
+	// f.pRelative,
 	f.wFull,
 	{
 		'height': '300px',
 		'maxHeight': '300px',
 		'marginBottom': '160px',
-		'borderRadius': '0 15px 15px 15px',
+		'borderRadius': '15px',
 		'@media': {
+			[responsive.desktop]: {
+				width: '50%',
+				height: '270px',
+				marginBottom: '80px',
+			},
 			[responsive.tablet]: {
 				height: '280px',
-				marginBottom: '90px',
+				marginBottom: '80px',
 			},
 			[responsive.tabletSmall]: {
 				height: '200px',
@@ -58,29 +67,18 @@ export const homeBanner = style([
 				height: '160px',
 				marginBottom: '0',
 			},
-			'(min-width: 1025px) and (max-width: 1350px)': {
-				height: '270px',
-				marginBottom: '80px',
-			},
-			'(min-width: 630px) and (max-width: 800px)': {
-				height: '270px',
-			},
-			'(min-width: 530px) and (max-width: 768px)': {
-				marginBottom: '40px',
-			},
 		},
 	},
 ]);
 
 export const homeBannerContent = style([
-	f.pAbsolute,
+	// f.pAbsolute,
 	f.wFull,
 	f.hFull,
 	{
-		top: 0,
-		left: 0,
-		maxHeight: '150px',
-		borderRadius: '0 15px 15px 15px',
+		// top: 0,
+		// left: 0,
+		borderRadius: '15px',
 	},
 ]);
 
@@ -709,7 +707,7 @@ export const responsiveGrid = style({
 
 export const mobileBoxResponsiveGrid = style({
 	display: 'grid',
-	gridTemplateColumns: 'repeat(3, 1fr)',
+	gridTemplateColumns: 'repeat(2, 1fr)',
 	gap: '5px',
 	width: '100%',
 });

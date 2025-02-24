@@ -1,12 +1,14 @@
 'use client';
 
+import { apiClient } from '@/controllers/new-api-service';
 import { fetchUserInfo } from '@/controllers/user/fetchUserInfo';
+import { UserInfo } from '@/models/user';
 import { getLocalToken, removeLocalToken, setLocalToken } from '@/utils/localToken';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  user: any | null;
+  user: UserInfo | null;
   login: (token: string) => Promise<void>;
   logout: () => Promise<void>;
   getUserInfo: () => Promise<void>;
@@ -15,7 +17,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children, serverToken, initialUser = null }: { children: React.ReactNode, initialUser?: any, serverToken?: string }) {
-  const [user, setUser] = useState<any | null>(initialUser);
+  const [user, setUser] = useState<UserInfo | null>(initialUser);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!initialUser);
 
   const getUserInfo = async () => {
@@ -33,18 +35,21 @@ export function AuthProvider({ children, serverToken, initialUser = null }: { ch
 
   const login = async (token: string) => {
     setLocalToken(token);
+    apiClient.setToken(token);
     await getUserInfo();
   };
 
   const logout = async () => {
     removeLocalToken();
     setUser(null);
+    apiClient.setToken('');
     setIsAuthenticated(false);
   };
 
   useEffect(() => {
     const token = getLocalToken();
     if (token) {
+      apiClient.setToken(token);
       getUserInfo();
     } else if (serverToken) {
       login(serverToken);

@@ -8,6 +8,7 @@ import HomeProductBox from './HomeProductBox';
 import HomeProductMobileBox from './HomeProductMobileBox';
 import * as s from './HomeStyle.css';
 import Spinner from '@/shared/components/spinner/Spinner';
+import { apiClient } from '@/controllers/new-api-service';
 
 interface Props {
 	category: string;
@@ -19,8 +20,9 @@ const HomeProductsOnSale = ({ category }: Props) => {
 	const productCategory = category === 'ALL' ? undefined : category;
 
 	const { data: products, isLoading } = useQuery({
-		queryKey: ['simpleProductList', productCategory],
-		queryFn: () => fetchSimpleProductList(productCategory),
+		queryKey: ['provider-list', productCategory],
+		// queryFn: () => fetchSimpleProductList(productCategory),
+		queryFn: () => apiClient.getAllProviders(),
 	});
 
 	if (isLoading) return <Spinner />;

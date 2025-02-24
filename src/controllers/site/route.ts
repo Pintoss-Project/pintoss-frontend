@@ -1,3 +1,4 @@
+import { API_HOST_URL } from '@/utils/fetchServer';
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
 
@@ -15,7 +16,7 @@ export async function GET(req: NextRequest) {
 			);
 		}
 
-		const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/site-info/${id}`, {
+		const response = await fetch(`${API_HOST_URL}/api/site-info/${id}`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',

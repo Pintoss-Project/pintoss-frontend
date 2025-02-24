@@ -28,7 +28,7 @@ const HomeOnSaleSection = ({ title }: Props) => {
 		<section>
 			<h3 className={s.categoryTitle}>{title}</h3>
 			<Spacing margin="25px" />
-			<Flex>
+			{/* <Flex>
 				{FILTER_MENU.map((filter) => (
 					<span
 						key={filter.id}
@@ -38,7 +38,7 @@ const HomeOnSaleSection = ({ title }: Props) => {
 						{filter.name}
 					</span>
 				))}
-			</Flex>
+			</Flex> */}
 			<Spacing margin="25px" />
 			<HomeProductsOnSale category={selectedFilter} />
 		</section>

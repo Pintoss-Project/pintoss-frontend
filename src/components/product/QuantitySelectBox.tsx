@@ -8,12 +8,14 @@ import { Button } from '@/shared/components/button';
 import { Divider, Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import { vars } from '@/shared/styles/theme.css';
+import { VoucherDetailResponse } from '@/types/api';
+import { useMemo } from 'react';
 import { IoClose } from 'react-icons/io5';
 
 interface Props {
 	cartItems: CartItem[];
-	priceCategories: PriceCategoryInfo[];
-	onQuantityChange: (updatedItems: CartItem[]) => void;
+	priceCategories: VoucherDetailResponse[];
+	onQuantityChange: (categoryId: number, newQuantity: number) => void;
 	onRemoveItem: (index: number) => void;
 }
 
@@ -23,17 +25,14 @@ const QuantitySelectBox = ({
 	onQuantityChange,
 	onRemoveItem,
 }: Props) => {
-	const handleQuantityChange = (categoryId: number, newQuantity: number) => {
-		const updatedItems = cartItems.map((item) =>
-			item.priceCategoryId === categoryId ? { ...item, quantity: newQuantity } : item,
-		);
-		onQuantityChange(updatedItems);
-	};
 
-	const getPriceByCategoryId = (categoryId: number) => {
-		const category = priceCategories.find((cat) => cat.id === categoryId);
-		return category ? category.price : 0;
-	};
+	const getPriceByCategoryId = useMemo(() => {
+		const priceMap = new Map<number, number>();
+		priceCategories.forEach((priceCategory) => {
+			priceMap.set(priceCategory.voucherId, priceCategory.price);
+		});
+		return (categoryId: number) => priceMap.get(categoryId) as number;
+	}, [priceCategories]);
 
 	return (
 		<div>
@@ -61,7 +60,10 @@ const QuantitySelectBox = ({
 							<Button
 								color={vars.color.lighterGray}
 								className={s.quantityLeftButton}
-								onClick={() => handleQuantityChange(item.priceCategoryId, item.quantity - 1)}
+								onClick={(e) => {
+									e.preventDefault();
+									onQuantityChange(item.priceCategoryId, item.quantity - 1)
+								}}
 								disabled={item.quantity <= 1}>
 								-
 							</Button>
@@ -71,7 +73,10 @@ const QuantitySelectBox = ({
 							<Button
 								color={vars.color.darkGray}
 								className={s.quantityRightButton}
-								onClick={() => handleQuantityChange(item.priceCategoryId, item.quantity + 1)}>
+								onClick={(e) => {
+									e.preventDefault();
+									onQuantityChange(item.priceCategoryId, item.quantity + 1)
+								}}>
 								+
 							</Button>
 						</Flex>

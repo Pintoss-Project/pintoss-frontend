@@ -1,6 +1,5 @@
 'use client';
 
-import { SimpleProductInfo } from '@/models/product';
 import { Button } from '@/shared/components/button';
 import { Flex, GridItem } from '@/shared/components/layout';
 import * as cs from '@/shared/styles/common.css';
@@ -9,10 +8,11 @@ import { assignInlineVars } from '@vanilla-extract/dynamic';
 import clsx from 'clsx';
 import Link from 'next/link';
 import * as s from './HomeStyle.css';
+import { VoucherProviderListResponse } from '@/types/api';
 
 interface Props {
 	headerColor?: string;
-	product: SimpleProductInfo;
+	product: VoucherProviderListResponse;
 }
 
 const HomeProductBox = ({ headerColor, product }: Props) => {
@@ -32,12 +32,12 @@ const HomeProductBox = ({ headerColor, product }: Props) => {
 				<Flex style={{ height: '30%' }}>
 					<Flex justify="center" align="center" className={s.rateBox}>
 						<span className={s.rateGrayText}>카드</span>
-						<span className={s.rateRedText}>{product.cardDiscount}%↓</span>
+						<span className={s.rateRedText}>{product.discount.cardDiscount}%↓</span>
 					</Flex>
 					<div className={s.rateBoxMarginBox}></div>
 					<Flex justify="center" align="center" className={s.rateBox}>
 						<span className={s.rateGrayText}>휴대폰</span>
-						<span className={s.rateRedText}>{product.phoneDiscount}%↓</span>
+						<span className={s.rateRedText}>{product.discount.phoneDiscount}%↓</span>
 					</Flex>
 				</Flex>
 			</div>
@@ -50,7 +50,7 @@ const HomeProductBox = ({ headerColor, product }: Props) => {
 					</Button>
 				</div>
 				<div className={s.productIconBox}>
-					<img src={product.logoImageUrl} alt="상품권 로고 이미지" className={s.productIconImage} />
+					<img src={product.imageUrl} alt="상품권 로고 이미지" className={s.productIconImage} />
 				</div>
 			</Link>
 		</GridItem>

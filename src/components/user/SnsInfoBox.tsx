@@ -7,10 +7,11 @@ import { Button } from '@/shared/components/button';
 import Spacing from '@/shared/components/layout/Spacing';
 import Image from 'next/image';
 import { KakaoLogo, NaverLogo } from '../../../public/svgs';
+import { API_HOST_URL } from '@/utils/fetchServer';
 
 const SnsInfoBox = () => {
 	const handleNaverConnect = () => {
-		window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/oauth/naver/connect`;
+		window.location.href = `${API_HOST_URL}/api/oauth/naver/connect`;
 	};
 
 	return (

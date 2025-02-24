@@ -1,16 +1,16 @@
 'use client';
 
-import { SimpleProductInfo } from '@/models/product';
 import { Flex, GridItem } from '@/shared/components/layout';
 import { vars } from '@/shared/styles/theme.css';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import * as s from './HomeStyle.css';
+import { VoucherProviderListResponse } from '@/types/api';
 
 interface Props {
 	headerColor?: string;
-	product: SimpleProductInfo;
+	product: VoucherProviderListResponse;
 }
 
 const HomeProductMobileBox = ({ headerColor, product }: Props) => {
@@ -30,13 +30,14 @@ const HomeProductMobileBox = ({ headerColor, product }: Props) => {
 					</Flex>
 				</div>
 				<div className={s.productIconBox}>
-					<Image
-						src={product?.logoImageUrl as string}
+					{/* <Image
+						src={product?.imageUrl as string}
 						alt="상품권 로고 이미지"
 						className={s.productIconImage}
 						width={70}
 						height={70}
-					/>
+					/> */}
+					<img src={product.imageUrl} alt="상품권 로고 이미지" className={s.productIconImage} />
 				</div>
 			</GridItem>
 		</Link>

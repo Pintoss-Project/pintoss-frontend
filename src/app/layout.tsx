@@ -10,6 +10,7 @@ import RecoilRootProvider from '@/recoil/RecoilRootProvider';
 import type { Metadata } from "next";
 import { cookies } from 'next/headers';
 import { AuthProvider } from '@/contexts/AuthContext';
+// import { API_HOST_URL } from '@/utils/fetchServer';
 
 export const metadata: Metadata = {
 	title: '핀토스',
@@ -21,27 +22,27 @@ const getAccessToken = () => {
 	return cookieStore.get('accessToken')?.value;
 };
 
-async function fetchUserInfo() {
-	const accessToken = getAccessToken();
-	const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/info`, {
-		method: 'GET',
-		credentials: 'include',
-		headers: {
-			'Authorization': `Bearer ${accessToken}`,
-		},
-	});
+// async function fetchUserInfo() {
+// 	const accessToken = getAccessToken();
+// 	const response = await fetch(`${API_HOST_URL}/api/users/info`, {
+// 		method: 'GET',
+// 		credentials: 'include',
+// 		headers: {
+// 			'Authorization': `Bearer ${accessToken}`,
+// 		},
+// 	});
 
-	if (!response.ok) {
-		console.error(`Failed to fetch user info: ${response.status}`);
-		return null;
-	}
+// 	if (!response.ok) {
+// 		console.error(`Failed to fetch user info: ${response.status}`);
+// 		return null;
+// 	}
 
-	const data = await response.json();
-	return data.data;
-}
+// 	const data = await response.json();
+// 	return data.data;
+// }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-	const userInfo = await fetchUserInfo();
+	// const userInfo = await fetchUserInfo();
 
 	const cookieStore = cookies();
 	const accessTokenCookie = cookieStore.get('accessToken')?.value;
@@ -51,9 +52,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 			<body>
 				<Providers>
 					<RecoilRootProvider>
-						<AuthProvider initialUser={userInfo} serverToken={accessTokenCookie}>
+						<AuthProvider initialUser={null} serverToken={accessTokenCookie}>
 							<AlertContextProvider>
-								<NavBarTop data={userInfo} />
+								<NavBarTop data={null} />
 								<Flex justify="center">
 									<SideNavBar />
 									<div style={{ width: '100%' }}>

@@ -31,7 +31,6 @@ const RegisterPersonalInfo = ({ authData }: Props) => {
 
 		try {
 			const requestData: any = await fetchApi("/api/nice/encrypted-data", {
-			// const requestData: any = await fetchApi("/api/niceid/encrypt", {
 				method: 'GET',
 				headers: {
 					"Content-Type": "application/json",

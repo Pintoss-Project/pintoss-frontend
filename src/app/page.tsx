@@ -10,8 +10,8 @@ export default async function Home() {
 	return (
 		<main className={s.homeSection}>
 			<HomeBanner />
-			<HomePopularSection title="인기 상품" />
-			<Spacing margin="74px" />
+			{/* <HomePopularSection title="인기 상품" /> */}
+			{/* <Spacing margin="74px" /> */}
 			<HomeOnSaleSection title="판매 상품" />
 			<Spacing margin="60px" />
 			<HomeServiceInfoBox />

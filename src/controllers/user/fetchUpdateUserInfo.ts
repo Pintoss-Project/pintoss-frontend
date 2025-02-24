@@ -3,7 +3,7 @@ import { OAuthRegisterFormData } from '@/utils/validation/auth';
 
 export const fetchUpdateUserInfo = async (data: OAuthRegisterFormData) => {
 	try {
-		return await fetchApi(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user/update`, {
+		return await fetchApi(`${API_HOST_URL}/api/user/update`, {
 			method: 'PATCH',
 			token: false,
 			body: data,

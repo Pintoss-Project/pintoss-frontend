@@ -2,6 +2,7 @@ import { fetchApi } from '@/utils/fetchApi';
 import { ErrorResponse } from '@/models/error';
 import SiteError from '@/utils/error/SiteError';
 import { SiteInfo } from '@/models/site';
+import { dummySiteInfo } from './fetchSiteInfo';
 
 interface AllSiteInfoResponse {
 	code: number;
@@ -11,13 +12,21 @@ interface AllSiteInfoResponse {
 }
 
 export const fetchSiteList = async (): Promise<AllSiteInfoResponse> => {
-	return fetchApi<AllSiteInfoResponse>('/api/site/list', {
-		method: 'GET',
-		token: false,
-	}).catch((errorResponse: ErrorResponse) => {
-		throw new SiteError(
-			errorResponse.errorMessage || '사이트 정보 리스트를 불러오는데 실패했습니다.',
-			errorResponse,
-		);
-	});
+	// return fetchApi<AllSiteInfoResponse>('/api/site/list', {
+	// 	method: 'GET',
+	// 	token: false,
+	// }).catch((errorResponse: ErrorResponse) => {
+	// 	throw new SiteError(
+	// 		errorResponse.errorMessage || '사이트 정보 리스트를 불러오는데 실패했습니다.',
+	// 		errorResponse,
+	// 	);
+	// });
+	return {
+		code: 200,
+		status: 'success',
+		message: 'Success',
+		data: [
+			dummySiteInfo
+		],
+	};
 };

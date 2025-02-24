@@ -1,35 +1,35 @@
-import HiddenInputs from '@/app/(product)/product/[id]/components/HiddenInputs';
-import usePaymentScript from '@/app/(product)/product/[id]/hooks/usePaymentScript';
-import useSaleRate from '@/app/(product)/product/[id]/hooks/useSaleRate';
-import useTotalAmount from '@/app/(product)/product/[id]/hooks/useTotalAmount';
 import { fetchRegisterCartItem } from '@/controllers/cart/fetchRegisterCartItem';
-import { fetchUserInfo } from '@/controllers/user/fetchUserInfo';
 import ConfirmAndPayTheAmountBox from '@/components/order/ConfirmAndPayTheAmountBox';
 import PaymentMethodSelectBox from '@/components/order/PaymentMethodSelectBox';
 import ProductSelectBox from '@/components/product/ProductSelectBox';
 import QuantitySelectBox from '@/components/product/QuantitySelectBox';
 import useAlertContext from '@/hooks/useAlertContext';
 import { CartItem } from '@/models/cart';
-import { PriceCategoryInfo, ProductInfo } from '@/models/product';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import { Button } from '@/shared/components/button';
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as cs from '@/shared/styles/common.css';
 import * as styles from './ProductDetailSelectAndPayBox.css';
 
 import { vars } from '@/shared/styles/theme.css';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { VoucherDetailResponse, VoucherProviderListResponse } from '@/types/api';
+import useSaleRate from '../hooks/useSaleRate';
+import useTotalAmount from '../hooks/useTotalAmount';
+import usePaymentScript from '../hooks/usePaymentScript';
+import HiddenInputs from './HiddenInputs';
 interface Props {
-	product: ProductInfo;
+	product: VoucherProviderListResponse;
 }
 
 const ProductDetailSelectAndPayBox = ({ product }: Props) => {
+	const router = useRouter();
 	const [cartItems, setCartItems] = useState<CartItem[]>([]);
-	const [priceCategories, setPriceCategories] = useState<PriceCategoryInfo[]>([]);
+	const [priceCategories, setPriceCategories] = useState<VoucherDetailResponse[]>([]);
 	const [selectedType, setSelectedType] = useState('card');
 
 	const saleRate = useSaleRate(selectedType, product);
@@ -42,16 +42,13 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 
 	const { open, close } = useAlertContext();
 	const queryClient = useQueryClient();
-	const router = useRouter();
 	const formRef = useRef(null);
-	const { isAuthenticated } = useAuth();
+	const { user, isAuthenticated } = useAuth();
 
 	usePaymentScript();
 
-	const { data: userInfo } = useQuery({ queryKey: ['userInfo'], queryFn: fetchUserInfo });
-	console.log(userInfo, 'userInfo');
 	const postCartItemMutation = useMutation({
-		mutationFn: (data: CartItem[]) => fetchRegisterCartItem(userInfo?.id as number, data),
+		mutationFn: (data: CartItem[]) => fetchRegisterCartItem(user?.id as number, data),
 		onSuccess: () => {
 			open({
 				width: '300px',
@@ -64,7 +61,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 					close();
 				},
 			});
-			queryClient.invalidateQueries({ queryKey: ['cartItems', userInfo?.id] });
+			queryClient.invalidateQueries({ queryKey: ['cartItems', user?.id] });
 		},
 		onError: () => {
 			if (isAuthenticated) {
@@ -80,7 +77,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 		},
 	});
 
-	const handleAddToCart = (event) => {
+	const handleAddToCart = (event: any) => {
 		event.preventDefault(); // 기본 form 제출 방지
 		if (!isAuthenticated) {
 			open({
@@ -103,8 +100,20 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 		postCartItemMutation.mutate(cartItems);
 	};
 
-	const handleQuantityChange = (updatedItems: CartItem[]) => {
-		setCartItems(updatedItems);
+	const handleQuantityChange = (categoryId: number, newQuantity: number) => {
+		if (newQuantity < 1) return; // Prevent negative quantities
+		
+		setCartItems((prevItems) => {
+			const itemIndex = prevItems.findIndex(item => item.priceCategoryId === categoryId);
+			if (itemIndex === -1) return prevItems;
+			
+			const newItems = [...prevItems];
+			newItems[itemIndex] = {
+				...newItems[itemIndex],
+				quantity: newQuantity
+			};
+			return newItems;
+		});
 	};
 
 	const handleRemoveItem = (index: number) => {
@@ -117,7 +126,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 		SERVICE_TYPE: '0000',
 		ORDER_ID: 'ORD202312270001',
 		ORDER_DATE: new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14),
-		AMOUNT: '10000',
+		AMOUNT: totalAmount,
 		RETURN_URL: 'https://pintossmall2.com/sample/payreturn',
 		ITEM_CODE: 'ITEM123',
 		ITEM_NAME: 'Test Item',
@@ -126,14 +135,32 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 		// USER_EMAIL: 'sdas23@dsa.com',
 		LOGO: 'https://www.billgate.net/billgate/resources/asset/image/common/h1_logo.png',
 	};
-	const handleSelectCategory = (category: PriceCategoryInfo): void => {
-		setPriceCategories((prev): PriceCategoryInfo[] => {
-			if (!prev.some((item) => item.id === category.id)) {
+	const handleSelectCategory = (category: VoucherDetailResponse): void => {
+		setPriceCategories((prev): VoucherDetailResponse[] => {
+			if (!prev.some((item) => item.voucherId === category.voucherId)) {
 				return [...prev, category];
 			}
 			return prev;
 		});
+
+		setCartItems(prev => {
+			let _categoryExist = prev.some(item => item.priceCategoryId === category?.voucherId);
+			if (_categoryExist) {
+				return prev;
+			}
+			return [
+				...prev,
+				{
+					productId: product.id,
+					priceCategoryId: category?.voucherId,
+					name: product.name,
+					quantity: 1,
+					payMethod: selectedType
+				}
+			]
+		})
 	};
+
 	//구매 결제로직
 	const handleCheckoutNow: React.MouseEventHandler<HTMLButtonElement> = (event) => {
 		event.preventDefault(); // 기본 form 제출 방지
@@ -155,6 +182,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 				},
 				onLeftButtonClick: close,
 			});
+			return;
 		}
 		if (window.GX_pay) {
 			window.GX_pay('paymentForm', 'popup', 'https_pay');
@@ -162,7 +190,11 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 			console.error('Payment script is not loaded.');
 		}
 	};
-	console.log(selectedType, 'selcect');
+
+	useEffect(() => {
+		setCartItems(prev => prev.map(item => ({ ...item, payMethod: selectedType })))
+	}, [selectedType])
+
 	return (
 		<form
 			ref={formRef}
@@ -177,10 +209,11 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 				<Spacing margin="30px" />
 				<QuantitySelectBox
 					cartItems={cartItems}
-					priceCategories={priceCategories as PriceCategoryInfo[]}
+					priceCategories={priceCategories}
 					onQuantityChange={handleQuantityChange}
 					onRemoveItem={handleRemoveItem}
 				/>
+
 				<Spacing margin="30px" />
 				<PaymentMethodSelectBox selectedType={selectedType} setSelectedType={setSelectedType} />
 				<Spacing margin="30px" />
@@ -207,4 +240,4 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 	);
 };
 
-export default ProductDetailSelectAndPayBox;
+export default React.memo(ProductDetailSelectAndPayBox);

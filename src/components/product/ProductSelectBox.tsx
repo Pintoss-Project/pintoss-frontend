@@ -1,18 +1,27 @@
 import { PriceCategoryInfo, ProductInfo } from '@/models/product';
 import clsx from 'clsx';
 import * as s from './ProductDetailStyle.css';
+import { useQuery } from '@tanstack/react-query';
+import { apiClient } from '@/controllers/new-api-service';
+import { VoucherDetailResponse, VoucherProviderListResponse } from '@/types/api';
 
 interface Props {
-	product: ProductInfo;
-	onSelectCategory: (category: PriceCategoryInfo) => void;
+	product: VoucherProviderListResponse;
+	onSelectCategory: (category: VoucherDetailResponse) => void;
 }
 
 const ProductSelectBox = ({ product, onSelectCategory }: Props) => {
-	const sortedPriceCategories = (product?.priceCategories || []).sort((a, b) => a.price - b.price);
+
+	const {data, isLoading} = useQuery({
+		queryKey: ['vouchers', product.id],
+		queryFn: () => apiClient.getVouchersByProviderId(String(product.id)),
+	});
+
+	const sortedPriceCategories = (data?.data || []).sort((a, b) => a.price - b.price);
 
 	const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
 		const selectedCategory = sortedPriceCategories.find(
-			(category) => category.id === parseInt(event.target.value, 10),
+			(category) => category.voucherId === parseInt(event.target.value, 10),
 		);
 		if (selectedCategory) {
 			onSelectCategory(selectedCategory);
@@ -29,8 +38,8 @@ const ProductSelectBox = ({ product, onSelectCategory }: Props) => {
 					상품을 선택해주세요.
 				</option>
 				{sortedPriceCategories.map((category) => (
-					<option key={category.id} value={category.id}>
-						{`${product.name} ${category.name} (카드할인 ${product.cardDiscount}% / 휴대폰할인 ${product.phoneDiscount}%)`}
+					<option key={category.voucherId} value={category.voucherId}>
+						{`${product.name} ${category.voucherName} (카드할인 ${product.discount.cardDiscount}% / 휴대폰할인 ${product.discount.phoneDiscount}%)`}
 					</option>
 				))}
 			</select>

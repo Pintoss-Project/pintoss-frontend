@@ -11,15 +11,16 @@ import ProtectedRoute from '@/components/protect/ProtectedRoute';
 import * as s from './NavBarStyle.css';
 import SideNavBarProductsForSale from './SideNavBarProductsForSale';
 import { KakaoDetailLogo } from '../../../public/svgs';
+import { apiClient } from '@/controllers/new-api-service';
 
 const EXCLUDE_PATH = ['/login', '/register'];
 
 const SideNavBar = () => {
 	const path = usePathname();
 
-	const { data: products } = useQuery({
-		queryKey: ['simpleProductList'],
-		queryFn: () => fetchSimpleProductList(''),
+	const { data: products, isLoading } = useQuery({
+		queryKey: ['provider-list'],
+		queryFn: () => apiClient.getAllProviders(),
 	});
 
 	const { data: allSiteInfo } = useQuery({
@@ -47,7 +48,7 @@ const SideNavBar = () => {
 					{products?.data.map((item) => (
 						<SideNavBarProductsForSale
 							key={item.id}
-							svg={item.logoImageUrl as string}
+							image={item.imageUrl as string}
 							name={item.name}
 							productId={item.id}
 						/>

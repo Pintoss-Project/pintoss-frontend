@@ -1,5 +1,6 @@
 import { fetchProductList } from '@/controllers/product/fetchProductList';
 import ProductSection from '@/components/product/ProductSection';
+import { Suspense } from 'react';
 
 interface Props {
 	params: {
@@ -22,7 +23,11 @@ interface Props {
 // }
 
 const ProductDetail = ({ params }: Props) => {
-	return <ProductSection id={Number(params.id)} />;
+	return (
+		<Suspense fallback={<div>Loading...</div>}>
+			<ProductSection id={Number(params.id)} />
+		</Suspense>
+	);
 };
 
 export default ProductDetail;
