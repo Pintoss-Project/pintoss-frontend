@@ -4,18 +4,38 @@ import { Input } from '@/shared/components/input';
 import { Flex } from '@/shared/components/layout';
 import Spacing from '@/shared/components/layout/Spacing';
 import clsx from 'clsx';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import * as s from './RegisterStyle.css';
 import ValidationMessages from './ValidationMessages';
 
 interface Props {
-	name: string;
+	name: 'termsOfUse' | 'privacyPolicy';
 	label: string;
 }
 
 const RegisterAcceptTermsBox = ({ name, label }: Props) => {
 	const [isChecked, setIsChecked] = useState(false);
+
+	const [privacyPolicy, setPrivacyPolicy] = useState("");
+	const [termsOfUse, setTermsOfUse] = useState("");
+
+	useEffect(() => {
+		const getPrivacyPolicy = async () => {
+			const response = await fetch('/privacy.txt');
+			const text = await response.text();
+			setPrivacyPolicy(text.replace(/\n/g, '<br />').replace(/\r/g, '\n'));
+		};
+
+		const getTermsOfUse = async () => {
+			const response = await fetch('/usepolicy.txt');
+			const text = await response.text();
+			setTermsOfUse(text.replace(/\n/g, '<br />').replace(/\r/g, '\n'));
+		};
+
+		getPrivacyPolicy();
+		getTermsOfUse();
+	}, []);
 
 	const {
 		control,
@@ -61,14 +81,9 @@ const RegisterAcceptTermsBox = ({ name, label }: Props) => {
 			<Spacing margin="10px" />
 			<div className={clsx(s.acceptTermsBox, { [s.acceptTermsBoxChecked]: isChecked })}>
 				<div className={s.acceptTermsInnerWrap}>
-					<p className={s.acceptTermsText}>
-						이용약관 내용이 여기에 표시됩니다. 이용약관 내용이 여기에 표시됩니다. 이용약관 내용이
-						여기에 표시됩니다. 이용약관 내용이 여기에 표시됩니다. 이용약관 내용이 여기에 표시됩니다.
-						이용약관 내용이 여기에 표시됩니다. 이용약관 내용이 여기에 표시됩니다. 이용약관 내용이
-						여기에 표시됩니다. 이용약관 내용이 여기에 표시됩니다. 이용약관 내용이 여기에 표시됩니다.
-						이용약관 내용이 여기에 표시됩니다. 이용약관 내용이 여기에 표시됩니다. 이용약관 내용이
-						여기에 표시됩니다. 이용약관 내용이 여기에 표시됩니다. 이용약관 내용이 여기에 표시됩니다.
-					</p>
+					<div 
+					className={s.acceptTermsText} 
+					dangerouslySetInnerHTML={{ __html: name === 'termsOfUse' ? termsOfUse : privacyPolicy }} />
 				</div>
 			</div>
 			<Flex justify="start" align="center">

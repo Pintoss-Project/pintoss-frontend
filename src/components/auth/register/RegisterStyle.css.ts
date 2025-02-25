@@ -112,7 +112,7 @@ export const redText = style({
 
 export const acceptTermsBox = style({
 	width: '100%',
-	height: '110px',
+	height: '180px',
 	padding: '15px 12px',
 	border: `1px solid ${vars.color.paleGray}`,
 	borderRadius: '5px',
