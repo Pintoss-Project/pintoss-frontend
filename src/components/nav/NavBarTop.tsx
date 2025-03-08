@@ -29,7 +29,7 @@ const NavBarTop = ({ data }: { data: UserInfo | null }) => {
 	return (
 		<ProtectedRoute>
 			<Flex justify="space-between" align="center" className={s.navbarTopBox}>
-				{isAuthenticated && (
+				{/* {isAuthenticated && (
 					<Link href="/order/cart">
 						<Image
 							src="/images/cart-icon.png"
@@ -40,7 +40,7 @@ const NavBarTop = ({ data }: { data: UserInfo | null }) => {
 							className={s.cartIcon}
 						/>
 					</Link>
-				)}
+				)} */}
 				<Link href="/" className={s.logoBox}>
 					<div>
 						<Image src={PintossColorLogo} alt="로고 이미지" fill style={{ objectFit: 'contain' }} />

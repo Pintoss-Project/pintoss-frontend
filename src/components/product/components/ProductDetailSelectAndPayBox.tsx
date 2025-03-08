@@ -198,7 +198,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 		// 	window.GX_pay?.('paymentForm', 'popup', 'https_pay');
 		// }, 500);
 
-		apiClient.createOrder({
+		apiClient.createOrder({ // 주문 생성 /api/orders
 			paymentMethod: selectedType.toUpperCase(),
 			providerId: product.id,
 			orderItems: cartItems.map(item => ({
@@ -208,7 +208,6 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 		}).then((response) => {
 			const data = response.data.data;
 			setOrderData({
-				// ...response.data,
 				SERVICE_ID: 'M2483583',
 				SERVICE_CODE: selectedType === 'card' ? '0900' : '1100',
 				SERVICE_TYPE: '0000',

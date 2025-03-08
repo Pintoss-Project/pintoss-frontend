@@ -76,11 +76,11 @@ const MobileMenuBox = ({ setIsMenuOpen }: Props) => {
 			}}>
 			<div>
 				<Flex justify="space-between" align="center" className={s.tableMenuNavBox}>
-					{isAuthenticated && (
+					{/* {isAuthenticated && (
 						<Link href="/order/cart">
 							<img src="/images/cart-icon.png" alt="장바구니 아이콘" className={s.cartIcon} />
 						</Link>
-					)}
+					)} */}
 					<Link href="/" className={s.logoBox} onClick={() => setIsMenuOpen(false)}>
 						<div className={s.logoBox}>
 							<Image

@@ -86,7 +86,7 @@ const NavBarTopMenuBox = () => {
 								로그아웃
 							</div>
 						)}
-						{isAuthenticated && (
+						{/* {isAuthenticated && (
 							<Link href="/order/cart">
 								<img
 									src="/images/cart-icon.png"
@@ -94,7 +94,7 @@ const NavBarTopMenuBox = () => {
 									className={s.cartDesktopIcon}
 								/>
 							</Link>
-						)}
+						)} */}
 					</Flex>
 				</List>
 			</div>
