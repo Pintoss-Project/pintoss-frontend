@@ -43,7 +43,8 @@ export const fetchApi = async <TResponse, TBody = unknown>(
 		method = 'GET',
 		body,
 		headers = {},
-		timeout = API_CONFIG.defaultTimeout
+		timeout = API_CONFIG.defaultTimeout,
+		token = false,
 	} = options;
 
 	const controller = new AbortController();
@@ -52,7 +53,10 @@ export const fetchApi = async <TResponse, TBody = unknown>(
 	try {
 		const response = await fetch(createUrl(url), {
 			method,
-			headers: { ...API_CONFIG.defaultHeaders, ...headers },
+			headers: {
+				...API_CONFIG.defaultHeaders, ...headers,
+				...(token ? { 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`, } : {})
+			},
 			body: body ? JSON.stringify(body) : undefined,
 			credentials: 'include',  // This ensures cookie handling
 			signal: controller.signal,

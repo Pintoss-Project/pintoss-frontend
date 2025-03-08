@@ -1,0 +1,39 @@
+@token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzQxNDMwOTQ4LCJleHAiOjY0MDE3NDE0MzA5NDl9.b02ERw1ppJp_sh4IygDq2dToQTC1xfRON4wHsg1ToBqxEfKre8wal2ELB7rcA9PVsN8-cleooNx59Wp7SIFKmQ
+
+@host=http://pintossmall2.com
+
+###
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "kifhan@gmail.com",
+    "password": "asdf1234!"
+}
+
+###
+GET {{host}}/api/users/info
+Authorization: Bearer {{token}}
+
+###
+POST {{host}}/api/orders
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "paymentMethod": "CARD",
+    "providerId": 1,
+    "orderItems": [
+        {
+            "voucherId": 4,
+            "quantity": 1
+        }
+    ]
+}
+
+
+###
+GET {{host}}/api/providers
+
+###
+GET {{host}}/api/vouchers?providerId=1

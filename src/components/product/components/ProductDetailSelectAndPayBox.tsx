@@ -22,6 +22,7 @@ import useSaleRate from '../hooks/useSaleRate';
 import useTotalAmount from '../hooks/useTotalAmount';
 import usePaymentScript from '../hooks/usePaymentScript';
 import HiddenInputs from './HiddenInputs';
+import { apiClient } from '@/controllers/new-api-service';
 interface Props {
 	product: VoucherProviderListResponse;
 }
@@ -102,11 +103,11 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 
 	const handleQuantityChange = (categoryId: number, newQuantity: number) => {
 		if (newQuantity < 1) return; // Prevent negative quantities
-		
+
 		setCartItems((prevItems) => {
 			const itemIndex = prevItems.findIndex(item => item.priceCategoryId === categoryId);
 			if (itemIndex === -1) return prevItems;
-			
+
 			const newItems = [...prevItems];
 			newItems[itemIndex] = {
 				...newItems[itemIndex],
@@ -120,21 +121,24 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 		setCartItems((prevItems) => prevItems.filter((_, i) => i !== index));
 	};
 
-	const orderData = {
-		SERVICE_ID: 'M2483583',
-		SERVICE_CODE: selectedType === 'card' ? '0900' : '1100',
-		SERVICE_TYPE: '0000',
-		ORDER_ID: 'ORD202312270001',
-		ORDER_DATE: new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14),
-		AMOUNT: totalAmount,
-		RETURN_URL: 'https://pintossmall2.com/sample/payreturn',
-		ITEM_CODE: 'ITEM123',
-		ITEM_NAME: 'Test Item',
-		// USER_ID: 'sdas23@dsa.com',
-		// USER_NAME: '홍길동',
-		// USER_EMAIL: 'sdas23@dsa.com',
-		LOGO: 'https://www.billgate.net/billgate/resources/asset/image/common/h1_logo.png',
-	};
+	// const orderData = {
+	// 	SERVICE_ID: 'M2483583',
+	// 	SERVICE_CODE: selectedType === 'card' ? '0900' : '1100',
+	// 	SERVICE_TYPE: '0000',
+	// 	ORDER_ID: 'ORD202312270001',
+	// 	ORDER_DATE: new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14),
+	// 	AMOUNT: totalAmount,
+	// 	RETURN_URL: 'https://pintossmall2.com/sample/payreturn',
+	// 	ITEM_CODE: 'ITEM123',
+	// 	ITEM_NAME: 'Test Item',
+	// 	// USER_ID: 'sdas23@dsa.com',
+	// 	// USER_NAME: '홍길동',
+	// 	// USER_EMAIL: 'sdas23@dsa.com',
+	// 	LOGO: 'https://www.billgate.net/billgate/resources/asset/image/common/h1_logo.png',
+	// };
+
+	const [orderData, setOrderData] = useState<any | null>(null);
+
 	const handleSelectCategory = (category: VoucherDetailResponse): void => {
 		setPriceCategories((prev): VoucherDetailResponse[] => {
 			if (!prev.some((item) => item.voucherId === category.voucherId)) {
@@ -184,11 +188,29 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 			});
 			return;
 		}
-		if (window.GX_pay) {
-			window.GX_pay('paymentForm', 'popup', 'https_pay');
-		} else {
+
+		if (!window.GX_pay) {
 			console.error('Payment script is not loaded.');
+			return;
 		}
+
+		apiClient.createOrder({
+			paymentMethod: selectedType,
+			providerId: product.id,
+			orderItems: cartItems.map(item => ({
+				voucherId: item.priceCategoryId, // voucher.voucherId
+				quantity: item.quantity
+			}))
+		}).then((response) => {
+			setOrderData(response.data);
+			setTimeout(() => {
+				window.GX_pay?.('paymentForm', 'popup', 'https_pay');
+			}, 500);
+		}).catch((error) => {
+			console.error(error);
+			alert('주문 생성에 실패했습니다.' + error.message);
+		});
+
 	};
 
 	useEffect(() => {
@@ -202,7 +224,7 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 			method="post"
 			encType="application/x-www-form-urlencoded">
 			<div className={styles.wrapper}>
-				<HiddenInputs orderData={orderData} />
+				{orderData && <HiddenInputs orderData={orderData} />}
 
 				<ProductSelectBox product={product} onSelectCategory={handleSelectCategory} />
 
@@ -231,9 +253,9 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 						onClick={handleCheckoutNow}>
 						바로 구매
 					</Button>
-					<Button color={vars.color.white} className={cs.lightBlueButton} onClick={handleAddToCart}>
+					{/* <Button color={vars.color.white} className={cs.lightBlueButton} onClick={handleAddToCart}>
 						장바구니 담기
-					</Button>
+					</Button> */}
 				</Flex>
 			</div>
 		</form>

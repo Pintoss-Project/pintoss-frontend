@@ -6,12 +6,14 @@ interface HiddenInputsProps {
 	orderData: OrderData; // HiddenInputs 컴포넌트의 props
 }
 
-const HiddenInputs: React.FC<HiddenInputsProps> = ({ orderData }) => (
-	<>
-		{Object.entries(orderData).map(([key, value]) => (
-			<input key={key} type="hidden" name={key} value={String(value)} />
-		))}
-	</>
-);
+const HiddenInputs: React.FC<HiddenInputsProps> = ({ orderData }) => {
+	return (
+		<>
+			{Object.entries(orderData).map(([key, value]) => (
+				<input key={key} type="hidden" name={key} value={String(value)} />
+			))}
+		</>
+	)
+};
 
 export default HiddenInputs;

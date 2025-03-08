@@ -42,7 +42,18 @@ export interface UserInfoResponse {
 }
 
 export interface OrderCreateResponse {
-    orderId: number;
+    code: number;
+    status: string;
+    message: string;
+    data: {
+        orderId: number;
+        ordererId: number;
+        paymentMethod: string;
+        price: number;
+        productCode: string;
+        productName: string;
+        orderDate: string;
+    };
 }
 
 export interface ReissueResponse {
@@ -95,5 +106,7 @@ export interface OrderItemRequest {
 }
 
 export interface OrderCreateRequest {
+    paymentMethod: string;
+    providerId: number;
     orderItems: OrderItemRequest[];
 }
