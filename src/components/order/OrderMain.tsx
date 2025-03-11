@@ -10,6 +10,41 @@ import * as s from './OrderStyle.css';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 
+const ORDER_LIST_INFO = [
+	{
+		orderNo: '1234567-12345671',
+		payResult: '결제완료',
+		orderStatus: '주문완료',
+		payment: '카드',
+		orderDate: '2024-06-13',
+		pay: '120000',
+	},
+	{
+		orderNo: '1234567-12345672',
+		payResult: '결제완료',
+		orderStatus: '주문완료',
+		payment: '카드',
+		orderDate: '2024-06-13',
+		pay: '120000',
+	},
+	{
+		orderNo: '1234567-12345673',
+		payResult: '결제완료',
+		orderStatus: '주문완료',
+		payment: '카드',
+		orderDate: '2024-06-13',
+		pay: '120000',
+	},
+	{
+		orderNo: '1234567-12345674',
+		payResult: '결제완료',
+		orderStatus: '주문완료',
+		payment: '카드',
+		orderDate: '2024-06-13',
+		pay: '120000',
+	},
+];
+
 const OrderMain = () => {
 	const router = useRouter();
 	const { isAuthenticated } = useAuth();
@@ -21,7 +56,7 @@ const OrderMain = () => {
 	return (
 		<div>
 			<Spacing margin="30px" />
-			<OrderListInfoBox />
+			<OrderListInfoBox orderItems={ORDER_LIST_INFO} />
 			<Spacing margin="50px" />
 			<Flex className={s.orderInstructionFlexBox}>
 				<InfoBox title="로그인 내역" info={<LoginHistoryInfoBox />} />

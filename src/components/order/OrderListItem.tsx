@@ -2,6 +2,7 @@ import { vars } from '@/shared/styles/theme.css';
 import * as s from './OrderStyle.css';
 
 import { Flex } from '@/shared/components/layout';
+import Link from 'next/link';
 
 interface Props {
 	orderNo: string;
@@ -32,6 +33,11 @@ const OrderListItem = ({ orderNo, payResult, orderStatus, payment, orderDate, pa
 			</span>
 			<span className={s.flexItem6} style={{ color: vars.color.darkGray }}>
 				{pay}
+			</span>
+			<span className={s.flexItem6} style={{ color: vars.color.darkGray }}>
+				<Link href={`/order/detail/${orderNo}`}>
+				상세보기
+				</Link>
 			</span>
 		</Flex>
 	);

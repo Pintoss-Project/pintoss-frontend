@@ -7,11 +7,13 @@ interface Props {
 
 const OrderInstructionItem = ({ text }: Props) => {
 	return (
-		<Flex align="center">
-			<Flex justify="center" align="center" className={s.orderInstructionCircle}>
+		<Flex align="start">
+			<Flex className={s.orderInstructionCircle} grow={0} shrink={0}>
 				✓
 			</Flex>
-			<p className={s.orderInstructionText}>{text}</p>
+			<Flex grow={1} shrink={1}><p className={s.orderInstructionText} style={{
+				wordWrap: 'break-word'
+			}}>{text}</p></Flex>
 		</Flex>
 	);
 };

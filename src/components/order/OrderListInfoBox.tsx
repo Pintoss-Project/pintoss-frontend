@@ -2,42 +2,20 @@ import { Flex } from '@/shared/components/layout';
 import * as s from './OrderStyle.css';
 import OrderListItem from './OrderListItem';
 
-const ORDER_LIST_INFO = [
-	{
-		orderNo: '1234567-12345671',
-		payResult: '결제완료',
-		orderStatus: '주문완료',
-		payment: '카드',
-		orderDate: '2024-06-13',
-		pay: '120000',
-	},
-	{
-		orderNo: '1234567-12345672',
-		payResult: '결제완료',
-		orderStatus: '주문완료',
-		payment: '카드',
-		orderDate: '2024-06-13',
-		pay: '120000',
-	},
-	{
-		orderNo: '1234567-12345673',
-		payResult: '결제완료',
-		orderStatus: '주문완료',
-		payment: '카드',
-		orderDate: '2024-06-13',
-		pay: '120000',
-	},
-	{
-		orderNo: '1234567-12345674',
-		payResult: '결제완료',
-		orderStatus: '주문완료',
-		payment: '카드',
-		orderDate: '2024-06-13',
-		pay: '120000',
-	},
-];
+type OrderItem = {
+	orderNo: string;
+	payResult: string;
+	orderStatus: string;
+	payment: string;
+	orderDate: string;
+	pay: string;
+};
 
-const OrderListInfoBox = () => {
+interface Props {
+	orderItems: OrderItem[];
+}
+
+const OrderListInfoBox = ({orderItems}:Props) => {
 	return (
 		<div className={s.orderListInfoBox}>
 			<Flex align="center" className={s.menuBarTitle}>
@@ -47,9 +25,10 @@ const OrderListInfoBox = () => {
 				<span className={s.flexItem4}>결제수단</span>
 				<span className={s.flexItem5}>주문일시</span>
 				<span className={s.flexItem6}>결제금액</span>
+				<span className={s.flexItem6}>상세보기</span>
 			</Flex>
 			<div>
-				{ORDER_LIST_INFO.map((order) => (
+				{orderItems.map((order) => (
 					<OrderListItem
 						key={order.orderNo}
 						orderNo={order.orderNo}

@@ -35,6 +35,7 @@ export const orderInstructionInfoBox = style({
 	'padding': '30px',
 	'backgroundColor': vars.color.whiteSmoke,
 	'borderRadius': '0px 10px 10px 10px',
+	// flexWrap: 'wrap',
 	'@media': {
 		[responsive.tabletSmall]: {
 			margin: '0 0 30px 0',
@@ -140,6 +141,9 @@ export const orderInstructionCircle = style({
 	fontSize: '10px',
 	borderRadius: '50%',
 	backgroundColor: vars.color.darkBlue,
+	display: 'flex',
+	justifyContent: 'center',
+	alignItems: 'center',
 });
 
 export const orderInstructionText = style({
@@ -158,6 +162,71 @@ export const orderInstructionFlexBox = style({
 		[responsive.tabletSmall]: {
 			display: 'flex',
 			flexDirection: 'column-reverse',
+		},
+	},
+});
+
+export const memberInfoBox = style({
+	'padding': '30px',
+	'marginRight': '20px',
+	'backgroundColor': vars.color.whiteSmoke,
+	'borderRadius': '0px 10px 10px 10px',
+	'@media': {
+		[responsive.tabletSmall]: {
+			marginRight: '0',
+		},
+	},
+});
+
+export const memberInfoFlexBox = style({
+	height: '100%',
+	padding: '15px',
+	backgroundColor: vars.color.white,
+	borderRadius: '0px 10px 10px 10px',
+	'@media': {
+		[responsive.tabletSmall]: {
+			display: 'flex',
+			flexDirection: 'column-reverse',
+		},
+	},
+});
+
+export const darkGrayText = style({
+	color: vars.color.darkGray,
+});
+
+export const darkerGrayText = style({
+	color: vars.color.darkerGray,
+});
+
+export const detailInfoRow = style({
+	'height': '50px',
+});
+
+export const paymentInfoBox = style({
+	'backgroundColor': vars.color.whiteSmoke,
+	paddingInline: '20px',
+	paddingBlock: '24px',
+	'display': 'flex',
+});
+export const paymentInfoBoxDanger = style({
+	'backgroundColor': vars.color.softRed,
+	paddingInline: '20px',
+	paddingBlock: '24px',
+	'display': 'flex',
+});
+
+export const infoTitle = style({
+	'color': vars.color.darkerGray,
+	'fontSize': '20px',
+	'fontWeight': '500',
+	'textAlign': 'left',
+	'@media': {
+		[responsive.tabletSmall]: {
+			fontSize: '18px',
+		},
+		[responsive.mobile]: {
+			fontSize: '16px',
 		},
 	},
 });
