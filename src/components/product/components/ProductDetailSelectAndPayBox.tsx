@@ -225,7 +225,8 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 				LOGO: 'https://pin-toss.com/images/pintoss-logo.png',
 			});
 			setTimeout(() => {
-				window.GX_pay?.('paymentForm', 'submit', 'https_tpay');
+				window.GX_pay?.('paymentForm', 'submit', 'https_pay');
+				// window.GX_pay?.('paymentForm', 'submit', 'https_tpay');
 				// window.GX_pay?.('paymentForm', 'popup', 'https_pay');
 			}, 500);
 		}).catch((error) => {
