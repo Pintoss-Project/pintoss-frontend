@@ -206,21 +206,23 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 				quantity: item.quantity
 			}))
 		}).then((response) => {
-			const data = response.data.data;
+			const data = response.data;
+			console.log(data);
 			setOrderData({
 				SERVICE_ID: 'M2483583',
 				SERVICE_CODE: selectedType === 'card' ? '0900' : '1100',
 				SERVICE_TYPE: '0000',
-				ORDER_ID: data.orderId,
-				ORDER_DATE: data.orderDate,
+				ORDER_ID: data.orderNo,
+				// "2025-03-12 17:33:16"
+				ORDER_DATE: data.orderDate.replace(/[-: ]/g, '').slice(0, 14),
 				AMOUNT: data.price,
 				RETURN_URL: 'https://pin-toss.com/api/payments/callback',
-				ITEM_CODE: data.productCode,
+				ITEM_CODE: data.productCode || product.id,
 				ITEM_NAME: data.productName,
 				USER_ID: user?.id,
 				USER_NAME: user?.name,
 				USER_EMAIL: user?.email,
-				// LOGO: 'https://pin-toss.com/_next/static/media/pintoss-logo-color.b0f4df2f.svg',
+				LOGO: 'https://pin-toss.com/images/pintoss-logo.png',
 			});
 			setTimeout(() => {
 				window.GX_pay?.('paymentForm', 'popup', 'https_pay');
