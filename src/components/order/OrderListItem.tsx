@@ -10,10 +10,10 @@ interface Props {
 	orderStatus: string;
 	payment: string;
 	orderDate: string;
-	pay: string;
+	price: number;
 }
 
-const OrderListItem = ({ orderNo, payResult, orderStatus, payment, orderDate, pay }: Props) => {
+const OrderListItem = ({ orderNo, payResult, orderStatus, payment, orderDate, price }: Props) => {
 	return (
 		<Flex align="center" className={s.orderListItem}>
 			<span className={s.flexItem1} style={{ color: vars.color.darkGray }}>
@@ -22,9 +22,9 @@ const OrderListItem = ({ orderNo, payResult, orderStatus, payment, orderDate, pa
 			<span className={s.flexItem2} style={{ color: vars.color.skyBlue }}>
 				{payResult}
 			</span>
-			<span className={s.flexItem3} style={{ color: vars.color.darkBlue }}>
+			{/* <span className={s.flexItem3} style={{ color: vars.color.darkBlue }}>
 				{orderStatus}
-			</span>
+			</span> */}
 			<span className={s.flexItem4} style={{ color: vars.color.darkGray }}>
 				{payment}
 			</span>
@@ -32,7 +32,7 @@ const OrderListItem = ({ orderNo, payResult, orderStatus, payment, orderDate, pa
 				{orderDate}
 			</span>
 			<span className={s.flexItem6} style={{ color: vars.color.darkGray }}>
-				{pay}
+				{price.toLocaleString()}원
 			</span>
 			<span className={s.flexItem6} style={{ color: vars.color.darkGray }}>
 				<Link href={`/order/detail/${orderNo}`}>

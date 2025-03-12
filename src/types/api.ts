@@ -52,6 +52,14 @@ export interface OrderCreateResponse {
     orderDate: string;
 }
 
+export interface OrderItemResponse {
+    orderNo: string;
+    status: 'PENDING' | 'COMPLETED' | 'CANCELLED';
+    paymentMethodType: 'CARD' | 'PHONE';
+    orderDate: string;
+    price: number;
+}
+
 export interface ReissueResponse {
     reissueAccessToken: string;
 }

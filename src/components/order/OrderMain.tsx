@@ -9,6 +9,8 @@ import OrderListInfoBox from './OrderListInfoBox';
 import * as s from './OrderStyle.css';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { useQuery } from '@tanstack/react-query';
+import { apiClient } from '@/controllers/new-api-service';
 
 const ORDER_LIST_INFO = [
 	{
@@ -53,10 +55,18 @@ const OrderMain = () => {
 		router.push('/');
 	}
 
+	const {data, isLoading, refetch} = useQuery({
+		queryKey: ['orderList'],
+		queryFn: () => {
+			return apiClient.getOrderList();
+		},
+	})
+
 	return (
 		<div>
 			<Spacing margin="30px" />
-			<OrderListInfoBox orderItems={ORDER_LIST_INFO} />
+			{isLoading && <div>로딩중...</div>}
+			{data && <OrderListInfoBox orderItems={data.data} />}
 			<Spacing margin="50px" />
 			<Flex className={s.orderInstructionFlexBox}>
 				<InfoBox title="로그인 내역" info={<LoginHistoryInfoBox />} />

@@ -11,7 +11,8 @@ import {
     VoucherDetailResponse,
     VoucherProviderListResponse,
     UserInfoResponse,
-    ReissueResponse
+    ReissueResponse,
+    OrderItemResponse
 } from '../types/api';
 
 export class ApiService {
@@ -103,6 +104,11 @@ export class ApiService {
             body: request,
         });
     }
+
+    async getOrderList(): Promise<ApiResponse<OrderItemResponse[]>> {
+        return this.request<OrderItemResponse[]>('/api/orders');
+    }
+
 
     // User APIs
     async getUserInfo(): Promise<ApiResponse<UserInfoResponse>> {
