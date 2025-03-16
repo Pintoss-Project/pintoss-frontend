@@ -5,6 +5,7 @@ import { Flex } from '@/shared/components/layout';
 import Link from 'next/link';
 
 interface Props {
+	orderId: number;
 	orderNo: string;
 	payResult: string;
 	orderStatus: string;
@@ -13,7 +14,7 @@ interface Props {
 	price: number;
 }
 
-const OrderListItem = ({ orderNo, payResult, orderStatus, payment, orderDate, price }: Props) => {
+const OrderListItem = ({ orderId, orderNo, payResult, orderStatus, payment, orderDate, price }: Props) => {
 	return (
 		<Flex align="center" className={s.orderListItem}>
 			<span className={s.flexItem1} style={{ color: vars.color.darkGray }}>
@@ -35,7 +36,7 @@ const OrderListItem = ({ orderNo, payResult, orderStatus, payment, orderDate, pr
 				{price.toLocaleString()}원
 			</span>
 			<span className={s.flexItem6} style={{ color: vars.color.darkGray }}>
-				<Link href={`/order/detail/${orderNo}`}>
+				<Link href={`/order/detail/${orderId}`}>
 				상세보기
 				</Link>
 			</span>

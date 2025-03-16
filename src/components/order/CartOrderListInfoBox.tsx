@@ -1,73 +1,74 @@
-import { fetchCartItemList } from '@/controllers/cart/fetchCartItemList';
-import { fetchUpdateCartItem } from '@/controllers/cart/fetchUpdateCartItem';
-import { fetchUpdateCartPayMethod } from '@/controllers/cart/fetchUpdateCartPayMethod';
+// import { fetchCartItemList } from '@/controllers/cart/fetchCartItemList';
+// import { fetchUpdateCartItem } from '@/controllers/cart/fetchUpdateCartItem';
+// import { fetchUpdateCartPayMethod } from '@/controllers/cart/fetchUpdateCartPayMethod';
 import useAlertContext from '@/hooks/useAlertContext';
-import { CartItemResponse } from '@/models/cart';
 import AlertMainTextBox from '@/shared/components/alert/AlertMainTextBox';
 import * as cs from '@/shared/styles/common.css';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect, useMemo } from 'react';
 import CartOrderListItem from './CartOrderListItem';
 import CartOrderTotalInfoBox from './CartOrderTotalInfoBox';
 import * as s from './CartStyle.css';
 import Spinner from '@/shared/components/spinner/Spinner';
+import { apiClient } from '@/controllers/new-api-service';
+import type { CartItem } from '@/types/api';
 
 interface Props {
 	setTotalAmount: Dispatch<SetStateAction<number>>;
 	userId: number | undefined;
 	selectedType: string;
+	setOrderItems: (items: any[]) => void;
 }
 
-const CartOrderListInfoBox = ({ setTotalAmount, userId, selectedType }: Props) => {
+const CartOrderListInfoBox = ({ setTotalAmount, setOrderItems, userId, selectedType }: Props) => {
 	const { open, close } = useAlertContext();
 	const queryClient = useQueryClient();
 
-	const { data: cartItemsData, isLoading } = useQuery({
+	const { data: cartItems, isLoading, refetch } = useQuery<CartItem[]>({
 		queryKey: ['cartItems', userId],
-		queryFn: () => fetchCartItemList(userId as number),
-		enabled: !!userId,
+		queryFn: async () => {
+			const result = await apiClient.getCartItems();
+			return result.data;
+		},
 	});
 
-	const [cartItems, setCartItems] = useState<CartItemResponse[]>([]);
-
 	useEffect(() => {
-		if (cartItemsData?.data) {
-			setCartItems(cartItemsData.data);
-			queryClient.invalidateQueries({ queryKey: ['cartItems', userId] });
-		}
-	}, [cartItemsData, queryClient, userId]);
+		if (!cartItems) {
+			setOrderItems([]);
+			return;
+		};
+		console.log('cartItems:', cartItems);
 
-	useEffect(() => {
-		if (cartItems.length > 0 && userId) {
-			fetchUpdateCartPayMethod(userId, selectedType.toUpperCase()).then(() => {
-				queryClient.invalidateQueries({ queryKey: ['cartItems', userId] });
-			});
-		}
-	}, [cartItems.length, selectedType, userId, queryClient]);
-
-	useEffect(() => {
 		if (cartItems.length > 0) {
-			const calculatedTotal = cartItems.reduce((acc: number, item: CartItemResponse) => {
-				const discount = selectedType === 'card' ? item.cardDiscount : item.phoneDiscount;
+			const calculatedTotal = cartItems.reduce((acc: number, item: CartItem) => {
+				// const discount = selectedType === 'card' ? item.cardDiscount : item.phoneDiscount;
+				const discount = 0;
 				const discountedPrice = item.price * (1 - discount / 100);
 				return acc + discountedPrice * item.quantity;
 			}, 0);
 			setTotalAmount(calculatedTotal);
+			setOrderItems(cartItems);
 		} else {
 			setTotalAmount(0);
 		}
 	}, [cartItems, selectedType, setTotalAmount]);
 
 	const handleItemQuantityChange = useCallback(
-		(id: number, newQuantity: number) => {
-			updateCartMutation.mutate({ id, quantity: newQuantity });
+		(cartId: number, newQuantity: number) => {
+			updateCartMutation.mutate({ cartId, quantity: newQuantity });
 		},
 		[userId, queryClient],
 	);
 
 	const updateCartMutation = useMutation({
-		mutationFn: ({ id, quantity }: { id: number; quantity: number }) =>
-			fetchUpdateCartItem(id, quantity),
+		mutationFn: ({ cartId, quantity }: { cartId: number; quantity: number }) => {
+			return apiClient.updateCartItem(cartId, {
+				quantity,
+			})
+		},
+		onSuccess: () => {
+			refetch();
+		},
 		onError: () => {
 			open({
 				width: '300px',
@@ -80,7 +81,106 @@ const CartOrderListInfoBox = ({ setTotalAmount, userId, selectedType }: Props) =
 		},
 	});
 
-	const sortedCartItems = cartItems.slice().sort((a, b) => a.id - b.id);
+
+	const deleteCartItemMutation = useMutation({
+		mutationFn: (cartItemId: number) => apiClient.deleteCartItem(cartItemId),
+		onSuccess: () => {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '삭제 성공',
+				main: <AlertMainTextBox text="장바구니 아이템이 삭제되었습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+			queryClient.invalidateQueries({
+				queryKey: ['cartItems'],
+			});
+		},
+		onError: (error: any) => {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '삭제 실패',
+				main: <AlertMainTextBox text={error.message || '장바구니 아이템 삭제에 실패했습니다.'} />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		},
+	});
+
+	const deleteCartItemListMutation = useMutation({
+		mutationFn: async () => {
+			if (!cartItems) return null;
+			const deletePromises = cartItems.map((item) => apiClient.deleteCartItem(item.cartId));
+			return await Promise.all(deletePromises);
+		},
+		onSuccess: () => {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '삭제 성공',
+				main: <AlertMainTextBox text="장바구니 리스트가 삭제되었습니다." />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+			queryClient.invalidateQueries({
+				queryKey: ['cartItems'],
+			});
+		},
+		onError: (error: any) => {
+			open({
+				width: '300px',
+				height: '200px',
+				title: '삭제 실패',
+				main: <AlertMainTextBox text={error.message || '장바구니 리스트 삭제에 실패했습니다.'} />,
+				rightButtonStyle: cs.lightBlueButton,
+				onRightButtonClick: close,
+			});
+		},
+	});
+
+	const handleDeleteAll = () => {
+		open({
+			width: '300px',
+			height: '200px',
+			title: '장바구니 삭제',
+			main: <AlertMainTextBox text="장바구니 리스트를 삭제하시겠습니까?" />,
+			rightButtonStyle: cs.lightBlueButton,
+			rightButtonLabel: '확인',
+			leftButtonStyle: cs.whiteAndBlackButton,
+			leftButtonLabel: '취소',
+			onRightButtonClick: () => {
+				deleteCartItemListMutation.mutate();
+				close();
+			},
+			onLeftButtonClick: close,
+		});
+	};
+
+	const handleDelete = (id: number) => {
+		open({
+			width: '300px',
+			height: '200px',
+			title: '장바구니 아이템 삭제',
+			main: <AlertMainTextBox text="장바구니 아이템을 삭제하시겠습니까?" />,
+			rightButtonLabel: '확인',
+			rightButtonStyle: cs.lightBlueButton,
+			leftButtonLabel: '취소',
+			leftButtonStyle: cs.whiteAndBlackButton,
+			onRightButtonClick: () => {
+				deleteCartItemMutation.mutate(id);
+				close();
+			},
+			onLeftButtonClick: close,
+		});
+	};
+
+	const sortedCartItems = useMemo(() => {
+		if (!cartItems) return [];
+		return cartItems.sort((a, b) => a.cartId - b.cartId);
+		// cartItems.slice().sort((a, b) => a.id - b.id);
+	}, [cartItems]);
 
 	if (isLoading) return <Spinner />;
 
@@ -95,26 +195,29 @@ const CartOrderListInfoBox = ({ setTotalAmount, userId, selectedType }: Props) =
 				<span className={s.flexItem6}></span>
 			</div>
 			<div>
-				{sortedCartItems.map((item: CartItemResponse) => {
-					const discount = selectedType === 'card' ? item.cardDiscount : item.phoneDiscount;
+				{sortedCartItems.map((item: CartItem) => {
+					// const discount = selectedType === 'card' ? item.cardDiscount : item.phoneDiscount;
+					const discount = 0;
 					const discountedPrice = Math.round(item.price * (1 - discount / 100));
 					return (
 						<CartOrderListItem
-							key={item.id}
-							id={item.id}
-							icon={item?.logoImageUrl}
+							key={item.cartId}
+							id={item.cartId}
+							icon={item?.imageUrl}
 							name={item?.name}
 							price={discountedPrice}
 							quantity={item?.quantity}
 							onQuantityChange={handleItemQuantityChange}
+							handleDelete={handleDelete}
 						/>
 					);
 				})}
 			</div>
 			<CartOrderTotalInfoBox
-				userId={userId as number}
-				finalTotalPrice={sortedCartItems.reduce((acc: number, item: CartItemResponse) => {
-					const discount = selectedType === 'card' ? item.cardDiscount : item.phoneDiscount;
+				handleDelete={handleDeleteAll}
+				finalTotalPrice={sortedCartItems.reduce((acc: number, item: CartItem) => {
+					// const discount = selectedType === 'card' ? item.cardDiscount : item.phoneDiscount;
+					const discount = 0;
 					const discountedPrice = Math.round(item.price * (1 - discount / 100));
 					return acc + discountedPrice * item.quantity;
 				}, 0)}

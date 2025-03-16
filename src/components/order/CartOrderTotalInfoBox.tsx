@@ -11,58 +11,10 @@ import * as s from './CartStyle.css';
 
 interface Props {
 	finalTotalPrice: number;
-	userId: number;
+	handleDelete: () => void;
 }
 
-const CartOrderTotalInfoBox = ({ finalTotalPrice, userId }: Props) => {
-	const { open, close } = useAlertContext();
-	const queryClient = useQueryClient();
-
-	const deleteCartItemListMutation = useMutation({
-		mutationFn: (userId: number) => fetchDeleteCartItemList(userId),
-		onSuccess: () => {
-			open({
-				width: '300px',
-				height: '200px',
-				title: '삭제 성공',
-				main: <AlertMainTextBox text="장바구니 리스트가 삭제되었습니다." />,
-				rightButtonStyle: cs.lightBlueButton,
-				onRightButtonClick: close,
-			});
-			queryClient.invalidateQueries({
-				queryKey: ['cartItems'],
-			});
-		},
-		onError: (error: CartError) => {
-			open({
-				width: '300px',
-				height: '200px',
-				title: '삭제 실패',
-				main: <AlertMainTextBox text={error.message || '장바구니 리스트 삭제에 실패했습니다.'} />,
-				rightButtonStyle: cs.lightBlueButton,
-				onRightButtonClick: close,
-			});
-		},
-	});
-
-	const handleDelete = () => {
-		open({
-			width: '300px',
-			height: '200px',
-			title: '장바구니 삭제',
-			main: <AlertMainTextBox text="장바구니 리스트를 삭제하시겠습니까?" />,
-			rightButtonStyle: cs.lightBlueButton,
-			rightButtonLabel: '확인',
-			leftButtonStyle: cs.whiteAndBlackButton,
-			leftButtonLabel: '취소',
-			onRightButtonClick: () => {
-				deleteCartItemListMutation.mutate(userId);
-				close();
-			},
-			onLeftButtonClick: close,
-		});
-	};
-
+const CartOrderTotalInfoBox = ({ finalTotalPrice, handleDelete }: Props) => {
 	return (
 		<Flex justify="space-between" align="center" className={s.cartOrderTotalInfoBox}>
 			<div>

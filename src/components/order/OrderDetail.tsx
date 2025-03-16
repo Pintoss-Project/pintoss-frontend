@@ -1,7 +1,6 @@
 'use client';
 
 import Spacing from '@/shared/components/layout/Spacing';
-import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import * as s from './OrderStyle.css';
 import { Divider, Flex } from '@/shared/components/layout';
@@ -9,43 +8,9 @@ import InfoBox from '../InfoBox';
 import { vars } from '@/shared/styles/theme.css';
 import { useAuth } from '@/contexts/AuthContext';
 import OrderInstructionInfoBox from './OrderInstructionInfoBox';
-
-const DUMMY_ORDER: OrderDetail = {
-    id: '1',
-    orderNumber: '1234567-12345671',
-    orderDate: '2021-09-01',
-    status: '주문완료',
-    totalAmount: 120000,
-    items: [
-        {
-            id: '1',
-            name: 'item1',
-            state: "발권완료",
-            pin: "abasdfasdf-asdfasdfasdf",
-        },
-        {
-            id: '2',
-            name: 'item2',
-            state: "발권중",
-            pin: "...",
-        },
-    ],
-};
-
-
-interface OrderDetail {
-    id: string;
-    orderNumber: string;
-    orderDate: string;
-    status: string;
-    totalAmount: number;
-    items: Array<{
-        id: string;
-        name: string;
-        state: string;
-        pin: string;
-    }>;
-}
+import { apiClient } from '@/controllers/new-api-service';
+import { useQuery } from '@tanstack/react-query';
+import type { OrderDetail } from '@/types/api';
 
 interface Props {
     orderId: string;
@@ -54,27 +19,15 @@ interface Props {
 export default function OrderDetail({ orderId }: Props) {
     const { user } = useAuth();
 
-    const [order, setOrder] = useState<OrderDetail | null>(DUMMY_ORDER);
-    const [loading, setLoading] = useState(false);
+    const {data: order, isLoading} = useQuery<OrderDetail>({
+        queryKey: ['orderDetail', orderId],
+        queryFn: async () => {
+            const result = await apiClient.getOrderDetail(orderId);
+            return result.data;
+        },
+    });
 
-    // useEffect(() => {
-    //     const fetchOrderDetail = async () => {
-    //         try {
-    //             // Replace with your actual API endpoint
-    //             const response = await fetch(`/api/orders/${orderId}`);
-    //             const data = await response.json();
-    //             setOrder(data);
-    //         } catch (error) {
-    //             console.error('Error fetching order:', error);
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     };
-
-    //     fetchOrderDetail();
-    // }, [orderId]);
-
-    if (loading) {
+    if (isLoading) {
         return <div>Loading...</div>;
     }
 
@@ -86,31 +39,32 @@ export default function OrderDetail({ orderId }: Props) {
         <div>
             <Spacing margin="30px" />
             <div style={{ display: "flex", justifyContent: "start" }}>
-                <p>주문번호: {orderId}</p>
+                <p>주문번호: {order.orderNo}</p>
                 {/* <p>Status: {order.status}</p>
                 <p>Total Amount: {order.totalAmount}</p> */}
             </div>
             <Spacing margin="18px" />
             <div className={s.orderListInfoBox}>
                 <Flex align="center" className={s.menuBarTitle}>
-                    <span className={s.flexItem3}></span>
                     <span className={s.flexItem1}>상품명</span>
+                    <span className={s.flexItem3}>가격</span>
                     <span className={s.flexItem1}>발권상태</span>
                     <span className={s.flexItem1}>핀번호</span>
                 </Flex>
                 <div>
-                    {order.items.map((item) => (
-                        <Flex key={item.id} align="center" className={s.orderListItem}>
+                    {order.orderItems.map((item) => (
+                        <Flex key={item.pinNum} align="center" className={s.orderListItem}>
+                            <span className={s.flexItem1} style={{ color: vars.color.darkGray }}>
+                                {item.productName}
+                            </span>
                             <span className={s.flexItem3} style={{ color: vars.color.darkGray }}>
-                                {item.id}
-                            </span><span className={s.flexItem1} style={{ color: vars.color.darkGray }}>
-                                {item.name}
+                                {item.price.toLocaleString()}원
                             </span>
                             <span className={s.flexItem1} style={{ color: vars.color.skyBlue }}>
-                                {item.state}
+                                {item.status}
                             </span>
                             <span className={s.flexItem1} style={{ color: vars.color.darkBlue }}>
-                                {item.pin}
+                                {item.pinNum}
                             </span>
                         </Flex>
                     ))}
@@ -158,11 +112,11 @@ export default function OrderDetail({ orderId }: Props) {
                         </Flex>
                         <Flex direction="row" justify="space-between" className={s.paymentInfoBox}>
                             <p>결제 상태:</p>
-                            <p>{order.status}</p>
+                            <p>{order.orderStatus}</p>
                         </Flex>
                         <Flex direction="row" justify="space-between" className={s.paymentInfoBoxDanger}>
                             <p style={{ color: vars.color.white }}>결제 금액:</p>
-                            <p style={{ color: vars.color.white }}>{order.totalAmount.toLocaleString()}원</p>
+                            <p style={{ color: vars.color.white }}>{order.totalPrice.toLocaleString()}원</p>
                         </Flex>
                     </Flex>
                 )} />

@@ -12,7 +12,9 @@ import {
     VoucherProviderListResponse,
     UserInfoResponse,
     ReissueResponse,
-    OrderItemResponse
+    OrderItemResponse,
+    OrderDetail,
+    CartItem
 } from '../types/api';
 
 export class ApiService {
@@ -109,6 +111,10 @@ export class ApiService {
         return this.request<OrderItemResponse[]>('/api/orders');
     }
 
+    async getOrderDetail(orderId: string): Promise<ApiResponse<OrderDetail>> {
+        return this.request<OrderDetail>(`/api/orders/${orderId}/details`);
+    }
+
 
     // User APIs
     async getUserInfo(): Promise<ApiResponse<UserInfoResponse>> {
@@ -123,6 +129,44 @@ export class ApiService {
     async checkPhoneDuplicate(phone: string): Promise<ApiResponse<boolean>> {
         return this.request<boolean>(`/api/auth/check-phone?phone=${phone}`);
     }
+
+
+    // cart crud /api/carts/items
+    async getCartItems(): Promise<ApiResponse<CartItem[]>> {
+        return this.request<CartItem[]>('/api/carts/items');
+    }
+
+    async addCartItem(request: CartItem[]): Promise<ApiResponse<void>> {
+        return this.request<void>('/api/carts/items', {
+            method: 'POST',
+            body: request,
+        });
+    }
+
+    async deleteCartItem(cartId: number): Promise<ApiResponse<void>> {
+        return this.request<void>(`/api/carts/items/${cartId}`, {
+            method: 'DELETE',
+        });
+    }
+
+    async updateCartItem(cartId: number, cartItem: { quantity: number }): Promise<ApiResponse<void>> {
+        return this.request<void>(`/api/carts/items/${cartId}`, {
+            method: 'PUT',
+            body: cartItem,
+        });
+    }
+
+    // /api/auth/find_id
+    async findId(name: string, phone: string): Promise<ApiResponse<{ account: string; }>> {
+        
+        // if phone number dees not have '-' add it
+        if(phone.length === 11){
+            phone = phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+        }
+
+        return this.request<{ account: string; }>(`/api/auth/find_id?name=${name}&phone=${phone}`);
+    }
+
 }
 
 export const apiClient = ApiService.getInstance();

@@ -4,12 +4,12 @@ import CartPaymentInfoItemBox from './CartPaymentInfoItemBox';
 
 interface Props {
 	totalAmount: number;
-	userId: number;
 	selectedType: string;
 	setSelectedType: Dispatch<SetStateAction<string>>;
+	orderItems: any[];
 }
 
-const CartPaymentInfoBox = ({ totalAmount, userId, selectedType, setSelectedType }: Props) => {
+const CartPaymentInfoBox = ({ totalAmount, selectedType, setSelectedType, orderItems }: Props) => {
 	return (
 		<div style={{ flex: '1' }}>
 			<InfoBox
@@ -17,9 +17,9 @@ const CartPaymentInfoBox = ({ totalAmount, userId, selectedType, setSelectedType
 				info={
 					<CartPaymentInfoItemBox
 						totalAmount={totalAmount}
-						userId={userId}
 						selectedType={selectedType}
 						setSelectedType={setSelectedType}
+						orderItems={orderItems}
 					/>
 				}
 			/>

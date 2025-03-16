@@ -10,6 +10,7 @@ import Spinner from '@/shared/components/spinner/Spinner';
 import { apiClient } from '@/controllers/new-api-service';
 import { useMemo } from 'react';
 import { VoucherProviderListResponse } from '@/types/api';
+import usePaymentScript from './hooks/usePaymentScript';
 
 interface Props {
 	id: number;
@@ -26,7 +27,7 @@ const ProductSection = ({ id }: Props) => {
 		return products?.data.find((product: VoucherProviderListResponse) => product.id === id);
 	}, [products, id]);
 
-	// if (isLoading) return <Spinner />;
+	usePaymentScript();
 
 	return (
 		<section className={s.productDetailSection}>

@@ -12,41 +12,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@/controllers/new-api-service';
 
-const ORDER_LIST_INFO = [
-	{
-		orderNo: '1234567-12345671',
-		payResult: '결제완료',
-		orderStatus: '주문완료',
-		payment: '카드',
-		orderDate: '2024-06-13',
-		pay: '120000',
-	},
-	{
-		orderNo: '1234567-12345672',
-		payResult: '결제완료',
-		orderStatus: '주문완료',
-		payment: '카드',
-		orderDate: '2024-06-13',
-		pay: '120000',
-	},
-	{
-		orderNo: '1234567-12345673',
-		payResult: '결제완료',
-		orderStatus: '주문완료',
-		payment: '카드',
-		orderDate: '2024-06-13',
-		pay: '120000',
-	},
-	{
-		orderNo: '1234567-12345674',
-		payResult: '결제완료',
-		orderStatus: '주문완료',
-		payment: '카드',
-		orderDate: '2024-06-13',
-		pay: '120000',
-	},
-];
-
 const OrderMain = () => {
 	const router = useRouter();
 	const { isAuthenticated } = useAuth();

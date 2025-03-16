@@ -31,7 +31,8 @@ const OrderListInfoBox = ({orderItems}:Props) => {
 			<div>
 				{orderItems.map((order) => (
 					<OrderListItem
-						key={order.orderNo}
+						key={order.orderId}
+						orderId={order.orderId}
 						orderNo={order.orderNo}
 						payResult={order.status}
 						orderStatus={order.status}

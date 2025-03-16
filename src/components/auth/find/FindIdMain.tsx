@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import FindIdButton from './FindIdButton';
 import FindIdInputBox from './FindIdInputBox';
+import { apiClient } from '@/controllers/new-api-service';
 
 const FindIdMain = () => {
 	const { open, close } = useAlertContext();
@@ -29,9 +30,9 @@ const FindIdMain = () => {
 		event?.preventDefault();
 
 		try {
-			const response = await fetchFindId(data.name, data.phone);
-			const fetchedEmail = response.data;
-			methods.setValue('email', fetchedEmail);
+			const response = await apiClient.findId(data.name, data.phone);
+			const result = response.data;
+			methods.setValue('account', result.account);
 			setIsSearchCompleted(true);
 			open({
 				width: '300px',
@@ -71,7 +72,7 @@ const FindIdMain = () => {
 					</>
 				)}
 				{isSearchCompleted && (
-					<FindIdInputBox name="email" label="이메일" star placeholder="찾은 이메일" disabled />
+					<FindIdInputBox name="account" label="계정" star placeholder="찾은 계정" disabled />
 				)}
 				<Spacing margin="100px" />
 				<footer className={as.footerWrap}>

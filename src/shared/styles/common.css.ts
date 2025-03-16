@@ -62,15 +62,20 @@ export const lightBlueButton = style([
 		'backgroundColor': vars.color.lightBlue,
 		'borderRadius': '5px',
 		'@media': {
+			[responsive.desktop]: {
+				width: '324px',
+				height: '49px',
+			},
 			[responsive.tablet]: {
-				height: '40px',
+				width: '324px',
+				height: '49px',
 			},
 			[responsive.tabletSmall]: {
-				maxWidth: '100%',
-				height: '37px',
+				width: '324px',
+				height: '49px',
 			},
 			[responsive.mobile]: {
-				height: '34px',
+				width: '100%',
 			},
 		},
 	},

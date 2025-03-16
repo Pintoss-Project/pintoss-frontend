@@ -53,11 +53,30 @@ export interface OrderCreateResponse {
 }
 
 export interface OrderItemResponse {
+    orderId: number;
     orderNo: string;
     status: 'PENDING' | 'COMPLETED' | 'CANCELLED';
     paymentMethodType: 'CARD' | 'PHONE';
     orderDate: string;
     price: number;
+}
+
+export interface OrderDetail {
+    orderId: number;
+    orderNo: string;
+    paymentMethodType: 'CARD' | 'PHONE';
+    orderStatus: 'PENDING' | 'COMPLETED' | 'CANCELLED';
+    totalPrice: number;
+    ordererName: string;
+    ordererPhone: string;
+    orderDate: string;
+    orderItems: Array<{
+        productName: string;
+        quantity: number;
+        price: number;
+        status: string;
+        pinNum: string;
+    }>;
 }
 
 export interface ReissueResponse {
@@ -111,6 +130,15 @@ export interface OrderItemRequest {
 
 export interface OrderCreateRequest {
     paymentMethod: string;
-    providerId: number;
+    // `providerId`: number;
     orderItems: OrderItemRequest[];
+}
+
+export interface CartItem {
+    cartId: number;
+    productId: number;
+    quantity: number;
+    name: string;
+    price: number;
+    imageUrl: string;
 }

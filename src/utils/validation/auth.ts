@@ -104,7 +104,8 @@ export const findIdSchema = z.object({
 	phone: z.string().regex(/^01([0 | 1 | 6 | 7 | 8 | 9])([0-9]{3,4})([0-9]{4})$/, {
 		message: '휴대폰 번호를 정확하게 입력해주세요. (- 제외)',
 	}),
-	email: z.string().email({ message: '유효하지 않은 이메일 형식입니다.' }).optional(),
+	// email: z.string().email({ message: '유효하지 않은 이메일 형식입니다.' }).optional(),
+	account: z.string().optional(),
 });
 
 export type RegisterFormData = z.infer<typeof registerSchema>;

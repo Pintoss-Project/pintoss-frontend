@@ -12,6 +12,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import * as s from './CartStyle.css';
+import { apiClient } from '@/controllers/new-api-service';
 
 interface Props {
 	id: number;
@@ -20,39 +21,11 @@ interface Props {
 	price: number;
 	quantity: number;
 	onQuantityChange: (id: number, newQuantity: number) => void;
+	handleDelete: (id: number) => void;
 }
 
-const CartOrderListItem = ({ id, icon, name, price, quantity, onQuantityChange }: Props) => {
+const CartOrderListItem = ({ id, icon, name, price, quantity, onQuantityChange, handleDelete }: Props) => {
 	const [count, setCount] = useState(quantity);
-	const { open, close } = useAlertContext();
-	const queryClient = useQueryClient();
-
-	const deleteCartItemMutation = useMutation({
-		mutationFn: (cartItemId: number) => fetchDeleteCartItem(cartItemId),
-		onSuccess: () => {
-			open({
-				width: '300px',
-				height: '200px',
-				title: '삭제 성공',
-				main: <AlertMainTextBox text="장바구니 아이템이 삭제되었습니다." />,
-				rightButtonStyle: cs.lightBlueButton,
-				onRightButtonClick: close,
-			});
-			queryClient.invalidateQueries({
-				queryKey: ['cartItems'],
-			});
-		},
-		onError: (error: CartError) => {
-			open({
-				width: '300px',
-				height: '200px',
-				title: '삭제 실패',
-				main: <AlertMainTextBox text={error.message || '장바구니 아이템 삭제에 실패했습니다.'} />,
-				rightButtonStyle: cs.lightBlueButton,
-				onRightButtonClick: close,
-			});
-		},
-	});
 
 	const handleIncrease = () => {
 		const newCount = count + 1;
@@ -66,24 +39,6 @@ const CartOrderListItem = ({ id, icon, name, price, quantity, onQuantityChange }
 			setCount(newCount);
 			onQuantityChange(id, newCount);
 		}
-	};
-
-	const handleDelete = () => {
-		open({
-			width: '300px',
-			height: '200px',
-			title: '장바구니 아이템 삭제',
-			main: <AlertMainTextBox text="장바구니 아이템을 삭제하시겠습니까?" />,
-			rightButtonLabel: '확인',
-			rightButtonStyle: cs.lightBlueButton,
-			leftButtonLabel: '취소',
-			leftButtonStyle: cs.whiteAndBlackButton,
-			onRightButtonClick: () => {
-				deleteCartItemMutation.mutate(id);
-				close();
-			},
-			onLeftButtonClick: close,
-		});
 	};
 
 	useEffect(() => {
@@ -130,7 +85,7 @@ const CartOrderListItem = ({ id, icon, name, price, quantity, onQuantityChange }
 					<Button
 						color={vars.color.white}
 						className={s.cartItemRemoveButton}
-						onClick={handleDelete}>
+						onClick={() => handleDelete(id)}>
 						<Flex justify="center" align="center" style={{ width: '20px', height: '20px' }}>
 							ㅡ
 						</Flex>
