@@ -14,15 +14,15 @@ export const darkBlueButton = style([
 		'borderRadius': '5px',
 		'@media': {
 			[responsive.desktop]: {
-				width: '324px',
+				width: '100%',
 				height: '49px',
 			},
 			[responsive.tablet]: {
-				width: '324px',
+				width: '100%',
 				height: '49px',
 			},
 			[responsive.tabletSmall]: {
-				width: '324px',
+				width: '100%',
 				height: '49px',
 			},
 			[responsive.mobile]: {
@@ -63,15 +63,15 @@ export const lightBlueButton = style([
 		'borderRadius': '5px',
 		'@media': {
 			[responsive.desktop]: {
-				width: '324px',
+				width: '100%',
 				height: '49px',
 			},
 			[responsive.tablet]: {
-				width: '324px',
+				width: '100%',
 				height: '49px',
 			},
 			[responsive.tabletSmall]: {
-				width: '324px',
+				width: '100%',
 				height: '49px',
 			},
 			[responsive.mobile]: {
@@ -175,6 +175,6 @@ export const snsLogoStyle = style({
 });
 
 export const spacingStyle = style({
-	width: spacingWidthVar,
+	maxWidth: spacingWidthVar,
 	marginTop: spacingMarginVar,
 });

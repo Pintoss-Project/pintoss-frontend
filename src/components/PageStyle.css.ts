@@ -15,7 +15,7 @@ export const container = style({
 });
 
 export const sectionStyle = style({
-	'width': '100%',
+	// 'width': '100%',
 	'height': '100%',
 	'padding': '60px 50px 96px 50px',
 	'marginTop': '100px',
@@ -23,6 +23,9 @@ export const sectionStyle = style({
 	'borderRadius': '0px 15px 15px 15px',
 	'boxShadow': '0 4px 8px rgba(0, 0, 0, 0.1)',
 	'@media': {
+		[responsive.desktop]: {
+			padding: '60px 50px 96px 50px',
+		},
 		[responsive.tablet]: {
 			padding: '60px 40px 70px 40px',
 		},

@@ -126,6 +126,7 @@ export interface VoucherProviderRegisterRequest {
 export interface OrderItemRequest {
     voucherId: number;
     quantity: number;
+    price: number;
 }
 
 export interface OrderCreateRequest {

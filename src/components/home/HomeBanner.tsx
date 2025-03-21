@@ -92,7 +92,7 @@ const HomeBanner = () => {
 
 	return (
 		<div style={{
-			marginTop: dimensions.width <= 1024 ? '50px' : '80px',
+			marginTop: '12px',
 		}}>
 			{/* <div className={s.homeBanner}>
 				<div className={s.homeBannerContent}> */}

@@ -17,9 +17,11 @@ export const container = style({
 });
 
 export const sectionStyle = style({
-	width: '100%',
-	height: '100%',
+	// width: '100%',
+	width: 'calc(100vw - 40px)',
+	// height: '100%',
 	marginTop: '100px',
+	padding: '0 20px',
 	backgroundColor: vars.color.white,
 	borderRadius: '0px 15px 15px 15px',
 	boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',

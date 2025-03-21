@@ -3,12 +3,17 @@ import { responsive, vars } from '@/shared/styles/theme.css';
 import { style } from '@vanilla-extract/css';
 
 export const footerBox = style([
-	f.wFull,
 	{
-		'height': '273px',
+		width: 'calc(100vw - 20px)',
+		minHeight: '273px',
 		'padding': '0px 80px',
+		marginBottom: '10px',
 		'backgroundColor': vars.color.background,
 		'@media': {
+			[responsive.desktop]: {
+				width: 'calc(100vw - 240px - 20px - 15px)',
+				padding: '0px 80px',
+			},
 			[responsive.tablet]: {
 				padding: '0px 20px',
 			},

@@ -4,10 +4,11 @@ import Spacing from '@/shared/components/layout/Spacing';
 import RegisterInputBox from './RegisterInputBox';
 import { useSearchParams } from 'next/navigation';
 
-const RegisterAccountInfo = () => {
-	const searchParam = useSearchParams();
-	const isOAuth = searchParam.get('oauth') === 'true';
-
+type Props = {
+	isOAuth: boolean;
+};
+const RegisterAccountInfo = ({ isOAuth }: Props) => {
+	
 	return (
 		<div style={{ marginLeft: '10px' }}>
 			<RegisterInputBox
@@ -20,7 +21,7 @@ const RegisterAccountInfo = () => {
 			<Spacing margin="5px" />
 			<p className={s.pText}>비밀번호찾기, 주문내역 발송 등에 쓰이므로 정확히 입력해 주세요.</p>
 			<Spacing margin="20px" />
-			{!isOAuth && (
+			{/* {!isOAuth && ( */}
 				<>
 					<RegisterInputBox
 						name="password"
@@ -38,15 +39,15 @@ const RegisterAccountInfo = () => {
 						placeholder="비밀번호를 한번 더 입력해주세요."
 					/>
 				</>
-			)}
-			{isOAuth && (
+			{/* )} */}
+			{/* {isOAuth && (
 				<RegisterInputBox
 					name="inflow"
 					label="유입경로"
 					star
 					placeholder="예) 네이버 검색, 유튜버(BJ)를 통해"
 				/>
-			)}
+			)} */}
 			<Spacing margin="40px" />
 		</div>
 	);

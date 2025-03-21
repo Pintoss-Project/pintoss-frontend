@@ -7,11 +7,14 @@ export const navbarTopBox = style([
 	f.pFixed,
 	{
 		'height': '100px',
-		'padding': '0px 80px',
+		'padding': '0',
 		'backgroundColor': vars.color.background,
 		'boxShadow': '0 0.1px rgba(0,0,0,0.1)',
 		'zIndex': 10,
 		'@media': {
+			[responsive.desktop]: {
+				padding: '0px 20px',
+			},
 			[responsive.tablet]: {
 				height: '70px',
 				padding: '0px 20px',
@@ -78,12 +81,15 @@ export const loginButton = style({
 });
 
 export const sideBarContainer = style({
-	'width': '349px',
-	'height': '100%',
-	'padding': '28px 22px 45px 22px',
-	'margin': '108px 15px 0px 60px',
-	'backgroundColor': vars.color.white,
-	'borderRadius': '0px 15px 15px 15px',
+	width: '240px',
+	height: '100%',
+	padding: '28px 22px 45px 22px',
+	margin: '108px 15px 0px 20px',
+	// margin: '0',
+	backgroundColor: vars.color.white,
+	borderRadius: '0px 15px 15px 15px',
+	flexGrow: 0,
+	flexShrink: 0,
 	'@media': {
 		[responsive.tablet]: {
 			display: 'none',

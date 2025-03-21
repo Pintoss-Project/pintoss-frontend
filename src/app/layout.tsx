@@ -10,6 +10,7 @@ import RecoilRootProvider from '@/recoil/RecoilRootProvider';
 import type { Metadata } from "next";
 import { cookies } from 'next/headers';
 import { AuthProvider } from '@/contexts/AuthContext';
+import { MainContainer } from '@/components/MainContainer';
 // import { API_HOST_URL } from '@/utils/fetchServer';
 
 export const metadata: Metadata = {
@@ -17,10 +18,10 @@ export const metadata: Metadata = {
 	description: 'Where to find great deals on gift certificates',
 };
 
-const getAccessToken = () => {
-	const cookieStore = cookies();
-	return cookieStore.get('accessToken')?.value;
-};
+// const getAccessToken = () => {
+// 	const cookieStore = cookies();
+// 	return cookieStore.get('accessToken')?.value;
+// };
 
 // async function fetchUserInfo() {
 // 	const accessToken = getAccessToken();
@@ -57,10 +58,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 								<NavBarTop data={null} />
 								<Flex justify="center">
 									<SideNavBar />
-									<div style={{ width: '100%' }}>
+									<MainContainer>
 										{children}
 										<Footer />
-									</div>
+									</MainContainer>
 								</Flex>
 							</AlertContextProvider>
 						</AuthProvider>

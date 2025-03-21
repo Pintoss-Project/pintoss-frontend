@@ -147,7 +147,8 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
           priceCategoryId: category?.voucherId,
           name: product.name,
           quantity: 1,
-          payMethod: selectedType
+          payMethod: selectedType,
+          price: category?.price,
         }
       ]
     })
@@ -162,7 +163,8 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
       // providerId: product.id,
       orderItems: cartItems.map(item => ({
         voucherId: item.priceCategoryId,
-        quantity: item.quantity
+        quantity: item.quantity,
+        price: item.price,
       }))
     });
   };

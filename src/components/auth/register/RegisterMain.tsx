@@ -244,64 +244,6 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 		};
 	}, []);
 
-	// DONE by backend server
-	// const handleDecryption = async (
-	// 	tokenVersionId: string,
-	// 	encData: string,
-	// 	integrityValue: string,
-	// ) => {
-	// 	try {
-	// 		const decryptedData = await fetchDecryptedData(tokenVersionId, encData, integrityValue);
-
-	// 		const {name, tel} = decryptedData.data;
-
-	// 		setAuthData({ name: name, phone: tel });
-	// 		setValue('name', name);
-	// 		setValue('phone', tel);
-
-	// 		// const phoneCheckResult = await fetchCheckPhone(tel);
-
-	// 		// if (phoneCheckResult.data) {
-	// 		// 	setIsPhoneDuplicate(true);
-	// 		// 	open({
-	// 		// 		width: '300px',
-	// 		// 		height: '200px',
-	// 		// 		title: '휴대폰 중복 오류',
-	// 		// 		main: (
-	// 		// 			<AlertMainTextBox text="이미 등록된 휴대폰 번호입니다. 다른 번호를 사용해 주세요." />
-	// 		// 		),
-	// 		// 		rightButtonStyle: cs.lightBlueButton,
-	// 		// 		onRightButtonClick: close,
-	// 		// 	});
-	// 		// } else {
-	// 		// 	setIsPhoneDuplicate(false);
-	// 		// 	open({
-	// 		// 		width: '300px',
-	// 		// 		height: '200px',
-	// 		// 		title: '휴대폰 인증 완료',
-	// 		// 		main: <AlertMainTextBox text="휴대폰 인증이 완료되었습니다." />,
-	// 		// 		rightButtonStyle: cs.lightBlueButton,
-	// 		// 		onRightButtonClick: close,
-	// 		// 	});
-	// 		// }
-
-	// 		// router.push('/register');
-	// 	} catch (error) {
-	// 		console.error('Decryption error:', error);
-
-	// 		open({
-	// 			width: '300px',
-	// 			height: '220px',
-	// 			title: '휴대폰 인증 실패',
-	// 			main: (
-	// 				<AlertMainTextBox text="휴대폰 인증 처리 중 오류가 발생했습니다. 다시 시도해주세요." />
-	// 			),
-	// 			rightButtonStyle: cs.lightBlueButton,
-	// 			onRightButtonClick: close,
-	// 		});
-	// 	}
-	// };
-
 	const checkPhone = async (phone: string) => {
 		const phoneCheckResult = await fetchCheckPhone(phone);
 
@@ -337,7 +279,7 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 				<RegisterInfoBox subTitle="약관동의" info={<RegisterAcceptTermsInfo />} />
 				<Divider color={vars.color.lighterGray} size={1} />
 				<Spacing margin="40px" />
-				<RegisterInfoBox subTitle="계정정보" info={<RegisterAccountInfo />} />
+				<RegisterInfoBox subTitle="계정정보" info={<RegisterAccountInfo isOAuth={!!oAuthEmail} />} />
 				<Divider color={vars.color.lighterGray} size={1} />
 				<Spacing margin="40px" />
 				<RegisterInfoBox

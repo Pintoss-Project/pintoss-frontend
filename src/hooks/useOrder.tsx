@@ -9,6 +9,7 @@ import AlertMainTextBox from '../shared/components/alert/AlertMainTextBox';
 export interface OrderItem {
   voucherId: number;
   quantity: number;
+  price: number;
 }
 
 export interface CreateOrderParams {

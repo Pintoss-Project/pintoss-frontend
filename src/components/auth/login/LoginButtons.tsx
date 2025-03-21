@@ -13,12 +13,12 @@ import { KakaoLogo, NaverLogo } from '../../../../public/svgs';
 const LoginButtons = () => {
 	const handleNaverLogin = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
-		window.location.href = 'https://pintossmall2.com/oauth2/authorization/naver';
+		window.location.href = 'https://pin-toss.com/api/oauth/login?providerType=NAVER';
 	};
 
 	const handleKakaoLogin = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
-		window.location.href = 'https://pintossmall2.com/oauth2/authorization/kakao';
+		window.location.href = 'https://pin-toss.com/api/oauth/login?providerType=KAKAO';
 	};
 
 	return (

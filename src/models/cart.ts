@@ -7,6 +7,7 @@ export interface CartItem {
 	quantity: number;
 	payMethod: string;
 	category?: PriceCategoryInfo;
+	price: number;
 }
 
 export interface CartItemResponse {

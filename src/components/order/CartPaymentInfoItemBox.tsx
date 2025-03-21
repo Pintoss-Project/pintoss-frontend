@@ -59,7 +59,8 @@ const CartPaymentInfoItemBox = ({
       paymentMethod: selectedType.toUpperCase(),
       orderItems: orderItems.map(item => ({
         voucherId: item.productId,
-        quantity: item.quantity
+        quantity: item.quantity,
+        price: item.price,
       }))
     });
   };
