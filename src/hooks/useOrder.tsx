@@ -87,16 +87,25 @@ export const useOrder = (): OrderHookResult => {
     try {
       const response = await apiClient.createOrder(params);
       const data = response.data;
-      
+
       const newOrderData: OrderData = {
         SERVICE_ID: 'M2483583',
-        SERVICE_CODE: params.paymentMethod === 'CARD' ? '0900' : '1100',
+        SERVICE_CODE: params.paymentMethod,
         SERVICE_TYPE: '0000',
         ORDER_ID: data.orderNo,
-        ORDER_DATE: data.orderDate.replace(/[-: ]/g, '').slice(0, 14),
+        // "2025-03-21T09:13:50.954Z" to YYYYMMDDHH24MISS format
+        ORDER_DATE: new Date(data.orderDate).toLocaleString('en-GB', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false
+        }).replace(/[\/,:\s]/g, ''),
         AMOUNT: data.price,
         RETURN_URL: 'https://pin-toss.com/api/payments/callback',
-        ITEM_CODE: data.productCode || "",
+        ITEM_CODE: "",
         ITEM_NAME: data.productName,
         USER_ID: user?.id,
         USER_NAME: user?.name,

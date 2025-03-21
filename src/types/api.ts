@@ -47,7 +47,7 @@ export interface OrderCreateResponse {
     ordererId: number;
     paymentMethod: string;
     price: number;
-    productCode?: string;
+    // productCode?: string;
     productName: string;
     orderDate: string;
 }
