@@ -160,7 +160,6 @@ const ProductDetailSelectAndPayBox = ({ product }: Props) => {
 
     handleOrder({
       paymentMethod: selectedType.toUpperCase(),
-      // providerId: product.id,
       orderItems: cartItems.map(item => ({
         voucherId: item.priceCategoryId,
         quantity: item.quantity,

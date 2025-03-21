@@ -34,9 +34,10 @@ import { useAuth } from '@/contexts/AuthContext';
 interface Props {
 	oAuthEmail?: string;
 	accessToken?: string;
+	loginType?: 'LOCAL' | 'KAKAO' | 'NAVER';
 }
 
-const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
+const RegisterMain = ({ oAuthEmail, loginType, accessToken }: Props) => {
 	const { open, close } = useAlertContext();
 	const router = useRouter();
 	// const { isAuthenticated, login } = useAuth();
@@ -72,6 +73,7 @@ const RegisterMain = ({ oAuthEmail, accessToken }: Props) => {
 			name: authData.name || '',
 			phone: authData.phone || '',
 			inflow: '',
+			loginType: loginType ? loginType : 'LOCAL',
 		},
 	});
 

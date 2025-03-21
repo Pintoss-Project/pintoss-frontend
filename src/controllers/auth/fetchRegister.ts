@@ -5,7 +5,13 @@ export const fetchRegister = async (data: RegisterFormData) => {
 	const response = await fetchApi('/api/auth/register', {
 		method: 'POST',
 		token: false,
-		body: data,
+		body: {
+			email: data.email,
+			password: data.password,
+			name: data.name,
+			phone: data.phone,
+			loginType: data.loginType,
+		},
 	});
 
 	return response;

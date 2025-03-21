@@ -38,6 +38,9 @@ export const registerSchema = z
 			message: '휴대폰 번호를 정확하게 입력해주세요. (- 제외)',
 		}),
 		confirmPassword: z.string(),
+		loginType: z.enum(['LOCAL', 'KAKAO', 'NAVER'], {
+			errorMap: () => ({ message: '잘못된 로그인 타입입니다.' }),
+		}),
 	})
 	.superRefine(({ password, confirmPassword }, ctx) => {
 		if (password !== confirmPassword) {

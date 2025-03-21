@@ -14,6 +14,7 @@ const Register = ({ searchParams }: Props) => {
   const emailFromCookie = cookieStore.get('email');
   const accessTokenCookie = cookieStore.get('accessToken');
   const emailFromURL = searchParams.email as string | undefined;
+  const loginType = searchParams.loginType as string | undefined;
 
   const email = emailFromURL || emailFromCookie?.value;
 
@@ -24,6 +25,7 @@ const Register = ({ searchParams }: Props) => {
         main={
           <RegisterMain
             oAuthEmail={email}
+            loginType={loginType as 'LOCAL' | 'KAKAO' | 'NAVER' | undefined}
             accessToken={accessTokenCookie?.value}
           />
         }
