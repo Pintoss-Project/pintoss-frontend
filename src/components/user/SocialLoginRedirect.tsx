@@ -15,6 +15,8 @@ const SocialLoginRedirect = () => {
     const searchParams = useSearchParams();
 
     useEffect(() => {
+        console.log('SocialLoginRedirect useEffect');
+
         const accessToken = searchParams.get('accessToken');
         if (accessToken) {
             login(accessToken).then(() => {
@@ -33,7 +35,18 @@ const SocialLoginRedirect = () => {
                     },
                 });
             });
-
+        } else {
+            open({
+                width: '300px',
+                height: '200px',
+                title: '로그인 실패',
+                main: <AlertMainTextBox text="로그인에 실패하였습니다. 다시 시도해 주세요." />,
+                rightButtonStyle: cs.lightBlueButton,
+                onRightButtonClick: () => {
+                    close();
+                    router.push('/login');
+                },
+            });
         }
     }, [router, searchParams]);
 

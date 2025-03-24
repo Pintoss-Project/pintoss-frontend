@@ -1,7 +1,6 @@
 'use client';
 
 import { apiClient } from '@/controllers/new-api-service';
-import { fetchUserInfo } from '@/controllers/user/fetchUserInfo';
 import { UserInfo } from '@/models/user';
 import { getLocalToken, removeLocalToken, setLocalToken } from '@/utils/localToken';
 import { createContext, useContext, useEffect, useState } from 'react';
@@ -24,14 +23,15 @@ export function AuthProvider({ children, serverToken, initialUser = null }: { ch
 
   const getUserInfo = async () => {
     try {
-      const userData = await fetchUserInfo();
-      setUser(userData);
-      setIsAuthenticated(!!userData);
+      const userData = await apiClient.getUserInfo();
+      setUser(userData.data);
+      setIsAuthenticated(!!userData.data);
     } catch (error) {
       console.log("get user info: error:", error);
       setUser(null);
       setIsAuthenticated(false);
       removeLocalToken();
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -65,7 +65,9 @@ export function AuthProvider({ children, serverToken, initialUser = null }: { ch
     const token = getLocalToken();
     if (token) {
       apiClient.setToken(token);
-      getUserInfo();
+      getUserInfo().catch(() => {
+        console.log('Failed to fetch user info, logging out...');
+      });
     } else if (serverToken) {
       login(serverToken);
     } else {

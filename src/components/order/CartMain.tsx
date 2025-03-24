@@ -1,9 +1,6 @@
 'use client';
 
-import { fetchUserInfo } from '@/controllers/user/fetchUserInfo';
-import { UserInfo } from '@/models/user';
 import Spacing from '@/shared/components/layout/Spacing';
-import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import CartOrderEtcInfoBox from './CartOrderEtcInfoBox';
