@@ -120,6 +120,7 @@ export const useOrder = (): OrderHookResult => {
       }, 500);
 
     } catch (error) {
+      console.log('handleOrder error', error);
       open({
         width: '300px',
         height: '200px',
