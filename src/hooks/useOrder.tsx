@@ -121,12 +121,11 @@ export const useOrder = (): OrderHookResult => {
 
       console.log('handleOrder newOrderData', newOrderData);
       setTimeout(() => {
-        // window.GX_pay?.('paymentForm', 'popup', 'https_pay');
-        if (process.env.NODE_ENV === 'development') {
-          window.GX_pay?.('paymentForm', 'popup', 'http_tpay');
-        } else {
-          window.GX_pay?.('paymentForm', 'popup', 'https_tpay');
-        }
+        const viewType = window.innerWidth < 768 ? 'submit' : 'popup';
+        const protocolType = process.env.NODE_ENV === 'development' ? 'http_tpay' : 'https_tpay';
+        // 정식서비스 일때
+        // const protocolType = process.env.NODE_ENV === 'development' ? 'http_tpay' : 'https_pay';
+        window.GX_pay?.('paymentForm', viewType, protocolType);
       }, 500);
 
     } catch (error) {
