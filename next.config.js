@@ -10,7 +10,8 @@ const nextConfig = {
 			// },
 			{
 				source: '/api/:path*',
-				destination: `http://pintossmall2.com/api/:path*`,
+				// destination: `http://pintossmall2.com/api/:path*`,
+				destination: `https://pin-toss.com/api/:path*`,
 			},
 		];
 	},

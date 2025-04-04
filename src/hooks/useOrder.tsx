@@ -1,10 +1,12 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { apiClient } from '../controllers/new-api-service';
 import useAlertContext from './useAlertContext';
 import { useRouter } from 'next/navigation';
 import * as cs from '../shared/styles/common.css';
 import AlertMainTextBox from '../shared/components/alert/AlertMainTextBox';
+
+const billServiceId = process.env.NEXT_PUBLIC_BILLGATE_SERVICE_ID || 'PIN_TOSS';
 
 export interface OrderItem {
   voucherId: number;
@@ -88,10 +90,12 @@ export const useOrder = (): OrderHookResult => {
       const response = await apiClient.createOrder(params);
       const data = response.data;
 
+      console.log('handleOrder response', data);
+
       const newOrderData: OrderData = {
-        SERVICE_ID: 'M2483583',
-        SERVICE_CODE: params.paymentMethod,
-        SERVICE_TYPE: '0000',
+        SERVICE_ID: billServiceId,
+        SERVICE_CODE: data.paymentMethod,
+        SERVICE_TYPE: '0000', // 0000: 일반결제
         ORDER_ID: data.orderNo,
         // "2025-03-21T09:13:50.954Z" to YYYYMMDDHH24MISS format
         ORDER_DATE: new Date(data.orderDate).toLocaleString('en-GB', {
@@ -115,8 +119,14 @@ export const useOrder = (): OrderHookResult => {
 
       setOrderData(newOrderData);
 
+      console.log('handleOrder newOrderData', newOrderData);
       setTimeout(() => {
-        window.GX_pay?.('paymentForm', 'submit', 'https_pay');
+        // window.GX_pay?.('paymentForm', 'popup', 'https_pay');
+        if (process.env.NODE_ENV === 'development') {
+          window.GX_pay?.('paymentForm', 'popup', 'http_tpay');
+        } else {
+          window.GX_pay?.('paymentForm', 'popup', 'https_tpay');
+        }
       }, 500);
 
     } catch (error) {
@@ -132,6 +142,23 @@ export const useOrder = (): OrderHookResult => {
       });
     }
   };
+
+  useEffect(() => {
+    // create event listener for payment result from popup
+    function handlePaymentResult (event: MessageEvent) {
+      if (!event.origin.includes('billgate.net')) return;
+      const data = event.data;
+      console.log('Payment result data:', event.origin, data);
+      if (data && data.result) {
+        console.log('Payment result:', data.result);
+      }
+      window.location.replace('/order/list');
+    };
+    window.addEventListener('message', handlePaymentResult);
+    return () => {
+      window.removeEventListener('message', handlePaymentResult);
+    };
+  }, []);
 
   return {
     orderData,

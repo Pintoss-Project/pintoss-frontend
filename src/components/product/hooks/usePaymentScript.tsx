@@ -4,8 +4,11 @@ const usePaymentScript = () => {
 	useEffect(() => {
 		// 스크립트 동적으로 추가
 		const script = document.createElement('script');
-		script.src = 'https://pay.billgate.net/paygate/plugin/gx_web_client.js';
+		script.src = '/gx_web_client.js';
+		// script.src = 'https://pay.billgate.net/paygate/plugin/gx_web_client.js';
 		script.type = 'text/javascript';
+		// encoding
+		// script.charset = 'EUC-KR';
 		script.async = true;
 
 		script.onload = () => {
