@@ -122,9 +122,8 @@ export const useOrder = (): OrderHookResult => {
       console.log('handleOrder newOrderData', newOrderData);
       setTimeout(() => {
         const viewType = window.innerWidth < 768 ? 'submit' : 'popup';
-        const protocolType = process.env.NODE_ENV === 'development' ? 'http_tpay' : 'https_tpay';
-        // 정식서비스 일때
-        // const protocolType = process.env.NODE_ENV === 'development' ? 'http_tpay' : 'https_pay';
+        // const protocolType = process.env.NODE_ENV === 'development' ? 'http_tpay' : 'https_tpay';
+        const protocolType = process.env.NODE_ENV === 'development' ? 'http_pay' : 'https_pay';
         window.GX_pay?.('paymentForm', viewType, protocolType);
       }, 500);
 
