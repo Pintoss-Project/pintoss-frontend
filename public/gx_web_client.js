@@ -460,3 +460,28 @@ function GX_payClose() {
 	} catch (e) {
 	}
 }
+
+function GX_checkUrlAndRedirect() {
+    // Check if we're in an iframe
+    if (window !== window.top) {
+        try {
+            let currentUrl = window.location.href;
+            if (currentUrl.includes('https://pin-toss.com/order/list')) {
+                // Redirect parent window
+                window.top.location.href = 'https://pin-toss.com/order/list';
+                // Close the popup/layer
+                GX_payClose();
+            }
+        } catch (e) {
+            console.error('Error checking URL:', e);
+        }
+    }
+}
+
+// Add an interval to check URL changes
+setInterval(GX_checkUrlAndRedirect, 500);
+
+// Add additional event listener for modern browsers
+if (window.history && window.history.pushState) {
+    window.addEventListener('popstate', GX_checkUrlAndRedirect);
+}
