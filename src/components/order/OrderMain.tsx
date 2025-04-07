@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@/controllers/new-api-service';
+import { useEffect } from 'react';
 
 const OrderMain = () => {
 	const router = useRouter();
@@ -26,6 +27,16 @@ const OrderMain = () => {
 			return apiClient.getOrderList();
 		},
 	})
+
+    useEffect(() => {
+        // Check if the current window is a popup
+        if (window.opener && window !== window.top) {
+            // Redirect the parent window to the current URL
+            window.opener.location.href = window.location.href;
+            // Close the popup window
+            window.close();
+        }
+    }, []);
 
 	return (
 		<div>
