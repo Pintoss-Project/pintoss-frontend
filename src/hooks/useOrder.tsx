@@ -92,6 +92,8 @@ export const useOrder = (): OrderHookResult => {
 
       console.log('handleOrder response', data);
 
+      const itemCode = params.orderItems.map((item) => item.voucherId).join('_');
+
       const newOrderData: OrderData = {
         SERVICE_ID: billServiceId,
         SERVICE_CODE: data.paymentMethod,
@@ -109,7 +111,7 @@ export const useOrder = (): OrderHookResult => {
         }).replace(/[\/,:\s]/g, ''),
         AMOUNT: data.price,
         RETURN_URL: 'https://pin-toss.com/api/payments/callback',
-        ITEM_CODE: "",
+        ITEM_CODE: itemCode,
         ITEM_NAME: data.productName,
         USER_ID: user?.id,
         USER_NAME: user?.name,
